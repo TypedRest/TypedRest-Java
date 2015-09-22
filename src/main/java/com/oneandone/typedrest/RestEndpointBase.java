@@ -129,7 +129,7 @@ public abstract class RestEndpointBase
         Header encoding = entity.getContentEncoding();
         String message = (encoding != null) && encoding.getValue().equals("application/json")
                 ? json.readValue(EntityUtils.toString(entity), ErrorResponse.class).getMessage()
-                : statusLine.getReasonPhrase();
+                : statusLine.toString();
 
         switch (statusLine.getStatusCode()) {
             case HttpStatus.SC_BAD_REQUEST:
