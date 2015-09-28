@@ -39,7 +39,7 @@ Include this in your Maven ```pom.xml``` to use the library:
 <dependency>
   <groupId>com.1and1</groupId>
   <artifactId>typedrest</artifactId>
-  <version>1.0-SNAPSHOT</version>
+  <version>0.1</version>
 </dependency>
 ```
 
