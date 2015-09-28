@@ -8,7 +8,7 @@
 
     <name>TypedRest</name>
     <description>TypedRest helps you build type-safe fluent-style REST API clients.</description>
-    <url>https://github.com/1and1-webhosting-infrastructure/TypedRest-Java</url>
+    <url>https://github.com/1and1/TypedRest-Java</url>
     <licenses>
         <license>
             <name>The MIT License (MIT)</name>
@@ -17,9 +17,9 @@
     </licenses>
 
     <scm>
-        <connection>scm:git:https://github.com/1and1-webhosting-infrastructure/TypedRest-Java.git</connection>
-        <developerConnection>scm:git:git@github.com:1and1-webhosting-infrastructure/TypedRest-Java.git</developerConnection>
-        <url>https://github.com/1and1-webhosting-infrastructure/TypedRest-Java</url>
+        <connection>scm:git:https://github.com/1and1/TypedRest-Java.git</connection>
+        <developerConnection>scm:git:git@github.com:1and1/TypedRest-Java.git</developerConnection>
+        <url>https://github.com/1and1/TypedRest-Java</url>
         <tag>HEAD</tag>
     </scm>
     <developers>
