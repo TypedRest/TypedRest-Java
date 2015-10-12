@@ -12,19 +12,20 @@ import org.apache.http.util.*;
 import org.codehaus.jackson.type.*;
 
 /**
- * Base class for building REST endpoints that represents a set of
+ * Base class for building REST endpoints that represents a collection of
  * <code>TEntity</code>s as <code>TElement</code>s.
  *
  * @param <TEntity> The type of entity the endpoint represents.
- * @param <TElement> The specific type of {@link RestElement}s to provide for individual <code>TEntity</code>s.
+ * @param <TElement> The specific type of {@link RestElement}s to provide for
+ * individual <code>TEntity</code>s.
  */
-public abstract class RestSetBase<TEntity, TElement extends RestElement<TEntity>>
-        extends RestEndpointBase implements RestSet<TEntity> {
+public abstract class RestCollectionBase<TEntity, TElement extends RestElement<TEntity>>
+        extends RestEndpointBase implements RestCollection<TEntity> {
 
     protected final Class<TEntity> entityType;
 
     /**
-     * Creates a new element set endpoint.
+     * Creates a new element collection endpoint.
      *
      * @param parent The parent endpoint containing this one.
      * @param relativeUri The URI of this endpoint relative to the
@@ -32,13 +33,13 @@ public abstract class RestSetBase<TEntity, TElement extends RestElement<TEntity>
      * automatically.
      * @param entityType The type of entity the endpoint represents.
      */
-    protected RestSetBase(RestEndpoint parent, URI relativeUri, Class<TEntity> entityType) {
+    protected RestCollectionBase(RestEndpoint parent, URI relativeUri, Class<TEntity> entityType) {
         super(parent, ensureTrailingSlash(relativeUri));
         this.entityType = entityType;
     }
 
     /**
-     * Creates a new element set endpoint.
+     * Creates a new element collection endpoint.
      *
      * @param parent The parent endpoint containing this one.
      * @param relativeUri The URI of this endpoint relative to the
@@ -46,8 +47,8 @@ public abstract class RestSetBase<TEntity, TElement extends RestElement<TEntity>
      * automatically.
      * @param entityType The type of entity the endpoint represents.
      */
-    protected RestSetBase(RestEndpoint parent, String relativeUri, Class<TEntity> entityType) {
-        // Use this instead of base to ensure trailing slash gets appended for REST Set URIs
+    protected RestCollectionBase(RestEndpoint parent, String relativeUri, Class<TEntity> entityType) {
+        // Use this instead of base to ensure trailing slash gets appended for REST collection URIs
         this(parent, URI.create(relativeUri), entityType);
     }
 
@@ -75,7 +76,7 @@ public abstract class RestSetBase<TEntity, TElement extends RestElement<TEntity>
     }
 
     /**
-     * Instantiates a <code>TElement</code> for an element in this set.
+     * Instantiates a <code>TElement</code> for an element in this collection.
      *
      * @param relativeUri The {@link RestEndpoint#getUri()} of the new
      * <code>TElement</code>.

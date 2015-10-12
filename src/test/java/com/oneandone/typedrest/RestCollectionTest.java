@@ -9,15 +9,15 @@ import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.MatcherAssert.*;
 import org.junit.*;
 
-public class RestSetTests extends RestEndpointTest {
+public class RestCollectionTest extends RestEndpointTest {
 
-    private RestSet<MockEntity> endpoint;
+    private RestCollection<MockEntity> endpoint;
 
     @Before
     @Override
     public void before() {
         super.before();
-        endpoint = new RestSetImpl<>(entryPoint, "endpoint", MockEntity.class);
+        endpoint = new RestCollectionImpl<>(entryPoint, "endpoint", MockEntity.class);
     }
 
     @Test

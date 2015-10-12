@@ -43,10 +43,10 @@ Include this in your Maven ```pom.xml``` to use the library:
 </dependency>
 ```
 
-You can then use the classes `RestEntryPoint`, `RestSetImpl` and `RestElementImpl` to build a local representation of a remote REST service. Based on our usecase sample this could look like this:
+You can then use the classes `RestEntryPoint`, `RestCollectionImpl` and `RestElementImpl` to build a local representation of a remote REST service. Based on our usecase sample this could look like this:
 ```java
 class SampleRestEntryPoint : RestEntryPoint {
-  public final RestSet<Package> packages = new RestSetImpl<>(this, "packages");
+  public final RestCollection<Package> packages = new RestCollectionImpl<>(this, "packages");
 
   public SampleRestEntryPoint(URI uri) {
     super(uri);

@@ -6,20 +6,21 @@ import javax.naming.OperationNotSupportedException;
 import org.apache.http.*;
 
 /**
- * REST endpoint that represents a set of <code>TEntity</code>s as
+ * REST endpoint that represents a collection of <code>TEntity</code>s as
  * <code>TElement</code>s.
  *
  * @param <TEntity> The type of entity the endpoint represents.
  */
-public interface RestSet<TEntity>
+public interface RestCollection<TEntity>
         extends RestEndpoint {
 
     /**
-     * Returns a <code>TElement</code> for a specific element of this set. Does
-     * not perform any network traffic yet.
+     * Returns a <code>TElement</code> for a specific element of this
+     * collection. Does not perform any network traffic yet.
      *
-     * @param id The ID used to identify the element within the set.
-     * @return A <code>TElement</code> for a specific element of this set.
+     * @param id The ID used to identify the element within the collection.
+     * @return A <code>TElement</code> for a specific element of this
+     * collection.
      */
     RestElement<TEntity> get(Object id);
 
