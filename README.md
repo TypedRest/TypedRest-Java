@@ -43,7 +43,7 @@ Include this in your Maven ```pom.xml``` to use the library:
 </dependency>
 ```
 
-You can then use the classes `EntryPoint`, `CollectionEndpointImpl` and `ElementEndpointImpl` to build a local representation of a remote REST service. Based on our usecase sample this could look like this:
+You can then use the classes `EntryPoint`, `CollectionEndpointImpl`, `ElementEndpointImpl`, `PaginationEndpointImpl` and `StreamEndpointImpl`. to build a local representation of a remote REST service. Based on our usecase sample this could look like this:
 ```java
 class SampleEntryEndpoint extends EntryEndpoint {
   public final CollectionEndpoint<Package> packages = new CollectionEndpointImpl<>(this, "packages", Package.class);

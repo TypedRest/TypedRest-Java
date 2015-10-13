@@ -133,6 +133,13 @@
             <scope>compile</scope>
         </dependency>
 
+        <!-- Reactive Extensions -->
+        <dependency>
+            <groupId>io.reactivex</groupId>
+            <artifactId>rxjava</artifactId>
+            <version>1.0.14</version>
+        </dependency>
+
         <!-- Build dependencies -->
         <dependency>
             <groupId>org.projectlombok</groupId>

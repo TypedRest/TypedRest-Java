@@ -115,10 +115,11 @@ public abstract class AbstractEndpoint
      * @throws FileNotFoundException {@link HttpStatus#SC_NOT_FOUND} or
      * {@link HttpStatus#SC_GONE}
      * @throws OperationNotSupportedException {@link HttpStatus#SC_CONFLICT}
+     * @throws IndexOutOfBoundsException {@link HttpStatus#SC_REQUESTED_RANGE_NOT_SATISFIABLE}
      * @throws HttpException Other non-success status code.
      */
     protected HttpResponse execute(Request request)
-            throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, OperationNotSupportedException, HttpException {
+            throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, OperationNotSupportedException, IndexOutOfBoundsException, HttpException {
         request.addHeader("Accept", ContentType.APPLICATION_JSON.getMimeType());
         HttpResponse response = rest.execute(request).returnResponse();
 
@@ -144,6 +145,8 @@ public abstract class AbstractEndpoint
                 throw new FileNotFoundException(message);
             case HttpStatus.SC_CONFLICT:
                 throw new OperationNotSupportedException(message);
+            case HttpStatus.SC_REQUESTED_RANGE_NOT_SATISFIABLE:
+                throw new IndexOutOfBoundsException(message);
             default:
                 throw new HttpException(message);
         }

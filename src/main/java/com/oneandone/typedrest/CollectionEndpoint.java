@@ -15,11 +15,11 @@ public interface CollectionEndpoint<TEntity>
         extends Endpoint {
 
     /**
-     * Returns a <code>TElement</code> for a specific element of this
+     * Returns a {@link ElementEndpoint} for a specific element of this
      * collection. Does not perform any network traffic yet.
      *
      * @param id The ID used to identify the element within the collection.
-     * @return A <code>TElement</code> for a specific element of this
+     * @return An {@link ElementEndpoint} for a specific element of this
      * collection.
      */
     ElementEndpoint<TEntity> get(Object id);
