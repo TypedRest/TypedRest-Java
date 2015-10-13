@@ -1,7 +1,7 @@
 package com.oneandone.typedrest;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
-import static com.oneandone.typedrest.RestEndpointTest.jsonMime;
+import static com.oneandone.typedrest.AbstractEndpointTest.jsonMime;
 import java.net.URI;
 import java.util.Collection;
 import java.util.LinkedList;
@@ -9,15 +9,15 @@ import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.MatcherAssert.*;
 import org.junit.*;
 
-public class RestCollectionTest extends RestEndpointTest {
+public class CollectionEndpointTest extends AbstractEndpointTest {
 
-    private RestCollection<MockEntity> endpoint;
+    private CollectionEndpoint<MockEntity> endpoint;
 
     @Before
     @Override
     public void before() {
         super.before();
-        endpoint = new RestCollectionImpl<>(entryPoint, "endpoint", MockEntity.class);
+        endpoint = new CollectionEndpointImpl<>(entryPoint, "endpoint", MockEntity.class);
     }
 
     @Test
@@ -46,7 +46,7 @@ public class RestCollectionTest extends RestEndpointTest {
                         .withStatus(201)
                         .withHeader("Location", location.toASCIIString())));
 
-        RestElement<MockEntity> element = endpoint.create(new MockEntity(5, "test"));
+        ElementEndpoint<MockEntity> element = endpoint.create(new MockEntity(5, "test"));
         assertThat(element.getUri(), is(equalTo(serverUri.resolve(location))));
     }
 }

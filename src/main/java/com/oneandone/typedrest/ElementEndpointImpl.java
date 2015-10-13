@@ -13,8 +13,8 @@ import org.apache.http.util.*;
  *
  * @param <TEntity> The type of entity the endpoint represents.
  */
-public class RestElementImpl<TEntity>
-        extends RestEndpointBase implements RestElement<TEntity> {
+public class ElementEndpointImpl<TEntity>
+        extends AbstractEndpoint implements ElementEndpoint<TEntity> {
 
     private final Class<TEntity> entityType;
 
@@ -26,7 +26,7 @@ public class RestElementImpl<TEntity>
      * <code>parent</code>'s.
      * @param entityType The type of entity the endpoint represents.
      */
-    public RestElementImpl(RestEndpoint parent, URI relativeUri, Class<TEntity> entityType) {
+    public ElementEndpointImpl(Endpoint parent, URI relativeUri, Class<TEntity> entityType) {
         super(parent, relativeUri);
         this.entityType = entityType;
     }
@@ -39,7 +39,7 @@ public class RestElementImpl<TEntity>
      * @param entityType The type of entity the endpoint represents.
      * <code>parent</code>'s.
      */
-    public RestElementImpl(RestEndpoint parent, String relativeUri, Class<TEntity> entityType) {
+    public ElementEndpointImpl(Endpoint parent, String relativeUri, Class<TEntity> entityType) {
         super(parent, relativeUri);
         this.entityType = entityType;
     }

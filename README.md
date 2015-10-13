@@ -43,12 +43,12 @@ Include this in your Maven ```pom.xml``` to use the library:
 </dependency>
 ```
 
-You can then use the classes `RestEntryPoint`, `RestCollectionImpl` and `RestElementImpl` to build a local representation of a remote REST service. Based on our usecase sample this could look like this:
+You can then use the classes `EntryPoint`, `CollectionEndpointImpl` and `ElementEndpointImpl` to build a local representation of a remote REST service. Based on our usecase sample this could look like this:
 ```java
-class SampleRestEntryPoint : RestEntryPoint {
-  public final RestCollection<Package> packages = new RestCollectionImpl<>(this, "packages");
+class SampleEntryEndpoint extends EntryEndpoint {
+  public final CollectionEndpoint<Package> packages = new CollectionEndpointImpl<>(this, "packages", Package.class);
 
-  public SampleRestEntryPoint(URI uri) {
+  public SampleEntryEndpoint(URI uri) {
     super(uri);
   }
 }
@@ -56,9 +56,9 @@ class SampleRestEntryPoint : RestEntryPoint {
 
 You can then perform CRUD operations like this:
 ```java
-SampleRestEntryPoint server = new SampleRestEntryPoint(URI.create("http://myservice/api/"));
+SampleEntryEndpoint server = new SampleEntryEndpoint(URI.create("http://myservice/api/"));
 Iterable<Package> packages = server.packages.readAll();
-RestElement<Package> element = server.packages.create(new Package(...));
+ElementEndpoint<Package> element = server.packages.create(new Package(...));
 Package package = server.packages.get(1).read();
 server.Packages.get(1).update(package);
 server.Packages.get(1).delete();

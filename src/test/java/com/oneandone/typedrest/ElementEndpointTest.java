@@ -5,15 +5,15 @@ import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.MatcherAssert.*;
 import org.junit.*;
 
-public class RestElementTest extends RestEndpointTest {
+public class ElementEndpointTest extends AbstractEndpointTest {
 
-    private RestElement<MockEntity> endpoint;
+    private ElementEndpoint<MockEntity> endpoint;
 
     @Before
     @Override
     public void before() {
         super.before();
-        endpoint = new RestElementImpl<>(entryPoint, "endpoint", MockEntity.class);
+        endpoint = new ElementEndpointImpl<>(entryPoint, "endpoint", MockEntity.class);
     }
 
     @Test

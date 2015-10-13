@@ -14,8 +14,8 @@ import org.codehaus.jackson.map.*;
 /**
  * Base class for building REST endpoints, i.e. remote HTTP resources.
  */
-public abstract class RestEndpointBase
-        implements RestEndpoint {
+public abstract class AbstractEndpoint
+        implements Endpoint {
 
     @Getter
     protected final URI uri;
@@ -32,7 +32,7 @@ public abstract class RestEndpointBase
      * element.
      * @param uri The HTTP URI of the remote element.
      */
-    protected RestEndpointBase(Executor rest, URI uri) {
+    protected AbstractEndpoint(Executor rest, URI uri) {
         this.rest = rest;
         this.uri = uri;
     }
@@ -44,7 +44,7 @@ public abstract class RestEndpointBase
      * @param relativeUri The URI of this endpoint relative to the
      * <code>parent</code>'s.
      */
-    protected RestEndpointBase(RestEndpoint parent, URI relativeUri) {
+    protected AbstractEndpoint(Endpoint parent, URI relativeUri) {
         this(parent.getRest(), ensureTrailingSlash(parent.getUri()).resolve(relativeUri));
     }
 
@@ -55,7 +55,7 @@ public abstract class RestEndpointBase
      * @param relativeUri The URI of this endpoint relative to the
      * <code>parent</code>'s.
      */
-    protected RestEndpointBase(RestEndpoint parent, String relativeUri) {
+    protected AbstractEndpoint(Endpoint parent, String relativeUri) {
         this(parent, URI.create(relativeUri));
     }
 

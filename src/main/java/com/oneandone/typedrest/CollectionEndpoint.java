@@ -11,8 +11,8 @@ import org.apache.http.*;
  *
  * @param <TEntity> The type of entity the endpoint represents.
  */
-public interface RestCollection<TEntity>
-        extends RestEndpoint {
+public interface CollectionEndpoint<TEntity>
+        extends Endpoint {
 
     /**
      * Returns a <code>TElement</code> for a specific element of this
@@ -22,7 +22,7 @@ public interface RestCollection<TEntity>
      * @return A <code>TElement</code> for a specific element of this
      * collection.
      */
-    RestElement<TEntity> get(Object id);
+    ElementEndpoint<TEntity> get(Object id);
 
     /**
      * Returns all <code>TEntity</code>s.
@@ -56,6 +56,6 @@ public interface RestCollection<TEntity>
      * @throws OperationNotSupportedException {@link HttpStatus#SC_CONFLICT}
      * @throws HttpException Other non-success status code.
      */
-    RestElement<TEntity> create(TEntity entity)
+    ElementEndpoint<TEntity> create(TEntity entity)
             throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, OperationNotSupportedException, HttpException;
 }

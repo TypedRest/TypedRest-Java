@@ -7,10 +7,10 @@ import org.apache.http.client.fluent.*;
 
 /**
  * Entry point to a REST interface. Derive from this class and add your own set
- * of child-{@link RestEndpoint}s as properties.
+ * of child-{@link Endpoint}s as properties.
  */
-public class RestEntryPoint
-        extends RestEndpointBase {
+public class EntryEndpoint
+        extends AbstractEndpoint {
 
     /**
      * Creates a new REST interface.
@@ -18,7 +18,7 @@ public class RestEntryPoint
      * @param uri The base URI of the REST interface. Missing trailing slash
      * will be appended automatically.
      */
-    public RestEntryPoint(URI uri) {
+    public EntryEndpoint(URI uri) {
         super(
                 Executor.newInstance(),
                 ensureTrailingSlash(uri));
@@ -32,7 +32,7 @@ public class RestEntryPoint
      * @param credentials The credentials used to authenticate against the REST
      * interface.
      */
-    public RestEntryPoint(URI uri, Credentials credentials) {
+    public EntryEndpoint(URI uri, Credentials credentials) {
         super(
                 Executor.newInstance().auth(credentials),
                 ensureTrailingSlash(uri));
@@ -48,7 +48,7 @@ public class RestEntryPoint
      * @param password The password used to authenticate against the REST
      * interface.
      */
-    public RestEntryPoint(URI uri, String username, String password) {
+    public EntryEndpoint(URI uri, String username, String password) {
         super(
                 Executor.newInstance().auth(username, password),
                 ensureTrailingSlash(uri));

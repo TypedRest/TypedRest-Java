@@ -6,7 +6,7 @@ import org.apache.http.client.fluent.*;
 /**
  * REST endpoint, i.e. a remote HTTP resource.
  */
-public interface RestEndpoint {
+public interface Endpoint {
 
     /**
      * The REST executor used to communicate with the remote resource.

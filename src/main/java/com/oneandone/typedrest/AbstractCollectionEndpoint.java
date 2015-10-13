@@ -16,11 +16,11 @@ import org.codehaus.jackson.type.*;
  * <code>TEntity</code>s as <code>TElement</code>s.
  *
  * @param <TEntity> The type of entity the endpoint represents.
- * @param <TElement> The specific type of {@link RestElement}s to provide for
+ * @param <TElement> The specific type of {@link ElementEndpoint}s to provide for
  * individual <code>TEntity</code>s.
  */
-public abstract class RestCollectionBase<TEntity, TElement extends RestElement<TEntity>>
-        extends RestEndpointBase implements RestCollection<TEntity> {
+public abstract class AbstractCollectionEndpoint<TEntity, TElement extends ElementEndpoint<TEntity>>
+        extends AbstractEndpoint implements CollectionEndpoint<TEntity> {
 
     protected final Class<TEntity> entityType;
 
@@ -33,7 +33,7 @@ public abstract class RestCollectionBase<TEntity, TElement extends RestElement<T
      * automatically.
      * @param entityType The type of entity the endpoint represents.
      */
-    protected RestCollectionBase(RestEndpoint parent, URI relativeUri, Class<TEntity> entityType) {
+    protected AbstractCollectionEndpoint(Endpoint parent, URI relativeUri, Class<TEntity> entityType) {
         super(parent, ensureTrailingSlash(relativeUri));
         this.entityType = entityType;
     }
@@ -47,7 +47,7 @@ public abstract class RestCollectionBase<TEntity, TElement extends RestElement<T
      * automatically.
      * @param entityType The type of entity the endpoint represents.
      */
-    protected RestCollectionBase(RestEndpoint parent, String relativeUri, Class<TEntity> entityType) {
+    protected AbstractCollectionEndpoint(Endpoint parent, String relativeUri, Class<TEntity> entityType) {
         // Use this instead of base to ensure trailing slash gets appended for REST collection URIs
         this(parent, URI.create(relativeUri), entityType);
     }
@@ -78,7 +78,7 @@ public abstract class RestCollectionBase<TEntity, TElement extends RestElement<T
     /**
      * Instantiates a <code>TElement</code> for an element in this collection.
      *
-     * @param relativeUri The {@link RestEndpoint#getUri()} of the new
+     * @param relativeUri The {@link Endpoint#getUri()} of the new
      * <code>TElement</code>.
      * @return The new <code>TEntity</code>.
      */

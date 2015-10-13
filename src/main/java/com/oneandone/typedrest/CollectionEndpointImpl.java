@@ -4,12 +4,12 @@ import java.net.*;
 
 /**
  * REST endpoint that represents a collection of <code>TEntity</code>s as
- * {@link RestElement}s.
+ * {@link ElementEndpoint}s.
  *
  * @param <TEntity> The type of entity the endpoint represents.
  */
-public class RestCollectionImpl<TEntity>
-        extends RestCollectionBase<TEntity, RestElement<TEntity>> {
+public class CollectionEndpointImpl<TEntity>
+        extends AbstractCollectionEndpoint<TEntity, ElementEndpoint<TEntity>> {
 
     /**
      * Creates a new element collection endpoint.
@@ -20,7 +20,7 @@ public class RestCollectionImpl<TEntity>
      * automatically.
      * @param entityType The type of entity the endpoint represents.
      */
-    public RestCollectionImpl(RestEndpoint parent, URI relativeUri, Class<TEntity> entityType) {
+    public CollectionEndpointImpl(Endpoint parent, URI relativeUri, Class<TEntity> entityType) {
         super(parent, relativeUri, entityType);
     }
 
@@ -33,12 +33,12 @@ public class RestCollectionImpl<TEntity>
      * automatically.
      * @param entityType The type of entity the endpoint represents.
      */
-    public RestCollectionImpl(RestEndpoint parent, String relativeUri, Class<TEntity> entityType) {
+    public CollectionEndpointImpl(Endpoint parent, String relativeUri, Class<TEntity> entityType) {
         super(parent, relativeUri, entityType);
     }
 
     @Override
-    protected RestElement<TEntity> getElement(URI relativeUri) {
-        return new RestElementImpl<>(this, relativeUri, entityType);
+    protected ElementEndpoint<TEntity> getElement(URI relativeUri) {
+        return new ElementEndpointImpl<>(this, relativeUri, entityType);
     }
 }

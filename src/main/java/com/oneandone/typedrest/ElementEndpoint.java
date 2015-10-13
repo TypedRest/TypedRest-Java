@@ -9,8 +9,8 @@ import org.apache.http.*;
  *
  * @param <TEntity> The type of entity the endpoint represents.
  */
-public interface RestElement<TEntity>
-        extends RestEndpoint {
+public interface ElementEndpoint<TEntity>
+        extends Endpoint {
 
     /**
      * Returns the specific <code>TEntity</code>.
