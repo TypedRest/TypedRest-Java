@@ -42,6 +42,17 @@ public class ElementEndpointTest extends AbstractEndpointTest {
     }
 
     @Test
+    @Ignore("Works in isolation but fails when executed as part of fixture")
+    public void testUpdateWithNullValue() throws Exception {
+        stubFor(put(urlEqualTo("/endpoint"))
+                .withRequestBody(equalToJson("{\"id\":5}"))
+                .willReturn(aResponse()
+                        .withStatus(204)));
+
+        endpoint.update(new MockEntity(5, null));
+    }
+
+    @Test
     public void testDelete() throws Exception {
         stubFor(delete(urlEqualTo("/endpoint"))
                 .willReturn(aResponse()

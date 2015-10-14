@@ -10,6 +10,7 @@ import org.apache.http.client.fluent.*;
 import org.apache.http.entity.ContentType;
 import org.apache.http.util.*;
 import org.codehaus.jackson.map.*;
+import org.codehaus.jackson.map.annotate.JsonSerialize;
 
 /**
  * Base class for building REST endpoints, i.e. remote HTTP resources.
@@ -23,7 +24,8 @@ public abstract class AbstractEndpoint
     @Getter
     protected final Executor rest;
 
-    protected final ObjectMapper json = new ObjectMapper();
+    protected final ObjectMapper json = new ObjectMapper()
+            .setSerializationInclusion(JsonSerialize.Inclusion.NON_NULL);
 
     /**
      * Creates a new REST endpoint with an absolute URI.
