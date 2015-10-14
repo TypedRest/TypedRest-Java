@@ -34,7 +34,7 @@ public class EntryEndpoint
      */
     public EntryEndpoint(URI uri, Credentials credentials) {
         super(
-                Executor.newInstance().auth(credentials),
+                Executor.newInstance().authPreemptive(uri.getHost()).auth(credentials),
                 ensureTrailingSlash(uri));
     }
 
@@ -50,7 +50,7 @@ public class EntryEndpoint
      */
     public EntryEndpoint(URI uri, String username, String password) {
         super(
-                Executor.newInstance().auth(username, password),
+                Executor.newInstance().authPreemptive(uri.getHost()).auth(username, password),
                 ensureTrailingSlash(uri));
     }
 }
