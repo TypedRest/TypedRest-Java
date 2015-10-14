@@ -126,9 +126,9 @@ public abstract class AbstractEndpoint
         }
 
         HttpEntity entity = response.getEntity();
-        Header encoding = entity.getContentEncoding();
-        String message = (encoding != null) && encoding.getValue().equals("application/json")
-                ? json.readValue(EntityUtils.toString(entity), ErrorResponse.class).getMessage()
+        Header encoding = entity.getContentType();
+        String message = (encoding != null) && encoding.getValue().startsWith("application/json")
+                ? json.readTree(EntityUtils.toString(entity)).get("message").asText()
                 : statusLine.toString();
 
         switch (statusLine.getStatusCode()) {
@@ -145,12 +145,5 @@ public abstract class AbstractEndpoint
             default:
                 throw new HttpException(message);
         }
-    }
-
-    private class ErrorResponse {
-
-        @Getter
-        @Setter
-        private String Message;
     }
 }

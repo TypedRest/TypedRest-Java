@@ -2,6 +2,7 @@ package com.oneandone.typedrest;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
 import static org.hamcrest.CoreMatchers.*;
+import org.hamcrest.CoreMatchers;
 import static org.hamcrest.MatcherAssert.*;
 import org.junit.*;
 
@@ -47,5 +48,23 @@ public class ElementEndpointTest extends AbstractEndpointTest {
                         .withStatus(204)));
 
         endpoint.delete();
+    }
+
+    @Test
+    public void testException() throws Exception {
+        stubFor(get(urlEqualTo("/endpoint"))
+                .willReturn(aResponse()
+                        .withStatus(400)
+                        .withHeader("Content-Type", jsonMime)
+                        .withBody("{\"message\":\"test\"}")));
+
+        String exceptionMessage = null;
+        try {
+            endpoint.read();
+        } catch (IllegalArgumentException ex) {
+            exceptionMessage = ex.getMessage();
+        }
+
+        assertThat(exceptionMessage, is(CoreMatchers.equalTo("test")));
     }
 }
