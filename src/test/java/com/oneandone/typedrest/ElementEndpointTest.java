@@ -1,6 +1,7 @@
 package com.oneandone.typedrest;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
+import static org.apache.http.HttpStatus.*;
 import static org.hamcrest.CoreMatchers.*;
 import org.hamcrest.CoreMatchers;
 import static org.hamcrest.MatcherAssert.*;
@@ -22,7 +23,7 @@ public class ElementEndpointTest extends AbstractEndpointTest {
         stubFor(get(urlEqualTo("/endpoint"))
                 .withHeader("Accept", equalTo(jsonMime))
                 .willReturn(aResponse()
-                        .withStatus(200)
+                        .withStatus(SC_OK)
                         .withHeader("Content-Type", jsonMime)
                         .withBody("{\"id\":5,\"name\":\"test\"}")));
 
@@ -36,7 +37,7 @@ public class ElementEndpointTest extends AbstractEndpointTest {
         stubFor(put(urlEqualTo("/endpoint"))
                 .withRequestBody(equalToJson("{\"id\":5,\"name\":\"test\"}"))
                 .willReturn(aResponse()
-                        .withStatus(204)));
+                        .withStatus(SC_NO_CONTENT)));
 
         endpoint.update(new MockEntity(5, "test"));
     }
@@ -47,7 +48,7 @@ public class ElementEndpointTest extends AbstractEndpointTest {
         stubFor(put(urlEqualTo("/endpoint"))
                 .withRequestBody(equalToJson("{\"id\":5}"))
                 .willReturn(aResponse()
-                        .withStatus(204)));
+                        .withStatus(SC_NO_CONTENT)));
 
         endpoint.update(new MockEntity(5, null));
     }
@@ -56,7 +57,7 @@ public class ElementEndpointTest extends AbstractEndpointTest {
     public void testDelete() throws Exception {
         stubFor(delete(urlEqualTo("/endpoint"))
                 .willReturn(aResponse()
-                        .withStatus(204)));
+                        .withStatus(SC_NO_CONTENT)));
 
         endpoint.delete();
     }
@@ -65,7 +66,7 @@ public class ElementEndpointTest extends AbstractEndpointTest {
     public void testException() throws Exception {
         stubFor(get(urlEqualTo("/endpoint"))
                 .willReturn(aResponse()
-                        .withStatus(400)
+                        .withStatus(SC_BAD_REQUEST)
                         .withHeader("Content-Type", jsonMime)
                         .withBody("{\"message\":\"test\"}")));
 
