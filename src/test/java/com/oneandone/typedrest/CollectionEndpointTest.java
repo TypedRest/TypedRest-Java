@@ -5,7 +5,6 @@ import static com.oneandone.typedrest.AbstractEndpointTest.jsonMime;
 import java.net.URI;
 import static java.util.Arrays.asList;
 import java.util.Collection;
-import java.util.LinkedList;
 import static org.apache.http.HttpStatus.*;
 import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.MatcherAssert.*;
@@ -38,7 +37,7 @@ public class CollectionEndpointTest extends AbstractEndpointTest {
     }
 
     @Test
-    @Ignore("Works in isolation but fails when executed as part of fixture")
+    @Ignore("Works in isolation but fails when executed as part of test suite")
     public void testCreate() throws Exception {
         URI location = URI.create("/endpoint/new");
 

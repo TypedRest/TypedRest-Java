@@ -32,7 +32,7 @@ public class ElementEndpointTest extends AbstractEndpointTest {
     }
 
     @Test
-    @Ignore("Works in isolation but fails when executed as part of fixture")
+    @Ignore("Works in isolation but fails when executed as part of test suite")
     public void testUpdate() throws Exception {
         stubFor(put(urlEqualTo("/endpoint"))
                 .withRequestBody(equalToJson("{\"id\":5,\"name\":\"test\"}"))
@@ -43,7 +43,7 @@ public class ElementEndpointTest extends AbstractEndpointTest {
     }
 
     @Test
-    @Ignore("Works in isolation but fails when executed as part of fixture")
+    @Ignore("Works in isolation but fails when executed as part of test suite")
     public void testUpdateWithNullValue() throws Exception {
         stubFor(put(urlEqualTo("/endpoint"))
                 .withRequestBody(equalToJson("{\"id\":5}"))

@@ -62,46 +62,6 @@ public abstract class AbstractEndpoint
     }
 
     /**
-     * Sends an HTTP POST with an empty body to a <code>relativeUri</code> below
-     * the {@link #getUri()}.
-     *
-     * @param relativeUri The URI to POST to.
-     *
-     * @throws IOException Network communication failed.
-     * @throws IllegalArgumentException {@link HttpStatus#SC_BAD_REQUEST}
-     * @throws IllegalAccessException {@link HttpStatus#SC_UNAUTHORIZED} or
-     * {@link HttpStatus#SC_FORBIDDEN}
-     * @throws FileNotFoundException {@link HttpStatus#SC_NOT_FOUND} or
-     * {@link HttpStatus#SC_GONE}
-     * @throws OperationNotSupportedException {@link HttpStatus#SC_CONFLICT}
-     * @throws HttpException Other non-success status code.
-     */
-    protected void executePost(URI relativeUri)
-            throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, OperationNotSupportedException, HttpException {
-        execute(Request.Post(ensureTrailingSlash(uri).resolve(relativeUri)));
-    }
-
-    /**
-     * Sends an HTTP POST with an empty body to a <code>relativeUri</code> below
-     * the {@link #getUri()}.
-     *
-     * @param relativeUri The URI to POST to.
-     *
-     * @throws IOException Network communication failed.
-     * @throws IllegalArgumentException {@link HttpStatus#SC_BAD_REQUEST}
-     * @throws IllegalAccessException {@link HttpStatus#SC_UNAUTHORIZED} or
-     * {@link HttpStatus#SC_FORBIDDEN}
-     * @throws FileNotFoundException {@link HttpStatus#SC_NOT_FOUND} or
-     * {@link HttpStatus#SC_GONE}
-     * @throws OperationNotSupportedException {@link HttpStatus#SC_CONFLICT}
-     * @throws HttpException Other non-success status code.
-     */
-    protected void executePost(String relativeUri)
-            throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, OperationNotSupportedException, HttpException {
-        execute(Request.Post(ensureTrailingSlash(uri).resolve(relativeUri)));
-    }
-
-    /**
      * Executes a REST request and wraps HTTP status codes in appropriate
      * exception types.
      *
