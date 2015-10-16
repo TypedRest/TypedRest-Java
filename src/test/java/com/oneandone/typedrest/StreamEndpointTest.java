@@ -7,10 +7,12 @@ import static org.apache.http.HttpStatus.*;
 import org.junit.*;
 import rx.*;
 import rx.observers.TestSubscriber;
+import rx.schedulers.Schedulers;
+import rx.schedulers.TestScheduler;
 
 public class StreamEndpointTest extends AbstractEndpointTest {
 
-    private StreamEndpoint<MockEntity> endpoint;
+    private StreamEndpointImpl<MockEntity> endpoint;
 
     @Before
     @Override
@@ -20,7 +22,7 @@ public class StreamEndpointTest extends AbstractEndpointTest {
     }
 
     @Test
-    public void testGetStream() throws Exception {
+    public void testGetObservable() throws Exception {
         stubFor(get(urlEqualTo("/endpoint"))
                 .withHeader("Accept", equalTo(jsonMime))
                 .withHeader("Range", equalTo("elements=0-"))
@@ -39,10 +41,13 @@ public class StreamEndpointTest extends AbstractEndpointTest {
                         .withHeader("Content-Range", "elements 2-2/3")
                         .withBody("[{\"id\":7,\"name\":\"test3\"}]")));
 
-        Observable<MockEntity> stream = endpoint.getStream();
+        TestScheduler scheduler = Schedulers.test();
+        Observable<MockEntity> observable = endpoint.getObservable(0, scheduler);
 
         TestSubscriber<MockEntity> subscriber = new TestSubscriber<>();
-        stream.subscribe(subscriber);
+        observable.subscribe(subscriber);
+        scheduler.triggerActions();
+
         subscriber.assertReceivedOnNext(asList(
                 new MockEntity(5, "test1"),
                 new MockEntity(6, "test2"),
@@ -52,7 +57,7 @@ public class StreamEndpointTest extends AbstractEndpointTest {
     }
 
     @Test
-    public void testGetStreamOffset() throws Exception {
+    public void testGetObservableOffset() throws Exception {
         stubFor(get(urlEqualTo("/endpoint"))
                 .withHeader("Accept", equalTo(jsonMime))
                 .withHeader("Range", equalTo("elements=2-"))
@@ -62,17 +67,20 @@ public class StreamEndpointTest extends AbstractEndpointTest {
                         .withHeader("Content-Range", "elements 2-2/3")
                         .withBody("[{\"id\":7,\"name\":\"test3\"}]")));
 
-        Observable<MockEntity> stream = endpoint.getStream(2);
+        TestScheduler scheduler = Schedulers.test();
+        Observable<MockEntity> observable = endpoint.getObservable(2, scheduler);
 
         TestSubscriber<MockEntity> subscriber = new TestSubscriber<>();
-        stream.subscribe(subscriber);
+        observable.subscribe(subscriber);
+        scheduler.triggerActions();
+
         subscriber.assertReceivedOnNext(asList(new MockEntity(7, "test3")));
         subscriber.assertNoErrors();
         subscriber.assertCompleted();
     }
 
     @Test
-    public void testGetStreamOffsetTail() throws Exception {
+    public void testGetObservableOffsetTail() throws Exception {
         stubFor(get(urlEqualTo("/endpoint"))
                 .withHeader("Accept", equalTo(jsonMime))
                 .withHeader("Range", equalTo("elements=-1"))
@@ -82,10 +90,13 @@ public class StreamEndpointTest extends AbstractEndpointTest {
                         .withHeader("Content-Range", "elements 2-2/3")
                         .withBody("[{\"id\":7,\"name\":\"test3\"}]")));
 
-        Observable<MockEntity> stream = endpoint.getStream(-1);
+        TestScheduler scheduler = Schedulers.test();
+        Observable<MockEntity> observable = endpoint.getObservable(-1, scheduler);
 
         TestSubscriber<MockEntity> subscriber = new TestSubscriber<>();
-        stream.subscribe(subscriber);
+        observable.subscribe(subscriber);
+        scheduler.triggerActions();
+
         subscriber.assertReceivedOnNext(asList(new MockEntity(7, "test3")));
         subscriber.assertNoErrors();
         subscriber.assertCompleted();

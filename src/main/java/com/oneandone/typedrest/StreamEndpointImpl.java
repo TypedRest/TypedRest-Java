@@ -2,6 +2,9 @@ package com.oneandone.typedrest;
 
 import java.net.*;
 import rx.*;
+import rx.functions.Action2;
+import rx.schedulers.Schedulers;
+import static rx.util.async.Async.runAsync;
 
 /**
  * REST endpoint that represents a stream of entities. Uses the HTTP Range
@@ -38,13 +41,30 @@ public class StreamEndpointImpl<TElement>
     }
 
     @Override
-    public Observable<TElement> getStream(final long startIndex) {
-        return Observable.create(new Observable.OnSubscribe<TElement>() {
+    public Observable<TElement> getObservable() {
+        return getObservable(0);
+    }
+
+    @Override
+    public Observable<TElement> getObservable(long startIndex) {
+        return getObservable(startIndex, Schedulers.io());
+    }
+
+    /**
+     * Provides an observable stream of elements.
+     *
+     * @param startIndex The index of the first element to return in the stream.
+     * Use negative values to start counting from the end of the stream.
+     * @param scheduler The scheduler used to run the background thread.
+     * @return An observable stream of elements.
+     */
+    Observable<TElement> getObservable(final long startIndex, Scheduler scheduler) {
+        return runAsync(scheduler, new Action2<Observer<? super TElement>, Subscription>() {
 
             @Override
-            public void call(Subscriber<? super TElement> subscriber) {
+            public void call(Observer<? super TElement> observer, Subscription subscription) {
                 long currentStartIndex = startIndex;
-                while (true) {
+                while (!subscription.isUnsubscribed()) {
                     PartialResponse<TElement> response;
                     try {
                         response = (currentStartIndex >= 0)
@@ -54,16 +74,16 @@ public class StreamEndpointImpl<TElement>
                         // No new data available yet, keep polling
                         continue;
                     } catch (Throwable error) {
-                        subscriber.onError(error);
+                        observer.onError(error);
                         return;
                     }
 
                     for (TElement element : response.getElements()) {
-                        subscriber.onNext(element);
+                        observer.onNext(element);
                     }
 
                     if (response.isEndReached()) {
-                        subscriber.onCompleted();
+                        observer.onCompleted();
                         return;
                     }
 
@@ -72,10 +92,5 @@ public class StreamEndpointImpl<TElement>
                 }
             }
         });
-    }
-
-    @Override
-    public Observable<TElement> getStream() {
-        return getStream(0);
     }
 }
