@@ -25,7 +25,7 @@ public abstract class AbstractCollectionEndpoint<TEntity, TElement extends Eleme
     protected final Class<TEntity> entityType;
 
     /**
-     * Creates a new element collection endpoint.
+     * Creates a new paged collection endpoint.
      *
      * @param parent The parent endpoint containing this one.
      * @param relativeUri The URI of this endpoint relative to the
@@ -39,7 +39,7 @@ public abstract class AbstractCollectionEndpoint<TEntity, TElement extends Eleme
     }
 
     /**
-     * Creates a new element collection endpoint.
+     * Creates a new paged collection endpoint.
      *
      * @param parent The parent endpoint containing this one.
      * @param relativeUri The URI of this endpoint relative to the

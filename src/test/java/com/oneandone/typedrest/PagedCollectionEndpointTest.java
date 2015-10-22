@@ -4,27 +4,26 @@ import static com.github.tomakehurst.wiremock.client.WireMock.*;
 import static com.oneandone.typedrest.AbstractEndpointTest.jsonMime;
 import static java.util.Arrays.asList;
 import java.util.Collection;
-import java.util.LinkedList;
 import static org.apache.http.HttpStatus.*;
 import static org.hamcrest.CoreMatchers.*;
 import org.hamcrest.CoreMatchers;
 import static org.hamcrest.MatcherAssert.*;
 import org.junit.*;
 
-public class PaginationEndpointTest extends AbstractEndpointTest {
+public class PagedCollectionEndpointTest extends AbstractEndpointTest {
 
-    private PaginationEndpoint<MockEntity> endpoint;
+    private PagedCollectionEndpoint<MockEntity> endpoint;
 
     @Before
     @Override
     public void before() {
         super.before();
-        endpoint = new PaginationEndpointImpl<>(entryPoint, "endpoint", MockEntity.class);
+        endpoint = new PagedCollectionEndpointImpl<>(entryPoint, "endpoint", MockEntity.class);
     }
 
     @Test
     public void testReadAll() throws Exception {
-        stubFor(get(urlEqualTo("/endpoint"))
+        stubFor(get(urlEqualTo("/endpoint/"))
                 .withHeader("Accept", equalTo(jsonMime))
                 .willReturn(aResponse()
                         .withStatus(SC_OK)
@@ -38,8 +37,8 @@ public class PaginationEndpointTest extends AbstractEndpointTest {
     }
 
     @Test
-    public void testReadPartialOffset() throws Exception {
-        stubFor(get(urlEqualTo("/endpoint"))
+    public void testreadRangeOffset() throws Exception {
+        stubFor(get(urlEqualTo("/endpoint/"))
                 .withHeader("Accept", equalTo(jsonMime))
                 .withHeader("Range", equalTo("elements=1-"))
                 .willReturn(aResponse()
@@ -48,7 +47,7 @@ public class PaginationEndpointTest extends AbstractEndpointTest {
                         .withHeader("Content-Range", "elements 1-1/2")
                         .withBody("[{\"id\":6,\"name\":\"test2\"}]")));
 
-        PartialResponse<MockEntity> response = endpoint.readPartial(1l, null);
+        PartialResponse<MockEntity> response = endpoint.readRange(1l, null);
 
         Collection<MockEntity> expected = asList(new MockEntity(6, "test2"));
         assertThat(response.getElements(), is(equalTo(expected)));
@@ -59,8 +58,8 @@ public class PaginationEndpointTest extends AbstractEndpointTest {
     }
 
     @Test
-    public void testReadPartialHead() throws Exception {
-        stubFor(get(urlEqualTo("/endpoint"))
+    public void testreadRangeHead() throws Exception {
+        stubFor(get(urlEqualTo("/endpoint/"))
                 .withHeader("Accept", equalTo(jsonMime))
                 .withHeader("Range", equalTo("elements=0-1"))
                 .willReturn(aResponse()
@@ -69,7 +68,7 @@ public class PaginationEndpointTest extends AbstractEndpointTest {
                         .withHeader("Content-Range", "elements 0-1/2")
                         .withBody("[{\"id\":5,\"name\":\"test1\"},{\"id\":6,\"name\":\"test2\"}]")));
 
-        PartialResponse<MockEntity> response = endpoint.readPartial(0l, 1l);
+        PartialResponse<MockEntity> response = endpoint.readRange(0l, 1l);
 
         Collection<MockEntity> expected = asList(
                 new MockEntity(5, "test1"),
@@ -82,8 +81,8 @@ public class PaginationEndpointTest extends AbstractEndpointTest {
     }
 
     @Test
-    public void testReadPartialTail() throws Exception {
-        stubFor(get(urlEqualTo("/endpoint"))
+    public void testreadRangeTail() throws Exception {
+        stubFor(get(urlEqualTo("/endpoint/"))
                 .withHeader("Accept", equalTo(jsonMime))
                 .withHeader("Range", equalTo("elements=-1"))
                 .willReturn(aResponse()
@@ -92,7 +91,7 @@ public class PaginationEndpointTest extends AbstractEndpointTest {
                         .withHeader("Content-Range", "elements 2-2/*")
                         .withBody("[{\"id\":6,\"name\":\"test2\"}]")));
 
-        PartialResponse<MockEntity> response = endpoint.readPartial(null, 1l);
+        PartialResponse<MockEntity> response = endpoint.readRange(null, 1l);
 
         Collection<MockEntity> expected = asList(new MockEntity(6, "test2"));
         assertThat(response.getElements(), is(equalTo(expected)));
@@ -104,7 +103,7 @@ public class PaginationEndpointTest extends AbstractEndpointTest {
 
     @Test
     public void testException() throws Exception {
-        stubFor(get(urlEqualTo("/endpoint"))
+        stubFor(get(urlEqualTo("/endpoint/"))
                 .withHeader("Range", equalTo("elements=5-10"))
                 .willReturn(aResponse()
                         .withStatus(SC_REQUESTED_RANGE_NOT_SATISFIABLE)
@@ -113,7 +112,7 @@ public class PaginationEndpointTest extends AbstractEndpointTest {
 
         String exceptionMessage = null;
         try {
-            endpoint.readPartial(5l, 10l);
+            endpoint.readRange(5l, 10l);
         } catch (IndexOutOfBoundsException ex) {
             exceptionMessage = ex.getMessage();
         }

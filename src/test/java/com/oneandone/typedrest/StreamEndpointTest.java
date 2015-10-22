@@ -23,7 +23,7 @@ public class StreamEndpointTest extends AbstractEndpointTest {
 
     @Test
     public void testGetObservable() throws Exception {
-        stubFor(get(urlEqualTo("/endpoint"))
+        stubFor(get(urlEqualTo("/endpoint/"))
                 .withHeader("Accept", equalTo(jsonMime))
                 .withHeader("Range", equalTo("elements=0-"))
                 .willReturn(aResponse()
@@ -32,7 +32,7 @@ public class StreamEndpointTest extends AbstractEndpointTest {
                         .withHeader("Content-Range", "elements 0-1/*")
                         .withBody("[{\"id\":5,\"name\":\"test1\"},{\"id\":6,\"name\":\"test2\"}]")));
 
-        stubFor(get(urlEqualTo("/endpoint"))
+        stubFor(get(urlEqualTo("/endpoint/"))
                 .withHeader("Accept", equalTo(jsonMime))
                 .withHeader("Range", equalTo("elements=2-"))
                 .willReturn(aResponse()
@@ -58,7 +58,7 @@ public class StreamEndpointTest extends AbstractEndpointTest {
 
     @Test
     public void testGetObservableOffset() throws Exception {
-        stubFor(get(urlEqualTo("/endpoint"))
+        stubFor(get(urlEqualTo("/endpoint/"))
                 .withHeader("Accept", equalTo(jsonMime))
                 .withHeader("Range", equalTo("elements=2-"))
                 .willReturn(aResponse()
@@ -81,7 +81,7 @@ public class StreamEndpointTest extends AbstractEndpointTest {
 
     @Test
     public void testGetObservableOffsetTail() throws Exception {
-        stubFor(get(urlEqualTo("/endpoint"))
+        stubFor(get(urlEqualTo("/endpoint/"))
                 .withHeader("Accept", equalTo(jsonMime))
                 .withHeader("Range", equalTo("elements=-1"))
                 .willReturn(aResponse()

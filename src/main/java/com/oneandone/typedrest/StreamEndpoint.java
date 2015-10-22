@@ -3,18 +3,19 @@ package com.oneandone.typedrest;
 import rx.Observable;
 
 /**
- * REST endpoint that represents a stream of entities.
+ * REST endpoint that represents a stream of <code>TEntity</code>s.
  *
- * @param <TElement> The type of elements the endpoint represents.
+ * @param <TEntity> The type of entity the endpoint represents.
  */
-public interface StreamEndpoint<TElement> extends PaginationEndpoint<TElement> {
+public interface StreamEndpoint<TEntity>
+        extends PagedCollectionEndpoint<TEntity> {
 
     /**
      * Provides an observable stream of elements.
      *
      * @return An observable stream of elements.
      */
-    Observable<TElement> getObservable();
+    Observable<TEntity> getObservable();
 
     /**
      * Provides an observable stream of elements.
@@ -23,5 +24,5 @@ public interface StreamEndpoint<TElement> extends PaginationEndpoint<TElement> {
      * Use negative values to start counting from the end of the stream.
      * @return An observable stream of elements.
      */
-    Observable<TElement> getObservable(long startIndex);
+    Observable<TEntity> getObservable(long startIndex);
 }

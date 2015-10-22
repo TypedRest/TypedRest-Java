@@ -4,19 +4,17 @@ import java.util.Collection;
 import lombok.Data;
 
 /**
- * Represents a
- * {@link PaginationEndpoint#readPartial(java.lang.Long, java.lang.Long)}
- * response.
+ * Represents a subset of a set of elements.
  *
- * @param <TElement> The type of element the response contains.
+ * @param <TEntity> The type of element the response contains.
  */
 @Data
-public class PartialResponse<TElement> {
+public class PartialResponse<TEntity> {
 
     /**
      * The returned elements.
      */
-    private final Collection<TElement> elements;
+    private final Collection<TEntity> elements;
 
     /**
      * The index of the first element. <code>null</code> if unset.
