@@ -4,7 +4,7 @@
     <groupId>com.oneandone</groupId>
     <artifactId>typedrest</artifactId>
     <packaging>jar</packaging>
-    <version>0.6-SNAPSHOT</version>
+    <version>0.6</version>
 
     <name>TypedRest</name>
     <description>TypedRest helps you build type-safe fluent-style REST API clients.</description>
