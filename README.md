@@ -21,7 +21,7 @@ We use the following terms in the library and documentation:
 
 We'll use this simple POJO (Plain old Java object) class modelling software packages as a sample _entity_ type:
 ```java
-class Package {
+class PackageEntity {
   private int id;
   public int getId() { return id; }
   public void setId(int id) { this.id = id; }
@@ -47,7 +47,7 @@ Include this in your Maven ```pom.xml``` to use the library:
 You can then use the classes `EntryEndpoint`, `CollectionEndpointImpl`, `ElementEndpointImpl`, `TriggerEndpointImpl`, `PaginationEndpointImpl`, `StreamEndpointImpl` and `BlobEndpointImpl`. to build a local representation of a remote REST service. Based on our usecase sample this could look like this:
 ```java
 class SampleEntryEndpoint extends EntryEndpoint {
-  public final CollectionEndpoint<Package> packages = new CollectionEndpointImpl<>(this, "packages", Package.class);
+  public final CollectionEndpoint<PackageEntity> packages = new CollectionEndpointImpl<>(this, "packages", PackageEntity.class);
 
   public SampleEntryEndpoint(URI uri) {
     super(uri);
@@ -58,9 +58,18 @@ class SampleEntryEndpoint extends EntryEndpoint {
 You can then perform CRUD operations like this:
 ```java
 SampleEntryEndpoint server = new SampleEntryEndpoint(URI.create("http://myservice/api/"));
-Iterable<Package> packages = server.packages.readAll();
-ElementEndpoint<Package> element = server.packages.create(new Package(...));
-Package package = server.packages.get(1).read();
-server.Packages.get(1).update(package);
+Iterable<PackageEntity> packages = server.packages.readAll();
+ElementEndpoint<PackageEntity> element = server.packages.create(new PackageEntity(...));
+PackageEntity pack = server.packages.get(1).read();
+server.Packages.get(1).update(pack);
 server.Packages.get(1).delete();
 ```
+
+
+## Sample project
+
+The source code includes sample projects.
+
+`typedrest-sample` demonstrates how to create a client library for a REST interface using `typedrest`.
+
+`typedrest-vaadin-sample` demonstrates how to use such a client library and `typedrest-vaadin` to create a Vaadin client for a REST interface.

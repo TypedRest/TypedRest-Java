@@ -1,19 +1,25 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
+    <parent>
+        <groupId>com.oneandone</groupId>
+        <artifactId>typedrest-parent</artifactId>
+        <version>0.7-SNAPSHOT</version>
+        <relativePath>../typedrest-parent</relativePath>
+    </parent>
     <groupId>com.oneandone</groupId>
-    <artifactId>typedrest-libs</artifactId>
-    <version>0.7-SNAPSHOT</version>
-    <packaging>pom</packaging>
+    <artifactId>typedrest-sample</artifactId>
 
-    <name>TypedRest Libraries</name>
-    <description>Groups all TypedRest libraries as modules.</description>
+    <name>TypedRest Sample</name>
+    <description>Sample project for using the typedrest library</description>
 
-    <modules>
-        <module>typedrest-parent</module>
-        <module>typedrest</module>
-        <module>typedrest-sample</module>
-    </modules>
+    <dependencies>
+        <dependency>
+            <groupId>com.oneandone</groupId>
+            <artifactId>typedrest</artifactId>
+            <version>${typedrest.version}</version>
+        </dependency>
+    </dependencies>
 
     <build>
         <plugins>
