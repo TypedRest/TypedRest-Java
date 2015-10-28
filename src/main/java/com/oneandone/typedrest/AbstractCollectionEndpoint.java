@@ -17,11 +17,11 @@ import org.codehaus.jackson.type.*;
  * <code>TEntity</code>s as <code>TElement</code>s.
  *
  * @param <TEntity> The type of entity the endpoint represents.
- * @param <TElement> The specific type of {@link ElementEndpoint}s to provide for
+ * @param <TElement> The specific type of {@link ElementEndpoint} to provide for
  * individual <code>TEntity</code>s.
  */
 public abstract class AbstractCollectionEndpoint<TEntity, TElement extends ElementEndpoint<TEntity>>
-        extends AbstractEndpoint implements CollectionEndpoint<TEntity> {
+        extends AbstractEndpoint implements CollectionEndpoint<TEntity, TElement> {
 
     @Getter
     protected final Class<TEntity> entityType;

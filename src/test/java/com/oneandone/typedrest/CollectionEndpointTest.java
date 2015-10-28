@@ -12,7 +12,7 @@ import org.junit.*;
 
 public class CollectionEndpointTest extends AbstractEndpointTest {
 
-    private CollectionEndpoint<MockEntity> endpoint;
+    private CollectionEndpointImpl<MockEntity> endpoint;
 
     @Before
     @Override

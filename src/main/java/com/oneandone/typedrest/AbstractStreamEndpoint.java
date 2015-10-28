@@ -11,11 +11,11 @@ import static rx.util.async.Async.runAsync;
  * <code>TEntity</code>s as <code>TElement</code>s.
  *
  * @param <TEntity> The type of entity the endpoint represents.
- * @param <TElement> The specific type of {@link ElementEndpoint}s to provide
+ * @param <TElement> The specific type of {@link ElementEndpoint} to provide
  * for individual <code>TEntity</code>s.
  */
 public abstract class AbstractStreamEndpoint<TEntity, TElement extends ElementEndpoint<TEntity>>
-        extends AbstractPagedCollectionEndpoint<TEntity, TElement> implements StreamEndpoint<TEntity> {
+        extends AbstractPagedCollectionEndpoint<TEntity, TElement> implements StreamEndpoint<TEntity, TElement> {
 
     /**
      * Creates a new element stream endpoint.

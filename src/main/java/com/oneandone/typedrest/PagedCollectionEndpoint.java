@@ -9,9 +9,11 @@ import org.apache.http.*;
  * <code>TElement</code>s with pagination support.
  *
  * @param <TEntity> The type of entity the endpoint represents.
+ * @param <TElement> The specific type of {@link ElementEndpoint} to provide for
+ * individual <code>TEntity</code>s.
  */
-public interface PagedCollectionEndpoint<TEntity>
-        extends CollectionEndpoint<TEntity> {
+public interface PagedCollectionEndpoint<TEntity, TElement extends ElementEndpoint<TEntity>>
+        extends CollectionEndpoint<TEntity, TElement> {
 
     /**
      * Returns all <code>TElement</code>s within a specific range of the set.

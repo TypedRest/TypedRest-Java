@@ -6,9 +6,11 @@ import rx.Observable;
  * REST endpoint that represents a stream of <code>TEntity</code>s.
  *
  * @param <TEntity> The type of entity the endpoint represents.
+ * @param <TElement> The specific type of {@link ElementEndpoint} to provide for
+ * individual <code>TEntity</code>s.
  */
-public interface StreamEndpoint<TEntity>
-        extends PagedCollectionEndpoint<TEntity> {
+public interface StreamEndpoint<TEntity, TElement extends ElementEndpoint<TEntity>>
+        extends PagedCollectionEndpoint<TEntity, TElement> {
 
     /**
      * Provides an observable stream of elements.

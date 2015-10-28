@@ -15,11 +15,11 @@ import org.codehaus.jackson.type.*;
  * the HTTP Range header.
  *
  * @param <TEntity> The type of entity the endpoint represents.
- * @param <TElement> The specific type of {@link ElementEndpoint}s to provide
+ * @param <TElement> The specific type of {@link ElementEndpoint} to provide
  * for individual <code>TEntity</code>s.
  */
 public abstract class AbstractPagedCollectionEndpoint<TEntity, TElement extends ElementEndpoint<TEntity>>
-        extends AbstractCollectionEndpoint<TEntity, TElement> implements PagedCollectionEndpoint<TEntity> {
+        extends AbstractCollectionEndpoint<TEntity, TElement> implements PagedCollectionEndpoint<TEntity, TElement> {
 
     /**
      * Creates a new paged collection endpoint.

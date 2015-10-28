@@ -10,8 +10,10 @@ import org.apache.http.*;
  * <code>TElement</code>s.
  *
  * @param <TEntity> The type of entity the endpoint represents.
+ * @param <TElement> The specific type of {@link ElementEndpoint} to provide
+ * for individual <code>TEntity</code>s.
  */
-public interface CollectionEndpoint<TEntity>
+public interface CollectionEndpoint<TEntity, TElement extends ElementEndpoint<TEntity>>
         extends Endpoint {
 
     /**
@@ -29,7 +31,7 @@ public interface CollectionEndpoint<TEntity>
      * @return An {@link ElementEndpoint} for a specific element of this
      * collection.
      */
-    ElementEndpoint<TEntity> get(Object id);
+    TElement get(Object id);
 
     /**
      * Returns all <code>TEntity</code>s.
@@ -63,6 +65,6 @@ public interface CollectionEndpoint<TEntity>
      * @throws OperationNotSupportedException {@link HttpStatus#SC_CONFLICT}
      * @throws HttpException Other non-success status code.
      */
-    ElementEndpoint<TEntity> create(TEntity entity)
+    TElement create(TEntity entity)
             throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, OperationNotSupportedException, HttpException;
 }
