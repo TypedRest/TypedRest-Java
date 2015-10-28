@@ -6,17 +6,18 @@ import org.apache.http.*;
 
 /**
  * REST endpoint that represents a collection of <code>TEntity</code>s as
- * <code>TElement</code>s with pagination support.
+ * <code>TElementEndpoint</code>s with pagination support.
  *
  * @param <TEntity> The type of entity the endpoint represents.
- * @param <TElement> The specific type of {@link ElementEndpoint} to provide for
- * individual <code>TEntity</code>s.
+ * @param <TElementEndpoint> The specific type of {@link ElementEndpoint} to
+ * provide for individual <code>TEntity</code>s.
  */
-public interface PagedCollectionEndpoint<TEntity, TElement extends ElementEndpoint<TEntity>>
-        extends CollectionEndpoint<TEntity, TElement> {
+public interface PagedCollectionEndpoint<TEntity, TElementEndpoint extends ElementEndpoint<TEntity>>
+        extends CollectionEndpoint<TEntity, TElementEndpoint> {
 
     /**
-     * Returns all <code>TElement</code>s within a specific range of the set.
+     * Returns all <code>TElementEndpoint</code>s within a specific range of the
+     * set.
      *
      * @param from The index of the first element to return. <code>null</code>
      * to use <code>to</code> to specify a start point counting from the end of
@@ -25,8 +26,8 @@ public interface PagedCollectionEndpoint<TEntity, TElement extends ElementEndpoi
      * index of the first element to return counting from the end of the set if
      * <code>from</code> is <code>null</code>. <code>null</code> to read to the
      * end.
-     * @return A subset of the <code>TElement</code>s and the range they come
-     * from. May not exactly match the request range.
+     * @return A subset of the <code>TElementEndpoint</code>s and the range they
+     * come from. May not exactly match the request range.
      * @throws IOException Network communication failed.
      * @throws IllegalArgumentException {@link HttpStatus#SC_BAD_REQUEST}
      * @throws IllegalAccessException {@link HttpStatus#SC_UNAUTHORIZED} or

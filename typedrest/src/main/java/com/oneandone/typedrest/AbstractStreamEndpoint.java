@@ -8,14 +8,14 @@ import static rx.util.async.Async.runAsync;
 
 /**
  * Base class for building REST endpoints that represents a stream of
- * <code>TEntity</code>s as <code>TElement</code>s.
+ * <code>TEntity</code>s as <code>TElementEndpoint</code>s.
  *
  * @param <TEntity> The type of entity the endpoint represents.
- * @param <TElement> The specific type of {@link ElementEndpoint} to provide
- * for individual <code>TEntity</code>s.
+ * @param <TElementEndpoint> The specific type of {@link ElementEndpoint} to
+ * provide for individual <code>TEntity</code>s.
  */
-public abstract class AbstractStreamEndpoint<TEntity, TElement extends ElementEndpoint<TEntity>>
-        extends AbstractPagedCollectionEndpoint<TEntity, TElement> implements StreamEndpoint<TEntity, TElement> {
+public abstract class AbstractStreamEndpoint<TEntity, TElementEndpoint extends ElementEndpoint<TEntity>>
+        extends AbstractPagedCollectionEndpoint<TEntity, TElementEndpoint> implements StreamEndpoint<TEntity, TElementEndpoint> {
 
     /**
      * Creates a new element stream endpoint.

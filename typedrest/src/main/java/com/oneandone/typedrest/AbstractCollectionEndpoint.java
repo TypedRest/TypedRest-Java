@@ -14,14 +14,14 @@ import org.codehaus.jackson.type.*;
 
 /**
  * Base class for building REST endpoints that represents a collection of
- * <code>TEntity</code>s as <code>TElement</code>s.
+ * <code>TEntity</code>s as <code>TElementEndpoint</code>s.
  *
  * @param <TEntity> The type of entity the endpoint represents.
- * @param <TElement> The specific type of {@link ElementEndpoint} to provide for
- * individual <code>TEntity</code>s.
+ * @param <TElementEndpoint> The specific type of {@link ElementEndpoint} to
+ * provide for individual <code>TEntity</code>s.
  */
-public abstract class AbstractCollectionEndpoint<TEntity, TElement extends ElementEndpoint<TEntity>>
-        extends AbstractEndpoint implements CollectionEndpoint<TEntity, TElement> {
+public abstract class AbstractCollectionEndpoint<TEntity, TElementEndpoint extends ElementEndpoint<TEntity>>
+        extends AbstractEndpoint implements CollectionEndpoint<TEntity, TElementEndpoint> {
 
     @Getter
     protected final Class<TEntity> entityType;
@@ -69,7 +69,7 @@ public abstract class AbstractCollectionEndpoint<TEntity, TElement extends Eleme
     }
 
     @Override
-    public TElement create(TEntity entity)
+    public TElementEndpoint create(TEntity entity)
             throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, OperationNotSupportedException, HttpException {
         String jsonSend = json.writeValueAsString(entity);
         HttpResponse response = execute(Request.Post(uri).bodyString(jsonSend, ContentType.APPLICATION_JSON));

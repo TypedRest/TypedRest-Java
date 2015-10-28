@@ -7,13 +7,13 @@ import org.apache.http.*;
 
 /**
  * REST endpoint that represents a collection of <code>TEntity</code>s as
- * <code>TElement</code>s.
+ * <code>TElementEndpoint</code>s.
  *
  * @param <TEntity> The type of entity the endpoint represents.
- * @param <TElement> The specific type of {@link ElementEndpoint} to provide
- * for individual <code>TEntity</code>s.
+ * @param <TElementEndpoint> The specific type of {@link ElementEndpoint} to
+ * provide for individual <code>TEntity</code>s.
  */
-public interface CollectionEndpoint<TEntity, TElement extends ElementEndpoint<TEntity>>
+public interface CollectionEndpoint<TEntity, TElementEndpoint extends ElementEndpoint<TEntity>>
         extends Endpoint {
 
     /**
@@ -31,7 +31,7 @@ public interface CollectionEndpoint<TEntity, TElement extends ElementEndpoint<TE
      * @return An {@link ElementEndpoint} for a specific element of this
      * collection.
      */
-    TElement get(Object id);
+    TElementEndpoint get(Object id);
 
     /**
      * Returns all <code>TEntity</code>s.
@@ -65,6 +65,6 @@ public interface CollectionEndpoint<TEntity, TElement extends ElementEndpoint<TE
      * @throws OperationNotSupportedException {@link HttpStatus#SC_CONFLICT}
      * @throws HttpException Other non-success status code.
      */
-    TElement create(TEntity entity)
+    TElementEndpoint create(TEntity entity)
             throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, OperationNotSupportedException, HttpException;
 }

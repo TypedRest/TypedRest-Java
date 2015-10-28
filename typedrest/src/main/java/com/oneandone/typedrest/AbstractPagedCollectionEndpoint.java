@@ -11,15 +11,15 @@ import org.codehaus.jackson.type.*;
 
 /**
  * Base class for building REST endpoints that represents a collection of
- * <code>TEntity</code>s as <code>TElement</code>s with pagination support using
- * the HTTP Range header.
+ * <code>TEntity</code>s as <code>TElementEndpoint</code>s with pagination
+ * support using the HTTP Range header.
  *
  * @param <TEntity> The type of entity the endpoint represents.
- * @param <TElement> The specific type of {@link ElementEndpoint} to provide
- * for individual <code>TEntity</code>s.
+ * @param <TElementEndpoint> The specific type of {@link ElementEndpoint} to
+ * provide for individual <code>TEntity</code>s.
  */
-public abstract class AbstractPagedCollectionEndpoint<TEntity, TElement extends ElementEndpoint<TEntity>>
-        extends AbstractCollectionEndpoint<TEntity, TElement> implements PagedCollectionEndpoint<TEntity, TElement> {
+public abstract class AbstractPagedCollectionEndpoint<TEntity, TElementEndpoint extends ElementEndpoint<TEntity>>
+        extends AbstractCollectionEndpoint<TEntity, TElementEndpoint> implements PagedCollectionEndpoint<TEntity, TElementEndpoint> {
 
     /**
      * Creates a new paged collection endpoint.
