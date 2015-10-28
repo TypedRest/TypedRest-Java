@@ -13,6 +13,8 @@
         <module>typedrest-parent</module>
         <module>typedrest</module>
         <module>typedrest-sample</module>
+        <module>typedrest-vaadin</module>
+        <module>typedrest-vaadin-sample</module>
     </modules>
 
     <build>

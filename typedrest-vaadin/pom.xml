@@ -1,0 +1,66 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.oneandone</groupId>
+        <artifactId>typedrest-parent</artifactId>
+        <version>0.7-SNAPSHOT</version>
+        <relativePath>../typedrest-parent</relativePath>
+    </parent>
+    <groupId>com.oneandone</groupId>
+    <artifactId>typedrest-vaadin</artifactId>
+
+    <name>TypedRest Vaadin</name>
+    <description>Build Vaadin GUIs using a TypedRest client</description>
+
+    <properties>
+        <vaadin.version>7.5.8</vaadin.version>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.oneandone</groupId>
+            <artifactId>typedrest</artifactId>
+            <version>${typedrest.version}</version>
+        </dependency>
+
+        <!-- Vaadin -->
+        <dependency>
+            <groupId>com.vaadin</groupId>
+            <artifactId>vaadin-server</artifactId>
+            <version>${vaadin.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.vaadin</groupId>
+            <artifactId>vaadin-client-compiled</artifactId>
+            <version>${vaadin.version}</version>
+        </dependency>
+
+        <!--
+        <dependency>
+            <groupId>com.vaadin</groupId>
+            <artifactId>vaadin-client</artifactId>
+            <version>${vaadin.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.vaadin</groupId>
+            <artifactId>vaadin-client-compiler</artifactId>
+            <version>${vaadin.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        -->
+
+        <dependency>
+            <groupId>com.vaadin</groupId>
+            <artifactId>vaadin-themes</artifactId>
+            <version>${vaadin.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.vaadin</groupId>
+            <artifactId>vaadin-push</artifactId>
+            <version>${vaadin.version}</version>
+        </dependency>
+    </dependencies>
+</project>

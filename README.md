@@ -66,6 +66,18 @@ server.Packages.get(1).delete();
 ```
 
 
+## Build GUI clients
+
+Include this in your Maven ```pom.xml``` to build GUIs with [Vaadin](https://vaadin.com/):
+```xml
+<dependency>
+  <groupId>com.oneandone</groupId>
+  <artifactId>typedrest-vaadin</artifactId>
+  <version>0.7</version>
+</dependency>
+```
+
+
 ## Sample project
 
 The source code includes sample projects.
