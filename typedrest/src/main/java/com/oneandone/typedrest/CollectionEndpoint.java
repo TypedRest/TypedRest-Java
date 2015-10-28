@@ -31,7 +31,7 @@ public interface CollectionEndpoint<TEntity, TElementEndpoint extends ElementEnd
      * @return An {@link ElementEndpoint} for a specific element of this
      * collection.
      */
-    TElementEndpoint get(Object id);
+    TElementEndpoint get(String id);
 
     /**
      * Returns all <code>TEntity</code>s.

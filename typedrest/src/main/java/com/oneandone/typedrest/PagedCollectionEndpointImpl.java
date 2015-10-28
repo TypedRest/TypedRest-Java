@@ -38,7 +38,7 @@ public class PagedCollectionEndpointImpl<TEntity>
     }
 
     @Override
-    protected ElementEndpoint<TEntity> getElement(URI relativeUri) {
-        return new ElementEndpointImpl<>(this, relativeUri, entityType);
+    public ElementEndpoint<TEntity> get(String id) {
+        return new ElementEndpointImpl<>(this, id, entityType);
     }
 }

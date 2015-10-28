@@ -55,11 +55,6 @@ public abstract class AbstractCollectionEndpoint<TEntity, TElementEndpoint exten
     }
 
     @Override
-    public TElement get(Object id) {
-        return getElement(URI.create(id.toString()));
-    }
-
-    @Override
     public Collection<TEntity> readAll()
             throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, OperationNotSupportedException, HttpException {
         HttpResponse response = execute(Request.Get(uri));
@@ -74,15 +69,6 @@ public abstract class AbstractCollectionEndpoint<TEntity, TElementEndpoint exten
         String jsonSend = json.writeValueAsString(entity);
         HttpResponse response = execute(Request.Post(uri).bodyString(jsonSend, ContentType.APPLICATION_JSON));
         Header locationHeader = response.getFirstHeader("Location");
-        return (locationHeader == null) ? null : getElement(URI.create(locationHeader.getValue()));
+        return (locationHeader == null) ? null : get(locationHeader.getValue());
     }
-
-    /**
-     * Instantiates a <code>TElement</code> for an element in this collection.
-     *
-     * @param relativeUri The {@link Endpoint#getUri()} of the new
-     * <code>TElement</code>.
-     * @return The new <code>TEntity</code>.
-     */
-    protected abstract TElement getElement(URI relativeUri);
 }
