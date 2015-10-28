@@ -40,7 +40,7 @@ Include this in your Maven ```pom.xml``` to use the library:
 <dependency>
   <groupId>com.oneandone</groupId>
   <artifactId>typedrest</artifactId>
-  <version>0.5</version>
+  <version>0.7</version>
 </dependency>
 ```
 
