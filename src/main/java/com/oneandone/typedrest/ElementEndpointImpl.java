@@ -3,6 +3,7 @@ package com.oneandone.typedrest;
 import java.io.*;
 import java.net.*;
 import javax.naming.OperationNotSupportedException;
+import lombok.Getter;
 import org.apache.http.*;
 import org.apache.http.client.fluent.*;
 import org.apache.http.entity.*;
@@ -16,6 +17,7 @@ import org.apache.http.util.*;
 public class ElementEndpointImpl<TEntity>
         extends AbstractEndpoint implements ElementEndpoint<TEntity> {
 
+    @Getter
     private final Class<TEntity> entityType;
 
     /**

@@ -13,13 +13,19 @@ public interface ElementEndpoint<TEntity>
         extends Endpoint {
 
     /**
+     * Returns the type of entity the endpoint represents.
+     *
+     * @return The class type.
+     */
+    Class<TEntity> getEntityType();
+
+    /**
      * Returns the specific <code>TEntity</code>.
      *
      * @return The specific <code>TEntity</code>.
      *
      * @throws IOException Network communication failed.
-     * @throws IllegalArgumentException
-     * {@link HttpStatus#SC_BAD_REQUEST}
+     * @throws IllegalArgumentException {@link HttpStatus#SC_BAD_REQUEST}
      * @throws IllegalAccessException {@link HttpStatus#SC_UNAUTHORIZED} or
      * {@link HttpStatus#SC_FORBIDDEN}
      * @throws FileNotFoundException {@link HttpStatus#SC_NOT_FOUND} or
@@ -35,8 +41,7 @@ public interface ElementEndpoint<TEntity>
      *
      * @param entity The modified <code>TEntity</code>.
      * @throws IOException Network communication failed.
-     * @throws IllegalArgumentException
-     * {@link HttpStatus#SC_BAD_REQUEST}
+     * @throws IllegalArgumentException {@link HttpStatus#SC_BAD_REQUEST}
      * @throws IllegalAccessException {@link HttpStatus#SC_UNAUTHORIZED} or
      * {@link HttpStatus#SC_FORBIDDEN}
      * @throws FileNotFoundException {@link HttpStatus#SC_NOT_FOUND} or
@@ -51,8 +56,7 @@ public interface ElementEndpoint<TEntity>
      * Deletes the <code>TEntity</code>.
      *
      * @throws IOException Network communication failed.
-     * @throws IllegalArgumentException
-     * {@link HttpStatus#SC_BAD_REQUEST}
+     * @throws IllegalArgumentException {@link HttpStatus#SC_BAD_REQUEST}
      * @throws IllegalAccessException {@link HttpStatus#SC_UNAUTHORIZED} or
      * {@link HttpStatus#SC_FORBIDDEN}
      * @throws FileNotFoundException {@link HttpStatus#SC_NOT_FOUND} or

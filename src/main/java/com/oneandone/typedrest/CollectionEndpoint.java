@@ -15,6 +15,13 @@ public interface CollectionEndpoint<TEntity>
         extends Endpoint {
 
     /**
+     * Returns the type of entity the endpoint represents.
+     *
+     * @return The class type.
+     */
+    Class<TEntity> getEntityType();
+
+    /**
      * Returns a {@link ElementEndpoint} for a specific element of this
      * collection. Does not perform any network traffic yet.
      *

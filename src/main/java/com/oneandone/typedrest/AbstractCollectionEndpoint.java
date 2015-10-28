@@ -5,6 +5,7 @@ import java.io.*;
 import java.net.*;
 import java.util.*;
 import javax.naming.OperationNotSupportedException;
+import lombok.Getter;
 import org.apache.http.*;
 import org.apache.http.client.fluent.*;
 import org.apache.http.entity.*;
@@ -22,6 +23,7 @@ import org.codehaus.jackson.type.*;
 public abstract class AbstractCollectionEndpoint<TEntity, TElement extends ElementEndpoint<TEntity>>
         extends AbstractEndpoint implements CollectionEndpoint<TEntity> {
 
+    @Getter
     protected final Class<TEntity> entityType;
 
     /**
