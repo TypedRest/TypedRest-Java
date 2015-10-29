@@ -23,7 +23,7 @@ We'll use this simple POJO (Plain old Java object) class modelling software pack
 ```java
 class PackageEntity {
   private int id;
-  public int getId() { return id; }
+  @Id public int getId() { return id; }
   public void setId(int id) { this.id = id; }
 
   private String name;

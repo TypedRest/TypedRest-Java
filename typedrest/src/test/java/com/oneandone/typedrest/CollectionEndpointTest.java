@@ -50,4 +50,16 @@ public class CollectionEndpointTest extends AbstractEndpointTest {
         ElementEndpoint<MockEntity> element = endpoint.create(new MockEntity(5, "test"));
         assertThat(element.getUri(), is(equalTo(serverUri.resolve(location))));
     }
+
+    @Test
+    public void testGetById() {
+        assertThat(endpoint.get("1").getUri(),
+                is(equalTo(endpoint.getUri().resolve("1"))));
+    }
+
+    @Test
+    public void testGetByEntity() {
+        assertThat(endpoint.get(new MockEntity(1, "test")).getUri(),
+                is(equalTo(endpoint.getUri().resolve("1"))));
+    }
 }

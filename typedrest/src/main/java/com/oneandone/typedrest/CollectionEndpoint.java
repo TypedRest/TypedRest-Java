@@ -34,6 +34,17 @@ public interface CollectionEndpoint<TEntity, TElementEndpoint extends ElementEnd
     TElementEndpoint get(String key);
 
     /**
+     * Returns a {@link ElementEndpoint} for a specific element of this
+     * collection. Does not perform any network traffic yet.
+     *
+     * @param entity A previously fetched instance of the entity to retrieve a
+     * new state for.
+     * @return An {@link ElementEndpoint} for a specific element of this
+     * collection.
+     */
+    TElementEndpoint get(TEntity entity);
+
+    /**
      * Returns all <code>TEntity</code>s.
      *
      * @return All <code>TEntity</code>s.

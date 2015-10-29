@@ -2,6 +2,8 @@ package com.oneandone.typedrest;
 
 import static com.oneandone.typedrest.URIUtils.*;
 import java.io.*;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.net.*;
 import java.util.*;
 import javax.naming.OperationNotSupportedException;
@@ -11,6 +13,7 @@ import org.apache.http.client.fluent.*;
 import org.apache.http.entity.*;
 import org.apache.http.util.*;
 import org.codehaus.jackson.type.*;
+import javax.persistence.Id;
 
 /**
  * Base class for building REST endpoints that represents a collection of
@@ -26,6 +29,8 @@ public abstract class AbstractCollectionEndpoint<TEntity, TElementEndpoint exten
     @Getter
     protected final Class<TEntity> entityType;
 
+    private final Optional<Method> keyGetMethod;
+
     /**
      * Creates a new paged collection endpoint.
      *
@@ -38,6 +43,9 @@ public abstract class AbstractCollectionEndpoint<TEntity, TElementEndpoint exten
     protected AbstractCollectionEndpoint(Endpoint parent, URI relativeUri, Class<TEntity> entityType) {
         super(parent, ensureTrailingSlash(relativeUri));
         this.entityType = entityType;
+
+        keyGetMethod = Arrays.stream(entityType.getMethods())
+                .filter(x -> x.getAnnotation(Id.class) != null).findFirst();
     }
 
     /**
@@ -52,6 +60,28 @@ public abstract class AbstractCollectionEndpoint<TEntity, TElementEndpoint exten
     protected AbstractCollectionEndpoint(Endpoint parent, String relativeUri, Class<TEntity> entityType) {
         // Use this instead of base to ensure trailing slash gets appended for REST collection URIs
         this(parent, URI.create(relativeUri), entityType);
+    }
+
+    @Override
+    public TElementEndpoint get(TEntity entity) {
+        return get(getCollectionKey(entity));
+    }
+
+    /**
+     * Maps a <code>TEntity</code> to a key usable by
+     * {@link CollectionEndpoint#get(java.lang.String)}.
+     *
+     * @param entity The entity to get the key for.
+     * @return The key.
+     */
+    protected String getCollectionKey(TEntity entity) {
+        try {
+            return keyGetMethod
+                    .orElseThrow(() -> new IllegalStateException(entityType.getSimpleName() + " has no getter marked with [Key] attribute."))
+                    .invoke(entity).toString();
+        } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
+            throw new IllegalStateException(ex);
+        }
     }
 
     @Override
