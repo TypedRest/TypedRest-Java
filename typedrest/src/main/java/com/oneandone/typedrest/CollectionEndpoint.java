@@ -27,11 +27,11 @@ public interface CollectionEndpoint<TEntity, TElementEndpoint extends ElementEnd
      * Returns a {@link ElementEndpoint} for a specific element of this
      * collection. Does not perform any network traffic yet.
      *
-     * @param id The ID used to identify the element within the collection.
+     * @param key The key used to identify the element within the collection.
      * @return An {@link ElementEndpoint} for a specific element of this
      * collection.
      */
-    TElementEndpoint get(String id);
+    TElementEndpoint get(String key);
 
     /**
      * Returns all <code>TEntity</code>s.

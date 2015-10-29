@@ -38,7 +38,7 @@ public class StreamEndpointImpl<TEntity>
     }
 
     @Override
-    public ElementEndpoint<TEntity> get(String id) {
-        return new ElementEndpointImpl<>(this, id, entityType);
+    public ElementEndpoint<TEntity> get(String key) {
+        return new ElementEndpointImpl<>(this, key, entityType);
     }
 }
