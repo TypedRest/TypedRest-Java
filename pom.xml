@@ -3,7 +3,7 @@
 
     <groupId>com.oneandone</groupId>
     <artifactId>typedrest-libs</artifactId>
-    <version>0.7</version>
+    <version>0.8-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <name>TypedRest Libraries</name>
