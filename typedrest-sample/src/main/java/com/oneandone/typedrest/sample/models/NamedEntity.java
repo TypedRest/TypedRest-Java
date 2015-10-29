@@ -3,18 +3,18 @@ package com.oneandone.typedrest.sample.models;
 import javax.persistence.Id;
 
 /**
- * A software package like an application or a library.
+ * An entity with a unique numeric identifier and a human-readable name.
  */
-public class PackageEntity {
+public abstract class NamedEntity {
 
-    private int id;
+    private long id;
 
     @Id
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -25,14 +25,6 @@ public class PackageEntity {
     }
 
     public void setName(String name) {
-        this.name = name;
-    }
-
-    public PackageEntity() {
-    }
-
-    public PackageEntity(int id, String name) {
-        this.id = id;
         this.name = name;
     }
 }
