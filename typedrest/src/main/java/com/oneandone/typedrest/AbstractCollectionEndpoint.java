@@ -1,19 +1,27 @@
 package com.oneandone.typedrest;
 
-import static com.oneandone.typedrest.URIUtils.*;
-import java.io.*;
+import lombok.Getter;
+import org.apache.http.Header;
+import org.apache.http.HttpException;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.fluent.Request;
+import org.apache.http.entity.ContentType;
+import org.apache.http.util.EntityUtils;
+import org.codehaus.jackson.type.JavaType;
+
+import javax.naming.OperationNotSupportedException;
+import javax.persistence.Id;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.net.*;
-import java.util.*;
-import javax.naming.OperationNotSupportedException;
-import lombok.Getter;
-import org.apache.http.*;
-import org.apache.http.client.fluent.*;
-import org.apache.http.entity.*;
-import org.apache.http.util.*;
-import org.codehaus.jackson.type.*;
-import javax.persistence.Id;
+import java.net.URI;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
+import java.util.Optional;
+
+import static com.oneandone.typedrest.URIUtils.ensureTrailingSlash;
 
 /**
  * Base class for building REST endpoints that represents a collection of
@@ -77,7 +85,8 @@ public abstract class AbstractCollectionEndpoint<TEntity, TElementEndpoint exten
     protected String getCollectionKey(TEntity entity) {
         try {
             return keyGetMethod
-                    .orElseThrow(() -> new IllegalStateException(entityType.getSimpleName() + " has no getter marked with [Key] attribute."))
+                    .orElseThrow(() -> new IllegalStateException(entityType.getSimpleName() + " has no getter marked "
+                                    + "with @Id annotation."))
                     .invoke(entity).toString();
         } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
             throw new IllegalStateException(ex);
