@@ -11,8 +11,10 @@ public class BlobComponent extends AbstractComponent<BlobEndpoint> {
      * Creates a new REST blob component.
      *
      * @param endpoint The REST endpoint this component operates on.
+     * @param caption A caption for the blob.
      */
-    public BlobComponent(BlobEndpoint endpoint) {
+    public BlobComponent(BlobEndpoint endpoint, String caption) {
         super(endpoint);
+        setCaption(caption);
     }
 }

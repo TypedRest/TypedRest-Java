@@ -2,16 +2,20 @@ package com.oneandone.typedrest.vaadin;
 
 import com.oneandone.typedrest.*;
 import com.vaadin.server.ErrorHandler;
-import com.vaadin.ui.CustomComponent;
-import com.vaadin.ui.UI;
+import com.vaadin.ui.HasComponents;
+import com.vaadin.ui.Window;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import javax.naming.OperationNotSupportedException;
+import org.apache.http.HttpException;
 
 /**
- * Component operating on a {@link Endpoint}.
+ * Common base class for components operating on an {@link Endpoint}.
  *
  * @param <TEndpoint> The specific type of {@link Endpoint} to operate on.
  */
 public abstract class AbstractComponent<TEndpoint extends Endpoint>
-        extends CustomComponent {
+        extends Window {
 
     /**
      * The REST endpoint this component operates on.
@@ -30,6 +34,45 @@ public abstract class AbstractComponent<TEndpoint extends Endpoint>
     @Override
     public ErrorHandler getErrorHandler() {
         ErrorHandler handler = super.getErrorHandler();
-        return (handler == null) ? UI.getCurrent().getErrorHandler() : handler;
+        return (handler == null) ? getUI().getErrorHandler() : handler;
+    }
+
+    @Override
+    public void setParent(HasComponents parent) {
+        super.setParent(parent);
+
+        try {
+            onLoad();
+        } catch (IOException | IllegalArgumentException | IllegalAccessException | OperationNotSupportedException | HttpException ex) {
+            getErrorHandler().error(new com.vaadin.server.ErrorEvent(ex));
+            close();
+        }
+    }
+
+    /**
+     * Reloads data from the endpoint.
+     */
+    public void refresh() {
+        try {
+            onLoad();
+        } catch (IOException | IllegalArgumentException | IllegalAccessException | OperationNotSupportedException | HttpException ex) {
+            getErrorHandler().error(new com.vaadin.server.ErrorEvent(ex));
+        }
+    }
+
+    /**
+     * Handler for loading data for the endpoint.
+     *
+     * @throws IOException Network communication failed.
+     * @throws IllegalArgumentException {@link HttpStatus#SC_BAD_REQUEST}
+     * @throws IllegalAccessException {@link HttpStatus#SC_UNAUTHORIZED} or
+     * {@link HttpStatus#SC_FORBIDDEN}
+     * @throws FileNotFoundException {@link HttpStatus#SC_NOT_FOUND} or
+     * {@link HttpStatus#SC_GONE}
+     * @throws OperationNotSupportedException {@link HttpStatus#SC_CONFLICT}
+     * @throws HttpException Other non-success status code.
+     */
+    protected void onLoad()
+            throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, OperationNotSupportedException, HttpException {
     }
 }

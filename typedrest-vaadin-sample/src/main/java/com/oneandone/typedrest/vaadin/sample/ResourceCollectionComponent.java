@@ -1,14 +1,24 @@
 package com.oneandone.typedrest.vaadin.sample;
 
-import com.oneandone.typedrest.CollectionEndpointImpl;
+import com.oneandone.typedrest.sample.endpoints.ResourceCollection;
+import com.oneandone.typedrest.sample.endpoints.ResourceElement;
 import com.oneandone.typedrest.sample.models.Resource;
-import com.oneandone.typedrest.vaadin.CollectionComponent;
+import com.oneandone.typedrest.vaadin.AbstractCollectionComponent;
+import com.vaadin.ui.Window;
 
-public class ResourceCollectionComponent extends CollectionComponent<Resource> {
+public class ResourceCollectionComponent extends AbstractCollectionComponent<Resource, ResourceCollection, ResourceElement> {
     
-    public ResourceCollectionComponent(CollectionEndpointImpl<Resource> endpoint) {
+    public ResourceCollectionComponent(ResourceCollection endpoint) {
         super(endpoint);
-        
-        setCaption("Resources");
-    }    
+    }
+
+    @Override
+    protected Window buildCreateElementComponent() {
+        return new CreateResourceElementComponent(endpoint);
+    }
+
+    @Override
+    protected Window buildUpdateElementComponent(ResourceElement elementEndpoint) {
+        return new UpdateResourceElementComponent(elementEndpoint);
+    }
 }

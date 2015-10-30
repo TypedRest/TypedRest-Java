@@ -1,6 +1,7 @@
 package com.oneandone.typedrest.vaadin;
 
 import com.oneandone.typedrest.*;
+import com.vaadin.ui.Window;
 
 /**
  * Component operating on an {@link StreamEndpointImpl}.
@@ -18,12 +19,15 @@ public class StreamComponent<TEntity>
      */
     public StreamComponent(StreamEndpointImpl<TEntity> endpoint) {
         super(endpoint);
-        
-        addElementClickListener(entity -> popUp(entity));
     }
 
-    private void popUp(TEntity entity) {
-        ElementComponent elementComponent = new ElementComponent(endpoint.get(entity));
-        // TODO
+    @Override
+    protected Window buildCreateElementComponent() {
+        return new CreateElementComponent<>(endpoint);
+    }
+
+    @Override
+    protected Window buildUpdateElementComponent(ElementEndpoint<TEntity> elementEndpoint) {
+        return new UpdateElementComponent<>(elementEndpoint);
     }
 }
