@@ -1,11 +1,13 @@
 package com.oneandone.typedrest.vaadin;
 
 import com.oneandone.typedrest.*;
+import com.oneandone.typedrest.vaadin.annotations.*;
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Collection;
 import javax.naming.OperationNotSupportedException;
 import org.apache.http.HttpException;
@@ -24,42 +26,13 @@ import org.vaadin.dialogs.ConfirmDialog;
 public abstract class AbstractCollectionComponent<TEntity, TEndpoint extends CollectionEndpoint<TEntity, TElementEndpoint>, TElementEndpoint extends ElementEndpoint<TEntity>>
         extends AbstractComponent<TEndpoint> {
 
-    private final VerticalLayout masterLayout = new VerticalLayout();
-
-    private final BeanItemContainer<TEntity> container;
     protected final Grid grid = new Grid();
-
+    private final VerticalLayout masterLayout = new VerticalLayout();
+    private final BeanItemContainer<TEntity> container;
     private final Button createButton = new Button("Create", x -> onCreate());
+
+    @SuppressWarnings("unchecked")
     private final Button deleteButton = new Button("Delete", x -> onDelete((Collection<TEntity>) grid.getSelectedRows()));
-
-    /**
-     * Controls whether a create button is shown.
-     *
-     * @param val Turns the feature on or off.
-     */
-    public void setCreateEnabled(boolean val) {
-        createButton.setVisible(val);
-    }
-
-    /**
-     * Controls whether a delete button is shown.
-     *
-     * @param val Turns the feature on or off.
-     */
-    public void setDeleteEnabled(boolean val) {
-        deleteButton.setVisible(val);
-    }
-
-    /**
-     * Controls whether selecting individual elements opens an edit view.
-     *
-     * @param val Turns the feature on or off.
-     */
-    private boolean updateEnabled;
-
-    public void setUpdateEnabled(boolean val) {
-        updateEnabled = val;
-    }
 
     /**
      * Creates a new REST collection component.
@@ -80,6 +53,12 @@ public abstract class AbstractCollectionComponent<TEntity, TEndpoint extends Col
             }
         });
 
+        try {
+            handleAnnotatedFields(endpoint.getEntityType());
+        } catch (NoSuchMethodException | IllegalAccessException | InstantiationException | InvocationTargetException e) {
+            getErrorHandler().error(new com.vaadin.server.ErrorEvent(e));
+        }
+
         createButton.addStyleName(ValoTheme.BUTTON_FRIENDLY);
         deleteButton.addStyleName(ValoTheme.BUTTON_DANGER);
         HorizontalLayout buttonsLayout = new HorizontalLayout(createButton, deleteButton);
@@ -90,6 +69,63 @@ public abstract class AbstractCollectionComponent<TEntity, TEndpoint extends Col
         masterLayout.setComponentAlignment(buttonsLayout, Alignment.MIDDLE_RIGHT);
 
         setContent(masterLayout);
+    }
+
+    /**
+     * Controls whether a create button is shown.
+     *
+     * @param val Turns the feature on or off.
+     */
+    public void setCreateEnabled(boolean val) {
+        createButton.setVisible(val);
+    }
+
+    /**
+     * Controls whether a delete button is shown.
+     *
+     * @param val Turns the feature on or off.
+     */
+    public void setDeleteEnabled(boolean val) {
+        deleteButton.setVisible(val);
+    }
+
+    private boolean updateEnabled = true;
+
+    /**
+     * Controls whether selecting individual elements opens an edit view.
+     *
+     * @param val Turns the feature on or off.
+     */
+    public void setUpdateEnabled(boolean val) {
+        updateEnabled = val;
+    }
+
+    /**
+     * Hides all fields of {@link TEntity} annotated by {@link Hidden} and sets
+     * {@link com.vaadin.ui.renderers.Renderer} for all fields, annotated by
+     * {@link Renderer}.
+     *
+     * @param entityType the type of {@link TEntity}.
+     */
+    private void handleAnnotatedFields(Class<TEntity> entityType)
+            throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
+
+        for (java.lang.reflect.Field field : entityType.getDeclaredFields()) {
+
+            Grid.Column column = grid.getColumn(field.getName());
+            if (column == null) {
+                continue;
+            }
+
+            if (field.getAnnotationsByType(Hidden.class).length > 0) {
+                grid.removeColumn(field.getName());
+            } else {
+                Renderer[] rendererAnnotations = field.getAnnotationsByType(Renderer.class);
+                if (rendererAnnotations.length > 0) {
+                    column.setRenderer(rendererAnnotations[0].rendererClass().getConstructor().newInstance());
+                }
+            }
+        }
     }
 
     @Override

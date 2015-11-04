@@ -1,13 +1,12 @@
 package com.oneandone.typedrest.vaadin;
 
-import com.oneandone.typedrest.*;
+import com.oneandone.typedrest.Endpoint;
 import com.vaadin.server.ErrorHandler;
 import com.vaadin.ui.HasComponents;
 import com.vaadin.ui.Window;
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.io.*;
 import javax.naming.OperationNotSupportedException;
-import org.apache.http.HttpException;
+import org.apache.http.*;
 
 /**
  * Common base class for components operating on an {@link Endpoint}.
