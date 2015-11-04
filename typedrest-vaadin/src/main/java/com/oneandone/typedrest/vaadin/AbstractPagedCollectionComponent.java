@@ -1,6 +1,13 @@
 package com.oneandone.typedrest.vaadin;
 
 import com.oneandone.typedrest.*;
+import com.vaadin.shared.ui.*;
+import com.vaadin.ui.*;
+import com.vaadin.ui.themes.ValoTheme;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import javax.naming.OperationNotSupportedException;
+import org.apache.http.HttpException;
 
 /**
  * Base class for building components operating on an
@@ -15,6 +22,13 @@ import com.oneandone.typedrest.*;
 public abstract class AbstractPagedCollectionComponent<TEntity, TEndpoint extends PagedCollectionEndpoint<TEntity, TElementEndpoint>, TElementEndpoint extends ElementEndpoint<TEntity>>
         extends AbstractCollectionComponent<TEntity, TEndpoint, TElementEndpoint> {
 
+    private final Button pageLeftButton;
+    private final Button pageRightButton;
+
+    private long pageSize = 5;
+    private long currentFrom = 0;
+    private long currentTo = pageSize;
+
     /**
      * Creates a new REST paged collection component.
      *
@@ -22,5 +36,91 @@ public abstract class AbstractPagedCollectionComponent<TEntity, TEndpoint extend
      */
     public AbstractPagedCollectionComponent(TEndpoint endpoint) {
         super(endpoint);
+        pageLeftButton = new Button("<");
+        pageRightButton = new Button(">");
+
+        pageLeftButton.addClickListener(clickEvent -> {
+            currentTo = currentFrom;
+            long diff = currentFrom - pageSize;
+            currentFrom = diff > 0 ? diff : 0;
+
+            pageRightButton.setEnabled(true);
+
+            reload();
+        });
+
+        pageRightButton.addClickListener(clickEvent -> {
+            currentFrom += pageSize;
+            currentTo += pageSize;
+
+            pageLeftButton.setEnabled(true);
+
+            reload();
+        });
+
+        pageLeftButton.setEnabled(false);
+
+        pageLeftButton.addStyleName(ValoTheme.BUTTON_TINY);
+        pageRightButton.addStyleName(ValoTheme.BUTTON_TINY);
+
+        ComboBox pageSizeComboBox = pageSizeComboBox();
+
+        HorizontalLayout pagingButtonsLayout = new HorizontalLayout(pageLeftButton, pageSizeComboBox, pageRightButton);
+        pagingButtonsLayout.setComponentAlignment(pageLeftButton, Alignment.MIDDLE_LEFT);
+        pagingButtonsLayout.setComponentAlignment(pageSizeComboBox, Alignment.MIDDLE_CENTER);
+        pagingButtonsLayout.setComponentAlignment(pageRightButton, Alignment.MIDDLE_RIGHT);
+        pagingButtonsLayout.setMargin(new MarginInfo(true, false, false, false));
+        pagingButtonsLayout.setWidth("100%");
+
+        if (grid.getParent() instanceof AbstractOrderedLayout) {
+            int index = ((AbstractOrderedLayout) grid.getParent()).getComponentIndex(grid);
+            ((AbstractOrderedLayout) grid.getParent()).addComponent(pagingButtonsLayout, index);
+        }
+    }
+
+    private ComboBox pageSizeComboBox() {
+        ComboBox pageSizeComboBox = new ComboBox();
+        pageSizeComboBox.addStyleName(ValoTheme.COMBOBOX_TINY);
+        pageSizeComboBox.addItem(5L);
+        pageSizeComboBox.addItem(10L);
+        pageSizeComboBox.addItem(15L);
+        pageSizeComboBox.addItem(20L);
+        pageSizeComboBox.addItem(50L);
+        pageSizeComboBox.select(5L);
+        pageSizeComboBox.addValueChangeListener(valueChangeEvent -> {
+            pageSize = (long) pageSizeComboBox.getValue();
+            currentFrom = 0;
+            currentTo = pageSize;
+            reload();
+        });
+        return pageSizeComboBox;
+    }
+
+    private void reload() {
+        try {
+            onLoad();
+        } catch (IOException | IllegalArgumentException | IllegalAccessException | OperationNotSupportedException | HttpException e) {
+            getErrorHandler().error(new com.vaadin.server.ErrorEvent(e));
+        }
+    }
+
+    @Override
+    protected void onLoad()
+            throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, OperationNotSupportedException, HttpException {
+
+        grid.getContainerDataSource().removeAllItems();
+
+        PartialResponse<TEntity> response = endpoint.readRange(currentFrom, currentTo);
+
+        if (response.isEndReached()) {
+            pageRightButton.setEnabled(false);
+        }
+
+        if (currentFrom <= 0) {
+            pageLeftButton.setEnabled(false);
+            currentFrom = 0;
+        }
+
+        response.getElements().forEach(grid.getContainerDataSource()::addItem);
     }
 }

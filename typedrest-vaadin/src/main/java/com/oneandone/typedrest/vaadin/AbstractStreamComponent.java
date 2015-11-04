@@ -20,5 +20,8 @@ public abstract class AbstractStreamComponent<TEntity, TEndpoint extends StreamE
      */
     public AbstractStreamComponent(TEndpoint endpoint) {
         super(endpoint);
+        setUpdateEnabled(false);
+        setCreateEnabled(false);
+        setDeleteEnabled(false);
     }
 }

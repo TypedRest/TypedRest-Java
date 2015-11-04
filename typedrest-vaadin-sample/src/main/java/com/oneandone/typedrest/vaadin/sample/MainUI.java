@@ -1,7 +1,7 @@
 package com.oneandone.typedrest.vaadin.sample;
 
 import com.oneandone.typedrest.sample.endpoints.*;
-import com.oneandone.typedrest.vaadin.CollectionComponent;
+import com.oneandone.typedrest.vaadin.*;
 import com.vaadin.annotations.Theme;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.spring.annotation.SpringUI;
@@ -23,6 +23,7 @@ public class MainUI extends UI {
         
         setContent(new HorizontalLayout(
                 new Button("Resources", x -> addWindow(new ResourceCollectionComponent(entrypoint.resources))),
+                new Button("Resources (paged)", x -> addWindow(new PagedResourceCollectionComponent(entrypoint.resourcesPaged))),
                 new Button("Targets", x -> addWindow(new CollectionComponent<>(entrypoint.targets)))
         ));
     }
