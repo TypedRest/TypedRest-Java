@@ -13,6 +13,7 @@ public class SampleEntryEndpoint extends EntryEndpoint {
     public final ResourceCollection resources = new ResourceCollection(this);
     public final PagedResourceCollection resourcesPaged = new PagedResourceCollection(this);
     public final CollectionEndpointImpl<Target> targets = new CollectionEndpointImpl<>(this, "targets", Target.class);
+    public final StreamEndpointImpl<Event> events = new StreamEndpointImpl<>(this, "events", Event.class);
 
     public SampleEntryEndpoint(URI uri) {
         super(uri);

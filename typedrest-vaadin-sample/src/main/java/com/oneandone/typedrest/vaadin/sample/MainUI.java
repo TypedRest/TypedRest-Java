@@ -24,7 +24,8 @@ public class MainUI extends UI {
         setContent(new HorizontalLayout(
                 new Button("Resources", x -> addWindow(new ResourceCollectionComponent(entrypoint.resources))),
                 new Button("Resources (paged)", x -> addWindow(new PagedResourceCollectionComponent(entrypoint.resourcesPaged))),
-                new Button("Targets", x -> addWindow(new CollectionComponent<>(entrypoint.targets)))
+                new Button("Targets", x -> addWindow(new CollectionComponent<>(entrypoint.targets))),
+                new Button("Events", x -> addWindow(new EventStreamComponent(entrypoint.events)))
         ));
     }
 }
