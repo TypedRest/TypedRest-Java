@@ -5,9 +5,6 @@ import org.springframework.boot.autoconfigure.*;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.web.*;
 
-/**
- *
- */
 @SpringBootApplication
 @EnableAutoConfiguration
 public class SampleApplication extends SpringBootServletInitializer {

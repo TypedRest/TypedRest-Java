@@ -6,12 +6,11 @@ import com.oneandone.typedrest.sample.models.ResourceRevision;
 import com.oneandone.typedrest.vaadin.AbstractCollectionComponent;
 import com.vaadin.ui.Window;
 
-public class ResourceRevisionCollectionComponent extends AbstractCollectionComponent<ResourceRevision, ResourceRevisionCollection, ResourceRevisionElement> {
-    
+public class ResourceRevisionCollectionComponent
+        extends AbstractCollectionComponent<ResourceRevision, ResourceRevisionCollection, ResourceRevisionElement> {
+
     public ResourceRevisionCollectionComponent(ResourceRevisionCollection endpoint) {
         super(endpoint);
-        
-        setCaption("Resource revisions");
     }
 
     @Override

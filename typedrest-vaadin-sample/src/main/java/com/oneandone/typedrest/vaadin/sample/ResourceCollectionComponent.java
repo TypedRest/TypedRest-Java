@@ -6,8 +6,9 @@ import com.oneandone.typedrest.sample.models.Resource;
 import com.oneandone.typedrest.vaadin.AbstractCollectionComponent;
 import com.vaadin.ui.Window;
 
-public class ResourceCollectionComponent extends AbstractCollectionComponent<Resource, ResourceCollection, ResourceElement> {
-    
+public class ResourceCollectionComponent
+        extends AbstractCollectionComponent<Resource, ResourceCollection, ResourceElement> {
+
     public ResourceCollectionComponent(ResourceCollection endpoint) {
         super(endpoint);
     }
