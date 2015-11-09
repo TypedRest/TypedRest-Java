@@ -2,7 +2,7 @@ package com.oneandone.typedrest.vaadin;
 
 import com.oneandone.typedrest.Endpoint;
 import com.vaadin.server.ErrorHandler;
-import com.vaadin.ui.HasComponents;
+import com.vaadin.ui.UI;
 import com.vaadin.ui.Window;
 import java.io.*;
 import javax.naming.OperationNotSupportedException;
@@ -28,30 +28,25 @@ public abstract class AbstractComponent<TEndpoint extends Endpoint>
      */
     protected AbstractComponent(TEndpoint endpoint) {
         this.endpoint = endpoint;
+
+        addAttachListener(x -> refresh());
     }
 
     @Override
     public ErrorHandler getErrorHandler() {
         ErrorHandler handler = super.getErrorHandler();
-        return (handler == null) ? getUI().getErrorHandler() : handler;
-    }
-
-    @Override
-    public void setParent(HasComponents parent) {
-        super.setParent(parent);
-
-        try {
-            onLoad();
-        } catch (IOException | IllegalArgumentException | IllegalAccessException | OperationNotSupportedException | HttpException ex) {
-            getErrorHandler().error(new com.vaadin.server.ErrorEvent(ex));
-            close();
+        if (handler == null) {
+            UI ui = getUI();
+            return (ui == null) ? null : ui.getErrorHandler();
+        } else {
+            return handler;
         }
     }
 
     /**
      * Reloads data from the endpoint.
      */
-    public void refresh() {
+    public final void refresh() {
         try {
             onLoad();
         } catch (IOException | IllegalArgumentException | IllegalAccessException | OperationNotSupportedException | HttpException ex) {

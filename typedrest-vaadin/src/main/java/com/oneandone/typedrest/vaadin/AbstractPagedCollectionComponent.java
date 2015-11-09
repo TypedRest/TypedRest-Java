@@ -46,7 +46,7 @@ public abstract class AbstractPagedCollectionComponent<TEntity, TEndpoint extend
 
             pageRightButton.setEnabled(true);
 
-            reload();
+            refresh();
         });
 
         pageRightButton.addClickListener(clickEvent -> {
@@ -55,7 +55,7 @@ public abstract class AbstractPagedCollectionComponent<TEntity, TEndpoint extend
 
             pageLeftButton.setEnabled(true);
 
-            reload();
+            refresh();
         });
 
         pageLeftButton.setEnabled(false);
@@ -91,17 +91,9 @@ public abstract class AbstractPagedCollectionComponent<TEntity, TEndpoint extend
             pageSize = (long) pageSizeComboBox.getValue();
             currentFrom = 0;
             currentTo = pageSize;
-            reload();
+            refresh();
         });
         return pageSizeComboBox;
-    }
-
-    private void reload() {
-        try {
-            onLoad();
-        } catch (IOException | IllegalArgumentException | IllegalAccessException | OperationNotSupportedException | HttpException e) {
-            getErrorHandler().error(new com.vaadin.server.ErrorEvent(e));
-        }
     }
 
     @Override
