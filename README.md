@@ -2,8 +2,9 @@
 
 TypedRest helps you build type-safe fluent-style JSON REST API clients.
 
-Maven artifact:
-* `com.oneandone.typedrest`
+Maven artifacts:
+* `com.oneandone.typedrest-core`
+* `com.oneandone.typedrest-vaadin`
 
 
 ## Nomenclature
@@ -39,8 +40,8 @@ Include this in your Maven ```pom.xml``` to use the library:
 ```xml
 <dependency>
   <groupId>com.oneandone</groupId>
-  <artifactId>typedrest</artifactId>
-  <version>0.7</version>
+  <artifactId>typedrest-core</artifactId>
+  <version>0.8</version>
 </dependency>
 ```
 
@@ -73,7 +74,7 @@ Include this in your Maven ```pom.xml``` to build GUIs with [Vaadin](https://vaa
 <dependency>
   <groupId>com.oneandone</groupId>
   <artifactId>typedrest-vaadin</artifactId>
-  <version>0.7</version>
+  <version>0.8</version>
 </dependency>
 ```
 

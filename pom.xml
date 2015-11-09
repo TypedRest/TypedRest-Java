@@ -2,17 +2,17 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.oneandone</groupId>
-    <artifactId>typedrest-libs</artifactId>
+    <artifactId>typedrest</artifactId>
     <version>0.8-SNAPSHOT</version>
     <packaging>pom</packaging>
 
-    <name>TypedRest Libraries</name>
+    <name>TypedRest</name>
     <description>Groups all TypedRest libraries as modules.</description>
 
     <modules>
         <module>typedrest-parent</module>
-        <module>typedrest</module>
-        <module>typedrest-sample</module>
+        <module>typedrest-core</module>
+        <module>typedrest-core-sample</module>
         <module>typedrest-vaadin</module>
         <module>typedrest-vaadin-sample</module>
     </modules>

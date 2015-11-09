@@ -6,7 +6,7 @@
     <version>0.8-SNAPSHOT</version>
     <packaging>pom</packaging>
 
-    <name>TypedRest Libraries Parent</name>
+    <name>TypedRest Parent</name>
     <description>Parent POM for configuration shared across TypedRest libraries</description>
     <url>https://github.com/1and1/TypedRest-Java</url>
     <licenses>

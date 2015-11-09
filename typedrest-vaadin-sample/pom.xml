@@ -25,7 +25,7 @@
         </dependency>
         <dependency>
             <groupId>com.oneandone</groupId>
-            <artifactId>typedrest-sample</artifactId>
+            <artifactId>typedrest-core-sample</artifactId>
             <version>${typedrest.version}</version>
         </dependency>
         

@@ -8,15 +8,15 @@
         <relativePath>../typedrest-parent</relativePath>
     </parent>
     <groupId>com.oneandone</groupId>
-    <artifactId>typedrest-sample</artifactId>
+    <artifactId>typedrest-core-sample</artifactId>
 
-    <name>TypedRest Sample</name>
-    <description>Sample project for using the typedrest library</description>
+    <name>TypedRest Core Sample</name>
+    <description>Sample project for using the typedrest-core library</description>
 
     <dependencies>
         <dependency>
             <groupId>com.oneandone</groupId>
-            <artifactId>typedrest</artifactId>
+            <artifactId>typedrest-core</artifactId>
             <version>${typedrest.version}</version>
         </dependency>
     </dependencies>

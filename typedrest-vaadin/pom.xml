@@ -20,7 +20,7 @@
     <dependencies>
         <dependency>
             <groupId>com.oneandone</groupId>
-            <artifactId>typedrest</artifactId>
+            <artifactId>typedrest-core</artifactId>
             <version>${typedrest.version}</version>
         </dependency>
 

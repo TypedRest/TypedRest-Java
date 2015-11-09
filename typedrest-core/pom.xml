@@ -8,9 +8,9 @@
         <relativePath>../typedrest-parent</relativePath>
     </parent>
     <groupId>com.oneandone</groupId>
-    <artifactId>typedrest</artifactId>
+    <artifactId>typedrest-core</artifactId>
 
-    <name>TypedRest</name>
+    <name>TypedRest Core</name>
     <description>TypedRest helps you build type-safe fluent-style REST API clients.</description>
 
     <dependencies>
