@@ -26,13 +26,15 @@ import org.vaadin.dialogs.ConfirmDialog;
 public abstract class AbstractCollectionComponent<TEntity, TEndpoint extends CollectionEndpoint<TEntity, TElementEndpoint>, TElementEndpoint extends ElementEndpoint<TEntity>>
         extends AbstractComponent<TEndpoint> {
 
-    protected final Grid grid = new Grid();
-    private final VerticalLayout masterLayout = new VerticalLayout();
     private final BeanItemContainer<TEntity> container;
-    private final Button createButton = new Button("Create", x -> onCreate());
+    protected final Grid grid = new Grid();
 
+    private final Button createButton = new Button("Create", x -> onCreate());
     @SuppressWarnings("unchecked")
-    private final Button deleteButton = new Button("Delete", x -> onDelete((Collection<TEntity>) grid.getSelectedRows()));
+    protected final Button deleteButton = new Button("Delete", x -> onDelete((Collection<TEntity>) grid.getSelectedRows()));
+    protected final HorizontalLayout buttonsLayout = new HorizontalLayout(createButton, deleteButton);
+
+    protected final VerticalLayout masterLayout = new VerticalLayout(grid, buttonsLayout);
 
     /**
      * Creates a new REST collection component.
@@ -61,11 +63,9 @@ public abstract class AbstractCollectionComponent<TEntity, TEndpoint extends Col
 
         createButton.addStyleName(ValoTheme.BUTTON_FRIENDLY);
         deleteButton.addStyleName(ValoTheme.BUTTON_DANGER);
-        HorizontalLayout buttonsLayout = new HorizontalLayout(createButton, deleteButton);
         buttonsLayout.setMargin(true);
         buttonsLayout.setSpacing(true);
 
-        masterLayout.addComponents(grid, buttonsLayout);
         masterLayout.setComponentAlignment(buttonsLayout, Alignment.MIDDLE_RIGHT);
 
         setContent(masterLayout);

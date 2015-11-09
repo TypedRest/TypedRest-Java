@@ -22,8 +22,8 @@ public abstract class AbstractElementComponent<TEntity, TEndpoint extends Endpoi
 
     protected final BeanItemContainer<TEntity> container;
     protected final Grid grid = new Grid();
-    private final VerticalLayout masterLayout = new VerticalLayout();
-    private final Button saveButton = new Button("Save", x -> {
+
+    protected final Button saveButton = new Button("Save", x -> {
         try {
             onSave();
             close();
@@ -31,7 +31,10 @@ public abstract class AbstractElementComponent<TEntity, TEndpoint extends Endpoi
             getErrorHandler().error(new com.vaadin.server.ErrorEvent(ex));
         }
     });
-    private final Button cancelButton = new Button("Cancel", x -> close());
+    protected final Button cancelButton = new Button("Cancel", x -> close());
+    protected final HorizontalLayout buttonsLayout = new HorizontalLayout(saveButton, cancelButton);
+
+    protected final VerticalLayout masterLayout = new VerticalLayout(grid, buttonsLayout);
 
     /**
      * Creates a new REST element component.
@@ -53,11 +56,9 @@ public abstract class AbstractElementComponent<TEntity, TEndpoint extends Endpoi
 
         saveButton.addStyleName(ValoTheme.BUTTON_FRIENDLY);
         cancelButton.addStyleName(ValoTheme.BUTTON_DANGER);
-        HorizontalLayout buttonsLayout = new HorizontalLayout(saveButton, cancelButton);
         buttonsLayout.setMargin(true);
         buttonsLayout.setSpacing(true);
 
-        masterLayout.addComponents(grid, buttonsLayout);
         masterLayout.setComponentAlignment(buttonsLayout, Alignment.MIDDLE_RIGHT);
 
         setContent(masterLayout);
