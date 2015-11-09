@@ -64,8 +64,13 @@ public abstract class AbstractPagedCollectionEndpoint<TEntity, TElementEndpoint 
         JavaType collectionType = json.getTypeFactory().constructCollectionType(List.class, entityType);
         List<TEntity> elements = json.readValue(EntityUtils.toString(response.getEntity()), collectionType);
 
-        String contentRange = response.getFirstHeader("Content-Range").getValue();
-        String[] split = contentRange.split(" ");
+        Header contentRange = response.getFirstHeader("Content-Range");
+        if (contentRange == null) {
+            // Server provided full instead of partial response
+            return new PartialResponse<>(elements, 0L, null, null);
+        }
+
+        String[] split = contentRange.getValue().split(" ");
         split = split[1].split("/");
         Long contentLength = (split[1].equals("*")) ? null : Long.parseLong(split[1]);
         split = split[0].split("-");
