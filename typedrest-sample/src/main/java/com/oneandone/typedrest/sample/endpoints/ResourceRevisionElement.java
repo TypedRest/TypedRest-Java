@@ -10,17 +10,9 @@ import java.net.*;
 public class ResourceRevisionElement extends ElementEndpointImpl<ResourceRevision> {
 
     /**
-     * Promotes the {@link ResourceRevision} to the next {@link Stage}.
+     * Promotes the {@link ResourceRevision} to the next stage.
      */
     public TriggerEndpoint promote = new TriggerEndpointImpl(this, "promote");
-
-    /**
-     * Promotes the {@link ResourceRevision} to the next {@link Stage}.
-     * Overrides the restriction that {@link ResourceRevision}s can only be
-     * promoted to the next {@link Stage} once they have been tested with
-     * {@link DesiredStateWorkingCopyElement#apply}.
-     */
-    public TriggerEndpoint promoteForce = new TriggerEndpointImpl(this, "promote-force");
 
     /**
      * Represents the blob/file backing the {@link ResourceRevision}.

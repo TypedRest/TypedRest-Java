@@ -19,7 +19,7 @@ public class ResourceElement extends ElementEndpointImpl<Resource> {
      */
     public final StreamEndpointImpl<Event> events = new StreamEndpointImpl<>(this, "events", Event.class);
 
-    public ResourceElement(ResourceCollection parent, URI relativeUri) {
+    public ResourceElement(Endpoint parent, URI relativeUri) {
         super(parent, relativeUri, Resource.class);
     }
 
