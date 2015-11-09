@@ -26,6 +26,7 @@ public class TriggerComponent extends AbstractComponent<TriggerEndpoint> {
         setContent(button = new Button(caption, x -> {
             try {
                 endpoint.trigger();
+                Notification.show(caption, "Successful.", Notification.Type.TRAY_NOTIFICATION);
             } catch (IOException | IllegalArgumentException | IllegalAccessException | OperationNotSupportedException | HttpException ex) {
                 getErrorHandler().error(new com.vaadin.server.ErrorEvent(ex));
             }
