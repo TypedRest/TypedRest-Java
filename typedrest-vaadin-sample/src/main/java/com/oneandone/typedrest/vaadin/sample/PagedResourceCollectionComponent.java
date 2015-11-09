@@ -14,7 +14,7 @@ public class PagedResourceCollectionComponent
 
     @Override
     protected Window buildCreateElementComponent() {
-        return null;
+        return new CreateResourceElementComponent(endpoint);
     }
 
     @Override

@@ -15,9 +15,9 @@ public class ResourceElement extends ElementEndpointImpl<Resource> {
     public final ResourceRevisionCollection revisions = new ResourceRevisionCollection(this);
 
     /**
-     * Exposes all {@link Event}s that relate to this resource.
+     * Exposes all {@link LogEvent}s that relate to this resource.
      */
-    public final StreamEndpointImpl<Event> events = new StreamEndpointImpl<>(this, "events", Event.class);
+    public final StreamEndpointImpl<LogEvent> events = new StreamEndpointImpl<>(this, "events", LogEvent.class);
 
     public ResourceElement(Endpoint parent, URI relativeUri) {
         super(parent, relativeUri, Resource.class);

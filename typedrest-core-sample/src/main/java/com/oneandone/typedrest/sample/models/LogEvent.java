@@ -10,7 +10,7 @@ import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 @Getter
 @Setter
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Event {
+public class LogEvent {
 
     /**
      * Indicates when this event occurred.

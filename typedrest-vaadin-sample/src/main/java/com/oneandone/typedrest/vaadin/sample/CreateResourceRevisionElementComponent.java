@@ -1,14 +1,14 @@
 package com.oneandone.typedrest.vaadin.sample;
 
-import com.oneandone.typedrest.sample.endpoints.ResourceRevisionCollection;
-import com.oneandone.typedrest.sample.endpoints.ResourceRevisionElement;
-import com.oneandone.typedrest.sample.models.ResourceRevision;
-import com.oneandone.typedrest.vaadin.CreateElementComponent;
+import com.oneandone.typedrest.AbstractCollectionEndpoint;
+import com.oneandone.typedrest.sample.endpoints.*;
+import com.oneandone.typedrest.sample.models.*;
+import com.oneandone.typedrest.vaadin.*;
 
 public class CreateResourceRevisionElementComponent
         extends CreateElementComponent<ResourceRevision, ResourceRevisionElement> {
 
-    public CreateResourceRevisionElementComponent(ResourceRevisionCollection endpoint) {
+    public CreateResourceRevisionElementComponent(AbstractCollectionEndpoint<ResourceRevision, ResourceRevisionElement> endpoint) {
         super(endpoint);
     }
 }
