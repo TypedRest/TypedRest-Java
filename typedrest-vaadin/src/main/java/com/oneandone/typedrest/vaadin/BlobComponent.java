@@ -29,6 +29,7 @@ public class BlobComponent extends AbstractComponent<BlobEndpoint> {
      * @param endpoint The REST endpoint this component operates on.
      * @param caption A caption for the blob.
      */
+    @SuppressWarnings("OverridableMethodCallInConstructor")
     public BlobComponent(BlobEndpoint endpoint, String caption) {
         super(endpoint);
         setCaption(caption);
@@ -73,7 +74,6 @@ public class BlobComponent extends AbstractComponent<BlobEndpoint> {
      * @param file the file to upload to the {@link BlobEndpoint}.
      */
     protected void uploadFrom(File file) {
-
         try {
             endpoint.uploadFrom(file);
             onUploadSuccess();
@@ -81,7 +81,6 @@ public class BlobComponent extends AbstractComponent<BlobEndpoint> {
                 OperationNotSupportedException e) {
             getErrorHandler().error(new com.vaadin.server.ErrorEvent(e));
         }
-
     }
 
     /**
