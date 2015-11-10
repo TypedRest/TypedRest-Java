@@ -2,8 +2,7 @@ package com.oneandone.typedrest.vaadin;
 
 import com.oneandone.typedrest.Endpoint;
 import com.vaadin.server.ErrorHandler;
-import com.vaadin.ui.UI;
-import com.vaadin.ui.Window;
+import com.vaadin.ui.*;
 import java.io.*;
 import javax.naming.OperationNotSupportedException;
 import org.apache.http.*;
@@ -14,7 +13,7 @@ import org.apache.http.*;
  * @param <TEndpoint> The specific type of {@link Endpoint} to operate on.
  */
 public abstract class AbstractComponent<TEndpoint extends Endpoint>
-        extends Window {
+        extends CustomComponent {
 
     /**
      * The REST endpoint this component operates on.
@@ -68,5 +67,36 @@ public abstract class AbstractComponent<TEndpoint extends Endpoint>
      */
     protected void onLoad()
             throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, OperationNotSupportedException, HttpException {
+    }
+
+    private Window window;
+
+    /**
+     * Wraps the control in a window.
+     *
+     * @return The newly created window.
+     */
+    public Window asWindow() {
+        if (window != null) {
+            throw new IllegalStateException("Component can only be converted to a window once.");
+        }
+        return window = new Window(getCaption(), this);
+    }
+
+    @Override
+    public void setCaption(String caption) {
+        super.setCaption(caption);
+        if (window != null) {
+            window.setCaption(caption);
+        }
+    }
+
+    /**
+     * Closes the containing window.
+     */
+    public void close() {
+        if (window != null) {
+            window.close();
+        }
     }
 }

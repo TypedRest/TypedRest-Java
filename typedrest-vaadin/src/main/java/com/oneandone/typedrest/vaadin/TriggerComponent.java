@@ -21,9 +21,8 @@ public class TriggerComponent extends AbstractComponent<TriggerEndpoint> {
      */
     public TriggerComponent(TriggerEndpoint endpoint, String caption) {
         super(endpoint);
-        setCaption(caption);
 
-        setContent(button = new Button(caption, x -> {
+        setCompositionRoot(button = new Button(caption, x -> {
             try {
                 endpoint.trigger();
                 Notification.show(caption, "Successful.", Notification.Type.TRAY_NOTIFICATION);

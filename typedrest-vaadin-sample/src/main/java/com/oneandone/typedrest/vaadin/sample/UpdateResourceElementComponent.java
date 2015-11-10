@@ -14,9 +14,9 @@ public class UpdateResourceElementComponent
         super(endpoint);
         this.endpoint = endpoint;
 
-        buttonsLayout.addComponent(new Button("Revisions", x
-                -> getUI().addWindow(new ResourceRevisionCollectionComponent(endpoint.revisions))));
         buttonsLayout.addComponent(new Button("Events", x
-                -> getUI().addWindow(new StreamComponent<>(endpoint.events))));
+                -> getUI().addWindow(new StreamComponent<>(endpoint.events).asWindow())));
+
+        masterLayout.addComponent(new ResourceRevisionCollectionComponent(endpoint.revisions));
     }
 }

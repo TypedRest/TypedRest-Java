@@ -15,11 +15,11 @@ public class ResourceRevisionCollectionComponent
 
     @Override
     protected Window buildCreateElementWindow() {
-        return new CreateResourceRevisionElementComponent(endpoint);
+        return new CreateResourceRevisionElementComponent(endpoint).asWindow();
     }
 
     @Override
     protected Window buildUpdateElementWindow(ResourceRevisionElement elementEndpoint) {
-        return new UpdateResourceRevisionElementComponent(elementEndpoint);
+        return new UpdateResourceRevisionElementComponent(elementEndpoint).asWindow();
     }
 }

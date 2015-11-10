@@ -14,11 +14,11 @@ public class PagedResourceCollectionComponent
 
     @Override
     protected Window buildCreateElementWindow() {
-        return new CreateResourceElementComponent(endpoint);
+        return new CreateResourceElementComponent(endpoint).asWindow();
     }
 
     @Override
     protected Window buildUpdateElementWindow(ResourceElement elementEndpoint) {
-        return new UpdateResourceElementComponent(elementEndpoint);
+        return new UpdateResourceElementComponent(elementEndpoint).asWindow();
     }
 }

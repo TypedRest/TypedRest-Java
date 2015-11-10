@@ -21,11 +21,9 @@ public class MainUI extends UI {
                 URI.create("http://localhost:5893/api"),
                 "root", "abc");
         
-        setContent(new HorizontalLayout(
-                new Button("Test data", x -> addWindow(new TriggerComponent(entrypoint.testData, "Test data"))),
-                new Button("Resources", x -> addWindow(new ResourceCollectionComponent(entrypoint.resources))),
-                new Button("Resources (paged)", x -> addWindow(new PagedResourceCollectionComponent(entrypoint.resourcesPaged))),
-                new Button("Targets", x -> addWindow(new CollectionComponent<>(entrypoint.targets)))
-        ));
+        setContent(new TabSheet(
+                new ResourceCollectionComponent(entrypoint.resources),
+                new PagedResourceCollectionComponent(entrypoint.resourcesPaged),
+                new CollectionComponent<>(entrypoint.targets)));
     }
 }

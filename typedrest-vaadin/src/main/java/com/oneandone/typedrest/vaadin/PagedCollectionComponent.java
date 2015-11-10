@@ -23,11 +23,11 @@ public class PagedCollectionComponent<TEntity>
 
     @Override
     protected Window buildCreateElementWindow() {
-        return new CreateElementComponent<>(endpoint);
+        return new CreateElementComponent<>(endpoint).asWindow();
     }
 
     @Override
     protected Window buildUpdateElementWindow(ElementEndpoint<TEntity> elementEndpoint) {
-        return new UpdateElementComponent<>(elementEndpoint);
+        return new UpdateElementComponent<>(elementEndpoint).asWindow();
     }
 }

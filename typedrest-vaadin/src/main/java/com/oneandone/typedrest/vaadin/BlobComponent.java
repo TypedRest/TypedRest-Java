@@ -49,7 +49,7 @@ public class BlobComponent extends AbstractComponent<BlobEndpoint> {
         downloadButton = new Button("Download");
         downloadButton.addClickListener(clickEvent -> downloadTo(downloadTarget));
 
-        setContent(getLayout());
+        setCompositionRoot(getLayout());
     }
 
     /**

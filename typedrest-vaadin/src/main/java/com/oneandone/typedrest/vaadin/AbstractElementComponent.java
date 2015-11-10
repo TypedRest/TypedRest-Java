@@ -47,6 +47,7 @@ public abstract class AbstractElementComponent<TEntity, TEndpoint extends Endpoi
 
         container = new BeanItemContainer<>(entityType);
         grid.setContainerDataSource(container);
+        grid.setSizeFull();
 
         try {
             handleAnnotatedFields(entityType);
@@ -56,13 +57,20 @@ public abstract class AbstractElementComponent<TEntity, TEndpoint extends Endpoi
 
         saveButton.addStyleName(ValoTheme.BUTTON_FRIENDLY);
         cancelButton.addStyleName(ValoTheme.BUTTON_DANGER);
+        cancelButton.setVisible(false); // Only show in Window mode
         buttonsLayout.setMargin(true);
         buttonsLayout.setSpacing(true);
 
         masterLayout.setComponentAlignment(buttonsLayout, Alignment.MIDDLE_RIGHT);
 
-        setContent(masterLayout);
+        setCompositionRoot(masterLayout);
     }
+
+    @Override
+    public Window asWindow() {
+        cancelButton.setVisible(true);
+        return super.asWindow();
+    }   
 
     /**
      * Hides all fields of {@link TEntity} annotated by {@link Hidden} and sets
