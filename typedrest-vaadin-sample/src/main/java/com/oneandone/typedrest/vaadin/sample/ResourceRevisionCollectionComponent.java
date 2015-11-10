@@ -14,12 +14,12 @@ public class ResourceRevisionCollectionComponent
     }
 
     @Override
-    protected Window buildCreateElementComponent() {
+    protected Window buildCreateElementWindow() {
         return new CreateResourceRevisionElementComponent(endpoint);
     }
 
     @Override
-    protected Window buildUpdateElementComponent(ResourceRevisionElement elementEndpoint) {
+    protected Window buildUpdateElementWindow(ResourceRevisionElement elementEndpoint) {
         return new UpdateResourceRevisionElementComponent(elementEndpoint);
     }
 }

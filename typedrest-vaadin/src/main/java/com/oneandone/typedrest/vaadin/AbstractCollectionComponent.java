@@ -139,18 +139,18 @@ public abstract class AbstractCollectionComponent<TEntity, TEndpoint extends Col
      * Handler for creating a new entity.
      */
     protected void onCreate() {
-        Window elementComponent = buildCreateElementComponent();
-        elementComponent.addCloseListener(x -> refresh());
-        getUI().addWindow(elementComponent);
+        Window elementWindow = buildCreateElementWindow();
+        elementWindow.addCloseListener(x -> refresh());
+        getUI().addWindow(elementWindow);
     }
 
     /**
-     * Creates a sub-{@link Component} creating a new <code>TEntity</code> in
-     * the collection endpoint.
+     * Builds a {@link Window} for creating a new <code>TEntity</code> in the
+     * collection endpoint.
      *
      * @return The new component.
      */
-    protected abstract Window buildCreateElementComponent();
+    protected abstract Window buildCreateElementWindow();
 
     /**
      * Handler for updating an existing entity.
@@ -158,20 +158,20 @@ public abstract class AbstractCollectionComponent<TEntity, TEndpoint extends Col
      * @param entity The entity that was clicked.
      */
     protected void onUpdate(TEntity entity) {
-        Window elementComponent = buildUpdateElementComponent(endpoint.get(entity));
-        elementComponent.addCloseListener(x -> refresh());
-        getUI().addWindow(elementComponent);
+        Window elementWindow = buildUpdateElementWindow(endpoint.get(entity));
+        elementWindow.addCloseListener(x -> refresh());
+        getUI().addWindow(elementWindow);
     }
 
     /**
-     * Creates a sub-{@link Component} for editing an existing
-     * <code>TEntity</code> represented by the given element endpoint.
+     * Builds a {@link Window} for editing an existing <code>TEntity</code>
+     * represented by the given element endpoint.
      *
      * @param elementEndpoint The endpoint representing the entity to be
      * updated.
      * @return The new component.
      */
-    protected abstract Window buildUpdateElementComponent(TElementEndpoint elementEndpoint);
+    protected abstract Window buildUpdateElementWindow(TElementEndpoint elementEndpoint);
 
     /**
      * Handler for deleting a set of existing entities.

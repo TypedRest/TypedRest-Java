@@ -25,12 +25,12 @@ public class StreamComponent<TEntity>
     }
 
     @Override
-    protected Window buildCreateElementComponent() {
+    protected Window buildCreateElementWindow() {
         return new CreateElementComponent<>(endpoint);
     }
 
     @Override
-    protected Window buildUpdateElementComponent(ElementEndpoint<TEntity> elementEndpoint) {
+    protected Window buildUpdateElementWindow(ElementEndpoint<TEntity> elementEndpoint) {
         return new UpdateElementComponent<>(elementEndpoint);
     }
 }

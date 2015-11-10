@@ -14,12 +14,12 @@ public class ResourceCollectionComponent
     }
 
     @Override
-    protected Window buildCreateElementComponent() {
+    protected Window buildCreateElementWindow() {
         return new CreateResourceElementComponent(endpoint);
     }
 
     @Override
-    protected Window buildUpdateElementComponent(ResourceElement elementEndpoint) {
+    protected Window buildUpdateElementWindow(ResourceElement elementEndpoint) {
         return new UpdateResourceElementComponent(elementEndpoint);
     }
 }
