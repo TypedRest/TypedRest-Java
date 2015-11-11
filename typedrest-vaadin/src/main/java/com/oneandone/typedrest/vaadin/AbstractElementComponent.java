@@ -42,7 +42,7 @@ public abstract class AbstractElementComponent<TEntity, TEndpoint extends Endpoi
         super(endpoint);
 
         this.editor = editor;
-        
+
         saveButton.addStyleName(ValoTheme.BUTTON_FRIENDLY);
         cancelButton.addStyleName(ValoTheme.BUTTON_DANGER);
         cancelButton.setVisible(false); // Only show in Window mode
@@ -51,6 +51,9 @@ public abstract class AbstractElementComponent<TEntity, TEndpoint extends Endpoi
 
         masterLayout = new VerticalLayout(editor, buttonsLayout);
         masterLayout.setComponentAlignment(buttonsLayout, Alignment.MIDDLE_RIGHT);
+        masterLayout.setMargin(true);
+        masterLayout.setSpacing(true);
+
         setCompositionRoot(masterLayout);
     }
 

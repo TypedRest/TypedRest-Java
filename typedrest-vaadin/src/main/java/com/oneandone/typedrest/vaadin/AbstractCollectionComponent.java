@@ -54,7 +54,7 @@ public abstract class AbstractCollectionComponent<TEntity, TEndpoint extends Col
                 onUpdate((TEntity) x.getItemId());
             }
         });
-        grid.setSizeFull();
+        grid.setWidth(100, Unit.PERCENTAGE);
 
         try {
             handleAnnotatedFields(endpoint.getEntityType());
@@ -68,6 +68,8 @@ public abstract class AbstractCollectionComponent<TEntity, TEndpoint extends Col
         buttonsLayout.setSpacing(true);
 
         masterLayout.setComponentAlignment(buttonsLayout, Alignment.MIDDLE_RIGHT);
+        masterLayout.setMargin(true);
+        masterLayout.setSpacing(true);
 
         setCompositionRoot(masterLayout);
     }

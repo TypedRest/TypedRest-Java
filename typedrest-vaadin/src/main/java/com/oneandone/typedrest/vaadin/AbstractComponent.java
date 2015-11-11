@@ -80,7 +80,12 @@ public abstract class AbstractComponent<TEndpoint extends Endpoint>
         if (window != null) {
             throw new IllegalStateException("Component can only be converted to a window once.");
         }
-        return window = new Window(getCaption(), this);
+
+        window = new Window(getCaption(), this);
+        window.setWidth(80, Unit.PERCENTAGE);
+        window.setHeight(80, Unit.PERCENTAGE);
+        window.center();
+        return window;
     }
 
     @Override
