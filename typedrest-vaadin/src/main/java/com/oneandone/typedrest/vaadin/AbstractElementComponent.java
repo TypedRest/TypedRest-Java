@@ -1,13 +1,10 @@
 package com.oneandone.typedrest.vaadin;
 
 import com.oneandone.typedrest.*;
-import com.oneandone.typedrest.vaadin.annotations.*;
-import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 import javax.naming.OperationNotSupportedException;
 import org.apache.http.*;
 
@@ -20,8 +17,7 @@ import org.apache.http.*;
 public abstract class AbstractElementComponent<TEntity, TEndpoint extends Endpoint>
         extends AbstractComponent<TEndpoint> {
 
-    protected final BeanItemContainer<TEntity> container;
-    protected final Grid grid = new Grid();
+    protected final EntityEditor<TEntity> editor;
 
     protected final Button saveButton = new Button("Save", x -> {
         try {
@@ -34,35 +30,27 @@ public abstract class AbstractElementComponent<TEntity, TEndpoint extends Endpoi
     protected final Button cancelButton = new Button("Cancel", x -> close());
     protected final HorizontalLayout buttonsLayout = new HorizontalLayout(saveButton, cancelButton);
 
-    protected final VerticalLayout masterLayout = new VerticalLayout(grid, buttonsLayout);
+    protected final VerticalLayout masterLayout;
 
     /**
      * Creates a new REST element component.
      *
      * @param endpoint The REST endpoint this component operates on.
-     * @param entityType The type of entity the component represents.
+     * @param editor An editor component for modifying entity instances.
      */
-    protected AbstractElementComponent(TEndpoint endpoint, Class<TEntity> entityType) {
+    protected AbstractElementComponent(TEndpoint endpoint, EntityEditor<TEntity> editor) {
         super(endpoint);
 
-        container = new BeanItemContainer<>(entityType);
-        grid.setContainerDataSource(container);
-        grid.setSizeFull();
-
-        try {
-            handleAnnotatedFields(entityType);
-        } catch (NoSuchMethodException | IllegalAccessException | InstantiationException | InvocationTargetException e) {
-            getErrorHandler().error(new com.vaadin.server.ErrorEvent(e));
-        }
-
+        this.editor = editor;
+        
         saveButton.addStyleName(ValoTheme.BUTTON_FRIENDLY);
         cancelButton.addStyleName(ValoTheme.BUTTON_DANGER);
         cancelButton.setVisible(false); // Only show in Window mode
         buttonsLayout.setMargin(true);
         buttonsLayout.setSpacing(true);
 
+        masterLayout = new VerticalLayout(editor, buttonsLayout);
         masterLayout.setComponentAlignment(buttonsLayout, Alignment.MIDDLE_RIGHT);
-
         setCompositionRoot(masterLayout);
     }
 
@@ -70,34 +58,6 @@ public abstract class AbstractElementComponent<TEntity, TEndpoint extends Endpoi
     public Window asWindow() {
         cancelButton.setVisible(true);
         return super.asWindow();
-    }   
-
-    /**
-     * Hides all fields of {@link TEntity} annotated by {@link Hidden} and sets
-     * {@link com.vaadin.ui.renderers.Renderer} for all fields, annotated by
-     * {@link Renderer}.
-     *
-     * @param entityType the type of {@link TEntity}.
-     */
-    private void handleAnnotatedFields(Class<TEntity> entityType)
-            throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
-
-        for (java.lang.reflect.Field field : entityType.getDeclaredFields()) {
-
-            Grid.Column column = grid.getColumn(field.getName());
-            if (column == null) {
-                continue;
-            }
-
-            if (field.getAnnotationsByType(Hidden.class).length > 0) {
-                grid.removeColumn(field.getName());
-            } else {
-                Renderer[] rendererAnnotations = field.getAnnotationsByType(Renderer.class);
-                if (rendererAnnotations.length > 0) {
-                    column.setRenderer(rendererAnnotations[0].rendererClass().getConstructor().newInstance());
-                }
-            }
-        }
     }
 
     /**

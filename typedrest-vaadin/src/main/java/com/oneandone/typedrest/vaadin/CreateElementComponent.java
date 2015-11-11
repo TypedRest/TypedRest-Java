@@ -22,28 +22,31 @@ public class CreateElementComponent<TEntity, TElementEndpoint extends ElementEnd
      * Creates a new REST element creation component.
      *
      * @param endpoint The REST endpoint this component operates on.
+     * @param editor An editor component for creating entity instances.
      */
-    public CreateElementComponent(CollectionEndpoint<TEntity, TElementEndpoint> endpoint) {
-        super(endpoint, endpoint.getEntityType());
+    public CreateElementComponent(CollectionEndpoint<TEntity, TElementEndpoint> endpoint, EntityEditor<TEntity> editor) {
+        super(endpoint, editor);
         setCaption("New " + endpoint.getEntityType().getSimpleName());
-        grid.setEditorEnabled(true);
 
-        createEmptyEntity();
-    }
-
-    @SuppressWarnings("unchecked")
-    private void createEmptyEntity() {
         try {
-            container.addBean((TEntity) endpoint.getEntityType().getConstructor().newInstance());
-        } catch (NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
+            editor.setEntity((TEntity) endpoint.getEntityType().getConstructor().newInstance());
+        } catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException ex) {
             throw new RuntimeException(ex);
         }
+    }
+
+    /**
+     * Creates a new REST element creation component.
+     *
+     * @param endpoint The REST endpoint this component operates on.
+     */
+    public CreateElementComponent(CollectionEndpoint<TEntity, TElementEndpoint> endpoint) {
+        this(endpoint, new DefaultEntityEditor<>(endpoint.getEntityType()));
     }
 
     @Override
     protected void onSave()
             throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, OperationNotSupportedException, HttpException {
-        TEntity entity = container.getIdByIndex(0);
-        endpoint.create(entity);
+        endpoint.create(editor.getEntity());
     }
 }
