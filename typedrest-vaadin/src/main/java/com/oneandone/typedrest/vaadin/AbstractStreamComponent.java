@@ -24,7 +24,6 @@ import rx.*;
 public abstract class AbstractStreamComponent<TEntity, TEndpoint extends StreamEndpoint<TEntity, TElementEndpoint>, TElementEndpoint extends ElementEndpoint<TEntity>>
         extends AbstractCollectionComponent<TEntity, TEndpoint, TElementEndpoint> {
 
-    protected Observer<TEntity> observer = new EntityObserver();
     protected Observable<TEntity> observable;
     protected Subscription currentSubscription;
 
@@ -53,8 +52,7 @@ public abstract class AbstractStreamComponent<TEntity, TEndpoint extends StreamE
 
     @Override
     protected void onLoad() throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, OperationNotSupportedException, HttpException {
-        observable = endpoint.getObservable();
-        observable.subscribe(observer);
+        setObserver(new EntityObserver(UI.getCurrent()));
     }
 
     /**
@@ -73,32 +71,42 @@ public abstract class AbstractStreamComponent<TEntity, TEndpoint extends StreamE
      * incoming.
      */
     public void setObserver(Observer<TEntity> observer) {
-        this.observer = observer;
         if (currentSubscription != null && !currentSubscription.isUnsubscribed()) {
             currentSubscription.unsubscribe();
         }
-        if (observable != null) {
-            observable.subscribe(observer);
-        }
+
+        endpoint.getObservable().subscribe(observer);
     }
 
     private final class EntityObserver implements Observer<TEntity> {
 
+        private final UI ui;
+
+        public EntityObserver(UI ui) {
+            this.ui = ui;
+        }
+
         @Override
         public void onCompleted() {
-            Notification.show("Done", "No more Data available.", Notification.Type.TRAY_NOTIFICATION);
+            ui.access(() -> {
+                Notification.show("Done", "No more Data available.", Notification.Type.TRAY_NOTIFICATION);
+                ui.push();
+            });
         }
 
         @Override
-        public void onError(Throwable throwable) {
-            getErrorHandler().error(new com.vaadin.server.ErrorEvent(throwable));
+        public void onError(final Throwable throwable) {
+            ui.access(() -> {
+                ui.getErrorHandler().error(new com.vaadin.server.ErrorEvent(throwable));
+                ui.push();
+            });
         }
 
         @Override
-        public void onNext(TEntity entity) {
-            UI.getCurrent().access(() -> {
+        public void onNext(final TEntity entity) {
+            ui.access(() -> {
                 lister.addEntity(entity);
-                UI.getCurrent().push();
+                ui.push();
             });
         }
     }

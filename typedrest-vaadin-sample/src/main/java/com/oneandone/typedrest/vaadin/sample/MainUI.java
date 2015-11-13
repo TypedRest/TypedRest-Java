@@ -2,6 +2,7 @@ package com.oneandone.typedrest.vaadin.sample;
 
 import com.oneandone.typedrest.sample.endpoints.*;
 import com.oneandone.typedrest.vaadin.*;
+import com.vaadin.annotations.Push;
 import com.vaadin.annotations.Theme;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.spring.annotation.SpringUI;
@@ -11,6 +12,7 @@ import java.net.URI;
 
 @SpringUI(path = "")
 @Theme("valo")
+@Push
 public class MainUI extends UI {
 
     @Override
