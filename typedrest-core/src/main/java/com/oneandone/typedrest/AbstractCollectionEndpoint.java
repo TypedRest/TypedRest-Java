@@ -1,25 +1,17 @@
 package com.oneandone.typedrest;
 
-import lombok.Getter;
-import org.apache.http.Header;
-import org.apache.http.HttpException;
-import org.apache.http.HttpResponse;
+import com.fasterxml.jackson.databind.JavaType;
+import org.apache.http.*;
 import org.apache.http.client.fluent.Request;
 import org.apache.http.entity.ContentType;
 import org.apache.http.util.EntityUtils;
-import org.codehaus.jackson.type.JavaType;
-
 import javax.naming.OperationNotSupportedException;
 import javax.persistence.Id;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
+import java.io.*;
+import java.lang.reflect.*;
 import java.net.URI;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import lombok.Getter;
 
 import static com.oneandone.typedrest.URIUtils.ensureTrailingSlash;
 

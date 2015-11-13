@@ -1,8 +1,8 @@
 package com.oneandone.typedrest.sample.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.time.LocalDateTime;
 import lombok.*;
-import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 
 /**
  * A single log event.

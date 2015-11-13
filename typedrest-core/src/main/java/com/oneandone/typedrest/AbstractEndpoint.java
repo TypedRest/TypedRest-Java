@@ -1,5 +1,7 @@
 package com.oneandone.typedrest;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import static com.oneandone.typedrest.URIUtils.*;
 import java.io.*;
 import java.net.*;
@@ -9,8 +11,6 @@ import org.apache.http.*;
 import org.apache.http.client.fluent.*;
 import org.apache.http.entity.ContentType;
 import org.apache.http.util.*;
-import org.codehaus.jackson.map.*;
-import org.codehaus.jackson.map.annotate.JsonSerialize;
 
 /**
  * Base class for building REST endpoints, i.e. remote HTTP resources.
@@ -25,7 +25,8 @@ public abstract class AbstractEndpoint
     protected final Executor rest;
 
     protected final ObjectMapper json = new ObjectMapper()
-            .setSerializationInclusion(JsonSerialize.Inclusion.NON_NULL);
+            .setSerializationInclusion(JsonInclude.Include.NON_NULL)
+            .findAndRegisterModules();
 
     /**
      * Creates a new REST endpoint with an absolute URI.
@@ -75,7 +76,8 @@ public abstract class AbstractEndpoint
      * @throws FileNotFoundException {@link HttpStatus#SC_NOT_FOUND} or
      * {@link HttpStatus#SC_GONE}
      * @throws OperationNotSupportedException {@link HttpStatus#SC_CONFLICT}
-     * @throws IllegalStateException {@link HttpStatus#SC_REQUESTED_RANGE_NOT_SATISFIABLE}
+     * @throws IllegalStateException
+     * {@link HttpStatus#SC_REQUESTED_RANGE_NOT_SATISFIABLE}
      * @throws HttpException Other non-success status code.
      */
     protected HttpResponse execute(Request request)

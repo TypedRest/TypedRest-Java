@@ -1,7 +1,7 @@
 package com.oneandone.typedrest.sample.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
-import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 
 /**
  * A resource that can be deployed to a specific target.

@@ -1,5 +1,6 @@
 package com.oneandone.typedrest;
 
+import com.fasterxml.jackson.databind.JavaType;
 import java.io.*;
 import java.net.*;
 import java.util.*;
@@ -7,7 +8,6 @@ import javax.naming.OperationNotSupportedException;
 import org.apache.http.*;
 import org.apache.http.client.fluent.*;
 import org.apache.http.util.*;
-import org.codehaus.jackson.type.*;
 
 /**
  * Base class for building REST endpoints that represents a collection of
