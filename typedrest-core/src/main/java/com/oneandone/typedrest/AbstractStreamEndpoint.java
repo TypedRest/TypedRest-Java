@@ -2,7 +2,6 @@ package com.oneandone.typedrest;
 
 import java.net.*;
 import rx.*;
-import rx.functions.Action2;
 import rx.schedulers.Schedulers;
 import static rx.util.async.Async.runAsync;
 
@@ -62,37 +61,31 @@ public abstract class AbstractStreamEndpoint<TEntity, TElementEndpoint extends E
      * @return An observable stream of elements.
      */
     rx.Observable<TEntity> getObservable(final long startIndex, Scheduler scheduler) {
-        return runAsync(scheduler, new Action2<rx.Observer<? super TEntity>, Subscription>() {
-
-            @Override
-            public void call(rx.Observer<? super TEntity> observer, Subscription subscription) {
-                long currentStartIndex = startIndex;
-                while (!subscription.isUnsubscribed()) {
-                    PartialResponse<TEntity> response;
-                    try {
-                        response = (currentStartIndex >= 0)
-                                ? readRange(currentStartIndex, null)
-                                : readRange(null, -currentStartIndex);
-                    } catch (IndexOutOfBoundsException ex) {
-                        // No new data available yet, keep polling
-                        continue;
-                    } catch (Throwable error) {
-                        observer.onError(error);
-                        return;
-                    }
-
-                    for (TEntity entity : response.getElements()) {
-                        observer.onNext(entity);
-                    }
-
-                    if (response.isEndReached()) {
-                        observer.onCompleted();
-                        return;
-                    }
-
-                    // Continue polling for more data
-                    currentStartIndex = response.getTo() + 1;
+        return runAsync(scheduler, (rx.Observer<? super TEntity> observer, Subscription subscription) -> {
+            long currentStartIndex = startIndex;
+            while (!subscription.isUnsubscribed()) {
+                PartialResponse<TEntity> response;
+                try {
+                    response = (currentStartIndex >= 0)
+                            ? readRange(currentStartIndex, null)
+                            : readRange(null, -currentStartIndex);
+                } catch (IndexOutOfBoundsException ex) {
+                    // No new data available yet, keep polling
+                    continue;
+                } catch (Throwable error) {
+                    observer.onError(error);
+                    return;
                 }
+
+                response.getElements().stream().forEach(observer::onNext);
+
+                if (response.isEndReached()) {
+                    observer.onCompleted();
+                    return;
+                }
+
+                // Continue polling for more data
+                currentStartIndex = response.getTo() + 1;
             }
         });
     }
