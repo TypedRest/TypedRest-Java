@@ -113,7 +113,7 @@ public class PagedCollectionEndpointTest extends AbstractEndpointTest {
         String exceptionMessage = null;
         try {
             endpoint.readRange(5l, 10l);
-        } catch (IndexOutOfBoundsException ex) {
+        } catch (IllegalStateException ex) {
             exceptionMessage = ex.getMessage();
         }
 

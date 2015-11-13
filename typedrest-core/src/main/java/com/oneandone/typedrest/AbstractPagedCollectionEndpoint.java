@@ -54,7 +54,7 @@ public abstract class AbstractPagedCollectionEndpoint<TEntity, TElementEndpoint 
 
     @Override
     public PartialResponse<TEntity> readRange(Long from, Long to)
-            throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, OperationNotSupportedException, IndexOutOfBoundsException, HttpException {
+            throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, OperationNotSupportedException, IllegalStateException, HttpException {
         String range = RANGE_UNIT + "="
                 + (from == null ? "" : from.toString()) + "-"
                 + (to == null ? "" : to.toString());

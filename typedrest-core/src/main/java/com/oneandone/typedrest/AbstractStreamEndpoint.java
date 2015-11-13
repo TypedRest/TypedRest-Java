@@ -69,7 +69,7 @@ public abstract class AbstractStreamEndpoint<TEntity, TElementEndpoint extends E
                     response = (currentStartIndex >= 0)
                             ? readRange(currentStartIndex, null)
                             : readRange(null, -currentStartIndex);
-                } catch (IndexOutOfBoundsException ex) {
+                } catch (IllegalStateException ex) {
                     // No new data available yet, keep polling
                     continue;
                 } catch (Throwable error) {
