@@ -13,7 +13,17 @@ public class PagedCollectionComponent<TEntity>
         extends AbstractPagedCollectionComponent<TEntity, PagedCollectionEndpointImpl<TEntity>, ElementEndpoint<TEntity>> {
 
     /**
-     * Creates a new REST collection component.
+     * Creates a new REST paged collection component.
+     *
+     * @param endpoint The REST endpoint this component operates on.
+     * @param lister A component for listing entity instances.
+     */
+    public PagedCollectionComponent(PagedCollectionEndpointImpl<TEntity> endpoint, EntityLister<TEntity> lister) {
+        super(endpoint, lister);
+    }
+
+    /**
+     * Creates a new REST paged collection component.
      *
      * @param endpoint The REST endpoint this component operates on.
      */

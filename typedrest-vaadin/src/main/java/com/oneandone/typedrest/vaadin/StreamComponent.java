@@ -13,7 +13,17 @@ public class StreamComponent<TEntity>
         extends AbstractStreamComponent<TEntity, StreamEndpointImpl<TEntity>, ElementEndpoint<TEntity>> {
 
     /**
-     * Creates a new REST collection component.
+     * Creates a new REST stream component.
+     *
+     * @param endpoint The REST endpoint this component operates on.
+     * @param lister A component for listing entity instances.
+     */
+    public StreamComponent(StreamEndpointImpl<TEntity> endpoint, EntityLister<TEntity> lister) {
+        super(endpoint, lister);
+    }
+
+    /**
+     * Creates a new REST stream component.
      *
      * @param endpoint The REST endpoint this component operates on.
      */

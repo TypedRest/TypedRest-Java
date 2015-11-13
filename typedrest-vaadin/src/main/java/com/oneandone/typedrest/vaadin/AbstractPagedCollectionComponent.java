@@ -22,8 +22,8 @@ import org.apache.http.HttpException;
 public abstract class AbstractPagedCollectionComponent<TEntity, TEndpoint extends PagedCollectionEndpoint<TEntity, TElementEndpoint>, TElementEndpoint extends ElementEndpoint<TEntity>>
         extends AbstractCollectionComponent<TEntity, TEndpoint, TElementEndpoint> {
 
-    private final Button pageLeftButton;
-    private final Button pageRightButton;
+    private final Button pageLeftButton = new Button("<");
+    private final Button pageRightButton = new Button(">");
 
     private long pageSize = 5;
     private long currentFrom = 0;
@@ -33,12 +33,10 @@ public abstract class AbstractPagedCollectionComponent<TEntity, TEndpoint extend
      * Creates a new REST paged collection component.
      *
      * @param endpoint The REST endpoint this component operates on.
+     * @param lister A component for listing entity instances.
      */
-    public AbstractPagedCollectionComponent(TEndpoint endpoint) {
-        super(endpoint);
-        pageLeftButton = new Button("<");
-        pageRightButton = new Button(">");
-
+    protected AbstractPagedCollectionComponent(TEndpoint endpoint, EntityLister<TEntity> lister) {
+        super(endpoint, lister);
         pageLeftButton.addClickListener(clickEvent -> {
             currentTo = currentFrom;
             long diff = currentFrom - pageSize;
@@ -70,12 +68,17 @@ public abstract class AbstractPagedCollectionComponent<TEntity, TEndpoint extend
         pagingButtonsLayout.setComponentAlignment(pageSizeComboBox, Alignment.MIDDLE_CENTER);
         pagingButtonsLayout.setComponentAlignment(pageRightButton, Alignment.MIDDLE_RIGHT);
         pagingButtonsLayout.setMargin(new MarginInfo(true, false, false, false));
-        pagingButtonsLayout.setWidth("100%");
+        pagingButtonsLayout.setWidth(100, Unit.PERCENTAGE);
+        masterLayout.addComponent(pagingButtonsLayout, masterLayout.getComponentIndex(lister));
+    }
 
-        if (grid.getParent() instanceof AbstractOrderedLayout) {
-            int index = ((AbstractOrderedLayout) grid.getParent()).getComponentIndex(grid);
-            ((AbstractOrderedLayout) grid.getParent()).addComponent(pagingButtonsLayout, index);
-        }
+    /**
+     * Creates a new REST paged collection component.
+     *
+     * @param endpoint The REST endpoint this component operates on.
+     */
+    protected AbstractPagedCollectionComponent(TEndpoint endpoint) {
+        this(endpoint, new DefaultEntityLister<>(endpoint.getEntityType()));
     }
 
     private ComboBox pageSizeComboBox() {
@@ -99,9 +102,6 @@ public abstract class AbstractPagedCollectionComponent<TEntity, TEndpoint extend
     @Override
     protected void onLoad()
             throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, OperationNotSupportedException, HttpException {
-
-        grid.getContainerDataSource().removeAllItems();
-
         PartialResponse<TEntity> response = endpoint.readRange(currentFrom, currentTo);
 
         if (response.isEndReached()) {
@@ -113,6 +113,6 @@ public abstract class AbstractPagedCollectionComponent<TEntity, TEndpoint extend
             currentFrom = 0;
         }
 
-        response.getElements().forEach(grid.getContainerDataSource()::addItem);
+        lister.setEntities(response.getElements());
     }
 }

@@ -1,13 +1,10 @@
 package com.oneandone.typedrest.vaadin;
 
 import com.oneandone.typedrest.*;
-import com.oneandone.typedrest.vaadin.annotations.*;
-import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 import java.util.Collection;
 import javax.naming.OperationNotSupportedException;
 import org.apache.http.HttpException;
@@ -26,52 +23,49 @@ import org.vaadin.dialogs.ConfirmDialog;
 public abstract class AbstractCollectionComponent<TEntity, TEndpoint extends CollectionEndpoint<TEntity, TElementEndpoint>, TElementEndpoint extends ElementEndpoint<TEntity>>
         extends AbstractComponent<TEndpoint> {
 
-    private final BeanItemContainer<TEntity> container;
-    protected final Grid grid = new Grid();
+    protected final EntityLister<TEntity> lister;
 
     private final Button createButton = new Button("Create", x -> onCreate());
-    @SuppressWarnings("unchecked")
-    protected final Button deleteButton = new Button("Delete", x -> onDelete((Collection<TEntity>) grid.getSelectedRows()));
+    protected final Button deleteButton = new Button("Delete", x -> onDelete());
     protected final HorizontalLayout buttonsLayout = new HorizontalLayout(createButton, deleteButton);
 
-    protected final VerticalLayout masterLayout = new VerticalLayout(grid, buttonsLayout);
+    protected final VerticalLayout masterLayout;
 
     /**
      * Creates a new REST collection component.
      *
      * @param endpoint The REST endpoint this component operates on.
+     * @param lister A component for listing entity instances.
      */
-    @SuppressWarnings({"unchecked", "OverridableMethodCallInConstructor"})
-    protected AbstractCollectionComponent(TEndpoint endpoint) {
+    @SuppressWarnings("OverridableMethodCallInConstructor")
+    protected AbstractCollectionComponent(TEndpoint endpoint, EntityLister<TEntity> lister) {
         super(endpoint);
         setCaption(endpoint.getEntityType().getSimpleName() + "s");
 
-        container = new BeanItemContainer<>(endpoint.getEntityType());
-        grid.setContainerDataSource(container);
-        grid.setSelectionMode(Grid.SelectionMode.MULTI);
-        grid.addItemClickListener(x -> {
+        this.lister = lister;
+        lister.addEntityClickListener(x -> {
             if (updateEnabled) {
-                onUpdate((TEntity) x.getItemId());
+                onUpdate(x);
             }
         });
-        grid.setWidth(100, Unit.PERCENTAGE);
-
-        try {
-            handleAnnotatedFields(endpoint.getEntityType());
-        } catch (NoSuchMethodException | IllegalAccessException | InstantiationException | InvocationTargetException e) {
-            getErrorHandler().error(new com.vaadin.server.ErrorEvent(e));
-        }
 
         createButton.addStyleName(ValoTheme.BUTTON_FRIENDLY);
         deleteButton.addStyleName(ValoTheme.BUTTON_DANGER);
         buttonsLayout.setMargin(true);
         buttonsLayout.setSpacing(true);
 
+        masterLayout = new VerticalLayout(lister, buttonsLayout);
         masterLayout.setComponentAlignment(buttonsLayout, Alignment.MIDDLE_RIGHT);
-        masterLayout.setMargin(true);
-        masterLayout.setSpacing(true);
-
         setCompositionRoot(masterLayout);
+    }
+
+    /**
+     * Creates a new REST collection component.
+     *
+     * @param endpoint The REST endpoint this component operates on.
+     */
+    protected AbstractCollectionComponent(TEndpoint endpoint) {
+        this(endpoint, new DefaultEntityLister<>(endpoint.getEntityType()));
     }
 
     /**
@@ -103,39 +97,10 @@ public abstract class AbstractCollectionComponent<TEntity, TEndpoint extends Col
         updateEnabled = val;
     }
 
-    /**
-     * Hides all fields of {@link TEntity} annotated by {@link Hidden} and sets
-     * {@link com.vaadin.ui.renderers.Renderer} for all fields, annotated by
-     * {@link Renderer}.
-     *
-     * @param entityType the type of {@link TEntity}.
-     */
-    private void handleAnnotatedFields(Class<TEntity> entityType)
-            throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
-
-        for (java.lang.reflect.Field field : entityType.getDeclaredFields()) {
-
-            Grid.Column column = grid.getColumn(field.getName());
-            if (column == null) {
-                continue;
-            }
-
-            if (field.getAnnotationsByType(Hidden.class).length > 0) {
-                grid.removeColumn(field.getName());
-            } else {
-                Renderer[] rendererAnnotations = field.getAnnotationsByType(Renderer.class);
-                if (rendererAnnotations.length > 0) {
-                    column.setRenderer(rendererAnnotations[0].rendererClass().getConstructor().newInstance());
-                }
-            }
-        }
-    }
-
     @Override
     protected void onLoad()
             throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, OperationNotSupportedException, HttpException {
-        container.removeAllItems();
-        container.addAll(endpoint.readAll());
+        lister.setEntities(endpoint.readAll());
     }
 
     /**
@@ -177,11 +142,11 @@ public abstract class AbstractCollectionComponent<TEntity, TEndpoint extends Col
     protected abstract Window buildUpdateElementWindow(TElementEndpoint elementEndpoint);
 
     /**
-     * Handler for deleting a set of existing entities.
-     *
-     * @param entities The entities to delete.
+     * Handler for deleting all selected entities.
      */
-    protected void onDelete(final Collection<TEntity> entities) {
+    protected void onDelete() {
+        Collection<TEntity> entities = lister.getSelectedEntities();
+
         String message = "Are you sure you want to delete the following elements?"
                 + entities.stream().map(x -> "\n" + x.toString()).collect(StringBuilder::new, StringBuilder::append, StringBuilder::append).toString();
         ConfirmDialog.show(getUI(), message, (ConfirmDialog cd) -> {

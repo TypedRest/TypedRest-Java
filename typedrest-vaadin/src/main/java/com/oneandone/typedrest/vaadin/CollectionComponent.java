@@ -16,6 +16,16 @@ public class CollectionComponent<TEntity>
      * Creates a new REST collection component.
      *
      * @param endpoint The REST endpoint this component operates on.
+     * @param lister A component for listing entity instances.
+     */
+    public CollectionComponent(CollectionEndpointImpl<TEntity> endpoint, EntityLister<TEntity> lister) {
+        super(endpoint, lister);
+    }
+
+    /**
+     * Creates a new REST collection component.
+     *
+     * @param endpoint The REST endpoint this component operates on.
      */
     public CollectionComponent(CollectionEndpointImpl<TEntity> endpoint) {
         super(endpoint);

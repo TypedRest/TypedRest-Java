@@ -24,7 +24,7 @@ import rx.*;
 public abstract class AbstractStreamComponent<TEntity, TEndpoint extends StreamEndpoint<TEntity, TElementEndpoint>, TElementEndpoint extends ElementEndpoint<TEntity>>
         extends AbstractCollectionComponent<TEntity, TEndpoint, TElementEndpoint> {
 
-    protected Observer<TEntity> observer = new EntityObserver<>();
+    protected Observer<TEntity> observer = new EntityObserver();
     protected Observable<TEntity> observable;
     protected Subscription currentSubscription;
 
@@ -32,12 +32,23 @@ public abstract class AbstractStreamComponent<TEntity, TEndpoint extends StreamE
      * Creates a new REST stream component.
      *
      * @param endpoint The REST endpoint this component operates on.
+     * @param lister A component for listing entity instances.
      */
-    public AbstractStreamComponent(TEndpoint endpoint) {
-        super(endpoint);
+    protected AbstractStreamComponent(TEndpoint endpoint, EntityLister<TEntity> lister) {
+        super(endpoint, lister);
+
         setUpdateEnabled(false);
         setCreateEnabled(false);
         setDeleteEnabled(false);
+    }
+
+    /**
+     * Creates a new REST stream component.
+     *
+     * @param endpoint The REST endpoint this component operates on.
+     */
+    protected AbstractStreamComponent(TEndpoint endpoint) {
+        this(endpoint, new DefaultEntityLister<>(endpoint.getEntityType()));
     }
 
     @Override
@@ -71,7 +82,7 @@ public abstract class AbstractStreamComponent<TEntity, TEndpoint extends StreamE
         }
     }
 
-    private class EntityObserver<T> implements Observer<T> {
+    private final class EntityObserver implements Observer<TEntity> {
 
         @Override
         public void onCompleted() {
@@ -84,9 +95,9 @@ public abstract class AbstractStreamComponent<TEntity, TEndpoint extends StreamE
         }
 
         @Override
-        public void onNext(T tEntity) {
+        public void onNext(TEntity entity) {
             UI.getCurrent().access(() -> {
-                grid.getContainerDataSource().addItem(tEntity);
+                lister.addEntity(entity);
                 UI.getCurrent().push();
             });
         }
