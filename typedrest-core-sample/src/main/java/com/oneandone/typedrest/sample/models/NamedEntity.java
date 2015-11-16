@@ -1,35 +1,25 @@
 package com.oneandone.typedrest.sample.models;
 
-import javax.persistence.Id;
+import com.oneandone.typedrest.*;
+import lombok.*;
 
 /**
  * An entity with a unique numeric identifier and a human-readable name.
  */
+@Getter
+@Setter
 public abstract class NamedEntity {
 
-    private long id;
-
     @Id
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
+    @EditorHidden
+    private long id;
 
     private String name;
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
     @Override
     public String toString() {
-        return name;
+        return (getName() == null || getName().equals(""))
+                ? getClass().getSimpleName() + " " + id
+                : getName() + " (" + getId() + ")";
     }
 }

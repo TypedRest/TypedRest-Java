@@ -8,24 +8,12 @@
         <relativePath>../typedrest-parent</relativePath>
     </parent>
     <groupId>com.oneandone</groupId>
-    <artifactId>typedrest-core</artifactId>
+    <artifactId>typedrest-annotations</artifactId>
 
-    <name>TypedRest Core</name>
-    <description>TypedRest helps you build type-safe fluent-style REST API clients.</description>
+    <name>TypedRest Annotations</name>
+    <description>Annotations for data models to be used with TypedRest.</description>
 
     <dependencies>
-        <dependency>
-            <groupId>com.oneandone</groupId>
-            <artifactId>typedrest-annotations</artifactId>
-            <version>${typedrest.version}</version>
-        </dependency>
-        
-        <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-lang3</artifactId>
-            <version>3.4</version>
-        </dependency>
-
         <!-- JSON -->
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>

@@ -1,6 +1,7 @@
 package com.oneandone.typedrest.sample.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.oneandone.typedrest.*;
 import lombok.*;
 
 /**
@@ -14,5 +15,6 @@ public class Resource extends NamedEntity {
     /**
      * A target to deploy the resource to.
      */
+    @ListerHidden
     private Target target;
 }

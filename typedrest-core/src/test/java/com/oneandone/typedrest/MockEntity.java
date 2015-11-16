@@ -1,7 +1,6 @@
 package com.oneandone.typedrest;
 
 import lombok.*;
-import javax.persistence.Id;
 
 @NoArgsConstructor
 @AllArgsConstructor

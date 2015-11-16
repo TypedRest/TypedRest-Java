@@ -11,6 +11,7 @@
 
     <modules>
         <module>typedrest-parent</module>
+        <module>typedrest-annotations</module>
         <module>typedrest-core</module>
         <module>typedrest-core-sample</module>
         <module>typedrest-vaadin</module>

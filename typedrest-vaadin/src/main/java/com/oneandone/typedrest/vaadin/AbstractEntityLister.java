@@ -1,10 +1,9 @@
 package com.oneandone.typedrest.vaadin;
 
-import com.oneandone.typedrest.vaadin.annotations.Hidden;
+import static com.oneandone.typedrest.BeanUtils.getPropertiesWithAnnotation;
+import com.oneandone.typedrest.ListerHidden;
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.ui.CustomComponent;
-import java.beans.IntrospectionException;
-import static java.util.Arrays.stream;
 import java.util.*;
 
 /**
@@ -27,13 +26,8 @@ public abstract class AbstractEntityLister<TEntity>
         this.entityType = entityType;
 
         this.container = new BeanItemContainer<>(entityType);
-        try {
-            stream(java.beans.Introspector.getBeanInfo(entityType).getPropertyDescriptors())
-                    .filter(x -> x.getReadMethod().getAnnotation(Hidden.class) != null)
-                    .forEach(x -> container.removeContainerProperty(x.getName()));
-        } catch (IntrospectionException ex) {
-            throw new RuntimeException(ex);
-        }
+        getPropertiesWithAnnotation(entityType, ListerHidden.class)
+                .forEach(x -> container.removeContainerProperty(x.getName()));
     }
 
     @Override

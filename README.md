@@ -3,6 +3,7 @@
 TypedRest helps you build type-safe fluent-style JSON REST API clients.
 
 Maven artifacts:
+* `com.oneandone.typedrest-annotations`
 * `com.oneandone.typedrest-core`
 * `com.oneandone.typedrest-vaadin`
 

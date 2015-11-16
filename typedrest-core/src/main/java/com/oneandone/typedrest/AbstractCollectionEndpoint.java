@@ -1,19 +1,19 @@
 package com.oneandone.typedrest;
 
 import com.fasterxml.jackson.databind.JavaType;
+import static com.oneandone.typedrest.BeanUtils.getPropertiesWithAnnotation;
+import static com.oneandone.typedrest.URIUtils.ensureTrailingSlash;
 import org.apache.http.*;
 import org.apache.http.client.fluent.Request;
 import org.apache.http.entity.ContentType;
 import org.apache.http.util.EntityUtils;
 import javax.naming.OperationNotSupportedException;
-import javax.persistence.Id;
+import java.beans.PropertyDescriptor;
 import java.io.*;
-import java.lang.reflect.*;
+import java.lang.reflect.InvocationTargetException;
 import java.net.URI;
 import java.util.*;
 import lombok.Getter;
-
-import static com.oneandone.typedrest.URIUtils.ensureTrailingSlash;
 
 /**
  * Base class for building REST endpoints that represents a collection of
@@ -29,7 +29,7 @@ public abstract class AbstractCollectionEndpoint<TEntity, TElementEndpoint exten
     @Getter
     protected final Class<TEntity> entityType;
 
-    private final Optional<Method> keyGetMethod;
+    private final Optional<PropertyDescriptor> keyProperty;
 
     /**
      * Creates a new paged collection endpoint.
@@ -43,9 +43,7 @@ public abstract class AbstractCollectionEndpoint<TEntity, TElementEndpoint exten
     protected AbstractCollectionEndpoint(Endpoint parent, URI relativeUri, Class<TEntity> entityType) {
         super(parent, ensureTrailingSlash(relativeUri));
         this.entityType = entityType;
-
-        keyGetMethod = Arrays.stream(entityType.getMethods())
-                .filter(x -> x.getAnnotation(Id.class) != null).findFirst();
+        this.keyProperty = getPropertiesWithAnnotation(entityType, Id.class).stream().findFirst();
     }
 
     /**
@@ -76,10 +74,9 @@ public abstract class AbstractCollectionEndpoint<TEntity, TElementEndpoint exten
      */
     protected String getCollectionKey(TEntity entity) {
         try {
-            return keyGetMethod
-                    .orElseThrow(() -> new IllegalStateException(entityType.getSimpleName() + " has no getter marked "
-                                    + "with @Id annotation."))
-                    .invoke(entity).toString();
+            return keyProperty
+                    .orElseThrow(() -> new IllegalStateException(entityType.getSimpleName() + " has no property marked with @Id annotation."))
+                    .getReadMethod().invoke(entity).toString();
         } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
             throw new IllegalStateException(ex);
         }

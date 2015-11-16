@@ -20,15 +20,13 @@ public class DefaultEntityEditor<TEntity>
     }
 
     @Override
-    public void setEntity(TEntity entity) {
-        super.setEntity(entity);
-
+    protected Component buildCompositionRoot() {
         VerticalLayout layout = new VerticalLayout();
         layout.setMargin(true);
         layout.setSpacing(true);
         for (Object propertyId : fieldGroup.getUnboundPropertyIds()) {
             layout.addComponent(fieldGroup.buildAndBind(propertyId));
         }
-        setCompositionRoot(layout);
+        return layout;
     }
 }
