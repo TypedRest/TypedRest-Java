@@ -13,7 +13,14 @@ public class NotificationErrorHandler implements ErrorHandler {
 
     @Override
     public void error(ErrorEvent event) {
-        Notification.show("error", event.getThrowable().getLocalizedMessage(), Notification.Type.ERROR_MESSAGE);
-        Logger.getLogger(NotificationErrorHandler.class.getName()).log(Level.SEVERE, null, event.getThrowable());
+        Throwable throwable = event.getThrowable();
+
+        Notification.show("error", getRootCause(throwable).getLocalizedMessage(), Notification.Type.ERROR_MESSAGE);
+        Logger.getLogger(NotificationErrorHandler.class.getName()).log(Level.SEVERE, null, throwable);
+    }
+
+    private static Throwable getRootCause(Throwable throwable) {
+        Throwable cause = throwable.getCause();
+        return (cause == null) ? throwable : getRootCause(cause);
     }
 }
