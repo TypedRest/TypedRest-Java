@@ -1,4 +1,4 @@
-package com.oneandone.typedrest.vaadin.sample;
+package com.oneandone.typedrest.vaadin;
 
 import com.vaadin.server.ErrorEvent;
 import com.vaadin.server.ErrorHandler;
