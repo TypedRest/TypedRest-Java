@@ -29,9 +29,6 @@ public class StreamComponent<TEntity>
      */
     public StreamComponent(StreamEndpointImpl<TEntity> endpoint) {
         super(endpoint);
-        setUpdateEnabled(false);
-        setCreateEnabled(false);
-        setDeleteEnabled(false);
     }
 
     @Override

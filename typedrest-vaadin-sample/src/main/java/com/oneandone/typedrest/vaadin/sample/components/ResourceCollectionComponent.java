@@ -1,9 +1,8 @@
 package com.oneandone.typedrest.vaadin.sample.components;
 
-import com.oneandone.typedrest.sample.endpoints.ResourceCollection;
-import com.oneandone.typedrest.sample.endpoints.ResourceElement;
-import com.oneandone.typedrest.sample.models.Resource;
-import com.oneandone.typedrest.vaadin.AbstractCollectionComponent;
+import com.oneandone.typedrest.sample.endpoints.*;
+import com.oneandone.typedrest.sample.models.*;
+import com.oneandone.typedrest.vaadin.*;
 import com.vaadin.ui.Window;
 
 public class ResourceCollectionComponent

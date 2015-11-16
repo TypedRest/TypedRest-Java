@@ -7,7 +7,7 @@ import com.vaadin.ui.*;
  *
  * @param <TEntity> The type of entity the editor operates on.
  */
-class DefaultEntityEditor<TEntity>
+public class DefaultEntityEditor<TEntity>
         extends AbstractEntityEditor<TEntity> {
 
     /**
