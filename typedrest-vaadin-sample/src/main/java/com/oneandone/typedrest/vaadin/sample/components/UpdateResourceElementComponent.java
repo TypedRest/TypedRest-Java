@@ -1,4 +1,4 @@
-package com.oneandone.typedrest.vaadin.sample;
+package com.oneandone.typedrest.vaadin.sample.components;
 
 import com.oneandone.typedrest.sample.endpoints.*;
 import com.oneandone.typedrest.sample.models.*;

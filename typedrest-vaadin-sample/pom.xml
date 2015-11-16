@@ -28,7 +28,7 @@
             <artifactId>typedrest-core-sample</artifactId>
             <version>${typedrest.version}</version>
         </dependency>
-        
+
         <!-- Spring Boot Vaadin -->
         <dependency>
             <groupId>com.vaadin</groupId>
