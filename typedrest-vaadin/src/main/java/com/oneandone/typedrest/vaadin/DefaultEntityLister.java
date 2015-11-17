@@ -1,6 +1,8 @@
 package com.oneandone.typedrest.vaadin;
 
+import com.vaadin.data.util.filter.SimpleStringFilter;
 import com.vaadin.ui.*;
+import com.vaadin.ui.Grid.*;
 import java.util.Collection;
 
 /**
@@ -26,6 +28,23 @@ class DefaultEntityLister<TEntity>
         grid.setSelectionMode(Grid.SelectionMode.MULTI);
         grid.addItemClickListener(x -> onClick((TEntity) x.getItemId()));
         grid.setWidth(100, Unit.PERCENTAGE);
+
+        HeaderRow filterRow = grid.appendHeaderRow();
+        for (Object pid : grid.getContainerDataSource().getContainerPropertyIds()) {
+            HeaderCell cell = filterRow.getCell(pid);
+
+            TextField filterField = new TextField();
+            filterField.setWidth(100, Unit.PERCENTAGE);
+
+            filterField.addTextChangeListener(change -> {
+                container.removeContainerFilters(pid);
+                if (!change.getText().isEmpty()) {
+                    container.addContainerFilter(new SimpleStringFilter(pid, change.getText(), true, false));
+                }
+            });
+            cell.setComponent(filterField);
+        }
+
         setCompositionRoot(grid);
     }
 
