@@ -10,6 +10,7 @@ public class PagedResourceCollectionComponent
 
     public PagedResourceCollectionComponent(PagedResourceCollection endpoint) {
         super(endpoint);
+        setCaption("Resources (paged)");
     }
 
     @Override

@@ -10,6 +10,7 @@ public class ResourceCollectionComponent
 
     public ResourceCollectionComponent(ResourceCollection endpoint) {
         super(endpoint);
+        setCaption("Resources");
     }
 
     @Override

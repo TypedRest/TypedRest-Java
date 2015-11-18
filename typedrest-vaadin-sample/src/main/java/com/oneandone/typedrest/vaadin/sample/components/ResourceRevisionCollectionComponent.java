@@ -10,6 +10,7 @@ public class ResourceRevisionCollectionComponent
 
     public ResourceRevisionCollectionComponent(ResourceRevisionCollection endpoint) {
         super(endpoint);
+        setCaption("Revisions");
     }
 
     @Override
