@@ -1,6 +1,6 @@
 package com.oneandone.typedrest.vaadin;
 
-import com.vaadin.data.util.filter.SimpleStringFilter;
+import com.vaadin.data.util.filter.*;
 import com.vaadin.ui.*;
 import com.vaadin.ui.Grid.*;
 import java.util.Collection;
@@ -46,6 +46,12 @@ class DefaultEntityLister<TEntity>
         }
 
         setCompositionRoot(grid);
+    }
+
+    @Override
+    public void setEntities(Collection<TEntity> tEntities) {
+        super.setEntities(tEntities);
+        grid.getSelectionModel().reset();
     }
 
     @Override

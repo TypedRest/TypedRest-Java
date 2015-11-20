@@ -14,6 +14,7 @@ public abstract class NamedEntity {
     @EditorHidden
     private long id;
 
+    @NotEmpty
     private String name;
 
     @Override
