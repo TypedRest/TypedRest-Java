@@ -28,7 +28,7 @@ public abstract class AbstractEntityEditor<TEntity>
     }
 
     @Override
-    public final TEntity getEntity() {
+    public TEntity getEntity() {
         try {
             fieldGroup.commit();
         } catch (FieldGroup.CommitException e) {
@@ -38,7 +38,7 @@ public abstract class AbstractEntityEditor<TEntity>
     }
 
     @Override
-    public final void setEntity(TEntity entity) {
+    public void setEntity(TEntity entity) {
         fieldGroup.setItemDataSource(buildBeanItem(entity));
     }
 
