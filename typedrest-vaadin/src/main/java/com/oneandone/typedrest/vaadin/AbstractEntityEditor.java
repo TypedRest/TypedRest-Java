@@ -4,7 +4,6 @@ import static com.oneandone.typedrest.BeanUtils.getPropertiesWithAnnotation;
 import com.oneandone.typedrest.EditorHidden;
 import com.vaadin.data.fieldgroup.BeanFieldGroup;
 import com.vaadin.data.util.BeanItem;
-import com.vaadin.ui.Component;
 import com.vaadin.ui.CustomComponent;
 
 /**
@@ -36,11 +35,12 @@ public abstract class AbstractEntityEditor<TEntity>
     @Override
     public final void setEntity(TEntity entity) {
         fieldGroup.setItemDataSource(buildBeanItem(entity));
-        setCompositionRoot(buildCompositionRoot());
     }
 
     /**
-     * Builds a {@link BeanItem} from an entity. Applies annotation-based property filtering.
+     * Builds a {@link BeanItem} from an entity. Applies annotation-based
+     * property filtering.
+     *
      * @param entity the entity to wrap in the {@link BeanItem}.
      * @return the {@link BeanItem}.
      */
@@ -50,10 +50,4 @@ public abstract class AbstractEntityEditor<TEntity>
                 .forEach(x -> beanItem.removeItemProperty(x.getName()));
         return beanItem;
     }
-
-    /**
-     * Template method for building the composition root. Called after an entity instance is set.
-     * @return the composition root.
-     */
-    protected abstract Component buildCompositionRoot();
 }

@@ -9,14 +9,11 @@ public class ResourceEditor
 
     public ResourceEditor() {
         super(Resource.class);
-    }
 
-    @Override
-    protected Component buildCompositionRoot() {
         VerticalLayout layout = new VerticalLayout();
         layout.setMargin(true);
         layout.setSpacing(true);
         layout.addComponent(fieldGroup.buildAndBind("name"));
-        return layout;
+        setCompositionRoot(layout);
     }
 }

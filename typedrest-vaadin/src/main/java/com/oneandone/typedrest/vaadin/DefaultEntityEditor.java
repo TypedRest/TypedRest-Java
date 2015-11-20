@@ -17,16 +17,13 @@ public class DefaultEntityEditor<TEntity>
      */
     public DefaultEntityEditor(Class<TEntity> entityType) {
         super(entityType);
-    }
 
-    @Override
-    protected Component buildCompositionRoot() {
         VerticalLayout layout = new VerticalLayout();
         layout.setMargin(true);
         layout.setSpacing(true);
         for (Object propertyId : fieldGroup.getUnboundPropertyIds()) {
             layout.addComponent(fieldGroup.buildAndBind(propertyId));
         }
-        return layout;
+        setCompositionRoot(layout);
     }
 }
