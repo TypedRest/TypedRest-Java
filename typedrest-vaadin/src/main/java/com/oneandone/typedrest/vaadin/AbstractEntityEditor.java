@@ -43,7 +43,7 @@ public abstract class AbstractEntityEditor<TEntity>
 
     @Override
     public void setEntity(TEntity entity) {
-        fieldGroup.setItemDataSource(buildBeanItem(entity));
+        fieldGroup.setItemDataSource(new BeanItem<>(entity, entityType));
         applyAnnotations(Required.class, new NullValidator("Must be set!", false));
         applyAnnotations(NotEmpty.class, new StringLengthValidator("Must not be empty!", 1, -1, false));
     }
@@ -56,19 +56,5 @@ public abstract class AbstractEntityEditor<TEntity>
                         field.addValidator(validator);
                     }
                 });
-    }
-
-    /**
-     * Builds a {@link BeanItem} from an entity. Applies annotation-based
-     * property filtering.
-     *
-     * @param entity the entity to wrap in the {@link BeanItem}.
-     * @return the {@link BeanItem}.
-     */
-    protected BeanItem<TEntity> buildBeanItem(TEntity entity) {
-        BeanItem<TEntity> beanItem = new BeanItem<>(entity, entityType);
-        getPropertiesWithAnnotation(entityType, EditorHidden.class)
-                .forEach(x -> beanItem.removeItemProperty(x.getName()));
-        return beanItem;
     }
 }

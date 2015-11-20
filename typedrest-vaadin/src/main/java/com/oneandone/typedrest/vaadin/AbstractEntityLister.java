@@ -1,6 +1,6 @@
 package com.oneandone.typedrest.vaadin;
 
-import static com.oneandone.typedrest.BeanUtils.getPropertiesWithAnnotation;
+import static com.oneandone.typedrest.BeanUtils.*;
 import com.oneandone.typedrest.ListerHidden;
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.ui.CustomComponent;

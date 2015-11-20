@@ -30,8 +30,33 @@ public final class BeanUtils {
         try {
             List<PropertyDescriptor> result = new LinkedList<>();
             for (PropertyDescriptor property : getBeanInfo(beanType).getPropertyDescriptors()) {
-                if (property.getReadMethod().getAnnotation(annotationType) != null
+                if (property.getReadMethod() != null && property.getReadMethod().getAnnotation(annotationType) != null
                         || isFieldAnnotated(beanType, property.getName(), annotationType)) {
+                    result.add(property);
+                }
+            }
+            return result;
+        } catch (IntrospectionException ex) {
+            throw new RuntimeException(ex);
+        }
+    }
+
+    /**
+     * Lists all read and writable properties on a bean type that have a specific annotation on
+     * their getter or backing field.
+     *
+     * @param <TBean> The type of bean to check for properties.
+     * @param <TAnnotation> The annotation type to look for.
+     * @param beanType The type of bean to check for properties.
+     * @param annotationType The annotation type to look for.
+     * @return A list of matching properties.
+     */
+    public static <TBean, TAnnotation extends Annotation> Collection<PropertyDescriptor> getPropertiesWithoutAnnotation(Class<TBean> beanType, Class<TAnnotation> annotationType) {
+        try {
+            List<PropertyDescriptor> result = new LinkedList<>();
+            for (PropertyDescriptor property : getBeanInfo(beanType).getPropertyDescriptors()) {
+                if ((property.getReadMethod() == null || property.getReadMethod().getAnnotation(annotationType) == null)
+                        && !isFieldAnnotated(beanType, property.getName(), annotationType)) {
                     result.add(property);
                 }
             }

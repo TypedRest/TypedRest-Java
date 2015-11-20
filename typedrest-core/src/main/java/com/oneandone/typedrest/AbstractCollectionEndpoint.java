@@ -1,7 +1,7 @@
 package com.oneandone.typedrest;
 
 import com.fasterxml.jackson.databind.JavaType;
-import static com.oneandone.typedrest.BeanUtils.getPropertiesWithAnnotation;
+import static com.oneandone.typedrest.BeanUtils.*;
 import static com.oneandone.typedrest.URIUtils.ensureTrailingSlash;
 import org.apache.http.*;
 import org.apache.http.client.fluent.Request;

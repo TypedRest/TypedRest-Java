@@ -1,6 +1,9 @@
 package com.oneandone.typedrest.vaadin;
 
+import static com.oneandone.typedrest.BeanUtils.*;
+import com.oneandone.typedrest.EditorHidden;
 import com.vaadin.ui.*;
+import java.beans.*;
 
 /**
  * An entity editor that uses auto-generated forms.
@@ -21,9 +24,13 @@ public class DefaultEntityEditor<TEntity>
         VerticalLayout layout = new VerticalLayout();
         layout.setMargin(true);
         layout.setSpacing(true);
-        for (Object propertyId : fieldGroup.getUnboundPropertyIds()) {
-            layout.addComponent(fieldGroup.buildAndBind(propertyId));
+
+        for (PropertyDescriptor property : getPropertiesWithoutAnnotation(entityType, EditorHidden.class)) {
+            if (property.getWriteMethod() != null) {
+                layout.addComponent(fieldGroup.buildAndBind(property.getName()));
+            }
         }
+
         setCompositionRoot(layout);
     }
 }
