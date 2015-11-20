@@ -1,10 +1,10 @@
 package com.oneandone.typedrest.vaadin;
 
-import static com.oneandone.typedrest.BeanUtils.getPropertiesWithAnnotation;
-import com.oneandone.typedrest.EditorHidden;
-import com.vaadin.data.fieldgroup.BeanFieldGroup;
-import com.vaadin.data.util.BeanItem;
-import com.vaadin.ui.CustomComponent;
+import static com.oneandone.typedrest.BeanUtils.*;
+import com.oneandone.typedrest.*;
+import com.vaadin.data.fieldgroup.*;
+import com.vaadin.data.util.*;
+import com.vaadin.ui.*;
 
 /**
  * Common base class for entity editor implementations.
@@ -29,6 +29,11 @@ public abstract class AbstractEntityEditor<TEntity>
 
     @Override
     public final TEntity getEntity() {
+        try {
+            fieldGroup.commit();
+        } catch (FieldGroup.CommitException e) {
+            throw new RuntimeException(e);
+        }
         return fieldGroup.getItemDataSource().getBean();
     }
 
