@@ -7,7 +7,6 @@
         <version>0.10-SNAPSHOT</version>
         <relativePath>../typedrest-parent</relativePath>
     </parent>
-    <groupId>com.oneandone</groupId>
     <artifactId>typedrest-annotations</artifactId>
 
     <name>TypedRest Annotations</name>
