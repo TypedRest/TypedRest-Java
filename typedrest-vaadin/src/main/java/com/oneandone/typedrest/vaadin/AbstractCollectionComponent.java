@@ -25,8 +25,8 @@ public abstract class AbstractCollectionComponent<TEntity, TEndpoint extends Col
 
     protected final EntityLister<TEntity> lister;
 
-    private final Button createButton = new Button("Create", x -> onCreate());
-    protected final Button deleteButton = new Button("Delete", x -> onDelete());
+    private final Button createButton = new Button("Create", x -> onCreateElement());
+    protected final Button deleteButton = new Button("Delete", x -> onDeleteElements());
     protected final HorizontalLayout buttonsLayout = new HorizontalLayout(createButton, deleteButton);
 
     protected final VerticalLayout masterLayout;
@@ -45,7 +45,7 @@ public abstract class AbstractCollectionComponent<TEntity, TEndpoint extends Col
         this.lister = lister;
         lister.addEntityClickListener(x -> {
             if (updateEnabled) {
-                onUpdate(x);
+                onOpenElement(x);
             }
         });
 
@@ -104,47 +104,30 @@ public abstract class AbstractCollectionComponent<TEntity, TEndpoint extends Col
     }
 
     /**
-     * Handler for creating a new entity.
-     */
-    protected void onCreate() {
-        Window elementWindow = buildCreateElementWindow();
-        elementWindow.addCloseListener(x -> refresh());
-        getUI().addWindow(elementWindow);
-    }
-
-    /**
-     * Builds a {@link Window} for creating a new <code>TEntity</code> in the
-     * collection endpoint.
-     *
-     * @return The new component.
-     */
-    protected abstract Window buildCreateElementWindow();
-
-    /**
-     * Handler for updating an existing entity.
+     * Handler for opening an existing element in the collection.
      *
      * @param entity The entity that was clicked.
      */
-    protected void onUpdate(TEntity entity) {
-        Window elementWindow = buildUpdateElementWindow(endpoint.get(entity));
+    protected void onOpenElement(TEntity entity) {
+        Window elementWindow = buildElementWindow(endpoint.get(entity));
         elementWindow.addCloseListener(x -> refresh());
         getUI().addWindow(elementWindow);
     }
 
     /**
-     * Builds a {@link Window} for editing an existing <code>TEntity</code>
-     * represented by the given element endpoint.
+     * Builds a {@link Window} for viewing or editing an existing
+     * <code>TEntity</code> represented by the given element endpoint.
      *
      * @param elementEndpoint The endpoint representing the entity to be
      * updated.
      * @return The new component.
      */
-    protected abstract Window buildUpdateElementWindow(TElementEndpoint elementEndpoint);
+    protected abstract Window buildElementWindow(TElementEndpoint elementEndpoint);
 
     /**
-     * Handler for deleting all selected entities.
+     * Handler for deleting all selected elements.
      */
-    protected void onDelete() {
+    protected void onDeleteElements() {
         Collection<TEntity> entities = lister.getSelectedEntities();
 
         String message = "Are you sure you want to delete the following elements?"
@@ -163,4 +146,21 @@ public abstract class AbstractCollectionComponent<TEntity, TEndpoint extends Col
             }
         });
     }
+
+    /**
+     * Handler for creating a new element in the collection.
+     */
+    protected void onCreateElement() {
+        Window elementWindow = buildCreateElementWindow();
+        elementWindow.addCloseListener(x -> refresh());
+        getUI().addWindow(elementWindow);
+    }
+
+    /**
+     * Builds a {@link Window} for creating a new <code>TEntity</code> in the
+     * collection endpoint.
+     *
+     * @return The new component.
+     */
+    protected abstract Window buildCreateElementWindow();
 }

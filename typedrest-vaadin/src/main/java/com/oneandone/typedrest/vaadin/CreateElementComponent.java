@@ -9,7 +9,7 @@ import javax.naming.OperationNotSupportedException;
 import org.apache.http.HttpException;
 
 /**
- * Component for creating a new {@link ElementEndpoint}.
+ * Component for creating a new element in a {@link CollectionEndpoint}.
  *
  * @param <TEntity> The type of entity to create.
  * @param <TElementEndpoint> The specific type of {@link ElementEndpoint} the

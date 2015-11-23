@@ -32,12 +32,12 @@ public class StreamComponent<TEntity>
     }
 
     @Override
-    protected Window buildCreateElementWindow() {
-        return new CreateElementComponent<>(endpoint).asWindow();
+    protected Window buildElementWindow(ElementEndpoint<TEntity> elementEndpoint) {
+        return new ElementComponent<>(elementEndpoint).asWindow();
     }
 
     @Override
-    protected Window buildUpdateElementWindow(ElementEndpoint<TEntity> elementEndpoint) {
-        return new UpdateElementComponent<>(elementEndpoint).asWindow();
+    protected Window buildCreateElementWindow() {
+        return new CreateElementComponent<>(endpoint).asWindow();
     }
 }

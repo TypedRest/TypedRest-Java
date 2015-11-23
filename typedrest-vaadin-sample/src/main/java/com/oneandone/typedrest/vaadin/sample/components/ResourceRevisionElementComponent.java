@@ -4,12 +4,12 @@ import com.oneandone.typedrest.sample.endpoints.*;
 import com.oneandone.typedrest.sample.models.*;
 import com.oneandone.typedrest.vaadin.*;
 
-public class UpdateResourceRevisionElementComponent
-        extends UpdateElementComponent<ResourceRevision> {
+public class ResourceRevisionElementComponent
+        extends ElementComponent<ResourceRevision> {
 
     protected ResourceRevisionElement endpoint;
 
-    public UpdateResourceRevisionElementComponent(ResourceRevisionElement endpoint) {
+    public ResourceRevisionElementComponent(ResourceRevisionElement endpoint) {
         super(endpoint);
         this.endpoint = endpoint;
 
