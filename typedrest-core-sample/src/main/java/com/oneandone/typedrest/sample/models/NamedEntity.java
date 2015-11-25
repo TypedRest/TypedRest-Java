@@ -8,6 +8,7 @@ import lombok.*;
  */
 @Getter
 @Setter
+@EqualsAndHashCode
 public abstract class NamedEntity {
 
     @Id
