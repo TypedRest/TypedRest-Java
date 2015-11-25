@@ -27,8 +27,6 @@ public abstract class AbstractComponent<TEndpoint extends Endpoint>
      */
     protected AbstractComponent(TEndpoint endpoint) {
         this.endpoint = endpoint;
-
-        addAttachListener(x -> refresh());
     }
 
     @Override
@@ -40,6 +38,12 @@ public abstract class AbstractComponent<TEndpoint extends Endpoint>
         } else {
             return handler;
         }
+    }
+
+    @Override
+    public void attach() {
+        super.attach();
+        refresh();
     }
 
     /**
