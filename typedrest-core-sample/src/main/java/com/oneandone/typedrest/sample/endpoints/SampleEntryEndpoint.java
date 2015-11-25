@@ -11,7 +11,6 @@ import org.apache.http.auth.Credentials;
 public class SampleEntryEndpoint extends EntryEndpoint {
 
     public final ResourceCollection resources = new ResourceCollection(this);
-    public final PagedResourceCollection resourcesPaged = new PagedResourceCollection(this);
     public final CollectionEndpointImpl<Target> targets = new CollectionEndpointImpl<>(this, "targets", Target.class);
 
     public SampleEntryEndpoint(URI uri) {

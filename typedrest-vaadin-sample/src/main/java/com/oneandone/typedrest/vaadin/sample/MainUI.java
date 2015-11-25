@@ -23,10 +23,9 @@ public class MainUI extends UI {
         SampleEntryEndpoint entrypoint = new SampleEntryEndpoint(
                 URI.create("http://localhost:5893/api"),
                 "root", "abc");
-        
+
         setContent(new TabSheet(
                 new ResourceCollectionComponent(entrypoint.resources),
-                new PagedResourceCollectionComponent(entrypoint.resourcesPaged),
                 new CollectionComponent<>(entrypoint.targets)));
     }
 }
