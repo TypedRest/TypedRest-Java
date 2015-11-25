@@ -12,6 +12,11 @@ public class ResourceCollection extends AbstractCollectionEndpoint<Resource, Res
         super(parent, "resources", Resource.class);
     }
 
+    // Relative URI
+    public ResourceCollection(ResourceElement parent) {
+        super(parent, "../../resources", Resource.class);
+    }
+
     @Override
     public ResourceElement get(String key) {
         return new ResourceElement(this, key);

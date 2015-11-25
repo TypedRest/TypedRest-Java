@@ -11,7 +11,7 @@ public class ResourceElementComponent
     protected ResourceElement endpoint;
 
     public ResourceElementComponent(ResourceElement endpoint) {
-        super(endpoint, new ResourceEditor());
+        super(endpoint, new ResourceEditor(endpoint.parentResources));
         this.endpoint = endpoint;
 
         buttonsLayout.addComponent(new Button("Events", x

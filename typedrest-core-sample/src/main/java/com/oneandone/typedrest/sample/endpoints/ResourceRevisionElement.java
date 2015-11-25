@@ -9,6 +9,14 @@ import java.net.*;
  */
 public class ResourceRevisionElement extends ElementEndpointImpl<ResourceRevision> {
 
+    public ResourceRevisionElement(ResourceRevisionCollection parent, URI relativeUri) {
+        super(parent, relativeUri, ResourceRevision.class);
+    }
+
+    public ResourceRevisionElement(Endpoint parent, String relativeUri) {
+        super(parent, relativeUri, ResourceRevision.class);
+    }
+
     /**
      * Promotes the {@link ResourceRevision} to the next stage.
      */
@@ -18,12 +26,4 @@ public class ResourceRevisionElement extends ElementEndpointImpl<ResourceRevisio
      * Represents the blob/file backing the {@link ResourceRevision}.
      */
     public final BlobEndpoint blob = new BlobEndpointImpl(this, "blob");
-
-    public ResourceRevisionElement(ResourceRevisionCollection parent, URI relativeUri) {
-        super(parent, relativeUri, ResourceRevision.class);
-    }
-
-    public ResourceRevisionElement(Endpoint parent, String relativeUri) {
-        super(parent, relativeUri, ResourceRevision.class);
-    }
 }

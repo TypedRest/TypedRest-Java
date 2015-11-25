@@ -9,11 +9,6 @@ import com.oneandone.typedrest.sample.models.*;
  */
 public class ResourceRevisionCollection extends AbstractCollectionEndpoint<ResourceRevision, ResourceRevisionElement> {
 
-    /**
-     * Represents the latest {@link ResourceRevision} for the {@link Resource}.
-     */
-    public final ResourceRevisionElement latest = new ResourceRevisionElement(this, "latest");
-
     public ResourceRevisionCollection(ResourceElement parent) {
         super(parent, "revisions", ResourceRevision.class);
     }
@@ -22,4 +17,9 @@ public class ResourceRevisionCollection extends AbstractCollectionEndpoint<Resou
     public ResourceRevisionElement get(String key) {
         return new ResourceRevisionElement(this, key);
     }
+
+    /**
+     * Represents the latest {@link ResourceRevision} for the {@link Resource}.
+     */
+    public final ResourceRevisionElement latest = new ResourceRevisionElement(this, "latest");
 }

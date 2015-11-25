@@ -9,6 +9,14 @@ import java.net.URI;
  */
 public class ResourceElement extends ElementEndpointImpl<Resource> {
 
+    public ResourceElement(Endpoint parent, URI relativeUri) {
+        super(parent, relativeUri, Resource.class);
+    }
+
+    public ResourceElement(Endpoint parent, String relativeUri) {
+        super(parent, relativeUri, Resource.class);
+    }
+
     /**
      * Represents the {@link ResourceRevision}s.
      */
@@ -19,11 +27,8 @@ public class ResourceElement extends ElementEndpointImpl<Resource> {
      */
     public final StreamEndpointImpl<LogEvent> events = new StreamEndpointImpl<>(this, "events", LogEvent.class);
 
-    public ResourceElement(Endpoint parent, URI relativeUri) {
-        super(parent, relativeUri, Resource.class);
-    }
-
-    public ResourceElement(Endpoint parent, String relativeUri) {
-        super(parent, relativeUri, Resource.class);
-    }
+    /**
+     * Used to resolve {@link Resource#dependencies}
+     */
+    public final ResourceCollection parentResources = new ResourceCollection(this);
 }

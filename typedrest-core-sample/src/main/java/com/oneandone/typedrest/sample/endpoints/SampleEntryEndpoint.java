@@ -10,9 +10,6 @@ import org.apache.http.auth.Credentials;
  */
 public class SampleEntryEndpoint extends EntryEndpoint {
 
-    public final ResourceCollection resources = new ResourceCollection(this);
-    public final CollectionEndpointImpl<Target> targets = new CollectionEndpointImpl<>(this, "targets", Target.class);
-
     public SampleEntryEndpoint(URI uri) {
         super(uri);
     }
@@ -24,4 +21,7 @@ public class SampleEntryEndpoint extends EntryEndpoint {
     public SampleEntryEndpoint(URI uri, String username, String password) {
         super(uri, username, password);
     }
+
+    public final ResourceCollection resources = new ResourceCollection(this);
+    public final CollectionEndpointImpl<Target> targets = new CollectionEndpointImpl<>(this, "targets", Target.class);
 }
