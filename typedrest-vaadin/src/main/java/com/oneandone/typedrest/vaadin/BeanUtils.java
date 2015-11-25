@@ -2,9 +2,7 @@ package com.oneandone.typedrest.vaadin;
 
 import com.oneandone.typedrest.*;
 import com.vaadin.data.util.*;
-import java.io.IOException;
-import javax.naming.OperationNotSupportedException;
-import org.apache.http.*;
+import lombok.SneakyThrows;
 
 /**
  * Utility methods for Java beans (classes with getters and setters).
@@ -22,11 +20,8 @@ public final class BeanUtils {
      * @param <TEntity> The type of entity the endpoint represents.
      * @return The wrapped entities.
      */
+    @SneakyThrows
     public static <TEntity> BeanItemContainer<TEntity> getAllBeans(CollectionEndpoint<TEntity, ?> endpoint) {
-        try {
-            return new BeanItemContainer<>(endpoint.getEntityType(), endpoint.readAll());
-        } catch (IOException | IllegalAccessException | HttpException | OperationNotSupportedException ex) {
-            throw new RuntimeException(ex);
-        }
+        return new BeanItemContainer<>(endpoint.getEntityType(), endpoint.readAll());
     }
 }

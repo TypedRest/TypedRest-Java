@@ -6,6 +6,7 @@ import java.beans.PropertyDescriptor;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.util.*;
+import lombok.SneakyThrows;
 import static org.apache.commons.lang3.reflect.FieldUtils.getField;
 
 /**
@@ -26,24 +27,21 @@ public final class BeanUtils {
      * @param annotationType The annotation type to look for.
      * @return A list of matching properties.
      */
+    @SneakyThrows
     public static <TBean, TAnnotation extends Annotation> Collection<PropertyDescriptor> getPropertiesWithAnnotation(Class<TBean> beanType, Class<TAnnotation> annotationType) {
-        try {
-            List<PropertyDescriptor> result = new LinkedList<>();
-            for (PropertyDescriptor property : getBeanInfo(beanType).getPropertyDescriptors()) {
-                if (property.getReadMethod() != null && property.getReadMethod().getAnnotation(annotationType) != null
-                        || isFieldAnnotated(beanType, property.getName(), annotationType)) {
-                    result.add(property);
-                }
+        List<PropertyDescriptor> result = new LinkedList<>();
+        for (PropertyDescriptor property : getBeanInfo(beanType).getPropertyDescriptors()) {
+            if (property.getReadMethod() != null && property.getReadMethod().getAnnotation(annotationType) != null
+                    || isFieldAnnotated(beanType, property.getName(), annotationType)) {
+                result.add(property);
             }
-            return result;
-        } catch (IntrospectionException ex) {
-            throw new RuntimeException(ex);
         }
+        return result;
     }
 
     /**
-     * Lists all read and writable properties on a bean type that have a specific annotation on
-     * their getter or backing field.
+     * Lists all read and writable properties on a bean type that have a
+     * specific annotation on their getter or backing field.
      *
      * @param <TBean> The type of bean to check for properties.
      * @param <TAnnotation> The annotation type to look for.
@@ -51,19 +49,16 @@ public final class BeanUtils {
      * @param annotationType The annotation type to look for.
      * @return A list of matching properties.
      */
+    @SneakyThrows
     public static <TBean, TAnnotation extends Annotation> Collection<PropertyDescriptor> getPropertiesWithoutAnnotation(Class<TBean> beanType, Class<TAnnotation> annotationType) {
-        try {
-            List<PropertyDescriptor> result = new LinkedList<>();
-            for (PropertyDescriptor property : getBeanInfo(beanType).getPropertyDescriptors()) {
-                if ((property.getReadMethod() == null || property.getReadMethod().getAnnotation(annotationType) == null)
-                        && !isFieldAnnotated(beanType, property.getName(), annotationType)) {
-                    result.add(property);
-                }
+        List<PropertyDescriptor> result = new LinkedList<>();
+        for (PropertyDescriptor property : getBeanInfo(beanType).getPropertyDescriptors()) {
+            if ((property.getReadMethod() == null || property.getReadMethod().getAnnotation(annotationType) == null)
+                    && !isFieldAnnotated(beanType, property.getName(), annotationType)) {
+                result.add(property);
             }
-            return result;
-        } catch (IntrospectionException ex) {
-            throw new RuntimeException(ex);
         }
+        return result;
     }
 
     private static <TBean, TAnnotation extends Annotation> boolean isFieldAnnotated(Class<TBean> beanType, String fieldName, Class<TAnnotation> annotationType) {

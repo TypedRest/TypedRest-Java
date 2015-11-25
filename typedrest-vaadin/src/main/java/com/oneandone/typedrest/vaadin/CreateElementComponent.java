@@ -4,8 +4,8 @@ import com.oneandone.typedrest.CollectionEndpoint;
 import com.oneandone.typedrest.ElementEndpoint;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 import javax.naming.OperationNotSupportedException;
+import lombok.SneakyThrows;
 import org.apache.http.HttpException;
 
 /**
@@ -24,15 +24,12 @@ public class CreateElementComponent<TEntity, TElementEndpoint extends ElementEnd
      * @param endpoint The REST endpoint this component operates on.
      * @param editor An editor component for creating entity instances.
      */
+    @SneakyThrows
     public CreateElementComponent(CollectionEndpoint<TEntity, TElementEndpoint> endpoint, EntityEditor<TEntity> editor) {
         super(endpoint, editor);
         setCaption("New " + endpoint.getEntityType().getSimpleName());
 
-        try {
-            editor.setEntity((TEntity) endpoint.getEntityType().getConstructor().newInstance());
-        } catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException ex) {
-            throw new RuntimeException(ex);
-        }
+        editor.setEntity((TEntity) endpoint.getEntityType().getConstructor().newInstance());
     }
 
     /**
