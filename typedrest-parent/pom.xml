@@ -118,10 +118,25 @@
 
     <profiles>
         <profile>
-            <id>public</id>
+            <id>internal</id>
             <activation>
                 <activeByDefault>true</activeByDefault>
             </activation>
+            <distributionManagement>
+                <repository>
+                    <id>artifactory.1and1.org</id>
+                    <name>artifactory.1and1.org-hosting-releases</name>
+                    <url>https://artifactory.1and1.org/artifactory/hosting-release</url>
+                </repository>
+                <snapshotRepository>
+                    <id>artifactory.1and1.org</id>
+                    <name>artifactory.1and1.org-hosting-snapshots</name>
+                    <url>https://artifactory.1and1.org/artifactory/hosting-snapshot</url>
+                </snapshotRepository>
+            </distributionManagement>
+        </profile>
+        <profile>
+            <id>public</id>
             <build>
                 <plugins>
                     <plugin>
@@ -155,19 +170,6 @@
                 <snapshotRepository>
                     <id>ossrh</id>
                     <url>https://oss.sonatype.org/content/repositories/snapshots</url>
-                </snapshotRepository>
-            </distributionManagement>
-        </profile>
-        <profile>
-            <id>internal</id>
-            <distributionManagement>
-                <repository>
-                    <id>proget</id>
-                    <url>http://proget.server.lan/maven2/Maven</url>
-                </repository>
-                <snapshotRepository>
-                    <id>proget-dev</id>
-                    <url>http://proget.server.lan/maven2/Maven-Dev</url>
                 </snapshotRepository>
             </distributionManagement>
         </profile>
