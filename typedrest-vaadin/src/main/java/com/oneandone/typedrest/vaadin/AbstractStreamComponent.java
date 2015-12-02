@@ -36,7 +36,7 @@ public abstract class AbstractStreamComponent<TEntity, TEndpoint extends StreamE
     protected AbstractStreamComponent(TEndpoint endpoint, EntityLister<TEntity> lister) {
         super(endpoint, lister);
 
-        setUpdateEnabled(false);
+        setOpenElementEnabled(false);
         setCreateEnabled(false);
         setDeleteEnabled(false);
     }

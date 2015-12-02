@@ -44,7 +44,7 @@ public abstract class AbstractCollectionComponent<TEntity, TEndpoint extends Col
 
         this.lister = lister;
         lister.addEntityClickListener(x -> {
-            if (updateEnabled) {
+            if (openElementEnabled) {
                 onOpenElement(x);
             }
         });
@@ -86,15 +86,15 @@ public abstract class AbstractCollectionComponent<TEntity, TEndpoint extends Col
         deleteButton.setVisible(val);
     }
 
-    private boolean updateEnabled = true;
+    private boolean openElementEnabled = true;
 
     /**
      * Controls whether selecting individual elements opens an edit view.
      *
      * @param val Turns the feature on or off.
      */
-    public void setUpdateEnabled(boolean val) {
-        updateEnabled = val;
+    public void setOpenElementEnabled(boolean val) {
+        openElementEnabled = val;
     }
 
     @Override
