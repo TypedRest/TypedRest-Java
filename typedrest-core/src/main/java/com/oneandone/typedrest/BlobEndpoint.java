@@ -13,6 +13,7 @@ public interface BlobEndpoint extends Endpoint {
      * Downloads the blob's content.
      *
      * @param stream The stream to write the downloaded data to.
+     * @return The MIME type of the downloaded blob.
      *
      * @throws IOException Network communication failed.
      * @throws IllegalArgumentException {@link HttpStatus#SC_BAD_REQUEST}
@@ -23,13 +24,14 @@ public interface BlobEndpoint extends Endpoint {
      * @throws OperationNotSupportedException {@link HttpStatus#SC_CONFLICT}
      * @throws HttpException Other non-success status code.
      */
-    void downloadTo(OutputStream stream)
+    String downloadTo(OutputStream stream)
             throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, OperationNotSupportedException, HttpException;
 
     /**
      * Uploads a local file as the blob's content.
      *
      * @param file The local file to read the data from.
+     * @param mimeType The MIME type of the file to upload.
      *
      * @throws IOException Network communication failed.
      * @throws IllegalArgumentException {@link HttpStatus#SC_BAD_REQUEST}
@@ -40,6 +42,6 @@ public interface BlobEndpoint extends Endpoint {
      * @throws OperationNotSupportedException {@link HttpStatus#SC_CONFLICT}
      * @throws HttpException Other non-success status code.
      */
-    void uploadFrom(File file)
+    void uploadFrom(File file, String mimeType)
             throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, OperationNotSupportedException, HttpException;
 }

@@ -5,7 +5,7 @@ import java.net.URI;
 import javax.naming.OperationNotSupportedException;
 import org.apache.http.*;
 import org.apache.http.client.fluent.*;
-import org.apache.http.entity.FileEntity;
+import org.apache.http.entity.ContentType;
 
 /**
  * REST endpoint that represents a single binary blob that can downloaded and uploaded.
@@ -21,13 +21,14 @@ public class BlobEndpointImpl extends AbstractEndpoint implements BlobEndpoint {
     }
 
     @Override
-    public void downloadTo(OutputStream stream) throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, OperationNotSupportedException, HttpException {
+    public String downloadTo(OutputStream stream) throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, OperationNotSupportedException, HttpException {
         HttpResponse response = execute(Request.Get(uri));
         response.getEntity().writeTo(stream);
+        return ContentType.get(response.getEntity()).getMimeType();
     }
 
     @Override
-    public void uploadFrom(File file) throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, OperationNotSupportedException, HttpException {
-        execute(Request.Put(uri).body(new FileEntity(file)));
+    public void uploadFrom(File file, String mimeType) throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, OperationNotSupportedException, HttpException {
+        execute(Request.Put(uri).bodyFile(file, ContentType.create(mimeType)));
     }
 }

@@ -5,7 +5,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import static org.apache.http.HttpStatus.*;
 import org.junit.*;
-import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.*;
 
 public class BlobEndpointTest extends AbstractEndpointTest {
 
@@ -25,21 +25,23 @@ public class BlobEndpointTest extends AbstractEndpointTest {
         stubFor(get(urlEqualTo("/endpoint"))
                 .willReturn(aResponse()
                         .withStatus(SC_OK)
+                        .withHeader("Content-Type", "mock/type")
                         .withBody(data)));
 
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        endpoint.downloadTo(stream);
+        String mimeType = endpoint.downloadTo(stream);
 
+        assertEquals("mock/type", mimeType);
         assertArrayEquals(data, stream.toByteArray());
     }
 
     @Test
     public void testUpload() throws Exception {
-        stubFor(put(urlEqualTo("/endpoint"))
+        stubFor(put(urlEqualTo("/endpoint")).withHeader("Content-Type", matching("mock/type"))
                 .willReturn(aResponse()
                         .withStatus(SC_NO_CONTENT)));
 
         File file = File.createTempFile("unit-test", ".tmp");
-        endpoint.uploadFrom(file);
+        endpoint.uploadFrom(file, "mock/type");
     }
 }

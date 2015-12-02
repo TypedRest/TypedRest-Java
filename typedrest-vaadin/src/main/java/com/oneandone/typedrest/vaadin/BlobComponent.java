@@ -13,15 +13,15 @@ import lombok.*;
  */
 public class BlobComponent extends AbstractComponent<BlobEndpoint> {
 
-    protected final String TMP_DIR = System.getProperty("java.io.tmpdir") + File.separator;
+    private static final String TYPED_REST_BLOB = "typed-rest-blob";
+    protected final String TMP_DIR = System.getProperty("java.io.tmpdir");
+    protected File uploadTarget;
+    protected File downloadTarget;
+
     private final Button downloadButton;
     private final Upload uploadButton;
-    @Getter
-    @Setter
-    protected File uploadTarget;
-    @Getter
-    @Setter
-    protected File downloadTarget;
+    private String uploadMimeType;
+    private String downloadMimeType;
 
     /**
      * Creates a new REST blob component.
@@ -36,20 +36,43 @@ public class BlobComponent extends AbstractComponent<BlobEndpoint> {
 
         uploadButton = new Upload("", (fileName, mimeType) -> {
             try {
-                uploadTarget = new File(TMP_DIR + fileName);
+                uploadMimeType = mimeType;
+                if (uploadTarget != null)
+                    uploadTarget.delete();
+
+                uploadTarget = File.createTempFile(TYPED_REST_BLOB, "upload", new File(TMP_DIR));
                 return new FileOutputStream(uploadTarget);
-            } catch (FileNotFoundException e) {
+            } catch (IOException e) {
                 getErrorHandler().error(new com.vaadin.server.ErrorEvent(e));
                 return null;
             }
         });
 
-        uploadButton.addSucceededListener(succeededEvent -> uploadFrom(uploadTarget));
+        uploadButton.addSucceededListener(succeededEvent -> uploadFrom());
 
         downloadButton = new Button("Download");
-        downloadButton.addClickListener(clickEvent -> downloadTo(downloadTarget));
+        downloadButton.addClickListener(clickEvent -> {
+            if (downloadTarget != null)
+                downloadTarget.delete();
+
+            try {
+                downloadTarget = File.createTempFile(TYPED_REST_BLOB, "download", new File(TMP_DIR));
+                downloadTo(downloadTarget);
+            } catch (IOException e) {
+                getErrorHandler().error(new com.vaadin.server.ErrorEvent(e));
+            }
+        });
 
         setCompositionRoot(getLayout());
+    }
+
+    @Override
+    public void detach() {
+        super.detach();
+        if (uploadTarget != null)
+            uploadTarget.delete();
+        if (downloadTarget != null)
+            downloadTarget.delete();
     }
 
     /**
@@ -70,12 +93,10 @@ public class BlobComponent extends AbstractComponent<BlobEndpoint> {
 
     /**
      * Called after upload to local instance succeeded.
-     *
-     * @param file the file to upload to the {@link BlobEndpoint}.
      */
-    protected void uploadFrom(File file) {
+    protected void uploadFrom() {
         try {
-            endpoint.uploadFrom(file);
+            endpoint.uploadFrom(uploadTarget, uploadMimeType);
             onUploadSuccess();
         } catch (IOException | IllegalAccessException | IllegalArgumentException | HttpException |
                 OperationNotSupportedException e) {
@@ -92,7 +113,7 @@ public class BlobComponent extends AbstractComponent<BlobEndpoint> {
      */
     protected void downloadTo(File file) {
         try {
-            endpoint.downloadTo(new FileOutputStream(file));
+            downloadMimeType = endpoint.downloadTo(new FileOutputStream(file));
             onDownloadSuccess();
 
             StreamResource streamResource = new StreamResource(() -> {
@@ -103,6 +124,7 @@ public class BlobComponent extends AbstractComponent<BlobEndpoint> {
                     return null;
                 }
             }, file.getName());
+            streamResource.setMIMEType(downloadMimeType);
 
             setResource("file-download", streamResource);
 
