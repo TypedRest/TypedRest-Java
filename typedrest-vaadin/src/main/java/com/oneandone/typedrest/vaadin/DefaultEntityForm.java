@@ -1,24 +1,24 @@
 package com.oneandone.typedrest.vaadin;
 
 import static com.oneandone.typedrest.BeanUtils.*;
-import com.oneandone.typedrest.EditorHidden;
+import com.oneandone.typedrest.*;
 import com.vaadin.ui.*;
 import java.beans.*;
 
 /**
- * An entity editor that uses auto-generated forms.
+ * An entity component that uses auto-generated forms.
  *
- * @param <TEntity> The type of entity the editor operates on.
+ * @param <TEntity> The type of entity the component operates on.
  */
-public class DefaultEntityEditor<TEntity>
-        extends AbstractEntityEditor<TEntity> {
+public class DefaultEntityForm<TEntity>
+        extends AbstractEntityForm<TEntity> {
 
     /**
-     * Creates a new entity editor.
+     * Creates a new entity component.
      *
-     * @param entityType The type of entity the editor operates on.
+     * @param entityType The type of entity the component operates on.
      */
-    public DefaultEntityEditor(Class<TEntity> entityType) {
+    public DefaultEntityForm(Class<TEntity> entityType) {
         super(entityType);
 
         VerticalLayout layout = new VerticalLayout();

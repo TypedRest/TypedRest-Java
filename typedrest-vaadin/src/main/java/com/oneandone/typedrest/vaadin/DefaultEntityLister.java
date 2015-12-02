@@ -16,7 +16,7 @@ class DefaultEntityLister<TEntity>
     protected final Grid grid = new Grid();
 
     /**
-     * Creates a new entity editor.
+     * Creates a new entity lister.
      *
      * @param entityType TThe type of entities the list shows.
      */

@@ -2,14 +2,14 @@ package com.oneandone.typedrest.vaadin.sample.components;
 
 import com.oneandone.typedrest.sample.endpoints.ResourceCollection;
 import com.oneandone.typedrest.sample.models.Resource;
-import com.oneandone.typedrest.vaadin.AbstractEntityEditor;
+import com.oneandone.typedrest.vaadin.AbstractEntityForm;
 import static com.oneandone.typedrest.vaadin.BeanUtils.getAllBeans;
 import com.vaadin.ui.*;
 
-public class ResourceEditor
-        extends AbstractEntityEditor<Resource> {
+public class ResourceComponent
+        extends AbstractEntityForm<Resource> {
 
-    public ResourceEditor(ResourceCollection resources) {
+    public ResourceComponent(ResourceCollection resources) {
         super(Resource.class);
 
         VerticalLayout layout = new VerticalLayout();

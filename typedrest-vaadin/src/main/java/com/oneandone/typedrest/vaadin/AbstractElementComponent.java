@@ -17,7 +17,7 @@ import org.apache.http.*;
 public abstract class AbstractElementComponent<TEntity, TEndpoint extends Endpoint>
         extends AbstractComponent<TEndpoint> {
 
-    protected final EntityEditor<TEntity> editor;
+    protected final EntityForm<TEntity> entityForm;
 
     protected final Button saveButton = new Button("Save", x -> {
         try {
@@ -36,12 +36,12 @@ public abstract class AbstractElementComponent<TEntity, TEndpoint extends Endpoi
      * Creates a new REST element component.
      *
      * @param endpoint The REST endpoint this component operates on.
-     * @param editor An editor component for modifying entity instances.
+     * @param entityForm A component for viewing/modifying entity instances.
      */
-    protected AbstractElementComponent(TEndpoint endpoint, EntityEditor<TEntity> editor) {
+    protected AbstractElementComponent(TEndpoint endpoint, EntityForm<TEntity> entityForm) {
         super(endpoint);
 
-        this.editor = editor;
+        this.entityForm = entityForm;
 
         saveButton.addStyleName(ValoTheme.BUTTON_FRIENDLY);
         cancelButton.addStyleName(ValoTheme.BUTTON_DANGER);
@@ -49,7 +49,7 @@ public abstract class AbstractElementComponent<TEntity, TEndpoint extends Endpoi
         buttonsLayout.setMargin(true);
         buttonsLayout.setSpacing(true);
 
-        masterLayout = new VerticalLayout(editor, buttonsLayout);
+        masterLayout = new VerticalLayout(entityForm, buttonsLayout);
         masterLayout.setComponentAlignment(buttonsLayout, Alignment.MIDDLE_RIGHT);
         masterLayout.setMargin(true);
         masterLayout.setSpacing(true);
@@ -66,7 +66,7 @@ public abstract class AbstractElementComponent<TEntity, TEndpoint extends Endpoi
     @Override
     public void setReadOnly(boolean readOnly) {
         super.setReadOnly(readOnly);
-        editor.setReadOnly(readOnly);
+        entityForm.setReadOnly(readOnly);
 
         saveButton.setVisible(!readOnly);
         cancelButton.setVisible(!readOnly);

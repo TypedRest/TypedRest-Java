@@ -8,6 +8,6 @@ public class CreateResourceElementComponent
         extends CreateElementComponent<Resource, ResourceElement> {
 
     public CreateResourceElementComponent(ResourceCollection endpoint) {
-        super(endpoint, new ResourceEditor(endpoint));
+        super(endpoint, new ResourceComponent(endpoint));
     }
 }

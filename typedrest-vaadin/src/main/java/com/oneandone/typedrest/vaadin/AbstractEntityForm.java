@@ -10,12 +10,12 @@ import com.vaadin.ui.*;
 import java.lang.annotation.Annotation;
 
 /**
- * Common base class for entity editor implementations.
+ * Common base class for entity component implementations.
  *
- * @param <TEntity> The type of entity the editor operates on.
+ * @param <TEntity> The type of entity the component operates on.
  */
-public abstract class AbstractEntityEditor<TEntity>
-        extends CustomComponent implements EntityEditor<TEntity> {
+public abstract class AbstractEntityForm<TEntity>
+        extends CustomComponent implements EntityForm<TEntity> {
 
     protected final Class<TEntity> entityType;
     protected final BeanFieldGroup<TEntity> fieldGroup;
@@ -23,9 +23,9 @@ public abstract class AbstractEntityEditor<TEntity>
     /**
      * Creates a new entity editor.
      *
-     * @param entityType The type of entity the editor operates on.
+     * @param entityType The type of entity the component operates on.
      */
-    protected AbstractEntityEditor(Class<TEntity> entityType) {
+    protected AbstractEntityForm(Class<TEntity> entityType) {
         this.entityType = entityType;
         this.fieldGroup = new BeanFieldGroup<>(entityType);
     }

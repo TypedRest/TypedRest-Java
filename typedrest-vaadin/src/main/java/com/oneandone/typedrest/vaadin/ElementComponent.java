@@ -19,10 +19,10 @@ public class ElementComponent<TEntity>
      * Creates a new REST element component.
      *
      * @param endpoint The REST endpoint this component operates on.
-     * @param editor An editor component for modifying entity instances.
+     * @param entityForm A component for viewing/modifying entity instances.
      */
-    public ElementComponent(ElementEndpoint<TEntity> endpoint, EntityEditor<TEntity> editor) {
-        super(endpoint, editor);
+    public ElementComponent(ElementEndpoint<TEntity> endpoint, EntityForm<TEntity> entityForm) {
+        super(endpoint, entityForm);
     }
 
     /**
@@ -31,7 +31,7 @@ public class ElementComponent<TEntity>
      * @param endpoint The REST endpoint this component operates on.
      */
     public ElementComponent(ElementEndpoint<TEntity> endpoint) {
-        this(endpoint, new DefaultEntityEditor<>(endpoint.getEntityType()));
+        this(endpoint, new DefaultEntityForm<>(endpoint.getEntityType()));
     }
 
     @Override
@@ -39,12 +39,12 @@ public class ElementComponent<TEntity>
             throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, OperationNotSupportedException, HttpException {
         TEntity entity = endpoint.read();
         setCaption(entity.toString());
-        editor.setEntity(entity);
+        entityForm.setEntity(entity);
     }
 
     @Override
     protected void onSave()
             throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, OperationNotSupportedException, HttpException {
-        endpoint.update(editor.getEntity());
+        endpoint.update(entityForm.getEntity());
     }
 }

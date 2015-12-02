@@ -22,14 +22,14 @@ public class CreateElementComponent<TEntity, TElementEndpoint extends ElementEnd
      * Creates a new REST element creation component.
      *
      * @param endpoint The REST endpoint this component operates on.
-     * @param editor An editor component for creating entity instances.
+     * @param entityForm A component for viewing/modifying entity instances.
      */
     @SneakyThrows
-    public CreateElementComponent(CollectionEndpoint<TEntity, TElementEndpoint> endpoint, EntityEditor<TEntity> editor) {
-        super(endpoint, editor);
+    public CreateElementComponent(CollectionEndpoint<TEntity, TElementEndpoint> endpoint, EntityForm<TEntity> entityForm) {
+        super(endpoint, entityForm);
         setCaption("New " + endpoint.getEntityType().getSimpleName());
 
-        editor.setEntity((TEntity) endpoint.getEntityType().getConstructor().newInstance());
+        entityForm.setEntity(endpoint.getEntityType().getConstructor().newInstance());
     }
 
     /**
@@ -38,12 +38,12 @@ public class CreateElementComponent<TEntity, TElementEndpoint extends ElementEnd
      * @param endpoint The REST endpoint this component operates on.
      */
     public CreateElementComponent(CollectionEndpoint<TEntity, TElementEndpoint> endpoint) {
-        this(endpoint, new DefaultEntityEditor<>(endpoint.getEntityType()));
+        this(endpoint, new DefaultEntityForm<>(endpoint.getEntityType()));
     }
 
     @Override
     protected void onSave()
             throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, OperationNotSupportedException, HttpException {
-        endpoint.create(editor.getEntity());
+        endpoint.create(entityForm.getEntity());
     }
 }
