@@ -57,4 +57,10 @@ public abstract class AbstractEntityEditor<TEntity>
                     }
                 });
     }
+
+    @Override
+    public void setReadOnly(boolean readOnly) {
+        super.setReadOnly(readOnly);
+        fieldGroup.setReadOnly(readOnly);
+    }
 }

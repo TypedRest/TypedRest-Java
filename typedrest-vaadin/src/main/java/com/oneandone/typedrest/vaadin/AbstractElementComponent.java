@@ -59,8 +59,17 @@ public abstract class AbstractElementComponent<TEntity, TEndpoint extends Endpoi
 
     @Override
     public Window asWindow() {
-        cancelButton.setVisible(true);
+        cancelButton.setVisible(!isReadOnly());
         return super.asWindow();
+    }
+
+    @Override
+    public void setReadOnly(boolean readOnly) {
+        super.setReadOnly(readOnly);
+        editor.setReadOnly(readOnly);
+
+        saveButton.setVisible(!readOnly);
+        cancelButton.setVisible(!readOnly);
     }
 
     /**
