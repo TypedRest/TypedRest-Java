@@ -49,6 +49,15 @@ class DefaultEntityLister<TEntity>
     }
 
     @Override
+    public void setSelectionEnabled(boolean val) {
+        if (val) {
+            grid.setSelectionMode(Grid.SelectionMode.MULTI);
+        } else {
+            grid.setSelectionMode(Grid.SelectionMode.NONE);
+        }
+    }
+
+    @Override
     public void setEntities(Collection<TEntity> tEntities) {
         super.setEntities(tEntities);
         grid.getSelectionModel().reset();

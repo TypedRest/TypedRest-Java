@@ -23,6 +23,13 @@ public interface EntityLister<TEntity> extends Component {
      * @param entity the entity to add.
      */
     void addEntity(TEntity entity);
+    
+    /**
+     * Controls whether checkboxes for selecting entities are shown.
+     *
+     * @param val Turns the feature on or off.
+     */
+    void setSelectionEnabled(boolean val);
 
     /**
      * Returns all entities currently selected in the list.

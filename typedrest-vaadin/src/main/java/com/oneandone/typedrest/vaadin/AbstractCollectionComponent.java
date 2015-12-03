@@ -84,6 +84,7 @@ public abstract class AbstractCollectionComponent<TEntity, TEndpoint extends Col
      */
     public void setDeleteEnabled(boolean val) {
         deleteButton.setVisible(val);
+        lister.setSelectionEnabled(val);
     }
 
     private boolean openElementEnabled = true;
@@ -129,6 +130,9 @@ public abstract class AbstractCollectionComponent<TEntity, TEndpoint extends Col
      */
     protected void onDeleteElements() {
         Collection<TEntity> entities = lister.getSelectedEntities();
+        if (entities.isEmpty()) {
+            return;
+        }
 
         String message = "Are you sure you want to delete the following elements?"
                 + entities.stream().map(x -> "\n" + x.toString()).collect(StringBuilder::new, StringBuilder::append, StringBuilder::append).toString();
