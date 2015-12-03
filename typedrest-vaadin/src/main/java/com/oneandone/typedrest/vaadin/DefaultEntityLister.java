@@ -20,7 +20,9 @@ class DefaultEntityLister<TEntity>
      *
      * @param entityType TThe type of entities the list shows.
      */
-    @SuppressWarnings({"OverridableMethodCallInConstructor", "unchecked"})
+    @SuppressWarnings({
+        "OverridableMethodCallInConstructor", // False positive due to lambda
+        "unchecked"}) // Known types in untyped GUI control
     public DefaultEntityLister(Class<TEntity> entityType) {
         super(entityType);
 
@@ -64,7 +66,7 @@ class DefaultEntityLister<TEntity>
     }
 
     @Override
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings("unchecked") // Known types in untyped GUI control
     public Collection<TEntity> getSelectedEntities() {
         return (Collection<TEntity>) grid.getSelectedRows();
     }

@@ -7,6 +7,7 @@ import com.oneandone.typedrest.vaadin.*;
 public class ResourceRevisionElementComponent
         extends ElementComponent<ResourceRevision> {
 
+    @SuppressWarnings("FieldNameHidesFieldInSuperclass") // Covariance
     protected ResourceRevisionElement endpoint;
 
     public ResourceRevisionElementComponent(ResourceRevisionElement endpoint) {

@@ -8,6 +8,7 @@ import com.vaadin.ui.Button;
 public class ResourceElementComponent
         extends ElementComponent<Resource> {
 
+    @SuppressWarnings("FieldNameHidesFieldInSuperclass") // Covariance
     protected ResourceElement endpoint;
 
     public ResourceElementComponent(ResourceElement endpoint) {

@@ -6,7 +6,6 @@ import com.oneandone.typedrest.*;
 import com.vaadin.server.*;
 import com.vaadin.ui.*;
 import org.apache.http.*;
-import lombok.*;
 
 /**
  * Component operating on a {@link BlobEndpoint}.
@@ -29,7 +28,7 @@ public class BlobComponent extends AbstractComponent<BlobEndpoint> {
      * @param endpoint The REST endpoint this component operates on.
      * @param caption A caption for the blob.
      */
-    @SuppressWarnings("OverridableMethodCallInConstructor")
+    @SuppressWarnings("OverridableMethodCallInConstructor") // False positive due to lambda
     public BlobComponent(BlobEndpoint endpoint, String caption) {
         super(endpoint);
         setCaption(caption);

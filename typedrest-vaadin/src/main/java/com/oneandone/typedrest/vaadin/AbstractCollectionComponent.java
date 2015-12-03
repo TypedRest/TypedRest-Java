@@ -37,7 +37,7 @@ public abstract class AbstractCollectionComponent<TEntity, TEndpoint extends Col
      * @param endpoint The REST endpoint this component operates on.
      * @param lister A component for listing entity instances.
      */
-    @SuppressWarnings("OverridableMethodCallInConstructor")
+    @SuppressWarnings("OverridableMethodCallInConstructor") // False positive due to lambda
     protected AbstractCollectionComponent(TEndpoint endpoint, EntityLister<TEntity> lister) {
         super(endpoint);
         setCaption(endpoint.getEntityType().getSimpleName() + "s");
