@@ -85,6 +85,7 @@ public abstract class AbstractComponent<TEndpoint extends Endpoint>
             throw new IllegalStateException("Component can only be converted to a window once.");
         }
 
+        this.setSizeFull();
         window = new Window(getCaption(), this);
         window.setWidth(80, Unit.PERCENTAGE);
         window.setHeight(80, Unit.PERCENTAGE);

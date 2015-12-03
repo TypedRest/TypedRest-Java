@@ -1,7 +1,6 @@
 package com.oneandone.typedrest.vaadin;
 
 import com.oneandone.typedrest.*;
-import com.vaadin.ui.Window;
 
 /**
  * Component operating on an {@link CollectionEndpointImpl}.
@@ -32,12 +31,12 @@ public class CollectionComponent<TEntity>
     }
 
     @Override
-    protected Window buildElementWindow(ElementEndpoint<TEntity> elementEndpoint) {
-        return new ElementComponent<>(elementEndpoint).asWindow();
+    protected AbstractComponent buildElementComponent(ElementEndpoint<TEntity> elementEndpoint) {
+        return new ElementComponent<>(elementEndpoint);
     }
 
     @Override
-    protected Window buildCreateElementWindow() {
-        return new CreateElementComponent<>(endpoint).asWindow();
+    protected AbstractComponent buildCreateElementComponent() {
+        return new CreateElementComponent<>(endpoint);
     }
 }

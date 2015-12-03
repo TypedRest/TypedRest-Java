@@ -3,7 +3,6 @@ package com.oneandone.typedrest.vaadin.sample.components;
 import com.oneandone.typedrest.sample.endpoints.*;
 import com.oneandone.typedrest.sample.models.*;
 import com.oneandone.typedrest.vaadin.*;
-import com.vaadin.ui.Window;
 
 public class ResourceCollectionComponent
         extends AbstractCollectionComponent<Resource, ResourceCollection, ResourceElement> {
@@ -14,12 +13,12 @@ public class ResourceCollectionComponent
     }
 
     @Override
-    protected Window buildElementWindow(ResourceElement elementEndpoint) {
-        return new ResourceElementComponent(elementEndpoint).asWindow();
+    protected AbstractComponent buildElementComponent(ResourceElement elementEndpoint) {
+        return new ResourceElementComponent(elementEndpoint);
     }
 
     @Override
-    protected Window buildCreateElementWindow() {
-        return new CreateResourceElementComponent(endpoint).asWindow();
+    protected AbstractComponent buildCreateElementComponent() {
+        return new CreateResourceElementComponent(endpoint);
     }
 }

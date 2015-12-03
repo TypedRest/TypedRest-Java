@@ -110,20 +110,20 @@ public abstract class AbstractCollectionComponent<TEntity, TEndpoint extends Col
      * @param entity The entity that was clicked.
      */
     protected void onOpenElement(TEntity entity) {
-        Window elementWindow = buildElementWindow(endpoint.get(entity));
+        Window elementWindow = buildElementComponent(endpoint.get(entity)).asWindow();
         elementWindow.addCloseListener(x -> refresh());
         getUI().addWindow(elementWindow);
     }
 
     /**
-     * Builds a {@link Window} for viewing or editing an existing
+     * Builds an {@link AbstractComponent} for viewing or editing an existing
      * <code>TEntity</code> represented by the given element endpoint.
      *
      * @param elementEndpoint The endpoint representing the entity to be
      * updated.
      * @return The new component.
      */
-    protected abstract Window buildElementWindow(TElementEndpoint elementEndpoint);
+    protected abstract AbstractComponent buildElementComponent(TElementEndpoint elementEndpoint);
 
     /**
      * Handler for deleting all selected elements.
@@ -155,16 +155,16 @@ public abstract class AbstractCollectionComponent<TEntity, TEndpoint extends Col
      * Handler for creating a new element in the collection.
      */
     protected void onCreateElement() {
-        Window elementWindow = buildCreateElementWindow();
+        Window elementWindow = buildCreateElementComponent().asWindow();
         elementWindow.addCloseListener(x -> refresh());
         getUI().addWindow(elementWindow);
     }
 
     /**
-     * Builds a {@link Window} for creating a new <code>TEntity</code> in the
-     * collection endpoint.
+     * Builds an {@link AbstractComponent} for creating a new
+     * <code>TEntity</code> in the collection endpoint.
      *
      * @return The new component.
      */
-    protected abstract Window buildCreateElementWindow();
+    protected abstract AbstractComponent buildCreateElementComponent();
 }
