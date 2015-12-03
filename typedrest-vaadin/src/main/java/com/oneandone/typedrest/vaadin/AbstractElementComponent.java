@@ -22,6 +22,7 @@ public abstract class AbstractElementComponent<TEntity, TEndpoint extends Endpoi
     protected final Button saveButton = new Button("Save", x -> {
         try {
             onSave();
+            refreshWatchers();
             close();
         } catch (IOException | IllegalArgumentException | IllegalAccessException | OperationNotSupportedException | HttpException ex) {
             getErrorHandler().error(new com.vaadin.server.ErrorEvent(ex));

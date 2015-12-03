@@ -4,6 +4,7 @@ import com.oneandone.typedrest.Endpoint;
 import com.vaadin.server.ErrorHandler;
 import com.vaadin.ui.*;
 import java.io.*;
+import java.util.*;
 import javax.naming.OperationNotSupportedException;
 import org.apache.http.*;
 
@@ -49,7 +50,7 @@ public abstract class AbstractComponent<TEndpoint extends Endpoint>
     /**
      * Reloads data from the endpoint.
      */
-    public final void refresh() {
+    public void refresh() {
         try {
             onLoad();
         } catch (IOException | IllegalArgumentException | IllegalAccessException | OperationNotSupportedException | HttpException ex) {
@@ -116,6 +117,46 @@ public abstract class AbstractComponent<TEndpoint extends Endpoint>
     public void close() {
         if (isWindow()) {
             window.close();
+        }
+    }
+
+    /**
+     * The other components this component is watching.
+     */
+    private final Collection<AbstractComponent<?>> watching = new ArrayList<>();
+
+    /**
+     * The other components that are watching this component.
+     */
+    private final Collection<AbstractComponent<?>> watchers = new ArrayList<>();
+
+    /**
+     * Starts watching another component for refresh notifications.
+     *
+     * @param target The target to watch.
+     */
+    protected final void watch(AbstractComponent<?> target) {
+        target.watchers.add(this);
+        this.watching.add(target);
+    }
+
+    @Override
+    public void detach() {
+        // Automatically stop watching on detach
+        watching.forEach(x -> x.watchers.remove(this));
+        watching.clear();
+
+        super.detach();
+    }
+
+    /**
+     * Calls {@link #refresh()} on all registered watchers and recursively on
+     * their watchers.
+     */
+    protected final void refreshWatchers() {
+        for (AbstractComponent<?> watcher : watchers) {
+            watcher.refresh();
+            watcher.refreshWatchers();
         }
     }
 }

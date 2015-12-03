@@ -27,6 +27,7 @@ public class TriggerComponent extends AbstractComponent<TriggerEndpoint> {
         setCompositionRoot(button = new Button(caption, x -> {
             try {
                 onTrigger();
+                refreshWatchers();
                 Notification.show(caption, "Successful.", Notification.Type.TRAY_NOTIFICATION);
             } catch (IOException | IllegalArgumentException | IllegalAccessException | OperationNotSupportedException | HttpException ex) {
                 onError(ex);
