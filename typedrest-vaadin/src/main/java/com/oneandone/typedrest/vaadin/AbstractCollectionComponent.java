@@ -21,7 +21,7 @@ import org.vaadin.dialogs.ConfirmDialog;
  * <code>TEndpoint</code> provides for individual <code>TEntity</code>s.
  */
 public abstract class AbstractCollectionComponent<TEntity, TEndpoint extends CollectionEndpoint<TEntity, TElementEndpoint>, TElementEndpoint extends ElementEndpoint<TEntity>>
-        extends AbstractComponent<TEndpoint> {
+        extends EndpointComponent<TEndpoint> {
 
     protected final EntityLister<TEntity> lister;
 
@@ -110,20 +110,20 @@ public abstract class AbstractCollectionComponent<TEntity, TEndpoint extends Col
      * @param entity The entity that was clicked.
      */
     protected void onOpenElement(TEntity entity) {
-        AbstractComponent elementComponent = buildElementComponent(endpoint.get(entity));
+        EndpointComponent elementComponent = buildElementComponent(endpoint.get(entity));
         watch(elementComponent);
         getUI().addWindow(elementComponent.asWindow());
     }
 
     /**
-     * Builds an {@link AbstractComponent} for viewing or editing an existing
+     * Builds an {@link EndpointComponent} for viewing or editing an existing
      * <code>TEntity</code> represented by the given element endpoint.
      *
      * @param elementEndpoint The endpoint representing the entity to be
      * updated.
      * @return The new component.
      */
-    protected abstract AbstractComponent buildElementComponent(TElementEndpoint elementEndpoint);
+    protected abstract EndpointComponent buildElementComponent(TElementEndpoint elementEndpoint);
 
     /**
      * Handler for deleting all selected elements.
@@ -157,16 +157,16 @@ public abstract class AbstractCollectionComponent<TEntity, TEndpoint extends Col
      * Handler for creating a new element in the collection.
      */
     protected void onCreateElement() {
-        AbstractComponent elementComponent = buildCreateElementComponent();
+        EndpointComponent elementComponent = buildCreateElementComponent();
         watch(elementComponent);
         getUI().addWindow(elementComponent.asWindow());
     }
 
     /**
-     * Builds an {@link AbstractComponent} for creating a new
+     * Builds an {@link EndpointComponent} for creating a new
      * <code>TEntity</code> in the collection endpoint.
      *
      * @return The new component.
      */
-    protected abstract AbstractComponent buildCreateElementComponent();
+    protected abstract EndpointComponent buildCreateElementComponent();
 }

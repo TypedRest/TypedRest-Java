@@ -15,7 +15,7 @@ import org.apache.http.*;
  * @param <TEndpoint> The type of {@link Endpoint} to operate on.
  */
 public abstract class AbstractElementComponent<TEntity, TEndpoint extends Endpoint>
-        extends AbstractComponent<TEndpoint> {
+        extends EndpointComponent<TEndpoint> {
 
     protected final EntityForm<TEntity> entityForm;
 

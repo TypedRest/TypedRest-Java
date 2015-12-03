@@ -13,12 +13,12 @@ public class ResourceCollectionComponent
     }
 
     @Override
-    protected AbstractComponent buildElementComponent(ResourceElement elementEndpoint) {
+    protected EndpointComponent buildElementComponent(ResourceElement elementEndpoint) {
         return new ResourceElementComponent(elementEndpoint);
     }
 
     @Override
-    protected AbstractComponent buildCreateElementComponent() {
+    protected EndpointComponent buildCreateElementComponent() {
         return new CreateResourceElementComponent(endpoint);
     }
 }

@@ -10,7 +10,7 @@ import org.apache.http.*;
 /**
  * Component operating on a {@link BlobEndpoint}.
  */
-public class BlobComponent extends AbstractComponent<BlobEndpoint> {
+public class BlobComponent extends EndpointComponent<BlobEndpoint> {
 
     private static final String TYPED_REST_BLOB = "typed-rest-blob";
     protected final String TMP_DIR = System.getProperty("java.io.tmpdir");

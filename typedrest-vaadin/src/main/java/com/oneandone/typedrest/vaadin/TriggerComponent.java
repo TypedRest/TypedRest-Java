@@ -10,7 +10,7 @@ import org.apache.http.*;
 /**
  * Component operating on a {@link TriggerEndpoint}.
  */
-public class TriggerComponent extends AbstractComponent<TriggerEndpoint> {
+public class TriggerComponent extends EndpointComponent<TriggerEndpoint> {
 
     protected final Button button;
 

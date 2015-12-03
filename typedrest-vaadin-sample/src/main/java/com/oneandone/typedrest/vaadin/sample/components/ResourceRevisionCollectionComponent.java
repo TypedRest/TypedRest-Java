@@ -13,12 +13,12 @@ public class ResourceRevisionCollectionComponent
     }
 
     @Override
-    protected AbstractComponent buildElementComponent(ResourceRevisionElement elementEndpoint) {
+    protected EndpointComponent buildElementComponent(ResourceRevisionElement elementEndpoint) {
         return new ResourceRevisionElementComponent(elementEndpoint);
     }
 
     @Override
-    protected AbstractComponent buildCreateElementComponent() {
+    protected EndpointComponent buildCreateElementComponent() {
         return new CreateResourceRevisionElementComponent(endpoint);
     }
 }

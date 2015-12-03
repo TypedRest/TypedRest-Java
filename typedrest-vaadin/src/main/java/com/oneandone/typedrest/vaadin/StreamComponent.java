@@ -32,12 +32,12 @@ public class StreamComponent<TEntity>
     }
 
     @Override
-    protected AbstractComponent buildElementComponent(ElementEndpoint<TEntity> elementEndpoint) {
+    protected EndpointComponent buildElementComponent(ElementEndpoint<TEntity> elementEndpoint) {
         return new ElementComponent<>(elementEndpoint);
     }
 
     @Override
-    protected AbstractComponent buildCreateElementComponent() {
+    protected EndpointComponent buildCreateElementComponent() {
         return new CreateElementComponent<>(endpoint);
     }
 }

@@ -12,7 +12,7 @@ import org.apache.http.*;
  *
  * @param <TEndpoint> The specific type of {@link Endpoint} to operate on.
  */
-public abstract class AbstractComponent<TEndpoint extends Endpoint>
+public abstract class EndpointComponent<TEndpoint extends Endpoint>
         extends CustomComponent {
 
     /**
@@ -25,7 +25,7 @@ public abstract class AbstractComponent<TEndpoint extends Endpoint>
      *
      * @param endpoint The REST endpoint this component operates on.
      */
-    protected AbstractComponent(TEndpoint endpoint) {
+    protected EndpointComponent(TEndpoint endpoint) {
         this.endpoint = endpoint;
     }
 
@@ -120,19 +120,19 @@ public abstract class AbstractComponent<TEndpoint extends Endpoint>
     /**
      * The other components this component is watching.
      */
-    private final Collection<AbstractComponent<?>> watching = new ArrayList<>();
+    private final Collection<EndpointComponent<?>> watching = new ArrayList<>();
 
     /**
      * The other components that are watching this component.
      */
-    private final Collection<AbstractComponent<?>> watchers = new ArrayList<>();
+    private final Collection<EndpointComponent<?>> watchers = new ArrayList<>();
 
     /**
      * Starts watching another component for refresh notifications.
      *
      * @param target The target to watch.
      */
-    protected final void watch(AbstractComponent<?> target) {
+    protected final void watch(EndpointComponent<?> target) {
         target.watchers.add(this);
         this.watching.add(target);
     }
@@ -151,7 +151,7 @@ public abstract class AbstractComponent<TEndpoint extends Endpoint>
      * their watchers.
      */
     protected final void refreshWatchers() {
-        for (AbstractComponent<?> watcher : watchers) {
+        for (EndpointComponent<?> watcher : watchers) {
             watcher.refresh();
             watcher.refreshWatchers();
         }
