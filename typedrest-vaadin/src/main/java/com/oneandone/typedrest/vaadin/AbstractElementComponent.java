@@ -69,7 +69,7 @@ public abstract class AbstractElementComponent<TEntity, TEndpoint extends Endpoi
         entityForm.setReadOnly(readOnly);
 
         saveButton.setVisible(!readOnly);
-        cancelButton.setVisible(!readOnly);
+        cancelButton.setVisible(!readOnly && isWindow());
     }
 
     /**

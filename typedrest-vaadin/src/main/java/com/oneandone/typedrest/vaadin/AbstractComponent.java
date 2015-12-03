@@ -81,7 +81,7 @@ public abstract class AbstractComponent<TEndpoint extends Endpoint>
      * @return The newly created window.
      */
     public Window asWindow() {
-        if (window != null) {
+        if (isWindow()) {
             throw new IllegalStateException("Component can only be converted to a window once.");
         }
 
@@ -92,10 +92,19 @@ public abstract class AbstractComponent<TEndpoint extends Endpoint>
         return window;
     }
 
+    /**
+     * Indicates whether this control has been wrapped in a window.
+     *
+     * @return <code>true</code> if this control has been wrapped in a window.
+     */
+    public boolean isWindow() {
+        return window != null;
+    }
+
     @Override
     public void setCaption(String caption) {
         super.setCaption(caption);
-        if (window != null) {
+        if (isWindow()) {
             window.setCaption(caption);
         }
     }
@@ -104,7 +113,7 @@ public abstract class AbstractComponent<TEndpoint extends Endpoint>
      * Closes the containing window.
      */
     public void close() {
-        if (window != null) {
+        if (isWindow()) {
             window.close();
         }
     }
