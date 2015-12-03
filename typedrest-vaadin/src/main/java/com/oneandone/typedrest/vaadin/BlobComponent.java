@@ -36,13 +36,14 @@ public class BlobComponent extends AbstractComponent<BlobEndpoint> {
         uploadButton = new Upload("", (fileName, mimeType) -> {
             try {
                 uploadMimeType = mimeType;
-                if (uploadTarget != null)
+                if (uploadTarget != null) {
                     uploadTarget.delete();
+                }
 
                 uploadTarget = File.createTempFile(TYPED_REST_BLOB, "upload", new File(TMP_DIR));
                 return new FileOutputStream(uploadTarget);
-            } catch (IOException e) {
-                getErrorHandler().error(new com.vaadin.server.ErrorEvent(e));
+            } catch (IOException ex) {
+                onError(ex);
                 return null;
             }
         });
@@ -51,14 +52,15 @@ public class BlobComponent extends AbstractComponent<BlobEndpoint> {
 
         downloadButton = new Button("Download");
         downloadButton.addClickListener(clickEvent -> {
-            if (downloadTarget != null)
+            if (downloadTarget != null) {
                 downloadTarget.delete();
+            }
 
             try {
                 downloadTarget = File.createTempFile(TYPED_REST_BLOB, "download", new File(TMP_DIR));
                 downloadTo(downloadTarget);
-            } catch (IOException e) {
-                getErrorHandler().error(new com.vaadin.server.ErrorEvent(e));
+            } catch (IOException ex) {
+                onError(ex);
             }
         });
 
@@ -68,10 +70,12 @@ public class BlobComponent extends AbstractComponent<BlobEndpoint> {
     @Override
     public void detach() {
         super.detach();
-        if (uploadTarget != null)
+        if (uploadTarget != null) {
             uploadTarget.delete();
-        if (downloadTarget != null)
+        }
+        if (downloadTarget != null) {
             downloadTarget.delete();
+        }
     }
 
     /**
@@ -98,8 +102,8 @@ public class BlobComponent extends AbstractComponent<BlobEndpoint> {
             endpoint.uploadFrom(uploadTarget, uploadMimeType);
             onUploadSuccess();
         } catch (IOException | IllegalAccessException | IllegalArgumentException | HttpException |
-                OperationNotSupportedException e) {
-            getErrorHandler().error(new com.vaadin.server.ErrorEvent(e));
+                OperationNotSupportedException ex) {
+            onError(ex);
         }
     }
 
@@ -118,8 +122,8 @@ public class BlobComponent extends AbstractComponent<BlobEndpoint> {
             StreamResource streamResource = new StreamResource(() -> {
                 try {
                     return new FileInputStream(file);
-                } catch (FileNotFoundException e) {
-                    getErrorHandler().error(new com.vaadin.server.ErrorEvent(e));
+                } catch (FileNotFoundException ex) {
+                    onError(ex);
                     return null;
                 }
             }, file.getName());
@@ -130,8 +134,8 @@ public class BlobComponent extends AbstractComponent<BlobEndpoint> {
             ResourceReference resourceReference = ResourceReference.create(streamResource, this, "file-download");
             Page.getCurrent().open(resourceReference.getURL(), null);
 
-        } catch (IOException | IllegalAccessException | HttpException | OperationNotSupportedException e) {
-            getErrorHandler().error(new com.vaadin.server.ErrorEvent(e));
+        } catch (IOException | IllegalAccessException | HttpException | OperationNotSupportedException ex) {
+            onError(ex);
         }
     }
 

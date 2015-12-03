@@ -25,7 +25,7 @@ public abstract class AbstractElementComponent<TEntity, TEndpoint extends Endpoi
             refreshWatchers();
             close();
         } catch (IOException | IllegalArgumentException | IllegalAccessException | OperationNotSupportedException | HttpException ex) {
-            getErrorHandler().error(new com.vaadin.server.ErrorEvent(ex));
+            onError(ex);
         }
     });
     protected final Button cancelButton = new Button("Cancel", x -> close());

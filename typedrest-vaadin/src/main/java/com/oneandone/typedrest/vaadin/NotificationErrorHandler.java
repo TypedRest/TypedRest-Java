@@ -3,20 +3,18 @@ package com.oneandone.typedrest.vaadin;
 import com.vaadin.server.ErrorEvent;
 import com.vaadin.server.ErrorHandler;
 import com.vaadin.ui.Notification;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.logging.*;
 
 /**
- * Reports errors using {@link Notification}.
+ * Reports errors using {@link Notification} and {@link Logger}.
  */
 public class NotificationErrorHandler implements ErrorHandler {
 
     @Override
     public void error(ErrorEvent event) {
-        Throwable throwable = event.getThrowable();
-
-        Notification.show("error", getRootCause(throwable).getLocalizedMessage(), Notification.Type.ERROR_MESSAGE);
-        Logger.getLogger(NotificationErrorHandler.class.getName()).log(Level.SEVERE, null, throwable);
+        Throwable ex = event.getThrowable();
+        Logger.getLogger(NotificationErrorHandler.class.getName()).log(Level.SEVERE, null, ex);
+        Notification.show("Unexpected error", "Unexpected error: " + getRootCause(ex).getLocalizedMessage(), Notification.Type.ERROR_MESSAGE);
     }
 
     private static Throwable getRootCause(Throwable throwable) {

@@ -1,7 +1,6 @@
 package com.oneandone.typedrest.vaadin;
 
 import com.oneandone.typedrest.Endpoint;
-import com.vaadin.server.ErrorHandler;
 import com.vaadin.ui.*;
 import java.io.*;
 import java.util.*;
@@ -31,17 +30,6 @@ public abstract class AbstractComponent<TEndpoint extends Endpoint>
     }
 
     @Override
-    public ErrorHandler getErrorHandler() {
-        ErrorHandler handler = super.getErrorHandler();
-        if (handler == null) {
-            UI ui = getUI();
-            return (ui == null) ? null : ui.getErrorHandler();
-        } else {
-            return handler;
-        }
-    }
-
-    @Override
     public void attach() {
         super.attach();
         refresh();
@@ -54,7 +42,7 @@ public abstract class AbstractComponent<TEndpoint extends Endpoint>
         try {
             onLoad();
         } catch (IOException | IllegalArgumentException | IllegalAccessException | OperationNotSupportedException | HttpException ex) {
-            getErrorHandler().error(new com.vaadin.server.ErrorEvent(ex));
+            onError(ex);
         }
     }
 
@@ -72,6 +60,15 @@ public abstract class AbstractComponent<TEndpoint extends Endpoint>
      */
     protected void onLoad()
             throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, OperationNotSupportedException, HttpException {
+    }
+
+    /**
+     * Handler for errors reported by REST endpoints.
+     *
+     * @param ex The exception reported by the REST endpoint.
+     */
+    protected void onError(Exception ex) {
+        Notification.show("Error", ex.getLocalizedMessage(), Notification.Type.ERROR_MESSAGE);
     }
 
     private Window window;

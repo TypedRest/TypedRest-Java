@@ -138,13 +138,15 @@ public abstract class AbstractCollectionComponent<TEntity, TEndpoint extends Col
                 + entities.stream().map(x -> "\n" + x.toString()).collect(StringBuilder::new, StringBuilder::append, StringBuilder::append).toString();
         ConfirmDialog.show(getUI(), message, (ConfirmDialog cd) -> {
             if (cd.isConfirmed()) {
-                entities.forEach(x -> {
+                {
                     try {
-                        endpoint.get(x).delete();
+                        for (TEntity entity : entities) {
+                            endpoint.get(entity).delete();
+                        }
                     } catch (IOException | IllegalArgumentException | IllegalAccessException | OperationNotSupportedException | HttpException ex) {
-                        getErrorHandler().error(new com.vaadin.server.ErrorEvent(ex));
+                        onError(ex);
                     }
-                });
+                };
 
                 refresh();
             }
