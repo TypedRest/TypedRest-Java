@@ -7,6 +7,7 @@ import org.apache.http.*;
 
 import javax.naming.*;
 import java.io.*;
+import org.vaadin.dialogs.ConfirmDialog;
 
 /**
  * Component operating on a {@link TriggerEndpoint}.
@@ -27,15 +28,41 @@ public class TriggerComponent extends EndpointComponent<TriggerEndpoint> {
         super(endpoint, eventBus);
         setWidthUndefined();
 
+        setCompositionRoot(button = new Button(caption, x -> trigger()));
+    }
+
+    /**
+     * Creates a new REST trigger endpoint component with a confirmation
+     * question.
+     *
+     * @param endpoint The REST endpoint this component operates on.
+     * @param eventBus Used to send refresh notifications.
+     * @param caption A caption for the triggerable action.
+     * @param confirmationQustion A question to show the user asking whether to
+     * actually trigger the action.
+     */
+    @SuppressWarnings("OverridableMethodCallInConstructor") // False positive due to lambda
+    public TriggerComponent(TriggerEndpoint endpoint, EventBus eventBus, String caption, String confirmationQustion) {
+        super(endpoint, eventBus);
+        setWidthUndefined();
+
         setCompositionRoot(button = new Button(caption, x -> {
-            try {
-                onTrigger();
-                eventBus.post(endpoint);
-                Notification.show(caption, "Successful.", Notification.Type.TRAY_NOTIFICATION);
-            } catch (IOException | IllegalArgumentException | IllegalAccessException | OperationNotSupportedException | HttpException ex) {
-                onError(ex);
-            }
+            ConfirmDialog.show(getUI(), confirmationQustion, (ConfirmDialog cd) -> {
+                if (cd.isConfirmed()) {
+                    trigger();
+                }
+            });
         }));
+    }
+
+    private void trigger() {
+        try {
+            onTrigger();
+            eventBus.post(endpoint);
+            Notification.show(getCaption(), "Successful.", Notification.Type.TRAY_NOTIFICATION);
+        } catch (IOException | IllegalArgumentException | IllegalAccessException | OperationNotSupportedException | HttpException ex) {
+            onError(ex);
+        }
     }
 
     /**
