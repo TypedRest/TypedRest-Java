@@ -29,8 +29,7 @@ public abstract class AbstractElementComponent<TEntity, TEndpoint extends Endpoi
             onError(ex);
         }
     });
-    protected final Button cancelButton = new Button("Cancel", x -> close());
-    protected final HorizontalLayout buttonsLayout = new HorizontalLayout(saveButton, cancelButton);
+    protected final HorizontalLayout buttonsLayout = new HorizontalLayout(saveButton);
 
     protected final VerticalLayout masterLayout;
 
@@ -47,8 +46,6 @@ public abstract class AbstractElementComponent<TEntity, TEndpoint extends Endpoi
         this.entityForm = entityForm;
 
         saveButton.addStyleName(ValoTheme.BUTTON_FRIENDLY);
-        cancelButton.addStyleName(ValoTheme.BUTTON_DANGER);
-        cancelButton.setVisible(false); // Only show in Window mode
         buttonsLayout.setMargin(true);
         buttonsLayout.setSpacing(true);
 
@@ -61,18 +58,10 @@ public abstract class AbstractElementComponent<TEntity, TEndpoint extends Endpoi
     }
 
     @Override
-    public Window asWindow() {
-        cancelButton.setVisible(!isReadOnly());
-        return super.asWindow();
-    }
-
-    @Override
     public void setReadOnly(boolean readOnly) {
         super.setReadOnly(readOnly);
         entityForm.setReadOnly(readOnly);
-
         saveButton.setVisible(!readOnly);
-        cancelButton.setVisible(!readOnly && isWindow());
     }
 
     /**

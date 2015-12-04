@@ -114,7 +114,7 @@ public abstract class AbstractCollectionComponent<TEntity, TEndpoint extends Col
      * @param entity The entity that was clicked.
      */
     protected void onOpenElement(TEntity entity) {
-        getUI().addWindow(buildElementComponent(endpoint.get(entity)).asWindow());
+        open(buildElementComponent(endpoint.get(entity)));
     }
 
     /**
@@ -159,7 +159,7 @@ public abstract class AbstractCollectionComponent<TEntity, TEndpoint extends Col
      * Handler for creating a new element in the collection.
      */
     protected void onCreateElement() {
-        getUI().addWindow(buildCreateElementComponent().asWindow());
+        open(buildCreateElementComponent());
     }
 
     /**

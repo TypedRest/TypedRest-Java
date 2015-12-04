@@ -17,7 +17,7 @@ public class ResourceElementComponent
         this.endpoint = endpoint;
 
         buttonsLayout.addComponent(new Button("Events", x
-                -> getUI().addWindow(new StreamComponent<>(endpoint.events, eventBus).asWindow())));
+                -> open(new StreamComponent<>(endpoint.events, eventBus))));
 
         masterLayout.addComponent(new ResourceRevisionCollectionComponent(endpoint.revisions, eventBus));
     }

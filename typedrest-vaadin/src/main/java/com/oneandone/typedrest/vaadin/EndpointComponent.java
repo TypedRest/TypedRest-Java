@@ -4,7 +4,6 @@ import com.google.gwt.thirdparty.guava.common.eventbus.EventBus;
 import com.oneandone.typedrest.Endpoint;
 import com.vaadin.ui.*;
 import java.io.*;
-import java.util.*;
 import javax.naming.OperationNotSupportedException;
 import org.apache.http.*;
 
@@ -35,6 +34,8 @@ public abstract class EndpointComponent<TEndpoint extends Endpoint>
     protected EndpointComponent(TEndpoint endpoint, EventBus eventBus) {
         this.endpoint = endpoint;
         this.eventBus = eventBus;
+
+        setSizeFull();
     }
 
     @Override
@@ -86,49 +87,58 @@ public abstract class EndpointComponent<TEndpoint extends Endpoint>
         Notification.show("Error", ex.getLocalizedMessage(), Notification.Type.ERROR_MESSAGE);
     }
 
-    private Window window;
+    /**
+     * Opens a child component as a {@link Window}.
+     *
+     * @param component The child component to open.
+     */
+    protected void open(EndpointComponent<?> component) {
+        getUI().addWindow(component.asWindow());
+    }
+
+    private Window containingWindow;
 
     /**
-     * Wraps the control in a window.
+     * Wraps the control in a {@link Window}.
      *
      * @return The newly created window.
      */
-    public Window asWindow() {
-        if (isWindow()) {
-            throw new IllegalStateException("Component can only be converted to a window once.");
+    private Window asWindow() {
+        if (isContained()) {
+            throw new IllegalStateException("Component can only be wrapped once.");
         }
 
-        this.setSizeFull();
-        window = new Window(getCaption(), this);
-        window.setWidth(80, Unit.PERCENTAGE);
-        window.setHeight(80, Unit.PERCENTAGE);
-        window.center();
-        return window;
+        containingWindow = new Window(getCaption(), this);
+        containingWindow.setWidth(80, Unit.PERCENTAGE);
+        containingWindow.setHeight(80, Unit.PERCENTAGE);
+        containingWindow.center();
+        return containingWindow;
     }
 
     /**
-     * Indicates whether this control has been wrapped in a window.
+     * Indicates whether this control has been wrapped in a container.
      *
-     * @return <code>true</code> if this control has been wrapped in a window.
+     * @return <code>true</code> if this control has been wrapped in a
+     * container.
      */
-    public boolean isWindow() {
-        return window != null;
+    public boolean isContained() {
+        return containingWindow != null;
+    }
+
+    /**
+     * Closes the containing {@link Window}.
+     */
+    protected void close() {
+        if (containingWindow != null) {
+            containingWindow.close();
+        }
     }
 
     @Override
     public void setCaption(String caption) {
         super.setCaption(caption);
-        if (isWindow()) {
-            window.setCaption(caption);
-        }
-    }
-
-    /**
-     * Closes the containing window.
-     */
-    public void close() {
-        if (isWindow()) {
-            window.close();
+        if (containingWindow != null) {
+            containingWindow.setCaption(caption);
         }
     }
 }
