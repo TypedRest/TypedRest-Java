@@ -1,5 +1,6 @@
 package com.oneandone.typedrest.vaadin;
 
+import com.google.gwt.thirdparty.guava.common.eventbus.EventBus;
 import com.oneandone.typedrest.*;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
@@ -22,7 +23,7 @@ public abstract class AbstractElementComponent<TEntity, TEndpoint extends Endpoi
     protected final Button saveButton = new Button("Save", x -> {
         try {
             onSave();
-            refreshWatchers();
+            eventBus.post(endpoint);
             close();
         } catch (IOException | IllegalArgumentException | IllegalAccessException | OperationNotSupportedException | HttpException ex) {
             onError(ex);
@@ -37,10 +38,11 @@ public abstract class AbstractElementComponent<TEntity, TEndpoint extends Endpoi
      * Creates a new REST element component.
      *
      * @param endpoint The REST endpoint this component operates on.
+     * @param eventBus Used to send refresh notifications.
      * @param entityForm A component for viewing/modifying entity instances.
      */
-    protected AbstractElementComponent(TEndpoint endpoint, EntityForm<TEntity> entityForm) {
-        super(endpoint);
+    protected AbstractElementComponent(TEndpoint endpoint, EventBus eventBus, EntityForm<TEntity> entityForm) {
+        super(endpoint, eventBus);
 
         this.entityForm = entityForm;
 

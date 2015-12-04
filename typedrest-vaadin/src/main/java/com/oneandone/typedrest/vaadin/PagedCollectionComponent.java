@@ -1,5 +1,6 @@
 package com.oneandone.typedrest.vaadin;
 
+import com.google.gwt.thirdparty.guava.common.eventbus.EventBus;
 import com.oneandone.typedrest.*;
 
 /**
@@ -16,27 +17,29 @@ public class PagedCollectionComponent<TEntity>
      *
      * @param endpoint The REST endpoint this component operates on.
      * @param lister A component for listing entity instances.
+     * @param eventBus Used to send refresh notifications.
      */
-    public PagedCollectionComponent(PagedCollectionEndpointImpl<TEntity> endpoint, EntityLister<TEntity> lister) {
-        super(endpoint, lister);
+    public PagedCollectionComponent(PagedCollectionEndpointImpl<TEntity> endpoint, EventBus eventBus, EntityLister<TEntity> lister) {
+        super(endpoint, eventBus, lister);
     }
 
     /**
      * Creates a new REST paged collection component.
      *
      * @param endpoint The REST endpoint this component operates on.
+     * @param eventBus Used to send refresh notifications.
      */
-    public PagedCollectionComponent(PagedCollectionEndpointImpl<TEntity> endpoint) {
-        super(endpoint);
+    public PagedCollectionComponent(PagedCollectionEndpointImpl<TEntity> endpoint, EventBus eventBus) {
+        super(endpoint, eventBus);
     }
 
     @Override
     protected EndpointComponent buildElementComponent(ElementEndpoint<TEntity> elementEndpoint) {
-        return new ElementComponent<>(elementEndpoint);
+        return new ElementComponent<>(elementEndpoint, eventBus);
     }
 
     @Override
     protected EndpointComponent buildCreateElementComponent() {
-        return new CreateElementComponent<>(endpoint);
+        return new CreateElementComponent<>(endpoint, eventBus);
     }
 }

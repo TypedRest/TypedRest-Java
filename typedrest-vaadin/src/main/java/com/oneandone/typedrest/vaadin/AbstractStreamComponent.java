@@ -1,5 +1,6 @@
 package com.oneandone.typedrest.vaadin;
 
+import com.google.gwt.thirdparty.guava.common.eventbus.EventBus;
 import com.oneandone.typedrest.*;
 import com.vaadin.annotations.Push;
 import com.vaadin.ui.Notification;
@@ -31,10 +32,11 @@ public abstract class AbstractStreamComponent<TEntity, TEndpoint extends StreamE
      * Creates a new REST stream component.
      *
      * @param endpoint The REST endpoint this component operates on.
+     * @param eventBus Used to send refresh notifications.
      * @param lister A component for listing entity instances.
      */
-    protected AbstractStreamComponent(TEndpoint endpoint, EntityLister<TEntity> lister) {
-        super(endpoint, lister);
+    protected AbstractStreamComponent(TEndpoint endpoint, EventBus eventBus, EntityLister<TEntity> lister) {
+        super(endpoint, eventBus, lister);
 
         setOpenElementEnabled(false);
         setCreateEnabled(false);
@@ -45,9 +47,10 @@ public abstract class AbstractStreamComponent<TEntity, TEndpoint extends StreamE
      * Creates a new REST stream component.
      *
      * @param endpoint The REST endpoint this component operates on.
+     * @param eventBus Used to send refresh notifications.
      */
-    protected AbstractStreamComponent(TEndpoint endpoint) {
-        this(endpoint, new DefaultEntityLister<>(endpoint.getEntityType()));
+    protected AbstractStreamComponent(TEndpoint endpoint, EventBus eventBus) {
+        this(endpoint, eventBus, new DefaultEntityLister<>(endpoint.getEntityType()));
     }
 
     @Override

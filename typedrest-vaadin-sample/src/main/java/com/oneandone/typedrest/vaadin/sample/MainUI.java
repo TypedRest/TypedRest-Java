@@ -1,5 +1,6 @@
 package com.oneandone.typedrest.vaadin.sample;
 
+import com.google.gwt.thirdparty.guava.common.eventbus.EventBus;
 import com.oneandone.typedrest.vaadin.sample.components.*;
 import com.oneandone.typedrest.sample.endpoints.*;
 import com.oneandone.typedrest.vaadin.*;
@@ -23,9 +24,10 @@ public class MainUI extends UI {
         SampleEntryEndpoint entrypoint = new SampleEntryEndpoint(
                 URI.create("http://localhost:5893/api"),
                 "root", "abc");
+        EventBus eventBus = new EventBus();
 
         setContent(new TabSheet(
-                new ResourceCollectionComponent(entrypoint.resources),
-                new CollectionComponent<>(entrypoint.targets)));
+                new ResourceCollectionComponent(entrypoint.resources, eventBus),
+                new CollectionComponent<>(entrypoint.targets, eventBus)));
     }
 }

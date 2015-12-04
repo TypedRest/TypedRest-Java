@@ -1,7 +1,7 @@
 package com.oneandone.typedrest.vaadin;
 
+import com.google.gwt.thirdparty.guava.common.eventbus.EventBus;
 import com.oneandone.typedrest.*;
-import com.vaadin.ui.Window;
 
 /**
  * Component operating on an {@link StreamEndpointImpl}.
@@ -16,28 +16,30 @@ public class StreamComponent<TEntity>
      * Creates a new REST stream component.
      *
      * @param endpoint The REST endpoint this component operates on.
+     * @param eventBus Used to send refresh notifications.
      * @param lister A component for listing entity instances.
      */
-    public StreamComponent(StreamEndpointImpl<TEntity> endpoint, EntityLister<TEntity> lister) {
-        super(endpoint, lister);
+    public StreamComponent(StreamEndpointImpl<TEntity> endpoint, EventBus eventBus, EntityLister<TEntity> lister) {
+        super(endpoint, eventBus, lister);
     }
 
     /**
      * Creates a new REST stream component.
      *
      * @param endpoint The REST endpoint this component operates on.
+     * @param eventBus Used to send refresh notifications.
      */
-    public StreamComponent(StreamEndpointImpl<TEntity> endpoint) {
-        super(endpoint);
+    public StreamComponent(StreamEndpointImpl<TEntity> endpoint, EventBus eventBus) {
+        super(endpoint, eventBus);
     }
 
     @Override
     protected EndpointComponent buildElementComponent(ElementEndpoint<TEntity> elementEndpoint) {
-        return new ElementComponent<>(elementEndpoint);
+        return new ElementComponent<>(elementEndpoint, eventBus);
     }
 
     @Override
     protected EndpointComponent buildCreateElementComponent() {
-        return new CreateElementComponent<>(endpoint);
+        return new CreateElementComponent<>(endpoint, eventBus);
     }
 }

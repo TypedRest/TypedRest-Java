@@ -1,5 +1,6 @@
 package com.oneandone.typedrest.vaadin;
 
+import com.google.gwt.thirdparty.guava.common.eventbus.EventBus;
 import com.oneandone.typedrest.Endpoint;
 import com.vaadin.ui.*;
 import java.io.*;
@@ -21,18 +22,32 @@ public abstract class EndpointComponent<TEndpoint extends Endpoint>
     protected final TEndpoint endpoint;
 
     /**
+     * Used to send refresh notifications.
+     */
+    protected final EventBus eventBus;
+
+    /**
      * Creates a new REST endpoint component.
      *
      * @param endpoint The REST endpoint this component operates on.
+     * @param eventBus Used to send refresh notifications.
      */
-    protected EndpointComponent(TEndpoint endpoint) {
+    protected EndpointComponent(TEndpoint endpoint, EventBus eventBus) {
         this.endpoint = endpoint;
+        this.eventBus = eventBus;
     }
 
     @Override
     public void attach() {
         super.attach();
         refresh();
+        eventBus.register(this);
+    }
+
+    @Override
+    public void detach() {
+        eventBus.unregister(this);
+        super.detach();
     }
 
     /**
@@ -114,50 +129,6 @@ public abstract class EndpointComponent<TEndpoint extends Endpoint>
     public void close() {
         if (isWindow()) {
             window.close();
-        }
-    }
-
-    /**
-     * The other components this component is watching.
-     */
-    private final Collection<EndpointComponent<?>> watching = new ArrayList<>();
-
-    /**
-     * The other components that are watching this component.
-     */
-    private final Collection<EndpointComponent<?>> watchers = new ArrayList<>();
-
-    /**
-     * Starts watching another component for refresh notifications.
-     *
-     * @param target The target to watch.
-     */
-    protected final void watch(EndpointComponent<?> target) {
-        target.watchers.add(this);
-        this.watching.add(target);
-    }
-
-    @Override
-    public void detach() {
-        // Automatically stop watching on detach
-        watching.forEach(x -> x.watchers.remove(this));
-        watching.clear();
-
-        // Automatically stop being watched on detach
-        watchers.forEach(x -> x.watching.remove(this));
-        watchers.clear();
-
-        super.detach();
-    }
-
-    /**
-     * Calls {@link #refresh()} on all registered watchers and recursively on
-     * their watchers.
-     */
-    protected final void refreshWatchers() {
-        for (EndpointComponent<?> watcher : watchers) {
-            watcher.refresh();
-            watcher.refreshWatchers();
         }
     }
 }

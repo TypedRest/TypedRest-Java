@@ -1,5 +1,6 @@
 package com.oneandone.typedrest.vaadin;
 
+import com.google.gwt.thirdparty.guava.common.eventbus.EventBus;
 import com.oneandone.typedrest.*;
 import com.vaadin.ui.*;
 import org.apache.http.*;
@@ -18,17 +19,18 @@ public class TriggerComponent extends EndpointComponent<TriggerEndpoint> {
      * Creates a new REST trigger endpoint component.
      *
      * @param endpoint The REST endpoint this component operates on.
+     * @param eventBus Used to send refresh notifications.
      * @param caption A caption for the triggerable action.
      */
     @SuppressWarnings("OverridableMethodCallInConstructor") // False positive due to lambda
-    public TriggerComponent(TriggerEndpoint endpoint, String caption) {
-        super(endpoint);
+    public TriggerComponent(TriggerEndpoint endpoint, EventBus eventBus, String caption) {
+        super(endpoint, eventBus);
         setWidthUndefined();
 
         setCompositionRoot(button = new Button(caption, x -> {
             try {
                 onTrigger();
-                refreshWatchers();
+                eventBus.post(endpoint);
                 Notification.show(caption, "Successful.", Notification.Type.TRAY_NOTIFICATION);
             } catch (IOException | IllegalArgumentException | IllegalAccessException | OperationNotSupportedException | HttpException ex) {
                 onError(ex);

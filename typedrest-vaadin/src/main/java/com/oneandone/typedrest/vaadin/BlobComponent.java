@@ -1,5 +1,6 @@
 package com.oneandone.typedrest.vaadin;
 
+import com.google.gwt.thirdparty.guava.common.eventbus.EventBus;
 import javax.naming.*;
 import java.io.*;
 import com.oneandone.typedrest.*;
@@ -26,11 +27,12 @@ public class BlobComponent extends EndpointComponent<BlobEndpoint> {
      * Creates a new REST blob component.
      *
      * @param endpoint The REST endpoint this component operates on.
+     * @param eventBus Used to send refresh notifications.
      * @param caption A caption for the blob.
      */
     @SuppressWarnings("OverridableMethodCallInConstructor") // False positive due to lambda
-    public BlobComponent(BlobEndpoint endpoint, String caption) {
-        super(endpoint);
+    public BlobComponent(BlobEndpoint endpoint, EventBus eventBus, String caption) {
+        super(endpoint, eventBus);
         setCaption(caption);
 
         uploadButton = new Upload("", (fileName, mimeType) -> {

@@ -1,5 +1,6 @@
 package com.oneandone.typedrest.vaadin.sample.components;
 
+import com.google.gwt.thirdparty.guava.common.eventbus.EventBus;
 import com.oneandone.typedrest.sample.endpoints.*;
 import com.oneandone.typedrest.sample.models.*;
 import com.oneandone.typedrest.vaadin.*;
@@ -10,10 +11,10 @@ public class ResourceRevisionElementComponent
     @SuppressWarnings("FieldNameHidesFieldInSuperclass") // Covariance
     protected ResourceRevisionElement endpoint;
 
-    public ResourceRevisionElementComponent(ResourceRevisionElement endpoint) {
-        super(endpoint);
+    public ResourceRevisionElementComponent(ResourceRevisionElement endpoint, EventBus eventBus) {
+        super(endpoint, eventBus);
         this.endpoint = endpoint;
 
-        buttonsLayout.addComponent(new TriggerComponent(endpoint.promote, "Promote"));
+        buttonsLayout.addComponent(new TriggerComponent(endpoint.promote, eventBus, "Promote"));
     }
 }

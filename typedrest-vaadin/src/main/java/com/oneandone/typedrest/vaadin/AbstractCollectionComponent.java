@@ -1,5 +1,7 @@
 package com.oneandone.typedrest.vaadin;
 
+import com.google.gwt.thirdparty.guava.common.eventbus.EventBus;
+import com.google.gwt.thirdparty.guava.common.eventbus.Subscribe;
 import com.oneandone.typedrest.*;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
@@ -35,11 +37,12 @@ public abstract class AbstractCollectionComponent<TEntity, TEndpoint extends Col
      * Creates a new REST collection component.
      *
      * @param endpoint The REST endpoint this component operates on.
+     * @param eventBus Used to send refresh notifications.
      * @param lister A component for listing entity instances.
      */
     @SuppressWarnings("OverridableMethodCallInConstructor") // False positive due to lambda
-    protected AbstractCollectionComponent(TEndpoint endpoint, EntityLister<TEntity> lister) {
-        super(endpoint);
+    protected AbstractCollectionComponent(TEndpoint endpoint, EventBus eventBus, EntityLister<TEntity> lister) {
+        super(endpoint, eventBus);
         setCaption(endpoint.getEntityType().getSimpleName() + "s");
 
         this.lister = lister;
@@ -63,9 +66,10 @@ public abstract class AbstractCollectionComponent<TEntity, TEndpoint extends Col
      * Creates a new REST collection component.
      *
      * @param endpoint The REST endpoint this component operates on.
+     * @param eventBus Used to send refresh notifications.
      */
-    protected AbstractCollectionComponent(TEndpoint endpoint) {
-        this(endpoint, new DefaultEntityLister<>(endpoint.getEntityType()));
+    protected AbstractCollectionComponent(TEndpoint endpoint, EventBus eventBus) {
+        this(endpoint, eventBus, new DefaultEntityLister<>(endpoint.getEntityType()));
     }
 
     /**
@@ -110,9 +114,7 @@ public abstract class AbstractCollectionComponent<TEntity, TEndpoint extends Col
      * @param entity The entity that was clicked.
      */
     protected void onOpenElement(TEntity entity) {
-        EndpointComponent elementComponent = buildElementComponent(endpoint.get(entity));
-        watch(elementComponent);
-        getUI().addWindow(elementComponent.asWindow());
+        getUI().addWindow(buildElementComponent(endpoint.get(entity)).asWindow());
     }
 
     /**
@@ -148,7 +150,7 @@ public abstract class AbstractCollectionComponent<TEntity, TEndpoint extends Col
                     }
                 };
 
-                refresh();
+                eventBus.post(endpoint);
             }
         });
     }
@@ -157,9 +159,7 @@ public abstract class AbstractCollectionComponent<TEntity, TEndpoint extends Col
      * Handler for creating a new element in the collection.
      */
     protected void onCreateElement() {
-        EndpointComponent elementComponent = buildCreateElementComponent();
-        watch(elementComponent);
-        getUI().addWindow(elementComponent.asWindow());
+        getUI().addWindow(buildCreateElementComponent().asWindow());
     }
 
     /**
@@ -169,4 +169,18 @@ public abstract class AbstractCollectionComponent<TEntity, TEndpoint extends Col
      * @return The new component.
      */
     protected abstract EndpointComponent buildCreateElementComponent();
+
+    @Subscribe
+    public void refreshEvent(ElementEndpoint<TEntity> endpoint) {
+        if (endpoint.getEntityType() == this.endpoint.getEntityType()) {
+            refresh();
+        }
+    }
+
+    @Subscribe
+    public void refreshEvent(CollectionEndpoint<TEntity, ?> endpoint) {
+        if (endpoint.getEntityType() == this.endpoint.getEntityType()) {
+            refresh();
+        }
+    }
 }

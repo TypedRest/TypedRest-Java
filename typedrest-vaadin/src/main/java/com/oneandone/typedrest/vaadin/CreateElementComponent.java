@@ -1,5 +1,6 @@
 package com.oneandone.typedrest.vaadin;
 
+import com.google.gwt.thirdparty.guava.common.eventbus.EventBus;
 import com.oneandone.typedrest.CollectionEndpoint;
 import com.oneandone.typedrest.ElementEndpoint;
 import java.io.FileNotFoundException;
@@ -22,11 +23,12 @@ public class CreateElementComponent<TEntity, TElementEndpoint extends ElementEnd
      * Creates a new REST element creation component.
      *
      * @param endpoint The REST endpoint this component operates on.
+     * @param eventBus Used to send refresh notifications.
      * @param entityForm A component for viewing/modifying entity instances.
      */
     @SneakyThrows
-    public CreateElementComponent(CollectionEndpoint<TEntity, TElementEndpoint> endpoint, EntityForm<TEntity> entityForm) {
-        super(endpoint, entityForm);
+    public CreateElementComponent(CollectionEndpoint<TEntity, TElementEndpoint> endpoint, EventBus eventBus, EntityForm<TEntity> entityForm) {
+        super(endpoint, eventBus, entityForm);
         setCaption("New " + endpoint.getEntityType().getSimpleName());
 
         entityForm.setEntity(endpoint.getEntityType().getConstructor().newInstance());
@@ -36,9 +38,10 @@ public class CreateElementComponent<TEntity, TElementEndpoint extends ElementEnd
      * Creates a new REST element creation component.
      *
      * @param endpoint The REST endpoint this component operates on.
+     * @param eventBus Used to send refresh notifications.
      */
-    public CreateElementComponent(CollectionEndpoint<TEntity, TElementEndpoint> endpoint) {
-        this(endpoint, new DefaultEntityForm<>(endpoint.getEntityType()));
+    public CreateElementComponent(CollectionEndpoint<TEntity, TElementEndpoint> endpoint, EventBus eventBus) {
+        this(endpoint, eventBus, new DefaultEntityForm<>(endpoint.getEntityType()));
     }
 
     @Override

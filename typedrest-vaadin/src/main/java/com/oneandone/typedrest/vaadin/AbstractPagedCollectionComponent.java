@@ -1,5 +1,6 @@
 package com.oneandone.typedrest.vaadin;
 
+import com.google.gwt.thirdparty.guava.common.eventbus.EventBus;
 import com.oneandone.typedrest.*;
 import com.vaadin.shared.ui.*;
 import com.vaadin.ui.*;
@@ -33,10 +34,11 @@ public abstract class AbstractPagedCollectionComponent<TEntity, TEndpoint extend
      * Creates a new REST paged collection component.
      *
      * @param endpoint The REST endpoint this component operates on.
+     * @param eventBus Used to send refresh notifications.
      * @param lister A component for listing entity instances.
      */
-    protected AbstractPagedCollectionComponent(TEndpoint endpoint, EntityLister<TEntity> lister) {
-        super(endpoint, lister);
+    protected AbstractPagedCollectionComponent(TEndpoint endpoint, EventBus eventBus, EntityLister<TEntity> lister) {
+        super(endpoint, eventBus, lister);
         pageLeftButton.addClickListener(clickEvent -> {
             currentTo = currentFrom;
             long diff = currentFrom - pageSize;
@@ -76,9 +78,10 @@ public abstract class AbstractPagedCollectionComponent<TEntity, TEndpoint extend
      * Creates a new REST paged collection component.
      *
      * @param endpoint The REST endpoint this component operates on.
+     * @param eventBus Used to send refresh notifications.
      */
-    protected AbstractPagedCollectionComponent(TEndpoint endpoint) {
-        this(endpoint, new DefaultEntityLister<>(endpoint.getEntityType()));
+    protected AbstractPagedCollectionComponent(TEndpoint endpoint, EventBus eventBus) {
+        this(endpoint, eventBus, new DefaultEntityLister<>(endpoint.getEntityType()));
     }
 
     private ComboBox pageSizeComboBox() {
