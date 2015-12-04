@@ -6,10 +6,10 @@ import com.oneandone.typedrest.vaadin.AbstractEntityForm;
 import static com.oneandone.typedrest.vaadin.BeanUtils.getAllBeans;
 import com.vaadin.ui.*;
 
-public class ResourceComponent
+public class ResourceForm
         extends AbstractEntityForm<Resource> {
 
-    public ResourceComponent(ResourceCollection resources) {
+    public ResourceForm(ResourceCollection resources) {
         super(Resource.class);
 
         VerticalLayout layout = new VerticalLayout();
