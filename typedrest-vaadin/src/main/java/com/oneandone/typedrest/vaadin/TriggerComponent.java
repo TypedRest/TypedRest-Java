@@ -2,10 +2,10 @@ package com.oneandone.typedrest.vaadin;
 
 import com.oneandone.typedrest.*;
 import com.vaadin.ui.*;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import javax.naming.OperationNotSupportedException;
 import org.apache.http.*;
+
+import javax.naming.*;
+import java.io.*;
 
 /**
  * Component operating on a {@link TriggerEndpoint}.
@@ -23,6 +23,7 @@ public class TriggerComponent extends EndpointComponent<TriggerEndpoint> {
     @SuppressWarnings("OverridableMethodCallInConstructor") // False positive due to lambda
     public TriggerComponent(TriggerEndpoint endpoint, String caption) {
         super(endpoint);
+        setWidthUndefined();
 
         setCompositionRoot(button = new Button(caption, x -> {
             try {
