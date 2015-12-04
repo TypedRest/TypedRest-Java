@@ -8,7 +8,7 @@ import javax.naming.OperationNotSupportedException;
 import org.apache.http.HttpException;
 
 /**
- * Component for showing or updating an existing element represented by a
+ * Component for showing or updating an existing element represented by an
  * {@link ElementEndpoint}.
  *
  * @param <TEntity> The type of entity to represent.
@@ -28,7 +28,7 @@ public class ElementComponent<TEntity>
     }
 
     /**
-     * Creates a new REST element updating component.
+     * Creates a new REST element component.
      *
      * @param endpoint The REST endpoint this component operates on.
      * @param eventBus Used to send refresh notifications.
