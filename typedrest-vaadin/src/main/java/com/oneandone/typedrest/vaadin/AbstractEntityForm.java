@@ -28,6 +28,8 @@ public abstract class AbstractEntityForm<TEntity>
     protected AbstractEntityForm(Class<TEntity> entityType) {
         this.entityType = entityType;
         this.fieldGroup = new BeanFieldGroup<>(entityType);
+        setSizeFull();
+        setWidth(100, Unit.PERCENTAGE);
     }
 
     @Override
