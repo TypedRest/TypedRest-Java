@@ -143,6 +143,10 @@ public abstract class EndpointComponent<TEndpoint extends Endpoint>
         watching.forEach(x -> x.watchers.remove(this));
         watching.clear();
 
+        // Automatically stop being watched on detach
+        watchers.forEach(x -> x.watching.remove(this));
+        watchers.clear();
+
         super.detach();
     }
 
