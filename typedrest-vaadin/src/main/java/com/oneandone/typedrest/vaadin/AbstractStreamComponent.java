@@ -5,9 +5,6 @@ import com.oneandone.typedrest.*;
 import com.vaadin.annotations.Push;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.*;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import javax.naming.OperationNotSupportedException;
 import rx.*;
 
 /**
@@ -23,9 +20,6 @@ import rx.*;
  */
 public abstract class AbstractStreamComponent<TEntity, TEndpoint extends StreamEndpoint<TEntity, TElementEndpoint>, TElementEndpoint extends ElementEndpoint<TEntity>>
         extends AbstractCollectionComponent<TEntity, TEndpoint, TElementEndpoint> {
-
-    protected Observable<TEntity> observable;
-    protected Subscription currentSubscription;
 
     /**
      * Creates a new REST stream component.
@@ -54,31 +48,25 @@ public abstract class AbstractStreamComponent<TEntity, TEndpoint extends StreamE
     }
 
     @Override
-    protected void onLoad() throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, OperationNotSupportedException {
-        setObserver(new EntityObserver(UI.getCurrent()));
+    protected void onLoad() {
+        // Do nothing here, loading happens async
     }
 
-    /**
-     * Unsubscribes the current observer.
-     */
-    public void stopStreaming() {
-        currentSubscription.unsubscribe();
-    }
+    private Subscription subscription;
 
-    /**
-     * Sets the used {@link Observer} to the given one. This replaces the
-     * {@link Observer} used so far and can therefore be executed while
-     * observing.
-     *
-     * @param observer The new observer to listen on new <code>TEntity</code>s
-     * incoming.
-     */
-    public void setObserver(Observer<TEntity> observer) {
-        if (currentSubscription != null && !currentSubscription.isUnsubscribed()) {
-            currentSubscription.unsubscribe();
+    @Override
+    public void attach() {
+        super.attach();
+        if (subscription != null && !subscription.isUnsubscribed()) {
+            subscription.unsubscribe();
         }
+        subscription = endpoint.getObservable().subscribe(new EntityObserver(UI.getCurrent()));
+    }
 
-        endpoint.getObservable().subscribe(observer);
+    @Override
+    public void detach() {
+        subscription.unsubscribe();
+        super.detach();
     }
 
     private final class EntityObserver implements Observer<TEntity> {
@@ -92,7 +80,7 @@ public abstract class AbstractStreamComponent<TEntity, TEndpoint extends StreamE
         @Override
         public void onCompleted() {
             ui.access(() -> {
-                Notification.show("Done", "No more Data available.", Notification.Type.TRAY_NOTIFICATION);
+                Notification.show("Done", "No more data available.", Notification.Type.TRAY_NOTIFICATION);
                 ui.push();
             });
         }
