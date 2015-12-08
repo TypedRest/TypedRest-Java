@@ -110,6 +110,7 @@ public abstract class AbstractStreamComponent<TEntity, TEndpoint extends StreamE
         public void onNext(final TEntity entity) {
             ui.access(() -> {
                 lister.addEntity(entity);
+                lister.scrollToEnd();
                 ui.push();
             });
         }

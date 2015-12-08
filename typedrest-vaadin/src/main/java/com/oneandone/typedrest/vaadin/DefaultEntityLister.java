@@ -10,7 +10,7 @@ import java.util.Collection;
  *
  * @param <TEntity> The type of entities the list shows.
  */
-class DefaultEntityLister<TEntity>
+public class DefaultEntityLister<TEntity>
         extends AbstractEntityLister<TEntity> {
 
     protected final Grid grid = new Grid();
@@ -69,5 +69,10 @@ class DefaultEntityLister<TEntity>
     @SuppressWarnings("unchecked") // Known types in untyped GUI control
     public Collection<TEntity> getSelectedEntities() {
         return (Collection<TEntity>) grid.getSelectedRows();
+    }
+
+    @Override
+    public void scrollToEnd() {
+        grid.scrollToEnd();
     }
 }

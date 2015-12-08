@@ -23,7 +23,7 @@ public interface EntityLister<TEntity> extends Component {
      * @param entity the entity to add.
      */
     void addEntity(TEntity entity);
-    
+
     /**
      * Controls whether checkboxes for selecting entities are shown.
      *
@@ -44,4 +44,9 @@ public interface EntityLister<TEntity> extends Component {
      * @param listener invoked when an entity is clicked.
      */
     void addEntityClickListener(EntityClickListener<TEntity> listener);
+
+    /**
+     * Scrolls to the end of the list.
+     */
+    void scrollToEnd();
 }
