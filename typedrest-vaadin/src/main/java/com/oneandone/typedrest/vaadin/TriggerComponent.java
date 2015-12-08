@@ -30,12 +30,11 @@ public class TriggerComponent extends EndpointComponent<TriggerEndpoint> {
     }
 
     /**
-     * Triggers the action and notifies the user and any event subscribers.
+     * Triggers the action.
      */
     protected void trigger() {
         try {
             onTrigger();
-            eventBus.post(endpoint);
             Notification.show(getCaption(), "Successful.", Notification.Type.TRAY_NOTIFICATION);
         } catch (IOException | IllegalArgumentException | IllegalAccessException | OperationNotSupportedException ex) {
             onError(ex);
@@ -57,5 +56,6 @@ public class TriggerComponent extends EndpointComponent<TriggerEndpoint> {
     protected void onTrigger()
             throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, OperationNotSupportedException {
         endpoint.trigger();
+        eventBus.post(endpoint);
     }
 }

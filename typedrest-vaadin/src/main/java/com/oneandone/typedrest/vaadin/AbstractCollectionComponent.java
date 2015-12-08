@@ -150,7 +150,7 @@ public abstract class AbstractCollectionComponent<TEntity, TEndpoint extends Col
                     }
                 };
 
-                eventBus.post(endpoint);
+                refresh();
             }
         });
     }
@@ -172,13 +172,6 @@ public abstract class AbstractCollectionComponent<TEntity, TEndpoint extends Col
 
     @Subscribe
     public void refreshEvent(ElementEndpoint<TEntity> endpoint) {
-        if (endpoint.getEntityType() == this.endpoint.getEntityType()) {
-            refresh();
-        }
-    }
-
-    @Subscribe
-    public void refreshEvent(CollectionEndpoint<TEntity, ?> endpoint) {
         if (endpoint.getEntityType() == this.endpoint.getEntityType()) {
             refresh();
         }

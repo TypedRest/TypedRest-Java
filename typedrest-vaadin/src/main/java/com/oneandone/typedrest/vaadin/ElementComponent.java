@@ -48,5 +48,6 @@ public class ElementComponent<TEntity>
     protected void onSave()
             throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, OperationNotSupportedException {
         endpoint.update(entityForm.getEntity());
+        eventBus.post(endpoint);
     }
 }

@@ -57,13 +57,11 @@ public abstract class AbstractElementComponent<TEntity, TEndpoint extends Endpoi
     }
 
     /**
-     * Saves the input, notifies any event subscribers and closes the
-     * {@link Window} (if present).
+     * Saves the input and closes the {@link Window} (if present).
      */
     protected void save() {
         try {
             onSave();
-            eventBus.post(endpoint);
             close();
         } catch (IOException | IllegalArgumentException | IllegalAccessException | OperationNotSupportedException ex) {
             onError(ex);

@@ -46,6 +46,6 @@ public class CreateElementComponent<TEntity, TElementEndpoint extends ElementEnd
     @Override
     protected void onSave()
             throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, OperationNotSupportedException {
-        endpoint.create(entityForm.getEntity());
+        eventBus.post(endpoint.create(entityForm.getEntity()));
     }
 }
