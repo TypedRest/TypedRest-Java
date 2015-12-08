@@ -8,7 +8,6 @@ import com.vaadin.ui.*;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import javax.naming.OperationNotSupportedException;
-import org.apache.http.*;
 import rx.*;
 
 /**

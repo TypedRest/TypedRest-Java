@@ -4,10 +4,8 @@ import com.google.gwt.thirdparty.guava.common.eventbus.EventBus;
 import com.oneandone.typedrest.*;
 import com.vaadin.ui.*;
 import org.apache.http.*;
-
 import javax.naming.*;
 import java.io.*;
-import org.vaadin.dialogs.ConfirmDialog;
 
 /**
  * Component operating on a {@link TriggerEndpoint}.
@@ -32,30 +30,9 @@ public class TriggerComponent extends EndpointComponent<TriggerEndpoint> {
     }
 
     /**
-     * Creates a new REST trigger endpoint component with a confirmation
-     * question.
-     *
-     * @param endpoint The REST endpoint this component operates on.
-     * @param eventBus Used to send refresh notifications.
-     * @param caption A caption for the triggerable action.
-     * @param confirmationQustion A question to show the user asking whether to
-     * actually trigger the action.
+     * Triggers the action and notifies the user and any event subscribers.
      */
-    @SuppressWarnings("OverridableMethodCallInConstructor") // False positive due to lambda
-    public TriggerComponent(TriggerEndpoint endpoint, EventBus eventBus, String caption, String confirmationQustion) {
-        super(endpoint, eventBus);
-        setWidthUndefined();
-
-        setCompositionRoot(button = new Button(caption, x -> {
-            ConfirmDialog.show(getUI(), confirmationQustion, (ConfirmDialog cd) -> {
-                if (cd.isConfirmed()) {
-                    trigger();
-                }
-            });
-        }));
-    }
-
-    private void trigger() {
+    protected void trigger() {
         try {
             onTrigger();
             eventBus.post(endpoint);

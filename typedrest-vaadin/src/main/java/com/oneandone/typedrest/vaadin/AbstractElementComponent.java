@@ -20,15 +20,7 @@ public abstract class AbstractElementComponent<TEntity, TEndpoint extends Endpoi
 
     protected final EntityForm<TEntity> entityForm;
 
-    protected final Button saveButton = new Button("Save", x -> {
-        try {
-            onSave();
-            eventBus.post(endpoint);
-            close();
-        } catch (IOException | IllegalArgumentException | IllegalAccessException | OperationNotSupportedException ex) {
-            onError(ex);
-        }
-    });
+    protected final Button saveButton = new Button("Save", x -> save());
     protected final HorizontalLayout buttonsLayout = new HorizontalLayout(saveButton);
 
     protected final VerticalLayout masterLayout;
@@ -62,6 +54,20 @@ public abstract class AbstractElementComponent<TEntity, TEndpoint extends Endpoi
         super.setReadOnly(readOnly);
         entityForm.setReadOnly(readOnly);
         saveButton.setVisible(!readOnly);
+    }
+
+    /**
+     * Saves the input, notifies any event subscribers and closes the
+     * {@link Window} (if present).
+     */
+    protected void save() {
+        try {
+            onSave();
+            eventBus.post(endpoint);
+            close();
+        } catch (IOException | IllegalArgumentException | IllegalAccessException | OperationNotSupportedException ex) {
+            onError(ex);
+        }
     }
 
     /**
