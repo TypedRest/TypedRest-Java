@@ -41,6 +41,7 @@ public abstract class AbstractStreamComponent<TEntity, TEndpoint extends StreamE
         setOpenElementEnabled(false);
         setCreateEnabled(false);
         setDeleteEnabled(false);
+        refreshButton.setVisible(false);
     }
 
     /**

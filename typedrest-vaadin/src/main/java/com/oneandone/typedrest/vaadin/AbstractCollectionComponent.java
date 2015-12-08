@@ -28,7 +28,8 @@ public abstract class AbstractCollectionComponent<TEntity, TEndpoint extends Col
 
     private final Button createButton = new Button("Create", x -> onCreateElement());
     protected final Button deleteButton = new Button("Delete", x -> onDeleteElements());
-    protected final HorizontalLayout buttonsLayout = new HorizontalLayout(createButton, deleteButton);
+    protected final Button refreshButton = new Button("Refresh", x -> refresh());
+    protected final HorizontalLayout buttonsLayout = new HorizontalLayout(createButton, deleteButton, refreshButton);
 
     protected final VerticalLayout masterLayout;
 
