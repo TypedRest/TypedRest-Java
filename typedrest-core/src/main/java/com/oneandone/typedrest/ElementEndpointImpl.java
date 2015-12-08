@@ -48,21 +48,21 @@ public class ElementEndpointImpl<TEntity>
 
     @Override
     public TEntity read()
-            throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, OperationNotSupportedException, HttpException {
+            throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, OperationNotSupportedException {
         HttpResponse response = execute(Request.Get(uri));
         return json.readValue(EntityUtils.toString(response.getEntity()), entityType);
     }
 
     @Override
     public void update(TEntity entity)
-            throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, OperationNotSupportedException, HttpException {
+            throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, OperationNotSupportedException {
         String jsonSend = json.writeValueAsString(entity);
         execute(Request.Put(uri).bodyString(jsonSend, ContentType.APPLICATION_JSON));
     }
 
     @Override
     public void delete()
-            throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, OperationNotSupportedException, HttpException {
+            throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, OperationNotSupportedException {
         execute(Request.Delete(uri));
     }
 }

@@ -21,14 +21,14 @@ public class BlobEndpointImpl extends AbstractEndpoint implements BlobEndpoint {
     }
 
     @Override
-    public String downloadTo(OutputStream stream) throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, OperationNotSupportedException, HttpException {
+    public String downloadTo(OutputStream stream) throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, OperationNotSupportedException {
         HttpResponse response = execute(Request.Get(uri));
         response.getEntity().writeTo(stream);
         return ContentType.get(response.getEntity()).getMimeType();
     }
 
     @Override
-    public void uploadFrom(File file, String mimeType) throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, OperationNotSupportedException, HttpException {
+    public void uploadFrom(File file, String mimeType) throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, OperationNotSupportedException {
         execute(Request.Put(uri).bodyFile(file, ContentType.create(mimeType)));
     }
 }

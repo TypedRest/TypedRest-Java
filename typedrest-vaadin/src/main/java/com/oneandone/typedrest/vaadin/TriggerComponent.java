@@ -60,7 +60,7 @@ public class TriggerComponent extends EndpointComponent<TriggerEndpoint> {
             onTrigger();
             eventBus.post(endpoint);
             Notification.show(getCaption(), "Successful.", Notification.Type.TRAY_NOTIFICATION);
-        } catch (IOException | IllegalArgumentException | IllegalAccessException | OperationNotSupportedException | HttpException ex) {
+        } catch (IOException | IllegalArgumentException | IllegalAccessException | OperationNotSupportedException ex) {
             onError(ex);
         }
     }
@@ -75,10 +75,10 @@ public class TriggerComponent extends EndpointComponent<TriggerEndpoint> {
      * @throws FileNotFoundException {@link HttpStatus#SC_NOT_FOUND} or
      * {@link HttpStatus#SC_GONE}
      * @throws OperationNotSupportedException {@link HttpStatus#SC_CONFLICT}
-     * @throws HttpException Other non-success status code.
+     * @throws RuntimeException Other non-success status code.
      */
     protected void onTrigger()
-            throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, OperationNotSupportedException, HttpException {
+            throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, OperationNotSupportedException {
         endpoint.trigger();
     }
 }

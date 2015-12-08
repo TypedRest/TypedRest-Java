@@ -31,10 +31,10 @@ public interface ElementEndpoint<TEntity>
      * @throws FileNotFoundException {@link HttpStatus#SC_NOT_FOUND} or
      * {@link HttpStatus#SC_GONE}
      * @throws OperationNotSupportedException {@link HttpStatus#SC_CONFLICT}
-     * @throws HttpException Other non-success status code.
+     * @throws RuntimeException Other non-success status code.
      */
     TEntity read()
-            throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, OperationNotSupportedException, HttpException;
+            throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, OperationNotSupportedException;
 
     /**
      * Updates the <code>TEntity</code>.
@@ -47,10 +47,10 @@ public interface ElementEndpoint<TEntity>
      * @throws FileNotFoundException {@link HttpStatus#SC_NOT_FOUND} or
      * {@link HttpStatus#SC_GONE}
      * @throws OperationNotSupportedException {@link HttpStatus#SC_CONFLICT}
-     * @throws HttpException Other non-success status code.
+     * @throws RuntimeException Other non-success status code.
      */
     void update(TEntity entity)
-            throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, OperationNotSupportedException, HttpException;
+            throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, OperationNotSupportedException;
 
     /**
      * Deletes the <code>TEntity</code>.
@@ -62,8 +62,8 @@ public interface ElementEndpoint<TEntity>
      * @throws FileNotFoundException {@link HttpStatus#SC_NOT_FOUND} or
      * {@link HttpStatus#SC_GONE}
      * @throws OperationNotSupportedException {@link HttpStatus#SC_CONFLICT}
-     * @throws HttpException Other non-success status code.
+     * @throws RuntimeException Other non-success status code.
      */
     void delete()
-            throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, OperationNotSupportedException, HttpException;
+            throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, OperationNotSupportedException;
 }

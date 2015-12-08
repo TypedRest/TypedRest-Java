@@ -54,7 +54,7 @@ public abstract class AbstractStreamComponent<TEntity, TEndpoint extends StreamE
     }
 
     @Override
-    protected void onLoad() throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, OperationNotSupportedException, HttpException {
+    protected void onLoad() throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, OperationNotSupportedException {
         setObserver(new EntityObserver(UI.getCurrent()));
     }
 

@@ -8,7 +8,6 @@ import com.vaadin.ui.themes.ValoTheme;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import javax.naming.OperationNotSupportedException;
-import org.apache.http.HttpException;
 
 /**
  * Base class for building components operating on an
@@ -104,7 +103,7 @@ public abstract class AbstractPagedCollectionComponent<TEntity, TEndpoint extend
 
     @Override
     protected void onLoad()
-            throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, OperationNotSupportedException, HttpException {
+            throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, OperationNotSupportedException {
         PartialResponse<TEntity> response = endpoint.readRange(currentFrom, currentTo);
 
         if (response.isEndReached()) {

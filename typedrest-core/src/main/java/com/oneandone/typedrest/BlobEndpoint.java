@@ -22,10 +22,10 @@ public interface BlobEndpoint extends Endpoint {
      * @throws FileNotFoundException {@link HttpStatus#SC_NOT_FOUND} or
      * {@link HttpStatus#SC_GONE}
      * @throws OperationNotSupportedException {@link HttpStatus#SC_CONFLICT}
-     * @throws HttpException Other non-success status code.
+     * @throws RuntimeException Other non-success status code.
      */
     String downloadTo(OutputStream stream)
-            throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, OperationNotSupportedException, HttpException;
+            throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, OperationNotSupportedException;
 
     /**
      * Uploads a local file as the blob's content.
@@ -40,8 +40,8 @@ public interface BlobEndpoint extends Endpoint {
      * @throws FileNotFoundException {@link HttpStatus#SC_NOT_FOUND} or
      * {@link HttpStatus#SC_GONE}
      * @throws OperationNotSupportedException {@link HttpStatus#SC_CONFLICT}
-     * @throws HttpException Other non-success status code.
+     * @throws RuntimeException Other non-success status code.
      */
     void uploadFrom(File file, String mimeType)
-            throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, OperationNotSupportedException, HttpException;
+            throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, OperationNotSupportedException;
 }

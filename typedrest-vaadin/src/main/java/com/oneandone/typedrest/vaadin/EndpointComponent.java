@@ -57,7 +57,7 @@ public abstract class EndpointComponent<TEndpoint extends Endpoint>
     public void refresh() {
         try {
             onLoad();
-        } catch (IOException | IllegalArgumentException | IllegalAccessException | OperationNotSupportedException | HttpException ex) {
+        } catch (IOException | IllegalArgumentException | IllegalAccessException | OperationNotSupportedException ex) {
             onError(ex);
         }
     }
@@ -72,10 +72,10 @@ public abstract class EndpointComponent<TEndpoint extends Endpoint>
      * @throws FileNotFoundException {@link HttpStatus#SC_NOT_FOUND} or
      * {@link HttpStatus#SC_GONE}
      * @throws OperationNotSupportedException {@link HttpStatus#SC_CONFLICT}
-     * @throws HttpException Other non-success status code.
+     * @throws RuntimeException Other non-success status code.
      */
     protected void onLoad()
-            throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, OperationNotSupportedException, HttpException {
+            throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, OperationNotSupportedException {
     }
 
     /**

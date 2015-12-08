@@ -25,7 +25,7 @@ public abstract class AbstractElementComponent<TEntity, TEndpoint extends Endpoi
             onSave();
             eventBus.post(endpoint);
             close();
-        } catch (IOException | IllegalArgumentException | IllegalAccessException | OperationNotSupportedException | HttpException ex) {
+        } catch (IOException | IllegalArgumentException | IllegalAccessException | OperationNotSupportedException ex) {
             onError(ex);
         }
     });
@@ -74,8 +74,8 @@ public abstract class AbstractElementComponent<TEntity, TEndpoint extends Endpoi
      * @throws FileNotFoundException {@link HttpStatus#SC_NOT_FOUND} or
      * {@link HttpStatus#SC_GONE}
      * @throws OperationNotSupportedException {@link HttpStatus#SC_CONFLICT}
-     * @throws HttpException Other non-success status code.
+     * @throws RuntimeException Other non-success status code.
      */
     protected abstract void onSave()
-            throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, OperationNotSupportedException, HttpException;
+            throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, OperationNotSupportedException;
 }

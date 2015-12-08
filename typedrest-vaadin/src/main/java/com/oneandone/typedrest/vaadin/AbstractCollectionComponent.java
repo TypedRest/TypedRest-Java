@@ -9,7 +9,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Collection;
 import javax.naming.OperationNotSupportedException;
-import org.apache.http.HttpException;
 import org.vaadin.dialogs.ConfirmDialog;
 
 /**
@@ -104,7 +103,7 @@ public abstract class AbstractCollectionComponent<TEntity, TEndpoint extends Col
 
     @Override
     protected void onLoad()
-            throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, OperationNotSupportedException, HttpException {
+            throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, OperationNotSupportedException {
         lister.setEntities(endpoint.readAll());
     }
 
@@ -145,7 +144,7 @@ public abstract class AbstractCollectionComponent<TEntity, TEndpoint extends Col
                         for (TEntity entity : entities) {
                             endpoint.get(entity).delete();
                         }
-                    } catch (IOException | IllegalArgumentException | IllegalAccessException | OperationNotSupportedException | HttpException ex) {
+                    } catch (IOException | IllegalArgumentException | IllegalAccessException | OperationNotSupportedException ex) {
                         onError(ex);
                     }
                 };

@@ -6,7 +6,6 @@ import java.io.*;
 import com.oneandone.typedrest.*;
 import com.vaadin.server.*;
 import com.vaadin.ui.*;
-import org.apache.http.*;
 
 /**
  * Component operating on a {@link BlobEndpoint}.
@@ -103,7 +102,7 @@ public class BlobComponent extends EndpointComponent<BlobEndpoint> {
         try {
             endpoint.uploadFrom(uploadTarget, uploadMimeType);
             onUploadSuccess();
-        } catch (IOException | IllegalAccessException | IllegalArgumentException | HttpException |
+        } catch (IOException | IllegalAccessException | IllegalArgumentException |
                 OperationNotSupportedException ex) {
             onError(ex);
         }
@@ -136,7 +135,7 @@ public class BlobComponent extends EndpointComponent<BlobEndpoint> {
             ResourceReference resourceReference = ResourceReference.create(streamResource, this, "file-download");
             Page.getCurrent().open(resourceReference.getURL(), null);
 
-        } catch (IOException | IllegalAccessException | HttpException | OperationNotSupportedException ex) {
+        } catch (IOException | IllegalAccessException | OperationNotSupportedException ex) {
             onError(ex);
         }
     }

@@ -5,7 +5,6 @@ import com.oneandone.typedrest.ElementEndpoint;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import javax.naming.OperationNotSupportedException;
-import org.apache.http.HttpException;
 
 /**
  * Component for showing or updating an existing element represented by an
@@ -39,7 +38,7 @@ public class ElementComponent<TEntity>
 
     @Override
     protected void onLoad()
-            throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, OperationNotSupportedException, HttpException {
+            throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, OperationNotSupportedException {
         TEntity entity = endpoint.read();
         setCaption(entity.toString());
         entityForm.setEntity(entity);
@@ -47,7 +46,7 @@ public class ElementComponent<TEntity>
 
     @Override
     protected void onSave()
-            throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, OperationNotSupportedException, HttpException {
+            throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, OperationNotSupportedException {
         endpoint.update(entityForm.getEntity());
     }
 }

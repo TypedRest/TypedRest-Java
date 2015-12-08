@@ -78,10 +78,10 @@ public abstract class AbstractEndpoint
      * @throws OperationNotSupportedException {@link HttpStatus#SC_CONFLICT}
      * @throws IllegalStateException
      * {@link HttpStatus#SC_REQUESTED_RANGE_NOT_SATISFIABLE}
-     * @throws HttpException Other non-success status code.
+     * @throws RuntimeException Other non-success status code.
      */
     protected HttpResponse execute(Request request)
-            throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, OperationNotSupportedException, IllegalStateException, HttpException {
+            throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, OperationNotSupportedException, IllegalStateException {
         request.addHeader("Accept", ContentType.APPLICATION_JSON.getMimeType());
         HttpResponse response = rest.execute(request).returnResponse();
 
@@ -91,14 +91,15 @@ public abstract class AbstractEndpoint
         }
 
         HttpEntity entity = response.getEntity();
+        String body = EntityUtils.toString(entity);
         Header encoding = entity.getContentType();
         String message = (encoding != null) && encoding.getValue().startsWith("application/json")
-                ? json.readTree(EntityUtils.toString(entity)).get("message").asText()
+                ? json.readTree(body).get("message").asText()
                 : statusLine.toString();
 
         switch (statusLine.getStatusCode()) {
             case HttpStatus.SC_BAD_REQUEST:
-                throw new IllegalArgumentException(message);
+                throw new IllegalArgumentException(message, new HttpException(body));
             case HttpStatus.SC_UNAUTHORIZED:
             case HttpStatus.SC_FORBIDDEN:
                 throw new IllegalAccessException(message);
@@ -108,9 +109,9 @@ public abstract class AbstractEndpoint
             case HttpStatus.SC_CONFLICT:
                 throw new OperationNotSupportedException(message);
             case HttpStatus.SC_REQUESTED_RANGE_NOT_SATISFIABLE:
-                throw new IllegalStateException(message);
+                throw new IllegalStateException(message, new HttpException(body));
             default:
-                throw new HttpException(message);
+                throw new RuntimeException(message, new HttpException(body));
         }
     }
 }

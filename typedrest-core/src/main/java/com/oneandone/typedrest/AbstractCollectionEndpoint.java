@@ -84,7 +84,7 @@ public abstract class AbstractCollectionEndpoint<TEntity, TElementEndpoint exten
 
     @Override
     public Collection<TEntity> readAll()
-            throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, OperationNotSupportedException, HttpException {
+            throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, OperationNotSupportedException {
         HttpResponse response = execute(Request.Get(uri));
 
         JavaType collectionType = json.getTypeFactory().constructCollectionType(List.class, entityType);
@@ -93,7 +93,7 @@ public abstract class AbstractCollectionEndpoint<TEntity, TElementEndpoint exten
 
     @Override
     public TElementEndpoint create(TEntity entity)
-            throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, OperationNotSupportedException, HttpException {
+            throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, OperationNotSupportedException {
         String jsonSend = json.writeValueAsString(entity);
         HttpResponse response = execute(Request.Post(uri).bodyString(jsonSend, ContentType.APPLICATION_JSON));
         Header locationHeader = response.getFirstHeader("Location");

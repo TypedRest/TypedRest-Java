@@ -7,7 +7,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import javax.naming.OperationNotSupportedException;
 import lombok.SneakyThrows;
-import org.apache.http.HttpException;
 
 /**
  * Component for creating a new element in a {@link CollectionEndpoint}.
@@ -46,7 +45,7 @@ public class CreateElementComponent<TEntity, TElementEndpoint extends ElementEnd
 
     @Override
     protected void onSave()
-            throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, OperationNotSupportedException, HttpException {
+            throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, OperationNotSupportedException {
         endpoint.create(entityForm.getEntity());
     }
 }

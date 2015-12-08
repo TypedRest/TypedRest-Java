@@ -37,8 +37,8 @@ public interface PagedCollectionEndpoint<TEntity, TElementEndpoint extends Eleme
      * @throws OperationNotSupportedException {@link HttpStatus#SC_CONFLICT}
      * @throws IllegalStateException
      * {@link HttpStatus#SC_REQUESTED_RANGE_NOT_SATISFIABLE}
-     * @throws HttpException Other non-success status code.
+     * @throws RuntimeException Other non-success status code.
      */
     PartialResponse<TEntity> readRange(Long from, Long to)
-            throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, OperationNotSupportedException, IllegalStateException, HttpException;
+            throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, OperationNotSupportedException, IllegalStateException;
 }
