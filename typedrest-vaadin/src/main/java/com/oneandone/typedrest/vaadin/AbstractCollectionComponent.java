@@ -59,6 +59,8 @@ public abstract class AbstractCollectionComponent<TEntity, TEndpoint extends Col
 
         masterLayout = new VerticalLayout(lister, buttonsLayout);
         masterLayout.setComponentAlignment(buttonsLayout, Alignment.MIDDLE_RIGHT);
+        masterLayout.setMargin(true);
+        masterLayout.setSpacing(true);
         setCompositionRoot(masterLayout);
     }
 
