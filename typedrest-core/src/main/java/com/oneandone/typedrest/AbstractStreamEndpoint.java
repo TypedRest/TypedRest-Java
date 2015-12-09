@@ -4,6 +4,7 @@ import java.net.*;
 import rx.*;
 import rx.schedulers.Schedulers;
 import static rx.util.async.Async.runAsync;
+import rx.util.async.StoppableObservable;
 
 /**
  * Base class for building REST endpoints that represents a stream of
@@ -43,12 +44,7 @@ public abstract class AbstractStreamEndpoint<TEntity, TElementEndpoint extends E
     }
 
     @Override
-    public rx.Observable<TEntity> getObservable() {
-        return getObservable(0);
-    }
-
-    @Override
-    public rx.Observable<TEntity> getObservable(long startIndex) {
+    public StoppableObservable<TEntity> getObservable(long startIndex) {
         return getObservable(startIndex, Schedulers.io());
     }
 
@@ -60,7 +56,7 @@ public abstract class AbstractStreamEndpoint<TEntity, TElementEndpoint extends E
      * @param scheduler The scheduler used to run the background thread.
      * @return An observable stream of elements.
      */
-    rx.Observable<TEntity> getObservable(final long startIndex, Scheduler scheduler) {
+    StoppableObservable<TEntity> getObservable(final long startIndex, Scheduler scheduler) {
         return runAsync(scheduler, (rx.Observer<? super TEntity> observer, Subscription subscription) -> {
             long currentStartIndex = startIndex;
             while (!subscription.isUnsubscribed()) {

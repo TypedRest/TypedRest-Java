@@ -5,7 +5,10 @@ import com.oneandone.typedrest.*;
 import com.vaadin.annotations.Push;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.*;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
 import rx.*;
+import rx.util.async.StoppableObservable;
 
 /**
  * Base class for building components operating on an {@link StreamEndpoint}.
@@ -30,8 +33,6 @@ public abstract class AbstractStreamComponent<TEntity, TEndpoint extends StreamE
      */
     protected AbstractStreamComponent(TEndpoint endpoint, EventBus eventBus, EntityLister<TEntity> lister) {
         super(endpoint, eventBus, lister);
-
-        setOpenElementEnabled(false);
         setCreateEnabled(false);
         setDeleteEnabled(false);
         refreshButton.setVisible(false);
@@ -52,28 +53,60 @@ public abstract class AbstractStreamComponent<TEntity, TEndpoint extends StreamE
         // Do nothing here, loading happens async
     }
 
-    private Subscription subscription;
+    private boolean streamingEnabled = true;
+
+    public void setStreamingEnabled(boolean streamingEnabled) {
+        this.streamingEnabled = streamingEnabled;
+        if (isAttached()) {
+            if (streamingEnabled) {
+                startStreaming();
+            } else {
+                stopStreaming();
+            }
+        }
+    }
+
+    public boolean isStreamingEnabled() {
+        return streamingEnabled;
+    }
 
     @Override
     public void attach() {
         super.attach();
-        if (subscription != null && !subscription.isUnsubscribed()) {
-            subscription.unsubscribe();
+        if (streamingEnabled) {
+            startStreaming();
         }
-        subscription = endpoint.getObservable().subscribe(new EntityObserver(UI.getCurrent()));
     }
 
     @Override
     public void detach() {
-        subscription.unsubscribe();
+        stopStreaming();
         super.detach();
     }
 
-    private final class EntityObserver implements Observer<TEntity> {
+    private StoppableObservable<TEntity> observable;
+
+    private void startStreaming() {
+        stopStreaming();
+        lister.clearEntities();
+        observable = endpoint.getObservable();
+        observable
+                .buffer(1, TimeUnit.SECONDS).filter(x -> !x.isEmpty())
+                .subscribe(new EntitySubscriber(UI.getCurrent()));
+    }
+
+    private void stopStreaming() {
+        if (observable != null) {
+            observable.unsubscribe();
+            observable = null;
+        }
+    }
+
+    private final class EntitySubscriber implements Observer<List<TEntity>> {
 
         private final UI ui;
 
-        public EntityObserver(UI ui) {
+        public EntitySubscriber(UI ui) {
             this.ui = ui;
         }
 
@@ -88,15 +121,15 @@ public abstract class AbstractStreamComponent<TEntity, TEndpoint extends StreamE
         @Override
         public void onError(final Throwable throwable) {
             ui.access(() -> {
-                ui.getErrorHandler().error(new com.vaadin.server.ErrorEvent(throwable));
+                Notification.show("Error", throwable.getLocalizedMessage(), Notification.Type.WARNING_MESSAGE);
                 ui.push();
             });
         }
 
         @Override
-        public void onNext(final TEntity entity) {
+        public void onNext(final List<TEntity> entities) {
             ui.access(() -> {
-                lister.addEntity(entity);
+                lister.addEntities(entities);
                 lister.scrollToEnd();
                 ui.push();
             });

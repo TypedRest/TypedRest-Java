@@ -31,14 +31,18 @@ public abstract class AbstractEntityLister<TEntity>
     }
 
     @Override
-    public void setEntities(Collection<TEntity> entities) {
-        container.removeAllItems();
+    public void addEntity(TEntity entity) {
+        container.addBean(entity);
+    }
+
+    @Override
+    public void addEntities(Collection<TEntity> entities) {
         container.addAll(entities);
     }
 
     @Override
-    public void addEntity(TEntity entity) {
-        container.addBean(entity);
+    public void clearEntities() {
+        container.removeAllItems();
     }
 
     private final Collection<EntityClickListener<TEntity>> clickListeners = new LinkedList<>();

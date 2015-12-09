@@ -60,8 +60,8 @@ public class DefaultEntityLister<TEntity>
     }
 
     @Override
-    public void setEntities(Collection<TEntity> tEntities) {
-        super.setEntities(tEntities);
+    public void clearEntities() {
+        super.clearEntities();
         grid.getSelectionModel().reset();
     }
 

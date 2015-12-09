@@ -1,6 +1,6 @@
 package com.oneandone.typedrest;
 
-import rx.Observable;
+import rx.util.async.StoppableObservable;
 
 /**
  * REST endpoint that represents a stream of <code>TEntity</code>s.
@@ -17,7 +17,9 @@ public interface StreamEndpoint<TEntity, TElementEndpoint extends ElementEndpoin
      *
      * @return An observable stream of elements.
      */
-    Observable<TEntity> getObservable();
+    default StoppableObservable<TEntity> getObservable() {
+        return getObservable(0);
+    }
 
     /**
      * Provides an observable stream of elements.
@@ -26,5 +28,5 @@ public interface StreamEndpoint<TEntity, TElementEndpoint extends ElementEndpoin
      * Use negative values to start counting from the end of the stream.
      * @return An observable stream of elements.
      */
-    Observable<TEntity> getObservable(long startIndex);
+    StoppableObservable<TEntity> getObservable(long startIndex);
 }

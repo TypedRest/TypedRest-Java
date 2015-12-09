@@ -15,7 +15,10 @@ public interface EntityLister<TEntity> extends Component {
      *
      * @param entities the entities the list shows.
      */
-    void setEntities(Collection<TEntity> entities);
+    default void setEntities(Collection<TEntity> entities) {
+        clearEntities();
+        addEntities(entities);
+    }
 
     /**
      * Adds an entity to the list of entities the list shows.
@@ -23,6 +26,18 @@ public interface EntityLister<TEntity> extends Component {
      * @param entity the entity to add.
      */
     void addEntity(TEntity entity);
+
+    /**
+     * Adds a set of entities to the list of entities the list shows.
+     *
+     * @param entities
+     */
+    void addEntities(Collection<TEntity> entities);
+
+    /**
+     * Removes all entities from the list.
+     */
+    void clearEntities();
 
     /**
      * Controls whether checkboxes for selecting entities are shown.
