@@ -46,6 +46,7 @@ public abstract class AbstractElementComponent<TEntity, TEndpoint extends Endpoi
         masterLayout.setMargin(true);
         masterLayout.setSpacing(true);
 
+        setHeight(masterLayout.getHeight() * 1.2f, masterLayout.getHeightUnits());
         setCompositionRoot(masterLayout);
     }
 
