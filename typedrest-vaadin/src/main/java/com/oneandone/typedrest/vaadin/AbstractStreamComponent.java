@@ -88,8 +88,7 @@ public abstract class AbstractStreamComponent<TEntity, TEndpoint extends StreamE
 
     private void startStreaming() {
         stopStreaming();
-        lister.clearEntities();
-        observable = endpoint.getObservable();
+        observable = endpoint.getObservable(lister.entityCount());
         observable
                 .buffer(1, TimeUnit.SECONDS).filter(x -> !x.isEmpty())
                 .subscribe(new EntitySubscriber(UI.getCurrent()));

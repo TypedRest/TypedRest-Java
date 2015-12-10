@@ -45,6 +45,11 @@ public abstract class AbstractEntityLister<TEntity>
         container.removeAllItems();
     }
 
+    @Override
+    public int entityCount() {
+        return container.getItemIds().size();
+    }
+
     private final Collection<EntityClickListener<TEntity>> clickListeners = new LinkedList<>();
 
     @Override

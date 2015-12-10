@@ -40,6 +40,13 @@ public interface EntityLister<TEntity> extends Component {
     void clearEntities();
 
     /**
+     * Returns the number entities currently shown by the list.
+     *
+     * @return The number of entities.
+     */
+    int entityCount();
+
+    /**
      * Controls whether checkboxes for selecting entities are shown.
      *
      * @param val Turns the feature on or off.
