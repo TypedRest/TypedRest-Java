@@ -4,7 +4,7 @@
     <parent>
         <groupId>com.oneandone</groupId>
         <artifactId>typedrest-parent</artifactId>
-        <version>0.10-SNAPSHOT</version>
+        <version>0.10</version>
         <relativePath>../typedrest-parent</relativePath>
     </parent>
     <artifactId>typedrest-core-sample</artifactId>

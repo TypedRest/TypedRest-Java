@@ -42,7 +42,7 @@ Include this in your Maven ```pom.xml``` to use the library:
 <dependency>
   <groupId>com.oneandone</groupId>
   <artifactId>typedrest-core</artifactId>
-  <version>0.9</version>
+  <version>0.10</version>
 </dependency>
 ```
 
@@ -75,7 +75,7 @@ Include this in your Maven ```pom.xml``` to build GUIs with [Vaadin](https://vaa
 <dependency>
   <groupId>com.oneandone</groupId>
   <artifactId>typedrest-vaadin</artifactId>
-  <version>0.8</version>
+  <version>0.10</version>
 </dependency>
 ```
 
