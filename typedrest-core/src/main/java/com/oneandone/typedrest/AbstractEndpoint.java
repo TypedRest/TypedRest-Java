@@ -5,6 +5,10 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import static com.oneandone.typedrest.URIUtils.*;
 import java.io.*;
 import java.net.*;
+import java.util.*;
+import static java.util.Collections.newSetFromMap;
+import static java.util.Collections.unmodifiableSet;
+import java.util.concurrent.ConcurrentHashMap;
 import javax.naming.OperationNotSupportedException;
 import lombok.*;
 import org.apache.http.*;
@@ -86,6 +90,7 @@ public abstract class AbstractEndpoint
 
         HttpResponse response = rest.execute(request).returnResponse();
         handleErrors(response);
+        handleLinks(response);
 
         return response;
     }
@@ -136,5 +141,52 @@ public abstract class AbstractEndpoint
             default:
                 throw new RuntimeException(message, new HttpException(body));
         }
+    }
+
+    /**
+     * Handles HTTP Link headers.
+     *
+     * @param response The response to check for links.
+     */
+    private void handleLinks(HttpResponse response) {
+        for (Header header : response.getHeaders("Link")) {
+            for (HeaderElement element : header.getElements()) {
+                NameValuePair relParameter = element.getParameterByName("rel");
+                NameValuePair titleParameter = element.getParameterByName("title");
+                handleLink(
+                        element.getName().substring(1, element.getName().length() - 1),
+                        (relParameter == null) ? null : relParameter.getValue(),
+                        (titleParameter == null) ? null : titleParameter.getValue());
+            }
+        }
+    }
+
+    /**
+     * Hook for handling links included in a response as an HTTP header.
+     *
+     * @param href The URI the link points to.
+     * @param rel The relation type of the link; can be <code>null</code>.
+     * @param title A human-readable description of the link; can be
+     * <code>null</code>.
+     */
+    protected void handleLink(String href, String rel, String title) {
+        if (notifyRel.equals(rel)) {
+            notifyTargets.add(getUri().resolve(href));
+        }
+    }
+
+    /**
+     * The HTTP Link header relation type used by the server to set
+     * {@link Endpoint#getNotifyTargets}.
+     */
+    @Getter
+    @Setter
+    private String notifyRel = "notify";
+
+    private final Set<URI> notifyTargets = newSetFromMap(new ConcurrentHashMap<URI, Boolean>());
+
+    @Override
+    public Set<URI> getNotifyTargets() {
+        return unmodifiableSet(notifyTargets);
     }
 }

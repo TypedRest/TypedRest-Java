@@ -1,5 +1,6 @@
 package com.oneandone.typedrest;
 
+import com.damnhandy.uri.template.UriTemplate;
 import com.fasterxml.jackson.databind.JavaType;
 import static com.oneandone.typedrest.BeanUtils.*;
 import static com.oneandone.typedrest.URIUtils.ensureTrailingSlash;
@@ -13,7 +14,7 @@ import java.io.*;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URI;
 import java.util.*;
-import lombok.Getter;
+import lombok.*;
 
 /**
  * Base class for building REST endpoints that represents a collection of
@@ -60,7 +61,31 @@ public abstract class AbstractCollectionEndpoint<TEntity, TElementEndpoint exten
 
     @Override
     public TElementEndpoint get(TEntity entity) {
-        return get(URI.create(getCollectionKey(entity)));
+        String relativeUri = childTemplate.set("id", getCollectionKey(entity)).expand();
+        return get(URI.create(relativeUri));
+    }
+
+    /**
+     * The URI template used to construct URIs of child elements of this
+     * collection.
+     */
+    protected UriTemplate childTemplate = UriTemplate.fromTemplate("{id}");
+
+    /**
+     * The HTTP Link header relation type used by the server to set the
+     * collection child element URI template.
+     */
+    @Getter
+    @Setter
+    private String childTemplateRel = "child-template";
+
+    @Override
+    protected void handleLink(String href, String rel, String title) {
+        if (childTemplateRel.equals(rel)) {
+            childTemplate = UriTemplate.fromTemplate(href);
+        }
+
+        super.handleLink(href, rel, title);
     }
 
     private final Optional<PropertyDescriptor> keyProperty;

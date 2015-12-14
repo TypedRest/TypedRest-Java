@@ -172,6 +172,7 @@ public abstract class AbstractCollectionComponent<TEntity, TEndpoint extends Col
      */
     protected abstract EndpointComponent buildCreateElementComponent();
 
+    // Refresh when child elements are created or updated
     @Subscribe
     public void refreshEvent(ElementEndpoint<TEntity> endpoint) {
         if (endpoint.getEntityType() == this.endpoint.getEntityType()) {

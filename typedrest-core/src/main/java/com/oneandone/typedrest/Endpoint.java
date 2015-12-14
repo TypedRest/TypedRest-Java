@@ -1,6 +1,7 @@
 package com.oneandone.typedrest;
 
 import java.net.*;
+import java.util.Set;
 import org.apache.http.client.fluent.*;
 
 /**
@@ -21,4 +22,12 @@ public interface Endpoint {
      * @return The HTTP URI of the remote resource.
      */
     URI getUri();
+
+    /**
+     * A set of {@link URI}s of other {@link Endpoint}s that may change to
+     * reflect operations performed on this endpoint.
+     *
+     * @return A set of {@link URI}s of other {@link Endpoint}s.
+     */
+    Set<URI> getNotifyTargets();
 }

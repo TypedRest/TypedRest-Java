@@ -62,4 +62,20 @@ public class CollectionEndpointTest extends AbstractEndpointTest {
         assertThat(endpoint.get(new MockEntity(1, "test")).getUri(),
                 is(equalTo(endpoint.getUri().resolve("1"))));
     }
+
+    @Test
+    public void testGetByEntityWithLinkHeader() throws Exception {
+        stubFor(get(urlEqualTo("/endpoint/"))
+                .withHeader("Accept", equalTo(jsonMime))
+                .willReturn(aResponse()
+                        .withStatus(SC_OK)
+                        .withHeader("Content-Type", jsonMime)
+                        .withHeader("Link", "<children/{id}>; rel=child-template")
+                        .withBody("[]")));
+
+        endpoint.readAll();
+
+        assertThat(endpoint.get(new MockEntity(1, "test")).getUri(),
+                is(equalTo(endpoint.getUri().resolve("children/1"))));
+    }
 }
