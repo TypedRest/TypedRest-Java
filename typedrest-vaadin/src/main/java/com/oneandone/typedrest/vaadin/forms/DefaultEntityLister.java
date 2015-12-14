@@ -1,4 +1,4 @@
-package com.oneandone.typedrest.vaadin;
+package com.oneandone.typedrest.vaadin.forms;
 
 import com.vaadin.data.util.filter.*;
 import com.vaadin.ui.*;

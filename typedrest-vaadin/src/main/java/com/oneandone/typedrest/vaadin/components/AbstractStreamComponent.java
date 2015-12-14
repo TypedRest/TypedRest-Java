@@ -1,7 +1,9 @@
-package com.oneandone.typedrest.vaadin;
+package com.oneandone.typedrest.vaadin.components;
 
 import com.google.gwt.thirdparty.guava.common.eventbus.EventBus;
 import com.oneandone.typedrest.*;
+import com.oneandone.typedrest.vaadin.forms.DefaultEntityLister;
+import com.oneandone.typedrest.vaadin.forms.EntityLister;
 import com.vaadin.annotations.Push;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.*;

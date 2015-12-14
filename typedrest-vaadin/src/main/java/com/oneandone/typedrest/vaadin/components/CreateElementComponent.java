@@ -1,8 +1,10 @@
-package com.oneandone.typedrest.vaadin;
+package com.oneandone.typedrest.vaadin.components;
 
 import com.google.gwt.thirdparty.guava.common.eventbus.EventBus;
 import com.oneandone.typedrest.CollectionEndpoint;
 import com.oneandone.typedrest.ElementEndpoint;
+import com.oneandone.typedrest.vaadin.forms.DefaultEntityForm;
+import com.oneandone.typedrest.vaadin.forms.EntityForm;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import javax.naming.OperationNotSupportedException;

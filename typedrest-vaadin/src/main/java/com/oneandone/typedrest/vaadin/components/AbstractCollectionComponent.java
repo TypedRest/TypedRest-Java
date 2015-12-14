@@ -1,8 +1,10 @@
-package com.oneandone.typedrest.vaadin;
+package com.oneandone.typedrest.vaadin.components;
 
 import com.google.gwt.thirdparty.guava.common.eventbus.EventBus;
 import com.google.gwt.thirdparty.guava.common.eventbus.Subscribe;
 import com.oneandone.typedrest.*;
+import com.oneandone.typedrest.vaadin.forms.DefaultEntityLister;
+import com.oneandone.typedrest.vaadin.forms.EntityLister;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
 import java.io.FileNotFoundException;
@@ -150,7 +152,7 @@ public abstract class AbstractCollectionComponent<TEntity, TEndpoint extends Col
                     } catch (IOException | IllegalArgumentException | IllegalAccessException | OperationNotSupportedException ex) {
                         onError(ex);
                     }
-                };
+                }
 
                 refresh();
             }

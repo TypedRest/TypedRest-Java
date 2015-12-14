@@ -1,5 +1,8 @@
 package com.oneandone.typedrest.vaadin.sample.components;
 
+import com.oneandone.typedrest.vaadin.sample.forms.ResourceForm;
+import com.oneandone.typedrest.vaadin.components.ElementComponent;
+import com.oneandone.typedrest.vaadin.components.StreamComponent;
 import com.google.gwt.thirdparty.guava.common.eventbus.EventBus;
 import com.oneandone.typedrest.sample.endpoints.*;
 import com.oneandone.typedrest.sample.models.*;

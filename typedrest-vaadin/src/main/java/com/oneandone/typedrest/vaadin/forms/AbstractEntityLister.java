@@ -1,4 +1,4 @@
-package com.oneandone.typedrest.vaadin;
+package com.oneandone.typedrest.vaadin.forms;
 
 import static com.oneandone.typedrest.BeanUtils.*;
 import com.oneandone.typedrest.ListerHidden;

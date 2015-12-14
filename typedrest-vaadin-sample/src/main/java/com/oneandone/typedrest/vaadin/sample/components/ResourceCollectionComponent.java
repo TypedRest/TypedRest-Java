@@ -1,5 +1,7 @@
 package com.oneandone.typedrest.vaadin.sample.components;
 
+import com.oneandone.typedrest.vaadin.components.EndpointComponent;
+import com.oneandone.typedrest.vaadin.components.AbstractCollectionComponent;
 import com.google.gwt.thirdparty.guava.common.eventbus.EventBus;
 import com.oneandone.typedrest.sample.endpoints.*;
 import com.oneandone.typedrest.sample.models.*;
