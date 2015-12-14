@@ -64,7 +64,7 @@ public abstract class AbstractEndpoint
 
     /**
      * Executes a REST request and wraps HTTP status codes in appropriate
-     * exception types.
+     * {@link Exception} types.
      *
      * @param request The request to execute.
      * @return The HTTP response to the request.
@@ -83,11 +83,34 @@ public abstract class AbstractEndpoint
     protected HttpResponse execute(Request request)
             throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, OperationNotSupportedException, IllegalStateException {
         request.addHeader("Accept", ContentType.APPLICATION_JSON.getMimeType());
-        HttpResponse response = rest.execute(request).returnResponse();
 
+        HttpResponse response = rest.execute(request).returnResponse();
+        handleErrors(response);
+
+        return response;
+    }
+
+    /**
+     * Wraps HTTP status codes in appropriate {@link Exception} types.
+     *
+     * @param response The response to check for errors.
+     *
+     * @throws IOException Network communication failed.
+     * @throws IllegalArgumentException {@link HttpStatus#SC_BAD_REQUEST}
+     * @throws IllegalAccessException {@link HttpStatus#SC_UNAUTHORIZED} or
+     * {@link HttpStatus#SC_FORBIDDEN}
+     * @throws FileNotFoundException {@link HttpStatus#SC_NOT_FOUND} or
+     * {@link HttpStatus#SC_GONE}
+     * @throws OperationNotSupportedException {@link HttpStatus#SC_CONFLICT}
+     * @throws IllegalStateException
+     * {@link HttpStatus#SC_REQUESTED_RANGE_NOT_SATISFIABLE}
+     * @throws RuntimeException Other non-success status code.
+     */
+    protected void handleErrors(HttpResponse response)
+            throws RuntimeException, IOException, IllegalAccessException, OperationNotSupportedException, FileNotFoundException, ParseException {
         StatusLine statusLine = response.getStatusLine();
         if (statusLine.getStatusCode() <= 299) {
-            return response;
+            return;
         }
 
         HttpEntity entity = response.getEntity();
