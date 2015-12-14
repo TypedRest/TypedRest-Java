@@ -38,7 +38,7 @@ public class CollectionEndpointImpl<TEntity>
     }
 
     @Override
-    public ElementEndpoint<TEntity> get(String key) {
-        return new ElementEndpointImpl<>(this, key, entityType);
+    public ElementEndpoint<TEntity> get(URI relativeUri) {
+        return new ElementEndpointImpl<>(this, relativeUri, entityType);
     }
 }

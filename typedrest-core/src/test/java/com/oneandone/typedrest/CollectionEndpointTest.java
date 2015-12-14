@@ -52,8 +52,8 @@ public class CollectionEndpointTest extends AbstractEndpointTest {
     }
 
     @Test
-    public void testGetById() {
-        assertThat(endpoint.get("1").getUri(),
+    public void testGetByRelativeUri() {
+        assertThat(endpoint.get(URI.create("1")).getUri(),
                 is(equalTo(endpoint.getUri().resolve("1"))));
     }
 

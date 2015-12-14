@@ -29,8 +29,6 @@ public abstract class AbstractCollectionEndpoint<TEntity, TElementEndpoint exten
     @Getter
     protected final Class<TEntity> entityType;
 
-    private final Optional<PropertyDescriptor> keyProperty;
-
     /**
      * Creates a new paged collection endpoint.
      *
@@ -62,12 +60,14 @@ public abstract class AbstractCollectionEndpoint<TEntity, TElementEndpoint exten
 
     @Override
     public TElementEndpoint get(TEntity entity) {
-        return get(getCollectionKey(entity));
+        return get(URI.create(getCollectionKey(entity)));
     }
+
+    private final Optional<PropertyDescriptor> keyProperty;
 
     /**
      * Maps a <code>TEntity</code> to a key usable by
-     * {@link CollectionEndpoint#get(java.lang.String)}.
+     * {@link CollectionEndpoint#get(java.net.URI)}.
      *
      * @param entity The entity to get the key for.
      * @return The key.
@@ -97,6 +97,6 @@ public abstract class AbstractCollectionEndpoint<TEntity, TElementEndpoint exten
         String jsonSend = json.writeValueAsString(entity);
         HttpResponse response = execute(Request.Post(uri).bodyString(jsonSend, ContentType.APPLICATION_JSON));
         Header locationHeader = response.getFirstHeader("Location");
-        return (locationHeader == null) ? null : get(locationHeader.getValue());
+        return (locationHeader == null) ? null : get(URI.create(locationHeader.getValue()));
     }
 }

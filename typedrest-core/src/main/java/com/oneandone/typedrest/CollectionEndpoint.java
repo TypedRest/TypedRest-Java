@@ -1,6 +1,7 @@
 package com.oneandone.typedrest;
 
 import java.io.*;
+import java.net.URI;
 import java.util.Collection;
 import javax.naming.OperationNotSupportedException;
 import org.apache.http.*;
@@ -24,17 +25,19 @@ public interface CollectionEndpoint<TEntity, TElementEndpoint extends ElementEnd
     Class<TEntity> getEntityType();
 
     /**
-     * Returns a {@link ElementEndpoint} for a specific element of this
+     * Returns a {@link ElementEndpoint} for a specific child element of this
      * collection. Does not perform any network traffic yet.
      *
-     * @param key The key used to identify the element within the collection.
+     * @param relativeUri The URI of the child endpoint relative to the this
+     * endpoint.
+     *
      * @return An {@link ElementEndpoint} for a specific element of this
      * collection.
      */
-    TElementEndpoint get(String key);
+    TElementEndpoint get(URI relativeUri);
 
     /**
-     * Returns a {@link ElementEndpoint} for a specific element of this
+     * Returns a {@link ElementEndpoint} for a specific child element of this
      * collection. Does not perform any network traffic yet.
      *
      * @param entity A previously fetched instance of the entity to retrieve a

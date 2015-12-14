@@ -2,6 +2,7 @@ package com.oneandone.typedrest.sample.endpoints;
 
 import com.oneandone.typedrest.*;
 import com.oneandone.typedrest.sample.models.*;
+import java.net.URI;
 
 /**
  * REST endpoint that represents the {@link ResourceRevision}s of a
@@ -14,8 +15,8 @@ public class ResourceRevisionCollection extends AbstractCollectionEndpoint<Resou
     }
 
     @Override
-    public ResourceRevisionElement get(String key) {
-        return new ResourceRevisionElement(this, key);
+    public ResourceRevisionElement get(URI relativeUri) {
+        return new ResourceRevisionElement(this, relativeUri);
     }
 
     /**

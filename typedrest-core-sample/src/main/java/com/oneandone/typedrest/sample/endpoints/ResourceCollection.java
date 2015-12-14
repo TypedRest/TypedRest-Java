@@ -2,6 +2,7 @@ package com.oneandone.typedrest.sample.endpoints;
 
 import com.oneandone.typedrest.*;
 import com.oneandone.typedrest.sample.models.*;
+import java.net.URI;
 
 /**
  * REST endpoint that represents the set of {@link Resource}s.
@@ -18,7 +19,7 @@ public class ResourceCollection extends AbstractCollectionEndpoint<Resource, Res
     }
 
     @Override
-    public ResourceElement get(String key) {
-        return new ResourceElement(this, key);
+    public ResourceElement get(URI relativeUri) {
+        return new ResourceElement(this, relativeUri);
     }
 }
