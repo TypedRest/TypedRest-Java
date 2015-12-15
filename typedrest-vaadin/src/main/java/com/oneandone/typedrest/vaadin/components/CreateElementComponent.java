@@ -3,6 +3,7 @@ package com.oneandone.typedrest.vaadin.components;
 import com.google.gwt.thirdparty.guava.common.eventbus.EventBus;
 import com.oneandone.typedrest.CollectionEndpoint;
 import com.oneandone.typedrest.ElementEndpoint;
+import com.oneandone.typedrest.vaadin.events.ElementCreatedEvent;
 import com.oneandone.typedrest.vaadin.forms.DefaultEntityForm;
 import com.oneandone.typedrest.vaadin.forms.EntityForm;
 import java.io.FileNotFoundException;
@@ -48,6 +49,7 @@ public class CreateElementComponent<TEntity, TElementEndpoint extends ElementEnd
     @Override
     protected void onSave()
             throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, OperationNotSupportedException {
-        eventBus.post(endpoint.create(entityForm.getEntity()));
+        TElementEndpoint newEndpoint = endpoint.create(entityForm.getEntity());
+        eventBus.post(new ElementCreatedEvent<>(newEndpoint));
     }
 }

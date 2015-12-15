@@ -3,6 +3,7 @@ package com.oneandone.typedrest.vaadin.components;
 import com.google.gwt.thirdparty.guava.common.eventbus.EventBus;
 import com.google.gwt.thirdparty.guava.common.eventbus.Subscribe;
 import com.oneandone.typedrest.*;
+import com.oneandone.typedrest.vaadin.events.ElementEvent;
 import com.oneandone.typedrest.vaadin.forms.DefaultEntityLister;
 import com.oneandone.typedrest.vaadin.forms.EntityLister;
 import com.vaadin.ui.*;
@@ -176,8 +177,8 @@ public abstract class AbstractCollectionComponent<TEntity, TEndpoint extends Col
 
     // Refresh when child elements are created or updated
     @Subscribe
-    public void refreshEvent(ElementEndpoint<TEntity> endpoint) {
-        if (endpoint.getEntityType() == this.endpoint.getEntityType()) {
+    public void handle(ElementEvent<TEntity> message) {
+        if (message.getEndpoint().getEntityType() == this.endpoint.getEntityType()) {
             refresh();
         }
     }

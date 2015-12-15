@@ -2,6 +2,7 @@ package com.oneandone.typedrest.vaadin.components;
 
 import com.google.gwt.thirdparty.guava.common.eventbus.EventBus;
 import com.oneandone.typedrest.*;
+import com.oneandone.typedrest.vaadin.events.TriggerEvent;
 import com.vaadin.ui.*;
 import org.apache.http.*;
 import javax.naming.*;
@@ -56,6 +57,6 @@ public class TriggerComponent extends EndpointComponent<TriggerEndpoint> {
     protected void onTrigger()
             throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, OperationNotSupportedException {
         endpoint.trigger();
-        eventBus.post(endpoint);
+        eventBus.post(new TriggerEvent<>(endpoint));
     }
 }

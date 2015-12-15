@@ -1,7 +1,9 @@
 package com.oneandone.typedrest.vaadin.components;
 
 import com.google.gwt.thirdparty.guava.common.eventbus.EventBus;
+import com.google.gwt.thirdparty.guava.common.eventbus.Subscribe;
 import com.oneandone.typedrest.Endpoint;
+import com.oneandone.typedrest.vaadin.events.EndpointEvent;
 import com.vaadin.ui.*;
 import java.io.*;
 import javax.naming.OperationNotSupportedException;
@@ -139,6 +141,13 @@ public abstract class EndpointComponent<TEndpoint extends Endpoint>
         super.setCaption(caption);
         if (containingWindow != null) {
             containingWindow.setCaption(caption);
+        }
+    }
+
+    @Subscribe
+    public void handle(EndpointEvent<?> message) {
+        if (message.getEndpoint().getNotifyTargets().contains(endpoint.getUri())) {
+            refresh();
         }
     }
 }
