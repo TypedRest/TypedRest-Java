@@ -45,7 +45,7 @@ public abstract class AbstractStreamEndpoint<TEntity, TElementEndpoint extends E
 
     @Override
     public StoppableObservable<TEntity> getObservable(long startIndex) {
-        return getObservable(startIndex, Schedulers.io());
+        return getObservable(startIndex, Schedulers.newThread());
     }
 
     /**
