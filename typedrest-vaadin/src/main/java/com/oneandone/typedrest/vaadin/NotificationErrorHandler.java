@@ -14,7 +14,7 @@ public class NotificationErrorHandler implements ErrorHandler {
     public void error(ErrorEvent event) {
         Throwable ex = event.getThrowable();
         Logger.getLogger(NotificationErrorHandler.class.getName()).log(Level.SEVERE, null, ex);
-        Notification.show("Unexpected error", "Unexpected error: " + getRootCause(ex).getLocalizedMessage(), Notification.Type.ERROR_MESSAGE);
+        Notification.show("System error", getRootCause(ex).getLocalizedMessage(), Notification.Type.ERROR_MESSAGE);
     }
 
     private static Throwable getRootCause(Throwable throwable) {

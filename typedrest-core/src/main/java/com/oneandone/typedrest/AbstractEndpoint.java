@@ -89,8 +89,8 @@ public abstract class AbstractEndpoint
         request.addHeader("Accept", ContentType.APPLICATION_JSON.getMimeType());
 
         HttpResponse response = rest.execute(request).returnResponse();
-        handleErrors(response);
         handleLinks(response);
+        handleErrors(response);
 
         return response;
     }
@@ -118,16 +118,23 @@ public abstract class AbstractEndpoint
             return;
         }
 
+        String message = statusLine.toString();
         HttpEntity entity = response.getEntity();
-        String body = EntityUtils.toString(entity);
-        Header encoding = entity.getContentType();
-        String message = (encoding != null) && encoding.getValue().startsWith("application/json")
-                ? json.readTree(body).get("message").asText()
-                : statusLine.toString();
+        String body;
+        if (entity == null) {
+            body = null;
+        } else {
+            body = EntityUtils.toString(entity);
+            Header contentType = entity.getContentType();
+            if ((contentType != null) && contentType.getValue().startsWith("application/json")) {
+                message = json.readTree(body).get("message").asText();
+            }
+        }
 
+        Exception inner = (body == null) ? null : new HttpException(body);
         switch (statusLine.getStatusCode()) {
             case HttpStatus.SC_BAD_REQUEST:
-                throw new IllegalArgumentException(message, new HttpException(body));
+                throw new IllegalArgumentException(message, inner);
             case HttpStatus.SC_UNAUTHORIZED:
             case HttpStatus.SC_FORBIDDEN:
                 throw new IllegalAccessException(message);
@@ -137,9 +144,9 @@ public abstract class AbstractEndpoint
             case HttpStatus.SC_CONFLICT:
                 throw new OperationNotSupportedException(message);
             case HttpStatus.SC_REQUESTED_RANGE_NOT_SATISFIABLE:
-                throw new IllegalStateException(message, new HttpException(body));
+                throw new IllegalStateException(message, inner);
             default:
-                throw new RuntimeException(message, new HttpException(body));
+                throw new RuntimeException(message, inner);
         }
     }
 
