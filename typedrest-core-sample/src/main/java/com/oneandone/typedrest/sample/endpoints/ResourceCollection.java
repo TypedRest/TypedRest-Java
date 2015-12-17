@@ -9,13 +9,8 @@ import java.net.URI;
  */
 public class ResourceCollection extends AbstractCollectionEndpoint<Resource, ResourceElement> {
 
-    public ResourceCollection(SampleEntryEndpoint parent) {
-        super(parent, "resources", Resource.class);
-    }
-
-    // Relative URI
-    public ResourceCollection(ResourceElement parent) {
-        super(parent, "../../resources", Resource.class);
+    public ResourceCollection(Endpoint parent) {
+        super(parent, parent.link("resources"), Resource.class);
     }
 
     @Override

@@ -13,17 +13,21 @@ public class ResourceRevisionElement extends ElementEndpointImpl<ResourceRevisio
         super(parent, relativeUri, ResourceRevision.class);
     }
 
-    public ResourceRevisionElement(Endpoint parent, String relativeUri) {
-        super(parent, relativeUri, ResourceRevision.class);
+    /**
+     * Promotes the {@link ResourceRevision} to the next stage.
+     *
+     * @return An endpoint.
+     */
+    public TriggerEndpoint getPromote() {
+        return new TriggerEndpointImpl(this, link("promote"));
     }
 
     /**
-     * Promotes the {@link ResourceRevision} to the next stage.
-     */
-    public TriggerEndpoint promote = new TriggerEndpointImpl(this, "promote");
-
-    /**
      * Represents the blob/file backing the {@link ResourceRevision}.
+     *
+     * @return An endpoint.
      */
-    public final BlobEndpoint blob = new BlobEndpointImpl(this, "blob");
+    public BlobEndpoint getBlob() {
+        return new BlobEndpointImpl(this, link("blob"));
+    }
 }

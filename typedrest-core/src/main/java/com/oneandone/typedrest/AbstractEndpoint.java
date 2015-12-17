@@ -9,6 +9,8 @@ import java.util.*;
 import static java.util.Collections.newSetFromMap;
 import static java.util.Collections.unmodifiableSet;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.naming.OperationNotSupportedException;
 import lombok.*;
 import org.apache.http.*;
@@ -177,9 +179,33 @@ public abstract class AbstractEndpoint
      * <code>null</code>.
      */
     protected void handleLink(String href, String rel, String title) {
-        if (notifyRel.equals(rel)) {
-            notifyTargets.add(getUri().resolve(href));
+        if (rel == null) {
+        } else if (rel.equals(notifyRel)) {
+            notifyTargets.add(uri.resolve(href));
+        } else if (rel.endsWith("-template")) {
+        } else {
+            links.put(rel, uri.resolve(href));
         }
+    }
+
+    private final ConcurrentHashMap<String, URI> links = new ConcurrentHashMap<>();
+
+    @Override
+    public URI link(String rel) {
+        // Try to lazy-load missing link data
+        if (links.isEmpty()) {
+            try {
+                handleLinks(rest.execute(Request.Get(uri)).returnResponse());
+            } catch (IOException ex) {
+                throw new RuntimeException("No link with rel=" + rel + " found in endpoint " + getUri() + ".", ex);
+            }
+        }
+
+        URI uri = links.get(rel);
+        if (uri == null) {
+            throw new RuntimeException("No link with rel=" + rel + " found in endpoint " + getUri() + ".");
+        }
+        return uri;
     }
 
     /**

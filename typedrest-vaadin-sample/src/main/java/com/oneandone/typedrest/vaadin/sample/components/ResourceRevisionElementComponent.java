@@ -5,7 +5,6 @@ import com.oneandone.typedrest.vaadin.components.TriggerComponent;
 import com.google.gwt.thirdparty.guava.common.eventbus.EventBus;
 import com.oneandone.typedrest.sample.endpoints.*;
 import com.oneandone.typedrest.sample.models.*;
-import com.oneandone.typedrest.vaadin.*;
 
 public class ResourceRevisionElementComponent
         extends ElementComponent<ResourceRevision> {
@@ -17,6 +16,6 @@ public class ResourceRevisionElementComponent
         super(endpoint, eventBus);
         this.endpoint = endpoint;
 
-        buttonsLayout.addComponent(new TriggerComponent(endpoint.promote, eventBus, "Promote"));
+        buttonsLayout.addComponent(new TriggerComponent(endpoint.getPromote(), eventBus, "Promote"));
     }
 }

@@ -10,8 +10,8 @@ import java.net.URI;
  */
 public class ResourceRevisionCollection extends AbstractCollectionEndpoint<ResourceRevision, ResourceRevisionElement> {
 
-    public ResourceRevisionCollection(ResourceElement parent) {
-        super(parent, "revisions", ResourceRevision.class);
+    public ResourceRevisionCollection(Endpoint parent) {
+        super(parent, parent.link("revisions"), ResourceRevision.class);
     }
 
     @Override
@@ -21,6 +21,10 @@ public class ResourceRevisionCollection extends AbstractCollectionEndpoint<Resou
 
     /**
      * Represents the latest {@link ResourceRevision} for the {@link Resource}.
+     *
+     * @return An endpoint.
      */
-    public final ResourceRevisionElement latest = new ResourceRevisionElement(this, "latest");
+    public ResourceRevisionElement getLatest() {
+        return new ResourceRevisionElement(this, link("latest"));
+    }
 }

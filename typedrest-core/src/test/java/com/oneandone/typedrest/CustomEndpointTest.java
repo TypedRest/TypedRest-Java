@@ -3,6 +3,8 @@ package com.oneandone.typedrest;
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
 import static org.apache.http.HttpStatus.*;
 import org.apache.http.client.fluent.Request;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsInAnyOrder;
 import org.junit.*;
@@ -19,7 +21,32 @@ public class CustomEndpointTest extends AbstractEndpointTest {
     }
 
     @Test
-    public void testNotifyLinkHeader() throws Exception {
+    public void testLink() throws Exception {
+        stubFor(get(urlEqualTo("/endpoint"))
+                .willReturn(aResponse()
+                        .withStatus(SC_NO_CONTENT)
+                        .withHeader("Link", "<a>; rel=target1, <b>; rel=target2")));
+
+        endpoint.get();
+
+        assertThat(endpoint.link("target1"), is(equalTo(endpoint.getUri().resolve("a"))));
+        assertThat(endpoint.link("target2"), is(equalTo(endpoint.getUri().resolve("b"))));
+    }
+
+    @Test(expected = RuntimeException.class)
+    public void testLinkException() throws Exception {
+        stubFor(get(urlEqualTo("/endpoint"))
+                .willReturn(aResponse()
+                        .withStatus(SC_NO_CONTENT)
+                        .withHeader("Link", "<a>; rel=target1")));
+
+        endpoint.get();
+
+        endpoint.link("target2");
+    }
+
+    @Test
+    public void testGetNotifyTargets() throws Exception {
         stubFor(get(urlEqualTo("/endpoint"))
                 .willReturn(aResponse()
                         .withStatus(SC_NO_CONTENT)

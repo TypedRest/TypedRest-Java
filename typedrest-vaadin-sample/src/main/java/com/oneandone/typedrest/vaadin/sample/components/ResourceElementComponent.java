@@ -15,12 +15,12 @@ public class ResourceElementComponent
     protected ResourceElement endpoint;
 
     public ResourceElementComponent(ResourceElement endpoint, EventBus eventBus) {
-        super(endpoint, eventBus, new ResourceForm(endpoint.parentResources));
+        super(endpoint, eventBus, new ResourceForm(endpoint.getResources()));
         this.endpoint = endpoint;
 
         buttonsLayout.addComponent(new Button("Events", x
-                -> open(new StreamComponent<>(endpoint.events, eventBus))));
+                -> open(new StreamComponent<>(endpoint.getEvents(), eventBus))));
 
-        masterLayout.addComponent(new ResourceRevisionCollectionComponent(endpoint.revisions, eventBus));
+        masterLayout.addComponent(new ResourceRevisionCollectionComponent(endpoint.getRevisions(), eventBus));
     }
 }

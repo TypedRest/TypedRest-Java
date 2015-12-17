@@ -9,26 +9,34 @@ import java.net.URI;
  */
 public class ResourceElement extends ElementEndpointImpl<Resource> {
 
-    public ResourceElement(Endpoint parent, URI relativeUri) {
-        super(parent, relativeUri, Resource.class);
-    }
-
-    public ResourceElement(Endpoint parent, String relativeUri) {
+    public ResourceElement(ResourceCollection parent, URI relativeUri) {
         super(parent, relativeUri, Resource.class);
     }
 
     /**
      * Represents the {@link ResourceRevision}s.
+     *
+     * @return An endpoint.
      */
-    public final ResourceRevisionCollection revisions = new ResourceRevisionCollection(this);
+    public ResourceRevisionCollection getRevisions() {
+        return new ResourceRevisionCollection(this);
+    }
 
     /**
      * Exposes all {@link LogEvent}s that relate to this resource.
+     *
+     * @return An endpoint.
      */
-    public final StreamEndpointImpl<LogEvent> events = new StreamEndpointImpl<>(this, "events", LogEvent.class);
+    public StreamEndpointImpl<LogEvent> getEvents() {
+        return new StreamEndpointImpl<>(this, link("events"), LogEvent.class);
+    }
 
     /**
-     * Used to resolve {@link Resource#dependencies}
+     * Used to resolve {@link Resource#dependencies}.
+     *
+     * @return An endpoint.
      */
-    public final ResourceCollection parentResources = new ResourceCollection(this);
+    public ResourceCollection getResources() {
+        return new ResourceCollection(this);
+    }
 }

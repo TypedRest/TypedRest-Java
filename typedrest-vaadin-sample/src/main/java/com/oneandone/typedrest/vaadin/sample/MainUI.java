@@ -10,8 +10,8 @@ import com.vaadin.annotations.Theme;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.spring.annotation.SpringUI;
 import com.vaadin.ui.*;
-
 import java.net.URI;
+import lombok.SneakyThrows;
 
 @SpringUI(path = "")
 @Theme("valo")
@@ -28,7 +28,7 @@ public class MainUI extends UI {
         EventBus eventBus = new EventBus();
 
         setContent(new TabSheet(
-                new ResourceCollectionComponent(entrypoint.resources, eventBus),
-                new CollectionComponent<>(entrypoint.targets, eventBus)));
+                new ResourceCollectionComponent(entrypoint.getResources(), eventBus),
+                new CollectionComponent<>(entrypoint.getTargets(), eventBus)));
     }
 }
