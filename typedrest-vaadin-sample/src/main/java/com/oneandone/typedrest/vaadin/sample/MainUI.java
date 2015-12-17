@@ -23,8 +23,8 @@ public class MainUI extends UI {
         setErrorHandler(new NotificationErrorHandler());
 
         SampleEntryEndpoint entrypoint = new SampleEntryEndpoint(
-                URI.create("http://localhost:5893/api"),
-                "root", "abc");
+                URI.create("http://localhost:5893/"),
+                "Root", "abc");
         EventBus eventBus = new EventBus();
 
         setContent(new TabSheet(

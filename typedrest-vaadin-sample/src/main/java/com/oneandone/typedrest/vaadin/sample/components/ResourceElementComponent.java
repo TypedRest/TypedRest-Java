@@ -6,7 +6,6 @@ import com.oneandone.typedrest.vaadin.components.StreamComponent;
 import com.google.gwt.thirdparty.guava.common.eventbus.EventBus;
 import com.oneandone.typedrest.sample.endpoints.*;
 import com.oneandone.typedrest.sample.models.*;
-import com.oneandone.typedrest.vaadin.*;
 import com.vaadin.ui.Button;
 
 public class ResourceElementComponent
