@@ -9,8 +9,6 @@ import java.util.*;
 import static java.util.Collections.newSetFromMap;
 import static java.util.Collections.unmodifiableSet;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.naming.OperationNotSupportedException;
 import lombok.*;
 import org.apache.http.*;
