@@ -2,7 +2,6 @@ package com.oneandone.typedrest;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import static com.oneandone.typedrest.URIUtils.*;
 import java.io.*;
 import java.net.*;
 import java.util.*;
@@ -52,7 +51,7 @@ public abstract class AbstractEndpoint
      * <code>parent</code>'s.
      */
     protected AbstractEndpoint(Endpoint parent, URI relativeUri) {
-        this(parent.getRest(), ensureTrailingSlash(parent.getUri()).resolve(relativeUri));
+        this(parent.getRest(), parent.getUri().resolve(relativeUri));
     }
 
     /**

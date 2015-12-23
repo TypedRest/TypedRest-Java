@@ -1,6 +1,5 @@
 package com.oneandone.typedrest;
 
-import static com.oneandone.typedrest.URIUtils.*;
 import java.net.*;
 import org.apache.http.auth.Credentials;
 import org.apache.http.client.fluent.*;
@@ -19,9 +18,7 @@ public class EntryEndpoint
      * will be appended automatically.
      */
     public EntryEndpoint(URI uri) {
-        super(
-                Executor.newInstance(),
-                ensureTrailingSlash(uri));
+        super(Executor.newInstance(), uri);
     }
 
     /**
@@ -33,9 +30,7 @@ public class EntryEndpoint
      * interface.
      */
     public EntryEndpoint(URI uri, Credentials credentials) {
-        super(
-                Executor.newInstance().authPreemptive(uri.getHost()).auth(credentials),
-                ensureTrailingSlash(uri));
+        super(Executor.newInstance().authPreemptive(uri.getHost()).auth(credentials), uri);
     }
 
     /**
@@ -49,8 +44,6 @@ public class EntryEndpoint
      * interface.
      */
     public EntryEndpoint(URI uri, String username, String password) {
-        super(
-                Executor.newInstance().authPreemptive(uri.getHost()).auth(username, password),
-                ensureTrailingSlash(uri));
+        super(Executor.newInstance().authPreemptive(uri.getHost()).auth(username, password), uri);
     }
 }
