@@ -198,11 +198,11 @@ public abstract class AbstractEndpoint
             }
         }
 
-        URI uri = links.get(rel);
-        if (uri == null) {
+        URI href = links.get(rel);
+        if (href == null) {
             throw new RuntimeException("No link with rel=" + rel + " found in endpoint " + getUri() + ".");
         }
-        return uri;
+        return href;
     }
 
     /**
