@@ -59,33 +59,23 @@ public abstract class AbstractCollectionEndpoint<TEntity, TElementEndpoint exten
         this(parent, URI.create(relativeUri), entityType);
     }
 
-    @Override
-    public TElementEndpoint get(TEntity entity) {
-        String relativeUri = childTemplate.set("id", getCollectionKey(entity)).expand();
-        return get(URI.create(relativeUri));
-    }
-
     /**
-     * The URI template used to construct URIs of child elements of this
-     * collection.
-     */
-    protected UriTemplate childTemplate = UriTemplate.fromTemplate("{id}");
-
-    /**
-     * The HTTP Link header relation type used by the server to set the
-     * collection child element URI template.
+     * The Link relation type used by the server to set the collection child
+     * element URI template.
      */
     @Getter
     @Setter
-    private String childTemplateRel = "child-template";
+    private String childTemplateRel = "child";
 
     @Override
-    protected void handleLink(String href, String rel, String title) {
-        if (childTemplateRel.equals(rel)) {
-            childTemplate = UriTemplate.fromTemplate(href);
-        }
+    public TElementEndpoint get(TEntity entity) {
+        String id = getCollectionKey(entity);
+        UriTemplate template = linkTemplate(childTemplateRel);
 
-        super.handleLink(href, rel, title);
+        String href = (template == null)
+                ? id
+                : template.set("id", getCollectionKey(entity)).expand();
+        return get(uri.resolve(href));
     }
 
     private final Optional<PropertyDescriptor> keyProperty;

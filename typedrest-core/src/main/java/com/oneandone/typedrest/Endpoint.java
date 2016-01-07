@@ -1,5 +1,6 @@
 package com.oneandone.typedrest;
 
+import com.damnhandy.uri.template.UriTemplate;
 import java.net.*;
 import java.util.Set;
 import org.apache.http.client.fluent.*;
@@ -24,8 +25,17 @@ public interface Endpoint {
     URI getUri();
 
     /**
-     * Retrieves a link from an HTTP Link header with a specific relation type.
-     * May be cached from a previous request or may be lazily requested.
+     * Retrieves all links with a specific relation type cached from the last
+     * request.
+     *
+     * @param rel The relation type of the links to look for.
+     * @return The hrefs of the links resolved relative to this endpoint's URI.
+     */
+    Set<URI> getLinks(String rel);
+
+    /**
+     * Retrieves a single link with a specific relation type. May be cached from
+     * the last request or may be lazily requested.
      *
      * @param rel The relation type of the link to look for.
      * @return The href of the link resolved relative to this endpoint's URI.
@@ -35,10 +45,34 @@ public interface Endpoint {
     URI link(String rel);
 
     /**
-     * A set of {@link URI}s of other {@link Endpoint}s that may change to
-     * reflect operations performed on this endpoint.
+     * Retrieves a link template with a specific relation type. May be cached
+     * from the last request or may be lazily requested.
      *
-     * @return A set of {@link URI}s of other {@link Endpoint}s.
+     * @param rel The relation type of the template to look for. "-template" is
+     * appended implicitly for HTTP Link Headers.
+     * @return The link template; <code>null</code> if no link template with the
+     * specified relation type could be found.
      */
-    Set<URI> getNotifyTargets();
+    UriTemplate linkTemplate(String rel);
+
+    /**
+     * Helper method that retrieves a link template with a specific relation
+     * type and expands it using a single variable.
+     *
+     * @param rel The relation type of the template to look for. "-template" is
+     * appended implicitly for HTTP Link Headers.
+     * @param variableName The name of the variable to insert.
+     * @param value The value to insert for the variable.
+     * @return The href of the resolved template.
+     * @throws RuntimeException No link template with the specified relation
+     * type could be found.
+     */
+    default URI linkTemplateExpanded(String rel, String variableName, Object value) {
+        UriTemplate template = linkTemplate(rel);
+        if (template == null) {
+            throw new RuntimeException("No link template with rel=" + rel + " provided by endpoint " + getUri() + ".");
+        }
+
+        return getUri().resolve(template.set(variableName, value).expand());
+    }
 }

@@ -7,6 +7,8 @@ import com.oneandone.typedrest.vaadin.events.EndpointEvent;
 import com.vaadin.ui.*;
 import java.io.*;
 import javax.naming.OperationNotSupportedException;
+import lombok.Getter;
+import lombok.Setter;
 import org.apache.http.*;
 
 /**
@@ -144,9 +146,16 @@ public abstract class EndpointComponent<TEndpoint extends Endpoint>
         }
     }
 
+    /**
+     * The Link relation type used by the server to send refresh notifications.
+     */
+    @Getter
+    @Setter
+    private String notifyRel = "notify";
+
     @Subscribe
     public void handle(EndpointEvent<?> message) {
-        if (message.getEndpoint().getNotifyTargets().contains(endpoint.getUri())) {
+        if (message.getEndpoint().getLinks(notifyRel).contains(endpoint.getUri())) {
             refresh();
         }
     }

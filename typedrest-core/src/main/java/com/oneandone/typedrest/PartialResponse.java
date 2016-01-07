@@ -1,6 +1,6 @@
 package com.oneandone.typedrest;
 
-import java.util.Collection;
+import java.util.List;
 import lombok.Data;
 
 /**
@@ -14,7 +14,7 @@ public class PartialResponse<TEntity> {
     /**
      * The returned elements.
      */
-    private final Collection<TEntity> elements;
+    private final List<TEntity> elements;
 
     /**
      * The index of the first element. <code>null</code> if unset.

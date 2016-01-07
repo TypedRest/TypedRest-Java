@@ -1,13 +1,13 @@
 package com.oneandone.typedrest;
 
+import com.damnhandy.uri.template.UriTemplate;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import java.io.*;
 import java.net.*;
 import java.util.*;
-import static java.util.Collections.newSetFromMap;
+import static java.util.Collections.unmodifiableMap;
 import static java.util.Collections.unmodifiableSet;
-import java.util.concurrent.ConcurrentHashMap;
 import javax.naming.OperationNotSupportedException;
 import lombok.*;
 import org.apache.http.*;
@@ -162,73 +162,84 @@ public abstract class AbstractEndpoint
     }
 
     /**
-     * Handles HTTP Link headers.
+     * Handles links embedded in an HTTP response.
      *
      * @param response The response to check for links.
      */
+    @SuppressWarnings("LocalVariableHidesMemberVariable")
     private void handleLinks(HttpResponse response) {
+        Map<String, Set<URI>> links = new HashMap<>();
+        Map<String, String> linkTemplates = new HashMap<>();
+
         for (Header header : response.getHeaders("Link")) {
             for (HeaderElement element : header.getElements()) {
+                String href = element.getName().substring(1, element.getName().length() - 1);
+
                 NameValuePair relParameter = element.getParameterByName("rel");
-                NameValuePair titleParameter = element.getParameterByName("title");
-                handleLink(
-                        element.getName().substring(1, element.getName().length() - 1),
-                        (relParameter == null) ? null : relParameter.getValue(),
-                        (titleParameter == null) ? null : titleParameter.getValue());
+                if (relParameter != null) {
+                    if (relParameter.getValue().endsWith("-template")) {
+                        String rel = relParameter.getValue().substring(0, relParameter.getValue().length() - "-template".length());
+                        linkTemplates.put(rel, href);
+                    } else {
+                        String rel = relParameter.getValue();
+                        Set<URI> linkSet = links.get(rel);
+                        if (linkSet == null) {
+                            links.put(rel, linkSet = new HashSet<>());
+                        }
+                        linkSet.add(uri.resolve(href));
+                    }
+                }
             }
         }
+
+        this.links = unmodifiableMap(links);
+        this.linkTemplates = unmodifiableMap(linkTemplates);
     }
 
-    /**
-     * Hook for handling links included in a response as an HTTP header.
-     *
-     * @param href The URI the link points to.
-     * @param rel The relation type of the link; can be <code>null</code>.
-     * @param title A human-readable description of the link; can be
-     * <code>null</code>.
-     */
-    protected void handleLink(String href, String rel, String title) {
-        if (rel == null) {
-        } else if (rel.equals(notifyRel)) {
-            notifyTargets.add(uri.resolve(href));
-        } else if (rel.endsWith("-template")) {
-        } else {
-            links.put(rel, uri.resolve(href));
-        }
-    }
+    private Map<String, Set<URI>> links = unmodifiableMap(new HashMap<>());
 
-    private final ConcurrentHashMap<String, URI> links = new ConcurrentHashMap<>();
+    @Override
+    public Set<URI> getLinks(String rel) {
+        Set<URI> uris = links.get(rel);
+        return (uris == null) ? new HashSet<>() : unmodifiableSet(uris);
+    }
 
     @Override
     public URI link(String rel) {
-        // Try to lazy-load missing link data
-        if (links.isEmpty()) {
+        Set<URI> linkSet = getLinks(rel);
+        if (linkSet.isEmpty()) {
+            // Lazy loading
             try {
                 handleLinks(rest.execute(Request.Get(uri)).returnResponse());
             } catch (IOException ex) {
-                throw new RuntimeException("No link with rel=" + rel + " found in endpoint " + getUri() + ".", ex);
+                throw new RuntimeException("No link with rel=" + rel + " provided by endpoint " + getUri() + ".", ex);
+            }
+
+            linkSet = getLinks(rel);
+            if (linkSet.isEmpty()) {
+                throw new RuntimeException("No link with rel=" + rel + " provided by endpoint " + getUri() + ".");
             }
         }
 
-        URI href = links.get(rel);
-        if (href == null) {
-            throw new RuntimeException("No link with rel=" + rel + " found in endpoint " + getUri() + ".");
-        }
-        return href;
+        return linkSet.iterator().next();
     }
 
-    /**
-     * The HTTP Link header relation type used by the server to set
-     * {@link Endpoint#getNotifyTargets}.
-     */
-    @Getter
-    @Setter
-    private String notifyRel = "notify";
-
-    private final Set<URI> notifyTargets = newSetFromMap(new ConcurrentHashMap<URI, Boolean>());
+    private Map<String, String> linkTemplates = unmodifiableMap(new HashMap<>());
 
     @Override
-    public Set<URI> getNotifyTargets() {
-        return unmodifiableSet(notifyTargets);
+    public UriTemplate linkTemplate(String rel) {
+        String template = linkTemplates.get(rel);
+        if (template == null) {
+            // Lazy loading
+            try {
+                handleLinks(rest.execute(Request.Get(uri)).returnResponse());
+            } catch (IOException ex) {
+            }
+
+            template = linkTemplates.get(rel);
+        }
+
+        // Create new template instance for each request because UriTemplate is not immutable
+        return (template == null) ? null : UriTemplate.fromTemplate(template);
     }
 }

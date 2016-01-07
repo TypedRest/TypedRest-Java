@@ -7,6 +7,7 @@ import org.apache.http.client.fluent.Request;
 import org.apache.http.message.BasicHeader;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsInAnyOrder;
 import org.junit.*;
@@ -59,7 +60,7 @@ public class CustomEndpointTest extends AbstractEndpointTest {
     }
 
     @Test
-    public void testGetNotifyTargets() throws Exception {
+    public void testGetLinks() throws Exception {
         stubFor(get(urlEqualTo("/endpoint"))
                 .willReturn(aResponse()
                         .withStatus(SC_NO_CONTENT)
@@ -68,10 +69,23 @@ public class CustomEndpointTest extends AbstractEndpointTest {
 
         endpoint.get();
 
-        assertThat(endpoint.getNotifyTargets(), containsInAnyOrder(
+        assertThat(endpoint.getLinks("notify"), containsInAnyOrder(
                 endpoint.getUri().resolve("target1"),
                 endpoint.getUri().resolve("target2"),
                 endpoint.getUri().resolve("target3")));
+    }
+
+    @Test
+    public void testLinkTemplate() throws Exception {
+        stubFor(get(urlEqualTo("/endpoint"))
+                .willReturn(aResponse()
+                        .withStatus(SC_NO_CONTENT)
+                        .withHeader("Link", "<a>; rel=target1-template")));
+
+        endpoint.get();
+
+        assertThat(endpoint.linkTemplate("target1").getTemplate(), is(equalTo("a")));
+        assertThat(endpoint.linkTemplate("target2"), is(nullValue()));
     }
 
     private class CustomEndpoint extends AbstractEndpoint {
