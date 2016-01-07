@@ -13,6 +13,7 @@ import lombok.*;
 import org.apache.http.*;
 import org.apache.http.client.fluent.*;
 import org.apache.http.entity.ContentType;
+import org.apache.http.message.BasicHeader;
 import org.apache.http.util.*;
 
 /**
@@ -26,6 +27,11 @@ public abstract class AbstractEndpoint
 
     @Getter
     protected final Executor rest;
+
+    /**
+     * A set of default HTTP headers to be added to each request.
+     */
+    protected final Collection<Header> defaultHeaders = new LinkedList<>();
 
     protected final ObjectMapper json = new ObjectMapper()
             .setSerializationInclusion(JsonInclude.Include.NON_NULL)
@@ -41,6 +47,8 @@ public abstract class AbstractEndpoint
     protected AbstractEndpoint(Executor rest, URI uri) {
         this.rest = rest;
         this.uri = uri;
+
+        defaultHeaders.add(new BasicHeader("Accept", ContentType.APPLICATION_JSON.getMimeType()));
     }
 
     /**
@@ -52,6 +60,10 @@ public abstract class AbstractEndpoint
      */
     protected AbstractEndpoint(Endpoint parent, URI relativeUri) {
         this(parent.getRest(), parent.getUri().resolve(relativeUri));
+
+        if (parent instanceof AbstractEndpoint) {
+            defaultHeaders.addAll(((AbstractEndpoint) parent).defaultHeaders);
+        }
     }
 
     /**
@@ -85,7 +97,7 @@ public abstract class AbstractEndpoint
      */
     protected HttpResponse execute(Request request)
             throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, OperationNotSupportedException, IllegalStateException {
-        request.addHeader("Accept", ContentType.APPLICATION_JSON.getMimeType());
+        defaultHeaders.forEach(request::addHeader);
 
         HttpResponse response = rest.execute(request).returnResponse();
         handleLinks(response);

@@ -1,8 +1,10 @@
 package com.oneandone.typedrest;
 
+import com.github.tomakehurst.wiremock.client.WireMock;
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
 import static org.apache.http.HttpStatus.*;
 import org.apache.http.client.fluent.Request;
+import org.apache.http.message.BasicHeader;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -18,6 +20,17 @@ public class CustomEndpointTest extends AbstractEndpointTest {
     public void before() {
         super.before();
         endpoint = new CustomEndpoint(entryPoint, "endpoint");
+    }
+
+    @Test
+    public void testDefaultHeader() throws Exception {
+        stubFor(get(urlEqualTo("/endpoint"))
+                .withHeader("X-Mock", WireMock.equalTo("mock"))
+                .willReturn(aResponse()
+                        .withStatus(SC_NO_CONTENT)
+                        .withHeader("Link", "<a>; rel=target1-template")));
+
+        endpoint.get();
     }
 
     @Test
@@ -65,6 +78,8 @@ public class CustomEndpointTest extends AbstractEndpointTest {
 
         public CustomEndpoint(Endpoint parent, String relativeUri) {
             super(parent, relativeUri);
+
+            defaultHeaders.add(new BasicHeader("X-Mock", "mock"));
         }
 
         public void get() throws Exception {
