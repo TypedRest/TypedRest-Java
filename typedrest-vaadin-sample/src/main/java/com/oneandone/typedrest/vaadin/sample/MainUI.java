@@ -11,7 +11,6 @@ import com.vaadin.server.VaadinRequest;
 import com.vaadin.spring.annotation.SpringUI;
 import com.vaadin.ui.*;
 import java.net.URI;
-import lombok.SneakyThrows;
 
 @SpringUI(path = "")
 @Theme("valo")

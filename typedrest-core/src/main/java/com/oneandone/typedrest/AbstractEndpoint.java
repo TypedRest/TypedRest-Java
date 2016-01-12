@@ -196,6 +196,7 @@ public abstract class AbstractEndpoint
         this.linkTemplates = unmodifiableMap(linkTemplates);
     }
 
+    // NOTE: Always replace entire dictionary rather than modifying it. This ensures thread-safety.
     private Map<String, Set<URI>> links = unmodifiableMap(new HashMap<>());
 
     @Override
@@ -224,6 +225,7 @@ public abstract class AbstractEndpoint
         return linkSet.iterator().next();
     }
 
+    // NOTE: Always replace entire dictionary rather than modifying it. This ensures thread-safety.
     private Map<String, String> linkTemplates = unmodifiableMap(new HashMap<>());
 
     @Override
