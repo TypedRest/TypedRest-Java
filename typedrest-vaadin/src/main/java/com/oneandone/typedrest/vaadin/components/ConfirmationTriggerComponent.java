@@ -2,6 +2,7 @@ package com.oneandone.typedrest.vaadin.components;
 
 import com.google.gwt.thirdparty.guava.common.eventbus.EventBus;
 import com.oneandone.typedrest.TriggerEndpoint;
+import com.vaadin.ui.UI;
 import org.vaadin.dialogs.ConfirmDialog;
 
 /**
@@ -30,7 +31,13 @@ public class ConfirmationTriggerComponent extends TriggerComponent {
     protected void trigger() {
         ConfirmDialog.show(getUI(), question, (ConfirmDialog cd) -> {
             if (cd.isConfirmed()) {
-                super.trigger();
+                try {
+                    super.trigger();
+                } catch (RuntimeException ex) {
+                    // Must explicitly send unhandled exceptions to error handler.
+                    // Would otherwise get swallowed silently within callback handler.
+                    UI.getCurrent().getErrorHandler().error(new com.vaadin.server.ErrorEvent(ex));
+                }
             }
         });
     }

@@ -1,7 +1,7 @@
 package com.oneandone.typedrest.vaadin.sample.components;
 
 import com.oneandone.typedrest.vaadin.components.ElementComponent;
-import com.oneandone.typedrest.vaadin.components.TriggerComponent;
+import com.oneandone.typedrest.vaadin.components.ConfirmationTriggerComponent;
 import com.google.gwt.thirdparty.guava.common.eventbus.EventBus;
 import com.oneandone.typedrest.sample.endpoints.*;
 import com.oneandone.typedrest.sample.models.*;
@@ -16,6 +16,6 @@ public class ResourceRevisionElementComponent
         super(endpoint, eventBus);
         this.endpoint = endpoint;
 
-        buttonsLayout.addComponent(new TriggerComponent(endpoint.getPromote(), eventBus, "Promote"));
+        buttonsLayout.addComponent(new ConfirmationTriggerComponent(endpoint.getPromote(), eventBus, "Promote", "Are you sure?"));
     }
 }
