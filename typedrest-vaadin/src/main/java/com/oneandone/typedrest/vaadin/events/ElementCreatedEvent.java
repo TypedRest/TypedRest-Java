@@ -4,10 +4,10 @@ import com.oneandone.typedrest.CollectionEndpoint;
 import com.oneandone.typedrest.ElementEndpoint;
 
 /**
- * Indicates that {@link CollectionEndpoint#create(java.lang.Object)} was
- * called. Reports the resulting {@link ElementEndpoint}.
+ * Indicates that a new element was created.
  *
- * @param <TEntity> The type of entity the endpoint represents.
+ * @param <TEntity> The type of entity that was created.
+ * @see CollectionEndpoint#create(java.lang.Object)
  */
 public class ElementCreatedEvent<TEntity> extends ElementEvent<TEntity> {
 

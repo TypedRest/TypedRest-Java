@@ -1,13 +1,16 @@
 package com.oneandone.typedrest.vaadin.components;
 
 import com.google.gwt.thirdparty.guava.common.eventbus.EventBus;
-import com.oneandone.typedrest.ElementEndpoint;
-import com.oneandone.typedrest.vaadin.events.ElementUpdatedEvent;
-import com.oneandone.typedrest.vaadin.forms.DefaultEntityForm;
-import com.oneandone.typedrest.vaadin.forms.EntityForm;
+import com.oneandone.typedrest.*;
+import com.oneandone.typedrest.vaadin.events.*;
+import com.oneandone.typedrest.vaadin.forms.*;
+import com.vaadin.ui.*;
+import com.vaadin.ui.themes.ValoTheme;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import javax.naming.OperationNotSupportedException;
+import org.apache.http.HttpStatus;
+import org.vaadin.dialogs.ConfirmDialog;
 
 /**
  * Component for showing or updating an existing element represented by an
@@ -18,6 +21,8 @@ import javax.naming.OperationNotSupportedException;
 public class ElementComponent<TEntity>
         extends AbstractElementComponent<TEntity, ElementEndpoint<TEntity>> {
 
+    protected final Button deleteButton = new Button("Delete", x -> delete());
+
     /**
      * Creates a new REST element component.
      *
@@ -27,6 +32,9 @@ public class ElementComponent<TEntity>
      */
     public ElementComponent(ElementEndpoint<TEntity> endpoint, EventBus eventBus, EntityForm<TEntity> entityForm) {
         super(endpoint, eventBus, entityForm);
+
+        deleteButton.addStyleName(ValoTheme.BUTTON_DANGER);
+        buttonsLayout.addComponent(deleteButton);
     }
 
     /**
@@ -63,5 +71,53 @@ public class ElementComponent<TEntity>
             throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, OperationNotSupportedException {
         endpoint.update(entityForm.getEntity());
         eventBus.post(new ElementUpdatedEvent<>(endpoint));
+    }
+
+    /**
+     * Controls whether a delete button is shown.
+     *
+     * @param val Turns the feature on or off.
+     */
+    public void setDeleteEnabled(boolean val) {
+        deleteButton.setVisible(val);
+    }
+
+    /**
+     * Deletes the element.
+     */
+    public void delete() {
+        String question = "Are you sure you want to delete " + getCaption() + "?";
+        ConfirmDialog.show(getUI(), question, (ConfirmDialog cd) -> {
+            if (cd.isConfirmed()) {
+                try {
+                    onDelete();
+                    close();
+                } catch (IOException | IllegalArgumentException | IllegalAccessException | OperationNotSupportedException ex) {
+                    onError(ex);
+                } catch (RuntimeException ex) {
+                    // Must explicitly send unhandled exceptions to error handler.
+                    // Would otherwise get swallowed silently within callback handler.
+                    UI.getCurrent().getErrorHandler().error(new com.vaadin.server.ErrorEvent(ex));
+                }
+            }
+        });
+    }
+
+    /**
+     * Handler for deleting the element.
+     *
+     * @throws IOException Network communication failed.
+     * @throws IllegalArgumentException {@link HttpStatus#SC_BAD_REQUEST}
+     * @throws IllegalAccessException {@link HttpStatus#SC_UNAUTHORIZED} or
+     * {@link HttpStatus#SC_FORBIDDEN}
+     * @throws FileNotFoundException {@link HttpStatus#SC_NOT_FOUND} or
+     * {@link HttpStatus#SC_GONE}
+     * @throws OperationNotSupportedException {@link HttpStatus#SC_CONFLICT}
+     * @throws RuntimeException Other non-success status code.
+     */
+    protected void onDelete()
+            throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, OperationNotSupportedException {
+        endpoint.delete();
+        eventBus.post(new ElementDeletedEvent<>(endpoint));
     }
 }

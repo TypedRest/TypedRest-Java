@@ -10,9 +10,7 @@ import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.Collection;
 import javax.naming.OperationNotSupportedException;
-import org.vaadin.dialogs.ConfirmDialog;
 
 /**
  * Base class for building components operating on an
@@ -30,9 +28,8 @@ public abstract class AbstractCollectionComponent<TEntity, TEndpoint extends Col
     protected final EntityLister<TEntity> lister;
 
     private final Button createButton = new Button("Create", x -> create());
-    protected final Button deleteButton = new Button("Delete", x -> onDeleteElements());
     protected final Button refreshButton = new Button("Refresh", x -> refresh());
-    protected final HorizontalLayout buttonsLayout = new HorizontalLayout(createButton, deleteButton, refreshButton);
+    protected final HorizontalLayout buttonsLayout = new HorizontalLayout(createButton, refreshButton);
 
     protected final VerticalLayout masterLayout;
 
@@ -56,7 +53,6 @@ public abstract class AbstractCollectionComponent<TEntity, TEndpoint extends Col
         });
 
         createButton.addStyleName(ValoTheme.BUTTON_FRIENDLY);
-        deleteButton.addStyleName(ValoTheme.BUTTON_DANGER);
         buttonsLayout.setMargin(true);
         buttonsLayout.setSpacing(true);
 
@@ -77,23 +73,10 @@ public abstract class AbstractCollectionComponent<TEntity, TEndpoint extends Col
         this(endpoint, eventBus, new DefaultEntityLister<>(endpoint.getEntityType()));
     }
 
-    /**
-     * Controls whether a create button is shown.
-     *
-     * @param val Turns the feature on or off.
-     */
-    public void setCreateEnabled(boolean val) {
-        createButton.setVisible(val);
-    }
-
-    /**
-     * Controls whether a delete button is shown.
-     *
-     * @param val Turns the feature on or off.
-     */
-    public void setDeleteEnabled(boolean val) {
-        deleteButton.setVisible(val);
-        lister.setSelectionEnabled(val);
+    @Override
+    protected void onLoad()
+            throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, OperationNotSupportedException {
+        lister.setEntities(endpoint.readAll());
     }
 
     private boolean openElementEnabled = true;
@@ -105,12 +88,6 @@ public abstract class AbstractCollectionComponent<TEntity, TEndpoint extends Col
      */
     public void setOpenElementEnabled(boolean val) {
         openElementEnabled = val;
-    }
-
-    @Override
-    protected void onLoad()
-            throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, OperationNotSupportedException {
-        lister.setEntities(endpoint.readAll());
     }
 
     /**
@@ -133,31 +110,12 @@ public abstract class AbstractCollectionComponent<TEntity, TEndpoint extends Col
     protected abstract ViewComponent buildElementComponent(TElementEndpoint elementEndpoint);
 
     /**
-     * Handler for deleting all selected elements.
+     * Controls whether a create button is shown.
+     *
+     * @param val Turns the feature on or off.
      */
-    protected void onDeleteElements() {
-        Collection<TEntity> entities = lister.getSelectedEntities();
-        if (entities.isEmpty()) {
-            return;
-        }
-
-        String message = "Are you sure you want to delete the following elements?"
-                + entities.stream().map(x -> "\n" + x.toString()).collect(StringBuilder::new, StringBuilder::append, StringBuilder::append).toString();
-        ConfirmDialog.show(getUI(), message, (ConfirmDialog cd) -> {
-            if (cd.isConfirmed()) {
-                {
-                    try {
-                        for (TEntity entity : entities) {
-                            endpoint.get(entity).delete();
-                        }
-                    } catch (IOException | IllegalArgumentException | IllegalAccessException | OperationNotSupportedException ex) {
-                        onError(ex);
-                    }
-                }
-
-                refresh();
-            }
-        });
+    public void setCreateEnabled(boolean val) {
+        createButton.setVisible(val);
     }
 
     /**

@@ -27,7 +27,6 @@ public class DefaultEntityLister<TEntity>
         super(entityType);
 
         grid.setContainerDataSource(container);
-        grid.setSelectionMode(Grid.SelectionMode.MULTI);
         grid.addItemClickListener(x -> onClick((TEntity) x.getItemId()));
         grid.setWidth(100, Unit.PERCENTAGE);
 
@@ -51,24 +50,9 @@ public class DefaultEntityLister<TEntity>
     }
 
     @Override
-    public void setSelectionEnabled(boolean val) {
-        if (val) {
-            grid.setSelectionMode(Grid.SelectionMode.MULTI);
-        } else {
-            grid.setSelectionMode(Grid.SelectionMode.NONE);
-        }
-    }
-
-    @Override
     public void clearEntities() {
         super.clearEntities();
         grid.getSelectionModel().reset();
-    }
-
-    @Override
-    @SuppressWarnings("unchecked") // Known types in untyped GUI control
-    public Collection<TEntity> getSelectedEntities() {
-        return (Collection<TEntity>) grid.getSelectedRows();
     }
 
     @Override

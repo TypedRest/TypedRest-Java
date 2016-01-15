@@ -36,7 +36,6 @@ public abstract class AbstractStreamComponent<TEntity, TEndpoint extends StreamE
     protected AbstractStreamComponent(TEndpoint endpoint, EventBus eventBus, EntityLister<TEntity> lister) {
         super(endpoint, eventBus, lister);
         setCreateEnabled(false);
-        setDeleteEnabled(false);
         refreshButton.setVisible(false);
     }
 
