@@ -61,7 +61,7 @@ public abstract class AbstractElementComponent<TEntity, TEndpoint extends Endpoi
     /**
      * Saves the input and closes the {@link Window} (if present).
      */
-    protected void save() {
+    public void save() {
         try {
             onSave();
             close();

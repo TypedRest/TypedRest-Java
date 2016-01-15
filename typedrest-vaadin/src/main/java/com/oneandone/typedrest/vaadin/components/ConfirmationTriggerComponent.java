@@ -28,7 +28,7 @@ public class ConfirmationTriggerComponent extends TriggerComponent {
     }
 
     @Override
-    protected void trigger() {
+    public void trigger() {
         ConfirmDialog.show(getUI(), question, (ConfirmDialog cd) -> {
             if (cd.isConfirmed()) {
                 try {

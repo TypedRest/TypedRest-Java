@@ -68,24 +68,6 @@ public class BlobComponent extends EndpointComponent<BlobEndpoint> {
         setCompositionRoot(getLayout());
     }
 
-    /**
-     * Controls whether a download button is shown.
-     *
-     * @param val Turns the feature on or off.
-     */
-    public void setDownloadEnabled(boolean val) {
-        downloadButton.setVisible(val);
-    }
-
-    /**
-     * Controls whether an upload button is shown.
-     *
-     * @param val Turns the feature on or off.
-     */
-    public void setUploadEnabled(boolean val) {
-        uploadButton.setVisible(val);
-    }
-
     @Override
     public void detach() {
         super.detach();
@@ -114,6 +96,15 @@ public class BlobComponent extends EndpointComponent<BlobEndpoint> {
     }
 
     /**
+     * Controls whether an upload button is shown.
+     *
+     * @param val Turns the feature on or off.
+     */
+    public void setUploadEnabled(boolean val) {
+        uploadButton.setVisible(val);
+    }
+
+    /**
      * Called after upload to local instance succeeded.
      */
     protected void uploadFrom() {
@@ -124,6 +115,15 @@ public class BlobComponent extends EndpointComponent<BlobEndpoint> {
                 OperationNotSupportedException ex) {
             onError(ex);
         }
+    }
+
+    /**
+     * Controls whether a download button is shown.
+     *
+     * @param val Turns the feature on or off.
+     */
+    public void setDownloadEnabled(boolean val) {
+        downloadButton.setVisible(val);
     }
 
     /**

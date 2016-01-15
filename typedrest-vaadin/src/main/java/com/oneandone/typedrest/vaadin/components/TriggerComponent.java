@@ -33,7 +33,7 @@ public class TriggerComponent extends EndpointComponent<TriggerEndpoint> {
     /**
      * Triggers the action.
      */
-    protected void trigger() {
+    public void trigger() {
         try {
             onTrigger();
             Notification.show(getCaption(), "Successful.", Notification.Type.TRAY_NOTIFICATION);

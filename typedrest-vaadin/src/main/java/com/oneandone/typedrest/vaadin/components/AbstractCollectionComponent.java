@@ -29,7 +29,7 @@ public abstract class AbstractCollectionComponent<TEntity, TEndpoint extends Col
 
     protected final EntityLister<TEntity> lister;
 
-    private final Button createButton = new Button("Create", x -> onCreateElement());
+    private final Button createButton = new Button("Create", x -> create());
     protected final Button deleteButton = new Button("Delete", x -> onDeleteElements());
     protected final Button refreshButton = new Button("Refresh", x -> refresh());
     protected final HorizontalLayout buttonsLayout = new HorizontalLayout(createButton, deleteButton, refreshButton);
@@ -161,9 +161,9 @@ public abstract class AbstractCollectionComponent<TEntity, TEndpoint extends Col
     }
 
     /**
-     * Handler for creating a new element in the collection.
+     * Opens a view for creating a new element in the collection.
      */
-    protected void onCreateElement() {
+    public void create() {
         open(buildCreateElementComponent());
     }
 

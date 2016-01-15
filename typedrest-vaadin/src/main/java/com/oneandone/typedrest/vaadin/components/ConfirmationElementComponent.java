@@ -43,7 +43,7 @@ public class ConfirmationElementComponent<TEntity> extends ElementComponent<TEnt
     }
 
     @Override
-    protected void save() {
+    public void save() {
         ConfirmDialog.show(getUI(), question, (ConfirmDialog cd) -> {
             if (cd.isConfirmed()) {
                 super.save();
