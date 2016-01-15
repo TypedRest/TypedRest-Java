@@ -11,7 +11,7 @@ import javax.naming.OperationNotSupportedException;
 import org.apache.http.*;
 
 /**
- * Common base class for components operating on individual entities.
+ * Common base class for components creating or updating elements.
  *
  * @param <TEntity> The type of entity the component represents.
  * @param <TEndpoint> The type of {@link Endpoint} to operate on.
@@ -49,13 +49,6 @@ public abstract class AbstractElementComponent<TEntity, TEndpoint extends Endpoi
 
         setHeight(masterLayout.getHeight() * 1.2f, masterLayout.getHeightUnits());
         setCompositionRoot(masterLayout);
-    }
-
-    @Override
-    public void setReadOnly(boolean readOnly) {
-        super.setReadOnly(readOnly);
-        entityForm.setReadOnly(readOnly);
-        saveButton.setVisible(!readOnly);
     }
 
     /**

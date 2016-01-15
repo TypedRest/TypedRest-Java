@@ -47,6 +47,17 @@ public class ElementComponent<TEntity>
         entityForm.setEntity(entity);
     }
 
+    /**
+     * Controls whether a save button is shown and fields are editable.
+     *
+     * @param val Turns the feature on or off.
+     */
+    public void setSaveEnabled(boolean val) {
+        saveButton.setVisible(val);
+        setReadOnly(!val);
+        entityForm.setReadOnly(!val);
+    }
+
     @Override
     protected void onSave()
             throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, OperationNotSupportedException {
