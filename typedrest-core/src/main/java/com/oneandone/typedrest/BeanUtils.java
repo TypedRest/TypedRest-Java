@@ -1,6 +1,5 @@
 package com.oneandone.typedrest;
 
-import java.beans.IntrospectionException;
 import static java.beans.Introspector.getBeanInfo;
 import java.beans.PropertyDescriptor;
 import java.lang.annotation.Annotation;
@@ -40,8 +39,8 @@ public final class BeanUtils {
     }
 
     /**
-     * Lists all read and writable properties on a bean type that have a
-     * specific annotation on their getter or backing field.
+     * Lists all readable and writable properties on a bean type that do not
+     * have a specific annotation on their getter or backing field.
      *
      * @param <TBean> The type of bean to check for properties.
      * @param <TAnnotation> The annotation type to look for.
