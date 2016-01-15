@@ -130,7 +130,7 @@ public abstract class AbstractCollectionComponent<TEntity, TEndpoint extends Col
      * updated.
      * @return The new component.
      */
-    protected abstract EndpointComponent buildElementComponent(TElementEndpoint elementEndpoint);
+    protected abstract ViewComponent buildElementComponent(TElementEndpoint elementEndpoint);
 
     /**
      * Handler for deleting all selected elements.
@@ -173,7 +173,7 @@ public abstract class AbstractCollectionComponent<TEntity, TEndpoint extends Col
      *
      * @return The new component.
      */
-    protected abstract EndpointComponent buildCreateElementComponent();
+    protected abstract ViewComponent buildCreateElementComponent();
 
     // Refresh when child elements are created or updated
     @Subscribe

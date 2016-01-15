@@ -17,7 +17,7 @@ import org.apache.http.*;
  * @param <TEndpoint> The specific type of {@link Endpoint} to operate on.
  */
 public abstract class EndpointComponent<TEndpoint extends Endpoint>
-        extends CustomComponent {
+        extends ViewComponent {
 
     /**
      * The REST endpoint this component operates on.
@@ -89,61 +89,6 @@ public abstract class EndpointComponent<TEndpoint extends Endpoint>
      */
     protected void onError(Exception ex) {
         Notification.show("Error", ex.getLocalizedMessage(), Notification.Type.ERROR_MESSAGE);
-    }
-
-    /**
-     * Opens a child component as a {@link Window}.
-     *
-     * @param component The child component to open.
-     */
-    protected void open(EndpointComponent<?> component) {
-        getUI().addWindow(component.asWindow());
-    }
-
-    private Window containingWindow;
-
-    /**
-     * Wraps the control in a {@link Window}.
-     *
-     * @return The newly created window.
-     */
-    private Window asWindow() {
-        if (isContained()) {
-            throw new IllegalStateException("Component can only be wrapped once.");
-        }
-
-        containingWindow = new Window(getCaption(), this);
-        containingWindow.setWidth(80, Unit.PERCENTAGE);
-        containingWindow.setHeight(80, Unit.PERCENTAGE);
-        containingWindow.center();
-        return containingWindow;
-    }
-
-    /**
-     * Indicates whether this control has been wrapped in a container.
-     *
-     * @return <code>true</code> if this control has been wrapped in a
-     * container.
-     */
-    public boolean isContained() {
-        return containingWindow != null;
-    }
-
-    /**
-     * Closes the containing {@link Window}.
-     */
-    protected void close() {
-        if (containingWindow != null) {
-            containingWindow.close();
-        }
-    }
-
-    @Override
-    public void setCaption(String caption) {
-        super.setCaption(caption);
-        if (containingWindow != null) {
-            containingWindow.setCaption(caption);
-        }
     }
 
     /**

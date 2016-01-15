@@ -35,12 +35,12 @@ public class CollectionComponent<TEntity>
     }
 
     @Override
-    protected EndpointComponent buildElementComponent(ElementEndpoint<TEntity> elementEndpoint) {
+    protected ViewComponent buildElementComponent(ElementEndpoint<TEntity> elementEndpoint) {
         return new ElementComponent<>(elementEndpoint, eventBus);
     }
 
     @Override
-    protected EndpointComponent buildCreateElementComponent() {
+    protected ViewComponent buildCreateElementComponent() {
         return new CreateElementComponent<>(endpoint, eventBus);
     }
 }
