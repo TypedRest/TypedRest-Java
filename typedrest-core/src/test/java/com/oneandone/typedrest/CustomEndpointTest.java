@@ -47,14 +47,23 @@ public class CustomEndpointTest extends AbstractEndpointTest {
         assertThat(endpoint.link("target2"), is(equalTo(endpoint.getUri().resolve("b"))));
     }
 
+    @Test
+    public void testLinkLazy() throws Exception {
+        stubFor(head(urlEqualTo("/endpoint"))
+                .willReturn(aResponse()
+                        .withStatus(SC_NO_CONTENT)
+                        .withHeader("Link", "<a>; rel=target1, <b>; rel=target2")));
+
+        assertThat(endpoint.link("target1"), is(equalTo(endpoint.getUri().resolve("a"))));
+        assertThat(endpoint.link("target2"), is(equalTo(endpoint.getUri().resolve("b"))));
+    }
+
     @Test(expected = RuntimeException.class)
     public void testLinkException() throws Exception {
-        stubFor(get(urlEqualTo("/endpoint"))
+        stubFor(head(urlEqualTo("/endpoint"))
                 .willReturn(aResponse()
                         .withStatus(SC_NO_CONTENT)
                         .withHeader("Link", "<a>; rel=target1")));
-
-        endpoint.get();
 
         endpoint.link("target2");
     }

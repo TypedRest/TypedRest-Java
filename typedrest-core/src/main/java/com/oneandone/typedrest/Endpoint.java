@@ -34,8 +34,10 @@ public interface Endpoint {
     Set<URI> getLinks(String rel);
 
     /**
-     * Retrieves a single link with a specific relation type. May be cached from
-     * the last request or may be lazily requested.
+     * Retrieves a single link with a specific relation type.
+     *
+     * Uses cached data from last response if possible. Tries lazy lookup with
+     * HTTP HEAD on cache miss.
      *
      * @param rel The relation type of the link to look for.
      * @return The href of the link resolved relative to this endpoint's URI.
@@ -45,8 +47,10 @@ public interface Endpoint {
     URI link(String rel);
 
     /**
-     * Retrieves a link template with a specific relation type. May be cached
-     * from the last request or may be lazily requested.
+     * Retrieves a link template with a specific relation type.
+     *
+     * Uses cached data from last response if possible. Tries lazy lookup with
+     * HTTP HEAD on cache miss.
      *
      * @param rel The relation type of the template to look for. "-template" is
      * appended implicitly for HTTP Link Headers.

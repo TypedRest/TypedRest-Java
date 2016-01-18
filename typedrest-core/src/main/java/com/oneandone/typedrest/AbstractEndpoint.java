@@ -209,10 +209,10 @@ public abstract class AbstractEndpoint
     public URI link(String rel) {
         Set<URI> linkSet = getLinks(rel);
         if (linkSet.isEmpty()) {
-            // Lazy loading
+            // Lazy lookup
             try {
-                handleLinks(rest.execute(Request.Get(uri)).returnResponse());
-            } catch (IOException ex) {
+                execute(Request.Head(uri));
+            } catch (IOException | IllegalAccessException | OperationNotSupportedException | RuntimeException ex) {
                 throw new RuntimeException("No link with rel=" + rel + " provided by endpoint " + getUri() + ".", ex);
             }
 
@@ -232,10 +232,11 @@ public abstract class AbstractEndpoint
     public UriTemplate linkTemplate(String rel) {
         String template = linkTemplates.get(rel);
         if (template == null) {
-            // Lazy loading
+            // Lazy lookup
             try {
-                handleLinks(rest.execute(Request.Get(uri)).returnResponse());
-            } catch (IOException ex) {
+                execute(Request.Head(uri));
+            } catch (IOException | IllegalAccessException | OperationNotSupportedException | RuntimeException ex) {
+                // HTTP HEAD server-side implementation is optional
             }
 
             template = linkTemplates.get(rel);
