@@ -69,6 +69,12 @@ public class BlobComponent extends EndpointComponent<BlobEndpoint> {
     }
 
     @Override
+    protected void onLoad() {
+        endpoint.isDownloadAllowed().ifPresent(this::setDownloadEnabled);
+        endpoint.isUploadAllowed().ifPresent(this::setUploadEnabled);
+    }
+
+    @Override
     public void detach() {
         super.detach();
         if (uploadTarget != null) {

@@ -118,5 +118,7 @@ public abstract class AbstractPagedCollectionComponent<TEntity, TEndpoint extend
         }
 
         lister.setEntities(response.getElements());
+
+        endpoint.isCreateAllowed().ifPresent(this::setCreateEnabled);
     }
 }

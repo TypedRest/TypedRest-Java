@@ -107,6 +107,11 @@ public abstract class AbstractCollectionEndpoint<TEntity, TElementEndpoint exten
     }
 
     @Override
+    public Optional<Boolean> isCreateAllowed() {
+        return isVerbAllowed("POST");
+    }
+
+    @Override
     public TElementEndpoint create(TEntity entity)
             throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, OperationNotSupportedException {
         String jsonSend = json.writeValueAsString(entity);

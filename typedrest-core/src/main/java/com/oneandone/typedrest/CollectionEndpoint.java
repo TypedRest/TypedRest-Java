@@ -3,6 +3,7 @@ package com.oneandone.typedrest;
 import java.io.*;
 import java.net.URI;
 import java.util.Collection;
+import java.util.Optional;
 import javax.naming.OperationNotSupportedException;
 import org.apache.http.*;
 
@@ -62,6 +63,18 @@ public interface CollectionEndpoint<TEntity, TElementEndpoint extends ElementEnd
      */
     Collection<TEntity> readAll()
             throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, OperationNotSupportedException;
+
+    /**
+     * Shows whether the server has indicated that
+     * {@link #create(java.lang.Object)} is currently allowed.
+     *
+     * Uses cached data from last response if possible. Tries lazy lookup with
+     * HTTP OPTIONS if no requests have been performed yet.
+     *
+     * @return An indicator whether the method is allowed. If the server did not
+     * specify anything {@link Optional#empty()} is returned.
+     */
+    Optional<Boolean> isCreateAllowed();
 
     /**
      * Creates a new <code>TEntity</code>.

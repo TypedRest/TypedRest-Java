@@ -1,13 +1,27 @@
 package com.oneandone.typedrest;
 
 import java.io.*;
+import java.util.Optional;
 import javax.naming.OperationNotSupportedException;
 import org.apache.http.*;
 
 /**
- * REST endpoint that represents a single binary blob that can downloaded and uploaded.
+ * REST endpoint that represents a single binary blob that can downloaded and
+ * uploaded.
  */
 public interface BlobEndpoint extends Endpoint {
+
+    /**
+     * Shows whether the server has indicated that {@link #downloadTo(java.io.OutputStream)}
+     * is currently allowed.
+     *
+     * Uses cached data from last response if possible. Tries lazy lookup with
+     * HTTP OPTIONS if no requests have been performed yet.
+     *
+     * @return An indicator whether the method is allowed. If the server did not
+     * specify anything {@link Optional#empty()} is returned.
+     */
+    Optional<Boolean> isDownloadAllowed();
 
     /**
      * Downloads the blob's content.
@@ -26,6 +40,18 @@ public interface BlobEndpoint extends Endpoint {
      */
     String downloadTo(OutputStream stream)
             throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, OperationNotSupportedException;
+
+    /**
+     * Shows whether the server has indicated that {@link #uploadFrom(java.io.File, java.lang.String)}
+     * is currently allowed.
+     *
+     * Uses cached data from last response if possible. Tries lazy lookup with
+     * HTTP OPTIONS if no requests have been performed yet.
+     *
+     * @return An indicator whether the method is allowed. If the server did not
+     * specify anything {@link Optional#empty()} is returned.
+     */
+    Optional<Boolean> isUploadAllowed();
 
     /**
      * Uploads a local file as the blob's content.

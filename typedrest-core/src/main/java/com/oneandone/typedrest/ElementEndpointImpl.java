@@ -2,6 +2,7 @@ package com.oneandone.typedrest;
 
 import java.io.*;
 import java.net.*;
+import java.util.Optional;
 import javax.naming.OperationNotSupportedException;
 import lombok.Getter;
 import org.apache.http.*;
@@ -54,10 +55,20 @@ public class ElementEndpointImpl<TEntity>
     }
 
     @Override
+    public Optional<Boolean> isUpdateAllowed() {
+        return isVerbAllowed("PUT");
+    }
+
+    @Override
     public void update(TEntity entity)
             throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, OperationNotSupportedException {
         String jsonSend = json.writeValueAsString(entity);
         execute(Request.Put(uri).bodyString(jsonSend, ContentType.APPLICATION_JSON));
+    }
+
+    @Override
+    public Optional<Boolean> isDeleteAllowed() {
+        return isVerbAllowed("DELETE");
     }
 
     @Override

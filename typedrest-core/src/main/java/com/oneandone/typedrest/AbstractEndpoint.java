@@ -6,8 +6,10 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import java.io.*;
 import java.net.*;
 import java.util.*;
+import static java.util.Arrays.stream;
 import static java.util.Collections.unmodifiableMap;
 import static java.util.Collections.unmodifiableSet;
+import static java.util.stream.Collectors.toSet;
 import javax.naming.OperationNotSupportedException;
 import lombok.*;
 import org.apache.http.*;
@@ -101,6 +103,7 @@ public abstract class AbstractEndpoint
 
         HttpResponse response = rest.execute(request).returnResponse();
         handleLinks(response);
+        handleAllow(response);
         handleErrors(response);
 
         return response;
@@ -244,5 +247,53 @@ public abstract class AbstractEndpoint
 
         // Create new template instance for each request because UriTemplate is not immutable
         return (template == null) ? null : UriTemplate.fromTemplate(template);
+    }
+
+    /**
+     * Handles allowed HTTP verbs reported by the server.
+     *
+     * @param response The response to check for the "Allow" header.
+     */
+    private void handleAllow(HttpResponse response) {
+        allowedVerbs = unmodifiableSet(stream(response.getHeaders("Allow"))
+                .filter(x -> x.getName().equals("Allow"))
+                .flatMap(x -> stream(x.getElements())).map(x -> x.getName())
+                .collect(toSet()));
+    }
+
+    // NOTE: Always replace entire set rather than modifying it. This ensures thread-safety.
+    private Set<String> allowedVerbs;
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <remarks>Uses cached data from last response if possible. Tries lazy lookup with HTTP OPTIONS if no requests have been performed yet.</remarks>
+    /// <param name="verb">The HTTP verb (e.g. GET, POST, ...) to check.</param>
+    /// <returns> </returns>
+
+    /**
+     * Returns whether the server has indicated that a specific HTTP verb is
+     * currently allowed.
+     *
+     * Uses cached data from last response if possible. Tries lazy lookup with
+     * HTTP OPTIONS if no requests have been performed yet.
+     *
+     * @param verb The HTTP verb (e.g. GET, POST, ...) to check.
+     * @return An indicator whether the verb is allowed. If the server did not
+     * specify anything {@link Optional#empty()} is returned.
+     */
+    protected Optional<Boolean> isVerbAllowed(String verb) {
+        if (allowedVerbs == null) {
+            // Lazy lookup
+            try {
+                execute(Request.Options(uri));
+            } catch (IOException | IllegalAccessException | OperationNotSupportedException | RuntimeException ex) {
+                // HTTP OPTIONS server-side implementation is optional
+            }
+        }
+
+        if (allowedVerbs == null || allowedVerbs.isEmpty()) {
+            return Optional.empty();
+        }
+        return Optional.of(allowedVerbs.contains(verb));
     }
 }

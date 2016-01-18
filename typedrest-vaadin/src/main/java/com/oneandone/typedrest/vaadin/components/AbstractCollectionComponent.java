@@ -77,6 +77,8 @@ public abstract class AbstractCollectionComponent<TEntity, TEndpoint extends Col
     protected void onLoad()
             throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, OperationNotSupportedException {
         lister.setEntities(endpoint.readAll());
+
+        endpoint.isCreateAllowed().ifPresent(this::setCreateEnabled);
     }
 
     private boolean openElementEnabled = true;

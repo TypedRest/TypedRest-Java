@@ -53,6 +53,9 @@ public class ElementComponent<TEntity>
         TEntity entity = endpoint.read();
         setCaption(entity.toString());
         entityForm.setEntity(entity);
+
+        endpoint.isUpdateAllowed().ifPresent(this::setSaveEnabled);
+        endpoint.isDeleteAllowed().ifPresent(this::setDeleteEnabled);
     }
 
     /**
