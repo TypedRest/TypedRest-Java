@@ -3,7 +3,7 @@
 
     <groupId>com.oneandone</groupId>
     <artifactId>typedrest-parent</artifactId>
-    <version>0.13-SNAPSHOT</version>
+    <version>0.13</version>
     <packaging>pom</packaging>
 
     <name>TypedRest Parent</name>
@@ -29,7 +29,7 @@
     </developers>
 
     <properties>
-        <typedrest.version>0.13-SNAPSHOT</typedrest.version>
+        <typedrest.version>0.13</typedrest.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
