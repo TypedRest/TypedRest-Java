@@ -18,7 +18,7 @@ public class CollectionEndpointTest extends AbstractEndpointTest {
     @Override
     public void before() {
         super.before();
-        endpoint = new CollectionEndpointImpl<>(entryPoint, "endpoint", MockEntity.class);
+        endpoint = new CollectionEndpointImpl<>(entryEndpoint, "endpoint", MockEntity.class);
     }
 
     @Test

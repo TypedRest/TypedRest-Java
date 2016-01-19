@@ -6,11 +6,11 @@ import static org.apache.http.HttpStatus.*;
 import org.apache.http.client.fluent.Request;
 import org.apache.http.message.BasicHeader;
 import static org.hamcrest.CoreMatchers.equalTo;
+import org.junit.*;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsInAnyOrder;
-import org.junit.*;
 
 public class CustomEndpointTest extends AbstractEndpointTest {
 
@@ -20,7 +20,7 @@ public class CustomEndpointTest extends AbstractEndpointTest {
     @Override
     public void before() {
         super.before();
-        endpoint = new CustomEndpoint(entryPoint, "endpoint");
+        endpoint = new CustomEndpoint(entryEndpoint, "endpoint");
     }
 
     @Test

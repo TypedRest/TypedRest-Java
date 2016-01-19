@@ -18,7 +18,7 @@ public class PagedCollectionEndpointTest extends AbstractEndpointTest {
     @Override
     public void before() {
         super.before();
-        endpoint = new PagedCollectionEndpointImpl<>(entryPoint, "endpoint", MockEntity.class);
+        endpoint = new PagedCollectionEndpointImpl<>(entryEndpoint, "endpoint", MockEntity.class);
     }
 
     @Test

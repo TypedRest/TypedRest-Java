@@ -7,7 +7,7 @@ import org.apache.http.entity.ContentType;
 
 public abstract class AbstractEndpointTest {
 
-    protected EntryEndpoint entryPoint;
+    protected EntryEndpoint entryEndpoint;
     protected static final String jsonMime = ContentType.APPLICATION_JSON.getMimeType();
 
     private static final int port = 8089;
@@ -19,6 +19,6 @@ public abstract class AbstractEndpointTest {
 
     @Before
     public void before() {
-        entryPoint = new EntryEndpoint(serverUri);
+        entryEndpoint = new EntryEndpoint(serverUri);
     }
 }

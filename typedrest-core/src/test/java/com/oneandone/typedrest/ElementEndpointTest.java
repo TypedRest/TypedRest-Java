@@ -15,7 +15,7 @@ public class ElementEndpointTest extends AbstractEndpointTest {
     @Override
     public void before() {
         super.before();
-        endpoint = new ElementEndpointImpl<>(entryPoint, "endpoint", MockEntity.class);
+        endpoint = new ElementEndpointImpl<>(entryEndpoint, "endpoint", MockEntity.class);
     }
 
     @Test

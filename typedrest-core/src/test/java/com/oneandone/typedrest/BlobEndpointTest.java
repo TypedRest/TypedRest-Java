@@ -17,7 +17,7 @@ public class BlobEndpointTest extends AbstractEndpointTest {
     @Override
     public void before() {
         super.before();
-        endpoint = new BlobEndpointImpl(entryPoint, "endpoint");
+        endpoint = new BlobEndpointImpl(entryEndpoint, "endpoint");
     }
 
     @Test

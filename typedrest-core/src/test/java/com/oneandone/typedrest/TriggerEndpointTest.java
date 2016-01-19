@@ -15,7 +15,7 @@ public class TriggerEndpointTest extends AbstractEndpointTest {
     @Override
     public void before() {
         super.before();
-        endpoint = new TriggerEndpointImpl(entryPoint, "endpoint");
+        endpoint = new TriggerEndpointImpl(entryEndpoint, "endpoint");
     }
 
     @Test

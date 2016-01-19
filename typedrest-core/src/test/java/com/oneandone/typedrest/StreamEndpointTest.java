@@ -18,7 +18,7 @@ public class StreamEndpointTest extends AbstractEndpointTest {
     @Override
     public void before() {
         super.before();
-        endpoint = new StreamEndpointImpl<>(entryPoint, "endpoint", MockEntity.class);
+        endpoint = new StreamEndpointImpl<>(entryEndpoint, "endpoint", MockEntity.class);
     }
 
     @Test
