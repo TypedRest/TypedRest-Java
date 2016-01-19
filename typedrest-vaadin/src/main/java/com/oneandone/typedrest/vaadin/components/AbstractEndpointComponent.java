@@ -16,7 +16,7 @@ import org.apache.http.*;
  *
  * @param <TEndpoint> The specific type of {@link Endpoint} to operate on.
  */
-public abstract class EndpointComponent<TEndpoint extends Endpoint>
+public abstract class AbstractEndpointComponent<TEndpoint extends Endpoint>
         extends ViewComponent {
 
     /**
@@ -35,7 +35,7 @@ public abstract class EndpointComponent<TEndpoint extends Endpoint>
      * @param endpoint The REST endpoint this component operates on.
      * @param eventBus Used to send refresh notifications.
      */
-    protected EndpointComponent(TEndpoint endpoint, EventBus eventBus) {
+    protected AbstractEndpointComponent(TEndpoint endpoint, EventBus eventBus) {
         this.endpoint = endpoint;
         this.eventBus = eventBus;
 

@@ -23,7 +23,7 @@ import javax.naming.OperationNotSupportedException;
  * <code>TEndpoint</code> provides for individual <code>TEntity</code>s.
  */
 public abstract class AbstractCollectionComponent<TEntity, TEndpoint extends CollectionEndpoint<TEntity, TElementEndpoint>, TElementEndpoint extends ElementEndpoint<TEntity>>
-        extends EndpointComponent<TEndpoint> {
+        extends AbstractEndpointComponent<TEndpoint> {
 
     protected final EntityLister<TEntity> lister;
 
@@ -102,7 +102,7 @@ public abstract class AbstractCollectionComponent<TEntity, TEndpoint extends Col
     }
 
     /**
-     * Builds an {@link EndpointComponent} for viewing or editing an existing
+     * Builds an {@link AbstractEndpointComponent} for viewing or editing an existing
      * <code>TEntity</code> represented by the given element endpoint.
      *
      * @param elementEndpoint The endpoint representing the entity to be
@@ -128,7 +128,7 @@ public abstract class AbstractCollectionComponent<TEntity, TEndpoint extends Col
     }
 
     /**
-     * Builds an {@link EndpointComponent} for creating a new
+     * Builds an {@link AbstractEndpointComponent} for creating a new
      * <code>TEntity</code> in the collection endpoint.
      *
      * @return The new component.

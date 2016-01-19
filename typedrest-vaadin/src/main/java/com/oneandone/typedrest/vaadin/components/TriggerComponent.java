@@ -12,7 +12,7 @@ import org.apache.http.client.fluent.Request;
 /**
  * Component operating on a {@link TriggerEndpoint}.
  */
-public class TriggerComponent extends EndpointComponent<TriggerEndpoint> {
+public class TriggerComponent extends AbstractEndpointComponent<TriggerEndpoint> {
 
     protected final Button button;
 

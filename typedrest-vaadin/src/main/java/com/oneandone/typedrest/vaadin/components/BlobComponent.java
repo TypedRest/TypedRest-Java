@@ -10,7 +10,7 @@ import com.vaadin.ui.*;
 /**
  * Component operating on a {@link BlobEndpoint}.
  */
-public class BlobComponent extends EndpointComponent<BlobEndpoint> {
+public class BlobComponent extends AbstractEndpointComponent<BlobEndpoint> {
 
     private static final String TYPED_REST_BLOB = "typed-rest-blob";
     protected final String TMP_DIR = System.getProperty("java.io.tmpdir");
