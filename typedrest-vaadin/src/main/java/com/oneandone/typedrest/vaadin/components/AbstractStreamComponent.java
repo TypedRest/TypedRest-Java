@@ -1,7 +1,9 @@
 package com.oneandone.typedrest.vaadin.components;
 
+import static com.google.gwt.thirdparty.guava.common.base.Throwables.getRootCause;
 import com.google.gwt.thirdparty.guava.common.eventbus.EventBus;
 import com.oneandone.typedrest.*;
+import com.oneandone.typedrest.vaadin.NotificationErrorHandler;
 import com.oneandone.typedrest.vaadin.forms.DefaultEntityLister;
 import com.oneandone.typedrest.vaadin.forms.EntityLister;
 import com.vaadin.annotations.Push;
@@ -9,6 +11,8 @@ import com.vaadin.ui.Notification;
 import com.vaadin.ui.*;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import rx.*;
 import rx.util.async.StoppableObservable;
 
@@ -121,7 +125,8 @@ public abstract class AbstractStreamComponent<TEntity, TEndpoint extends StreamE
         @Override
         public void onError(final Throwable throwable) {
             ui.access(() -> {
-                Notification.show("Error", throwable.getLocalizedMessage(), Notification.Type.WARNING_MESSAGE);
+                Logger.getLogger(NotificationErrorHandler.class.getName()).log(Level.WARNING, null, throwable);
+                Notification.show("Error", getRootCause(throwable).getLocalizedMessage(), Notification.Type.WARNING_MESSAGE);
                 ui.push();
             });
         }
