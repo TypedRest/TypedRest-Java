@@ -70,6 +70,12 @@ public class BlobComponent extends EndpointComponent<BlobEndpoint> {
 
     @Override
     protected void onLoad() {
+        try {
+            endpoint.probe();
+        } catch (IOException | IllegalAccessException | OperationNotSupportedException | RuntimeException ex) {
+            // HTTP OPTIONS server-side implementation is optional
+        }
+
         endpoint.isDownloadAllowed().ifPresent(this::setDownloadEnabled);
         endpoint.isUploadAllowed().ifPresent(this::setUploadEnabled);
     }

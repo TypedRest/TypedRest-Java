@@ -24,6 +24,11 @@ public class BlobEndpointImpl
     }
 
     @Override
+    public void probe() throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, OperationNotSupportedException {
+        execute(Request.Options(uri));
+    }
+
+    @Override
     public Optional<Boolean> isDownloadAllowed() {
         return isVerbAllowed("GET");
     }

@@ -199,7 +199,7 @@ public abstract class AbstractEndpoint
         this.linkTemplates = unmodifiableMap(linkTemplates);
     }
 
-    // NOTE: Always replace entire dictionary rather than modifying it. This ensures thread-safety.
+    // NOTE: Always replace entire dictionary rather than modifying it to ensure thread-safety.
     private Map<String, Set<URI>> links = unmodifiableMap(new HashMap<>());
 
     @Override
@@ -228,7 +228,7 @@ public abstract class AbstractEndpoint
         return linkSet.iterator().next();
     }
 
-    // NOTE: Always replace entire dictionary rather than modifying it. This ensures thread-safety.
+    // NOTE: Always replace entire dictionary rather than modifying it to ensure thread-safety.
     private Map<String, String> linkTemplates = unmodifiableMap(new HashMap<>());
 
     @Override
@@ -261,37 +261,22 @@ public abstract class AbstractEndpoint
                 .collect(toSet()));
     }
 
-    // NOTE: Always replace entire set rather than modifying it. This ensures thread-safety.
-    private Set<String> allowedVerbs;
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <remarks>Uses cached data from last response if possible. Tries lazy lookup with HTTP OPTIONS if no requests have been performed yet.</remarks>
-    /// <param name="verb">The HTTP verb (e.g. GET, POST, ...) to check.</param>
-    /// <returns> </returns>
+    // NOTE: Always replace entire set rather than modifying it to ensure thread-safety.
+    private Set<String> allowedVerbs = unmodifiableSet(new HashSet<>());
 
     /**
-     * Returns whether the server has indicated that a specific HTTP verb is
+     * Shows whether the server has indicated that a specific HTTP verb is
      * currently allowed.
      *
-     * Uses cached data from last response if possible. Tries lazy lookup with
-     * HTTP OPTIONS if no requests have been performed yet.
+     * Uses cached data from last response.
      *
      * @param verb The HTTP verb (e.g. GET, POST, ...) to check.
-     * @return An indicator whether the verb is allowed. If the server did not
-     * specify anything {@link Optional#empty()} is returned.
+     * @return An indicator whether the verb is allowed. If no request has been
+     * sent yet or the server did not specify allowed verbs
+     * {@link Optional#empty()} is returned.
      */
     protected Optional<Boolean> isVerbAllowed(String verb) {
-        if (allowedVerbs == null) {
-            // Lazy lookup
-            try {
-                execute(Request.Options(uri));
-            } catch (IOException | IllegalAccessException | OperationNotSupportedException | RuntimeException ex) {
-                // HTTP OPTIONS server-side implementation is optional
-            }
-        }
-
-        if (allowedVerbs == null || allowedVerbs.isEmpty()) {
+        if (allowedVerbs.isEmpty()) {
             return Optional.empty();
         }
         return Optional.of(allowedVerbs.contains(verb));

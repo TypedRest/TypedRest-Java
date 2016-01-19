@@ -3,6 +3,7 @@ package com.oneandone.typedrest;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URI;
+import java.util.Optional;
 import javax.naming.OperationNotSupportedException;
 import org.apache.http.client.fluent.Request;
 
@@ -18,6 +19,16 @@ public class TriggerEndpointImpl
 
     public TriggerEndpointImpl(Endpoint parent, String relativeUri) {
         super(parent, relativeUri);
+    }
+
+    @Override
+    public void probe() throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, OperationNotSupportedException {
+        execute(Request.Options(uri));
+    }
+
+    @Override
+    public Optional<Boolean> isTriggerAllowed() {
+        return isVerbAllowed("POST");
     }
 
     @Override

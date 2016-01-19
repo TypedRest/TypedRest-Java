@@ -49,18 +49,6 @@ public class CustomEndpointTest extends AbstractEndpointTest {
     }
 
     @Test
-    public void testAllowHeaderLazy() throws Exception {
-        stubFor(options(urlEqualTo("/endpoint"))
-                .willReturn(aResponse()
-                        .withStatus(SC_OK)
-                        .withHeader("Allow", "PUT, POST")));
-
-        assertThat(endpoint.isVerbAllowed("PUT").get(), is(true));
-        assertThat(endpoint.isVerbAllowed("POST").get(), is(true));
-        assertThat(endpoint.isVerbAllowed("DELETE").get(), is(false));
-    }
-
-    @Test
     public void testLink() throws Exception {
         stubFor(get(urlEqualTo("/endpoint"))
                 .willReturn(aResponse()

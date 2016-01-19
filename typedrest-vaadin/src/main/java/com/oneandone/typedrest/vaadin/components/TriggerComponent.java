@@ -7,6 +7,7 @@ import com.vaadin.ui.*;
 import org.apache.http.*;
 import javax.naming.*;
 import java.io.*;
+import org.apache.http.client.fluent.Request;
 
 /**
  * Component operating on a {@link TriggerEndpoint}.
@@ -28,6 +29,17 @@ public class TriggerComponent extends EndpointComponent<TriggerEndpoint> {
         setWidthUndefined();
 
         setCompositionRoot(button = new Button(caption, x -> trigger()));
+    }
+
+    @Override
+    protected void onLoad() {
+        try {
+            endpoint.probe();
+        } catch (IOException | IllegalAccessException | OperationNotSupportedException | RuntimeException ex) {
+            // HTTP OPTIONS server-side implementation is optional
+        }
+
+        endpoint.isTriggerAllowed().ifPresent(this::setEnabled);
     }
 
     /**
