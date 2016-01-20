@@ -41,6 +41,20 @@ public interface CollectionEndpoint<TEntity, TElementEndpoint extends ElementEnd
      * Returns a {@link ElementEndpoint} for a specific child element of this
      * collection. Does not perform any network traffic yet.
      *
+     * @param relativeUri The URI of the child endpoint relative to the this
+     * endpoint.
+     *
+     * @return An {@link ElementEndpoint} for a specific element of this
+     * collection.
+     */
+    default TElementEndpoint get(String relativeUri) {
+        return get(URI.create(relativeUri));
+    }
+
+    /**
+     * Returns a {@link ElementEndpoint} for a specific child element of this
+     * collection. Does not perform any network traffic yet.
+     *
      * @param entity A previously fetched instance of the entity to retrieve a
      * new state for.
      * @return An {@link ElementEndpoint} for a specific element of this
