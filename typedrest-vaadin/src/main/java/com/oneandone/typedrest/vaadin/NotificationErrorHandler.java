@@ -1,6 +1,6 @@
 package com.oneandone.typedrest.vaadin;
 
-import static com.google.gwt.thirdparty.guava.common.base.Throwables.getRootCause;
+import static com.oneandone.typedrest.ThrowableUtils.getFullMessage;
 import com.vaadin.server.ErrorEvent;
 import com.vaadin.server.ErrorHandler;
 import com.vaadin.ui.Notification;
@@ -15,6 +15,6 @@ public class NotificationErrorHandler implements ErrorHandler {
     public void error(ErrorEvent event) {
         Throwable ex = event.getThrowable();
         Logger.getLogger(NotificationErrorHandler.class.getName()).log(Level.SEVERE, null, ex);
-        Notification.show("System error", getRootCause(ex).getLocalizedMessage(), Notification.Type.ERROR_MESSAGE);
+        Notification.show("System error", getFullMessage(ex), Notification.Type.ERROR_MESSAGE);
     }
 }

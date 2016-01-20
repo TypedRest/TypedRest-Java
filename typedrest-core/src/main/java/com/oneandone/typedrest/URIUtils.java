@@ -2,6 +2,9 @@ package com.oneandone.typedrest;
 
 import java.net.*;
 
+/**
+ * Provides utility methods for {@link URI}.
+ */
 public final class URIUtils {
 
     private URIUtils() {
