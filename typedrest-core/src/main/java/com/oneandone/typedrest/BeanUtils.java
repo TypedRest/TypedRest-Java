@@ -1,10 +1,12 @@
 package com.oneandone.typedrest;
 
+import com.fasterxml.jackson.databind.PropertyName;
 import static java.beans.Introspector.getBeanInfo;
 import java.beans.PropertyDescriptor;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.util.*;
+import static java.util.Arrays.stream;
 import lombok.SneakyThrows;
 import static org.apache.commons.lang3.reflect.FieldUtils.getField;
 
@@ -60,8 +62,32 @@ public final class BeanUtils {
         return result;
     }
 
-    private static <TBean, TAnnotation extends Annotation> boolean isFieldAnnotated(Class<TBean> beanType, String fieldName, Class<TAnnotation> annotationType) {
+    private static <TAnnotation extends Annotation> boolean isFieldAnnotated(Class<?> beanType, String fieldName, Class<TAnnotation> annotationType) {
         Field field = getField(beanType, fieldName, true);
         return (field != null) && (field.getAnnotation(annotationType) != null);
+    }
+
+    /**
+     * Returns an annotation of a specific type on a property's getter or its
+     * backing field.
+     *
+     * @param <TBean> The type of bean the property is declared on.
+     * @param <TAnnotation> The type of annotation to look for.
+     * @param beanType The type of bean the property is declared on.
+     * @param property The property to check for the annotation.
+     * @param annotationType The type of annotation to look for.
+     * @return The annotation if present.
+     */
+    public static <TBean, TAnnotation extends Annotation> Optional<TAnnotation> getAnnotation(Class<TBean> beanType, PropertyDescriptor property, Class<TAnnotation> annotationType) {
+        Optional<TAnnotation> annotation = stream(property.getReadMethod().getAnnotationsByType(annotationType)).findAny();
+        return annotation.isPresent()
+                ? annotation
+                : getAnnotationOnField(beanType, property.getName(), annotationType);
+    }
+
+    private static <TAnnotation extends Annotation> Optional<TAnnotation> getAnnotationOnField(Class<?> beanType, String fieldName, Class<TAnnotation> annotationType) {
+        Field field = getField(beanType, fieldName, true);
+        TAnnotation annotation = (field == null) ? null : field.getAnnotation(annotationType);
+        return Optional.ofNullable(annotation);
     }
 }
