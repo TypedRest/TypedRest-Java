@@ -16,6 +16,7 @@ public class Resource extends NamedEntity {
     /**
      * A target to deploy the resource to.
      */
+    @Description("A target to deploy the resource to.")
     @ListerHidden
     @Required
     private Target target;
@@ -24,7 +25,7 @@ public class Resource extends NamedEntity {
      * All dependencies of this resource that need to be deployed to the same
      * host.
      */
+    @Description("All dependencies of this resource that need to be deployed to the same host.")
     @ListerHidden
-    @EditorHidden
     private Set<Resource> dependencies;
 }

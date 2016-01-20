@@ -3,6 +3,7 @@ package com.oneandone.typedrest.vaadin.forms;
 import static com.oneandone.typedrest.BeanUtils.*;
 import com.oneandone.typedrest.*;
 import com.vaadin.ui.*;
+import com.vaadin.ui.themes.ValoTheme;
 import java.beans.*;
 
 /**
@@ -28,6 +29,13 @@ public class DefaultEntityForm<TEntity>
         for (PropertyDescriptor property : getPropertiesWithoutAnnotation(entityType, EditorHidden.class)) {
             if (property.getWriteMethod() != null) {
                 layout.addComponent(fieldGroup.buildAndBind(property.getName()));
+                getAnnotation(entityType, property, Description.class)
+                        .ifPresent(x -> {
+                            Label label = new Label(x.value());
+                            label.addStyleName(ValoTheme.LABEL_LIGHT);
+                            label.addStyleName(ValoTheme.LABEL_SMALL);
+                            layout.addComponent(label);
+                        });
             }
         }
 
