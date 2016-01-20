@@ -7,5 +7,6 @@ import java.lang.annotation.*;
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(value = {ElementType.METHOD, ElementType.FIELD})
+@Inherited
 public @interface EditorHidden {
 }
