@@ -22,23 +22,43 @@ public class AutoEntityForm<TEntity>
     public AutoEntityForm(Class<TEntity> entityType) {
         super(entityType);
 
-        VerticalLayout layout = new VerticalLayout();
+        FormLayout layout = new FormLayout();
         layout.setMargin(true);
         layout.setSpacing(true);
 
         for (PropertyDescriptor property : getPropertiesWithoutAnnotation(entityType, EditorHidden.class)) {
             if (property.getWriteMethod() != null) {
-                layout.addComponent(fieldGroup.buildAndBind(property.getName()));
+                layout.addComponent(buildAndBind(property));
                 getAnnotation(entityType, property, Description.class)
-                        .ifPresent(x -> {
-                            Label label = new Label(x.value());
-                            label.addStyleName(ValoTheme.LABEL_LIGHT);
-                            label.addStyleName(ValoTheme.LABEL_SMALL);
-                            layout.addComponent(label);
-                        });
+                        .ifPresent(x -> layout.addComponent(buildDescriptionComponent(property, x.value())));
             }
         }
 
         setCompositionRoot(layout);
+    }
+
+    /**
+     * Builds a field component (label + input) for a specific property and sets
+     * up its data binding.
+     *
+     * @param property The property to create the field for.
+     * @return The newly created component.
+     */
+    protected Component buildAndBind(PropertyDescriptor property) {
+        return fieldGroup.buildAndBind(property.getName());
+    }
+
+    /**
+     * Builds a description component (label) for a specific property.
+     *
+     * @param property The property to create the component for.
+     * @param description The description text to show.
+     * @return The newly created component.
+     */
+    protected Component buildDescriptionComponent(PropertyDescriptor property, String description) {
+        Label label = new Label(description);
+        label.addStyleName(ValoTheme.LABEL_LIGHT);
+        label.addStyleName(ValoTheme.LABEL_SMALL);
+        return label;
     }
 }
