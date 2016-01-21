@@ -44,7 +44,7 @@ public class ElementComponent<TEntity>
      * @param eventBus Used to send refresh notifications.
      */
     public ElementComponent(ElementEndpoint<TEntity> endpoint, EventBus eventBus) {
-        this(endpoint, eventBus, new DefaultEntityForm<>(endpoint.getEntityType()));
+        this(endpoint, eventBus, new AutoEntityForm<>(endpoint.getEntityType()));
     }
 
     @Override

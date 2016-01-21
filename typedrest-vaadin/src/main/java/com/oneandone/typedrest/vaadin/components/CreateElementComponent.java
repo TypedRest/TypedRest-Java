@@ -4,7 +4,7 @@ import com.google.gwt.thirdparty.guava.common.eventbus.EventBus;
 import com.oneandone.typedrest.CollectionEndpoint;
 import com.oneandone.typedrest.ElementEndpoint;
 import com.oneandone.typedrest.vaadin.events.ElementCreatedEvent;
-import com.oneandone.typedrest.vaadin.forms.DefaultEntityForm;
+import com.oneandone.typedrest.vaadin.forms.AutoEntityForm;
 import com.oneandone.typedrest.vaadin.forms.EntityForm;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -43,7 +43,7 @@ public class CreateElementComponent<TEntity, TElementEndpoint extends ElementEnd
      * @param eventBus Used to send refresh notifications.
      */
     public CreateElementComponent(CollectionEndpoint<TEntity, TElementEndpoint> endpoint, EventBus eventBus) {
-        this(endpoint, eventBus, new DefaultEntityForm<>(endpoint.getEntityType()));
+        this(endpoint, eventBus, new AutoEntityForm<>(endpoint.getEntityType()));
     }
 
     @Override

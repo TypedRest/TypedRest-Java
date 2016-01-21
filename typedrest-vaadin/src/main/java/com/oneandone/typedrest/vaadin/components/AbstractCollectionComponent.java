@@ -4,7 +4,7 @@ import com.google.gwt.thirdparty.guava.common.eventbus.EventBus;
 import com.google.gwt.thirdparty.guava.common.eventbus.Subscribe;
 import com.oneandone.typedrest.*;
 import com.oneandone.typedrest.vaadin.events.ElementEvent;
-import com.oneandone.typedrest.vaadin.forms.DefaultEntityLister;
+import com.oneandone.typedrest.vaadin.forms.AutoEntityLister;
 import com.oneandone.typedrest.vaadin.forms.EntityLister;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
@@ -70,7 +70,7 @@ public abstract class AbstractCollectionComponent<TEntity, TEndpoint extends Col
      * @param eventBus Used to send refresh notifications.
      */
     protected AbstractCollectionComponent(TEndpoint endpoint, EventBus eventBus) {
-        this(endpoint, eventBus, new DefaultEntityLister<>(endpoint.getEntityType()));
+        this(endpoint, eventBus, new AutoEntityLister<>(endpoint.getEntityType()));
     }
 
     @Override

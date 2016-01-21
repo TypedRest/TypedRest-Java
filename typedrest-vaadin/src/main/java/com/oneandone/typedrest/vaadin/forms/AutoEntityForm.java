@@ -7,19 +7,19 @@ import com.vaadin.ui.themes.ValoTheme;
 import java.beans.*;
 
 /**
- * An entity component that uses auto-generated forms.
+ * An entity form that uses auto-generated fields.
  *
- * @param <TEntity> The type of entity the component operates on.
+ * @param <TEntity> The type of entity the form operates on.
  */
-public class DefaultEntityForm<TEntity>
+public class AutoEntityForm<TEntity>
         extends AbstractEntityForm<TEntity> {
 
     /**
-     * Creates a new entity component.
+     * Creates a new entity form.
      *
-     * @param entityType The type of entity the component operates on.
+     * @param entityType The type of entity the form operates on.
      */
-    public DefaultEntityForm(Class<TEntity> entityType) {
+    public AutoEntityForm(Class<TEntity> entityType) {
         super(entityType);
 
         VerticalLayout layout = new VerticalLayout();

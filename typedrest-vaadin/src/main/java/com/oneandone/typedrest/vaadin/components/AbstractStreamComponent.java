@@ -4,7 +4,7 @@ import com.google.gwt.thirdparty.guava.common.eventbus.EventBus;
 import com.oneandone.typedrest.*;
 import static com.oneandone.typedrest.ThrowableUtils.getFullMessage;
 import com.oneandone.typedrest.vaadin.NotificationErrorHandler;
-import com.oneandone.typedrest.vaadin.forms.DefaultEntityLister;
+import com.oneandone.typedrest.vaadin.forms.AutoEntityLister;
 import com.oneandone.typedrest.vaadin.forms.EntityLister;
 import com.vaadin.annotations.Push;
 import com.vaadin.ui.Notification;
@@ -50,7 +50,7 @@ public abstract class AbstractStreamComponent<TEntity, TEndpoint extends StreamE
      * @param eventBus Used to send refresh notifications.
      */
     protected AbstractStreamComponent(TEndpoint endpoint, EventBus eventBus) {
-        this(endpoint, eventBus, new DefaultEntityLister<>(endpoint.getEntityType()));
+        this(endpoint, eventBus, new AutoEntityLister<>(endpoint.getEntityType()));
     }
 
     @Override

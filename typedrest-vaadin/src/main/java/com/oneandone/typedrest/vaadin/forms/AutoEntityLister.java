@@ -3,14 +3,13 @@ package com.oneandone.typedrest.vaadin.forms;
 import com.vaadin.data.util.filter.*;
 import com.vaadin.ui.*;
 import com.vaadin.ui.Grid.*;
-import java.util.Collection;
 
 /**
  * An entity lister that uses auto-generated {@link Grid}s.
  *
  * @param <TEntity> The type of entities the list shows.
  */
-public class DefaultEntityLister<TEntity>
+public class AutoEntityLister<TEntity>
         extends AbstractEntityLister<TEntity> {
 
     protected final Grid grid = new Grid();
@@ -23,7 +22,7 @@ public class DefaultEntityLister<TEntity>
     @SuppressWarnings({
         "OverridableMethodCallInConstructor", // False positive due to lambda
         "unchecked"}) // Known types in untyped GUI control
-    public DefaultEntityLister(Class<TEntity> entityType) {
+    public AutoEntityLister(Class<TEntity> entityType) {
         super(entityType);
 
         grid.setContainerDataSource(container);

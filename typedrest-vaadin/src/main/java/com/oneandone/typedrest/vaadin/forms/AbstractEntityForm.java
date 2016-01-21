@@ -10,9 +10,9 @@ import com.vaadin.ui.*;
 import java.lang.annotation.Annotation;
 
 /**
- * Common base class for entity component implementations.
+ * Common base class for entity form implementations.
  *
- * @param <TEntity> The type of entity the component operates on.
+ * @param <TEntity> The type of entity the form operates on.
  */
 public abstract class AbstractEntityForm<TEntity>
         extends CustomComponent implements EntityForm<TEntity> {
@@ -21,9 +21,9 @@ public abstract class AbstractEntityForm<TEntity>
     protected final BeanFieldGroup<TEntity> fieldGroup;
 
     /**
-     * Creates a new entity editor.
+     * Creates a new entity form.
      *
-     * @param entityType The type of entity the component operates on.
+     * @param entityType The type of entity the form operates on.
      */
     protected AbstractEntityForm(Class<TEntity> entityType) {
         this.entityType = entityType;
