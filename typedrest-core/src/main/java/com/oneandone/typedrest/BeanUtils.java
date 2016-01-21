@@ -1,7 +1,6 @@
 package com.oneandone.typedrest;
 
-import com.fasterxml.jackson.databind.PropertyName;
-import static java.beans.Introspector.getBeanInfo;
+import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
@@ -19,19 +18,37 @@ public final class BeanUtils {
     }
 
     /**
+     * Lists all properties on a bean type. Ensures properties annotated with
+     * {@link Id} or called "name" are always listed first.
+     *
+     * @param beanType The type of bean to check for properties.
+     * @return A list of properties.
+     */
+    @SneakyThrows
+    public static List<PropertyDescriptor> getProperties(Class<?> beanType) {
+        LinkedList<PropertyDescriptor> properties = new LinkedList<>();
+        for (PropertyDescriptor property : Introspector.getBeanInfo(beanType).getPropertyDescriptors()) {
+            if (getAnnotation(beanType, property, Id.class).isPresent() || property.getName().equals("name")) {
+                properties.addFirst(property);
+            } else {
+                properties.add(property);
+            }
+        }
+        return properties;
+    }
+
+    /**
      * Lists all properties on a bean type that have a specific annotation on
      * their getter or backing field.
      *
-     * @param <TBean> The type of bean to check for properties.
      * @param <TAnnotation> The annotation type to look for.
      * @param beanType The type of bean to check for properties.
      * @param annotationType The annotation type to look for.
      * @return A list of matching properties.
      */
-    @SneakyThrows
-    public static <TBean, TAnnotation extends Annotation> Collection<PropertyDescriptor> getPropertiesWithAnnotation(Class<TBean> beanType, Class<TAnnotation> annotationType) {
-        List<PropertyDescriptor> result = new LinkedList<>();
-        for (PropertyDescriptor property : getBeanInfo(beanType).getPropertyDescriptors()) {
+    public static <TAnnotation extends Annotation> List<PropertyDescriptor> getPropertiesWithAnnotation(Class<?> beanType, Class<TAnnotation> annotationType) {
+        LinkedList<PropertyDescriptor> result = new LinkedList<>();
+        for (PropertyDescriptor property : getProperties(beanType)) {
             if (property.getReadMethod() != null && property.getReadMethod().getAnnotation(annotationType) != null
                     || isFieldAnnotated(beanType, property.getName(), annotationType)) {
                 result.add(property);
@@ -44,16 +61,14 @@ public final class BeanUtils {
      * Lists all readable and writable properties on a bean type that do not
      * have a specific annotation on their getter or backing field.
      *
-     * @param <TBean> The type of bean to check for properties.
      * @param <TAnnotation> The annotation type to look for.
      * @param beanType The type of bean to check for properties.
      * @param annotationType The annotation type to look for.
      * @return A list of matching properties.
      */
-    @SneakyThrows
-    public static <TBean, TAnnotation extends Annotation> Collection<PropertyDescriptor> getPropertiesWithoutAnnotation(Class<TBean> beanType, Class<TAnnotation> annotationType) {
-        List<PropertyDescriptor> result = new LinkedList<>();
-        for (PropertyDescriptor property : getBeanInfo(beanType).getPropertyDescriptors()) {
+    public static <TAnnotation extends Annotation> List<PropertyDescriptor> getPropertiesWithoutAnnotation(Class<?> beanType, Class<TAnnotation> annotationType) {
+        LinkedList<PropertyDescriptor> result = new LinkedList<>();
+        for (PropertyDescriptor property : getProperties(beanType)) {
             if ((property.getReadMethod() == null || property.getReadMethod().getAnnotation(annotationType) == null)
                     && !isFieldAnnotated(beanType, property.getName(), annotationType)) {
                 result.add(property);
@@ -71,14 +86,13 @@ public final class BeanUtils {
      * Returns an annotation of a specific type on a property's getter or its
      * backing field.
      *
-     * @param <TBean> The type of bean the property is declared on.
      * @param <TAnnotation> The type of annotation to look for.
      * @param beanType The type of bean the property is declared on.
      * @param property The property to check for the annotation.
      * @param annotationType The type of annotation to look for.
      * @return The annotation if present.
      */
-    public static <TBean, TAnnotation extends Annotation> Optional<TAnnotation> getAnnotation(Class<TBean> beanType, PropertyDescriptor property, Class<TAnnotation> annotationType) {
+    public static <TAnnotation extends Annotation> Optional<TAnnotation> getAnnotation(Class<?> beanType, PropertyDescriptor property, Class<TAnnotation> annotationType) {
         Optional<TAnnotation> annotation = stream(property.getReadMethod().getAnnotationsByType(annotationType)).findAny();
         return annotation.isPresent()
                 ? annotation
