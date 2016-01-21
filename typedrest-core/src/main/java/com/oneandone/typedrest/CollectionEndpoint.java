@@ -108,4 +108,47 @@ public interface CollectionEndpoint<TEntity, TElementEndpoint extends ElementEnd
      */
     TElementEndpoint create(TEntity entity)
             throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, OperationNotSupportedException;
+
+    /**
+     * Updates an existing element in the collection.
+     *
+     * This is a convenience method equivalent to combining
+     * {@link #get(java.lang.Object)} with
+     * {@link ElementEndpoint#update(java.lang.Object)}.
+     *
+     * @param element The element to be updated.
+     * @throws IOException Network communication failed.
+     * @throws IllegalArgumentException {@link HttpStatus#SC_BAD_REQUEST}
+     * @throws IllegalAccessException {@link HttpStatus#SC_UNAUTHORIZED} or
+     * {@link HttpStatus#SC_FORBIDDEN}
+     * @throws FileNotFoundException {@link HttpStatus#SC_NOT_FOUND} or
+     * {@link HttpStatus#SC_GONE}
+     * @throws OperationNotSupportedException {@link HttpStatus#SC_CONFLICT}
+     * @throws RuntimeException Other non-success status code.
+     */
+    default void update(TEntity element)
+            throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, OperationNotSupportedException {
+        get(element).update(element);
+    }
+
+    /**
+     * Deletes an existing element from the collection.
+     *
+     * This is a convenience method equivalent to combining
+     * {@link #get(java.lang.Object)} with {@link ElementEndpoint#delete()}.
+     *
+     * @param element The element to be deletes.
+     * @throws IOException Network communication failed.
+     * @throws IllegalArgumentException {@link HttpStatus#SC_BAD_REQUEST}
+     * @throws IllegalAccessException {@link HttpStatus#SC_UNAUTHORIZED} or
+     * {@link HttpStatus#SC_FORBIDDEN}
+     * @throws FileNotFoundException {@link HttpStatus#SC_NOT_FOUND} or
+     * {@link HttpStatus#SC_GONE}
+     * @throws OperationNotSupportedException {@link HttpStatus#SC_CONFLICT}
+     * @throws RuntimeException Other non-success status code.
+     */
+    default void delete(TEntity element)
+            throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, OperationNotSupportedException {
+        get(element).delete();
+    }
 }
