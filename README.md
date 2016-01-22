@@ -75,7 +75,7 @@ Include this in your Maven ```pom.xml``` to build GUIs with [Vaadin](https://vaa
 <dependency>
   <groupId>com.oneandone</groupId>
   <artifactId>typedrest-vaadin</artifactId>
-  <version>0.11-SNAPSHOT</version>
+  <version>0.13</version>
 </dependency>
 ```
 
