@@ -21,13 +21,6 @@ public interface EntityLister<TEntity> extends Component {
     }
 
     /**
-     * Adds an entity to the list of entities the list shows.
-     *
-     * @param entity the entity to add.
-     */
-    void addEntity(TEntity entity);
-
-    /**
      * Adds a set of entities to the list of entities the list shows.
      *
      * @param entities

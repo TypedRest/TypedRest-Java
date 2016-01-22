@@ -31,11 +31,6 @@ public abstract class AbstractEntityLister<TEntity>
     }
 
     @Override
-    public void addEntity(TEntity entity) {
-        container.addBean(entity);
-    }
-
-    @Override
     public void addEntities(Collection<TEntity> entities) {
         container.addAll(entities);
     }
