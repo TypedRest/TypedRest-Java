@@ -4,6 +4,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.*;
 import javax.naming.OperationNotSupportedException;
+import org.apache.http.HttpStatus;
 import org.apache.http.auth.Credentials;
 import org.apache.http.client.fluent.*;
 
