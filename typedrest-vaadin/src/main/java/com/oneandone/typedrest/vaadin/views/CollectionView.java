@@ -1,17 +1,17 @@
-package com.oneandone.typedrest.vaadin.components;
+package com.oneandone.typedrest.vaadin.views;
 
 import com.google.gwt.thirdparty.guava.common.eventbus.EventBus;
 import com.oneandone.typedrest.*;
 import com.oneandone.typedrest.vaadin.forms.EntityLister;
 
 /**
- * Component operating on an {@link CollectionEndpointImpl}.
+ * View component operating on an {@link CollectionEndpointImpl}.
  *
  * @param <TEntity> The type of entity the {@link CollectionEndpointImpl}
  * represents.
  */
-public class CollectionComponent<TEntity>
-        extends AbstractCollectionComponent<TEntity, CollectionEndpointImpl<TEntity>, ElementEndpoint<TEntity>> {
+public class CollectionView<TEntity>
+        extends AbstractCollectionView<TEntity, CollectionEndpointImpl<TEntity>, ElementEndpoint<TEntity>> {
 
     /**
      * Creates a new REST collection component.
@@ -20,7 +20,7 @@ public class CollectionComponent<TEntity>
      * @param eventBus Used to send refresh notifications.
      * @param lister A component for listing entity instances.
      */
-    public CollectionComponent(CollectionEndpointImpl<TEntity> endpoint, EventBus eventBus, EntityLister<TEntity> lister) {
+    public CollectionView(CollectionEndpointImpl<TEntity> endpoint, EventBus eventBus, EntityLister<TEntity> lister) {
         super(endpoint, eventBus, lister);
     }
 
@@ -30,17 +30,17 @@ public class CollectionComponent<TEntity>
      * @param endpoint The REST endpoint this component operates on.
      * @param eventBus Used to send refresh notifications.
      */
-    public CollectionComponent(CollectionEndpointImpl<TEntity> endpoint, EventBus eventBus) {
+    public CollectionView(CollectionEndpointImpl<TEntity> endpoint, EventBus eventBus) {
         super(endpoint, eventBus);
     }
 
     @Override
-    protected ViewComponent buildElementComponent(ElementEndpoint<TEntity> elementEndpoint) {
-        return new ElementComponent<>(elementEndpoint, eventBus);
+    protected ViewComponent buildElementView(ElementEndpoint<TEntity> elementEndpoint) {
+        return new ElementView<>(elementEndpoint, eventBus);
     }
 
     @Override
-    protected ViewComponent buildCreateElementComponent() {
-        return new CreateElementComponent<>(endpoint, eventBus);
+    protected ViewComponent buildCreateElementView() {
+        return new CreateElementView<>(endpoint, eventBus);
     }
 }

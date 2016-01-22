@@ -1,4 +1,4 @@
-package com.oneandone.typedrest.vaadin.components;
+package com.oneandone.typedrest.vaadin.views;
 
 import com.google.gwt.thirdparty.guava.common.eventbus.EventBus;
 import com.google.gwt.thirdparty.guava.common.eventbus.Subscribe;
@@ -12,11 +12,11 @@ import lombok.Setter;
 import org.apache.http.*;
 
 /**
- * Common base class for components operating on an {@link Endpoint}.
+ * Base class for building view components operating on an {@link Endpoint}.
  *
  * @param <TEndpoint> The specific type of {@link Endpoint} to operate on.
  */
-public abstract class AbstractEndpointComponent<TEndpoint extends Endpoint>
+public abstract class AbstractEndpointView<TEndpoint extends Endpoint>
         extends ViewComponent {
 
     /**
@@ -35,7 +35,7 @@ public abstract class AbstractEndpointComponent<TEndpoint extends Endpoint>
      * @param endpoint The REST endpoint this component operates on.
      * @param eventBus Used to send refresh notifications.
      */
-    protected AbstractEndpointComponent(TEndpoint endpoint, EventBus eventBus) {
+    protected AbstractEndpointView(TEndpoint endpoint, EventBus eventBus) {
         this.endpoint = endpoint;
         this.eventBus = eventBus;
 

@@ -1,4 +1,4 @@
-package com.oneandone.typedrest.vaadin.components;
+package com.oneandone.typedrest.vaadin.views;
 
 import com.google.gwt.thirdparty.guava.common.eventbus.EventBus;
 import com.oneandone.typedrest.*;
@@ -10,9 +10,9 @@ import java.io.*;
 import org.apache.http.client.fluent.Request;
 
 /**
- * Component operating on a {@link TriggerEndpoint}.
+ * View component operating on a {@link TriggerEndpoint}.
  */
-public class TriggerComponent extends AbstractEndpointComponent<TriggerEndpoint> {
+public class TriggerView extends AbstractEndpointView<TriggerEndpoint> {
 
     protected final Button button;
 
@@ -24,7 +24,7 @@ public class TriggerComponent extends AbstractEndpointComponent<TriggerEndpoint>
      * @param caption A caption for the triggerable action.
      */
     @SuppressWarnings("OverridableMethodCallInConstructor") // False positive due to lambda
-    public TriggerComponent(TriggerEndpoint endpoint, EventBus eventBus, String caption) {
+    public TriggerView(TriggerEndpoint endpoint, EventBus eventBus, String caption) {
         super(endpoint, eventBus);
         setWidthUndefined();
 

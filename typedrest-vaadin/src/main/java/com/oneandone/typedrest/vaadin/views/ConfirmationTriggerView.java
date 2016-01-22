@@ -1,4 +1,4 @@
-package com.oneandone.typedrest.vaadin.components;
+package com.oneandone.typedrest.vaadin.views;
 
 import com.google.gwt.thirdparty.guava.common.eventbus.EventBus;
 import com.oneandone.typedrest.TriggerEndpoint;
@@ -6,10 +6,10 @@ import com.vaadin.ui.UI;
 import org.vaadin.dialogs.ConfirmDialog;
 
 /**
- * Component operating on a {@link TriggerEndpoint} that asks a confirmation
- * question before triggering.
+ * View component operating on a {@link TriggerEndpoint} that asks a
+ * confirmation question before triggering.
  */
-public class ConfirmationTriggerComponent extends TriggerComponent {
+public class ConfirmationTriggerView extends TriggerView {
 
     private final String question;
 
@@ -22,7 +22,7 @@ public class ConfirmationTriggerComponent extends TriggerComponent {
      * @param question A question to show the user asking whether to actually
      * trigger the action.
      */
-    public ConfirmationTriggerComponent(TriggerEndpoint endpoint, EventBus eventBus, String caption, String question) {
+    public ConfirmationTriggerView(TriggerEndpoint endpoint, EventBus eventBus, String caption, String question) {
         super(endpoint, eventBus, caption);
         this.question = question;
     }

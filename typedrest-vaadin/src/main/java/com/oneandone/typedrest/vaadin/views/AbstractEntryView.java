@@ -1,4 +1,4 @@
-package com.oneandone.typedrest.vaadin.components;
+package com.oneandone.typedrest.vaadin.views;
 
 import com.google.gwt.thirdparty.guava.common.eventbus.EventBus;
 import com.oneandone.typedrest.EntryEndpoint;
@@ -8,20 +8,21 @@ import java.io.IOException;
 import javax.naming.OperationNotSupportedException;
 
 /**
- * Base class for building components operating on an {@link EntryEndpoint}. Use
- * this to build a UI that provides access to an API's top-level functionality.
+ * Base class for building view components operating on an
+ * {@link EntryEndpoint}. Use this to build a UI that provides access to an
+ * API's top-level functionality.
  *
  * @param <TEndpoint> The specific type of {@link EntryEndpoint} to operate on.
  */
-public abstract class AbstractEntryComponent<TEndpoint extends EntryEndpoint>
-        extends AbstractEndpointComponent<TEndpoint> {
+public abstract class AbstractEntryView<TEndpoint extends EntryEndpoint>
+        extends AbstractEndpointView<TEndpoint> {
 
     /**
      * Creates a new REST entry component.
      *
      * @param endpoint The REST endpoint this component operates on.
      */
-    public AbstractEntryComponent(TEndpoint endpoint) {
+    public AbstractEntryView(TEndpoint endpoint) {
         super(endpoint, new EventBus());
     }
 

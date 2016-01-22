@@ -1,4 +1,4 @@
-package com.oneandone.typedrest.vaadin.components;
+package com.oneandone.typedrest.vaadin.views;
 
 import com.google.gwt.thirdparty.guava.common.eventbus.EventBus;
 import com.oneandone.typedrest.*;
@@ -18,8 +18,8 @@ import org.vaadin.dialogs.ConfirmDialog;
  *
  * @param <TEntity> The type of entity to represent.
  */
-public class ElementComponent<TEntity>
-        extends AbstractElementComponent<TEntity, ElementEndpoint<TEntity>> {
+public class ElementView<TEntity>
+        extends AbstractElementView<TEntity, ElementEndpoint<TEntity>> {
 
     protected final Button deleteButton = new Button("Delete", x -> delete());
 
@@ -30,7 +30,7 @@ public class ElementComponent<TEntity>
      * @param eventBus Used to send refresh notifications.
      * @param entityForm A component for viewing/modifying entity instances.
      */
-    public ElementComponent(ElementEndpoint<TEntity> endpoint, EventBus eventBus, EntityForm<TEntity> entityForm) {
+    public ElementView(ElementEndpoint<TEntity> endpoint, EventBus eventBus, EntityForm<TEntity> entityForm) {
         super(endpoint, eventBus, entityForm);
 
         deleteButton.addStyleName(ValoTheme.BUTTON_DANGER);
@@ -43,7 +43,7 @@ public class ElementComponent<TEntity>
      * @param endpoint The REST endpoint this component operates on.
      * @param eventBus Used to send refresh notifications.
      */
-    public ElementComponent(ElementEndpoint<TEntity> endpoint, EventBus eventBus) {
+    public ElementView(ElementEndpoint<TEntity> endpoint, EventBus eventBus) {
         this(endpoint, eventBus, new AutoEntityForm<>(endpoint.getEntityType()));
     }
 

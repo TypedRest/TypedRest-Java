@@ -1,6 +1,6 @@
 package com.oneandone.typedrest.vaadin.sample;
 
-import com.oneandone.typedrest.vaadin.sample.components.*;
+import com.oneandone.typedrest.vaadin.sample.views.SampleEntryView;
 import com.oneandone.typedrest.sample.endpoints.*;
 import com.oneandone.typedrest.vaadin.*;
 import com.vaadin.annotations.Push;
@@ -27,7 +27,7 @@ public class MainUI extends UI {
     protected void init(VaadinRequest request) {
         setErrorHandler(new NotificationErrorHandler());
 
-        setContent(new SampleEntryComponent(new SampleEntryEndpoint(
+        setContent(new SampleEntryView(new SampleEntryEndpoint(
                 URI.create(sampleUri), sampleUsername, samplePassword)));
     }
 }

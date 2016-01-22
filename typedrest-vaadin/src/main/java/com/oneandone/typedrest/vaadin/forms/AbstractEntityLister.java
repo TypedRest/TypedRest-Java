@@ -7,7 +7,7 @@ import com.vaadin.ui.CustomComponent;
 import java.util.*;
 
 /**
- * Common base class for entity lister implementations.
+ * Base class for building entity lister implementations.
  *
  * @param <TEntity> The type of entities the list shows.
  */

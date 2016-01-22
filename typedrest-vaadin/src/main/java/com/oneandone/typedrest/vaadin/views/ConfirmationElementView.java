@@ -1,4 +1,4 @@
-package com.oneandone.typedrest.vaadin.components;
+package com.oneandone.typedrest.vaadin.views;
 
 import com.google.gwt.thirdparty.guava.common.eventbus.EventBus;
 import com.oneandone.typedrest.ElementEndpoint;
@@ -11,7 +11,7 @@ import org.vaadin.dialogs.ConfirmDialog;
  *
  * @param <TEntity> The type of entity to represent.
  */
-public class ConfirmationElementComponent<TEntity> extends ElementComponent<TEntity> {
+public class ConfirmationElementView<TEntity> extends ElementView<TEntity> {
 
     private final String question;
 
@@ -24,7 +24,7 @@ public class ConfirmationElementComponent<TEntity> extends ElementComponent<TEnt
      * @param question A question to show the user asking whether to actually
      * save the changes.
      */
-    public ConfirmationElementComponent(ElementEndpoint<TEntity> endpoint, EventBus eventBus, EntityForm<TEntity> entityForm, String question) {
+    public ConfirmationElementView(ElementEndpoint<TEntity> endpoint, EventBus eventBus, EntityForm<TEntity> entityForm, String question) {
         super(endpoint, eventBus, entityForm);
         this.question = question;
     }
@@ -37,7 +37,7 @@ public class ConfirmationElementComponent<TEntity> extends ElementComponent<TEnt
      * @param question A question to show the user asking whether to actually
      * save the changes.
      */
-    public ConfirmationElementComponent(ElementEndpoint<TEntity> endpoint, EventBus eventBus, String question) {
+    public ConfirmationElementView(ElementEndpoint<TEntity> endpoint, EventBus eventBus, String question) {
         super(endpoint, eventBus);
         this.question = question;
     }

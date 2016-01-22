@@ -1,4 +1,4 @@
-package com.oneandone.typedrest.vaadin.components;
+package com.oneandone.typedrest.vaadin.views;
 
 import com.google.gwt.thirdparty.guava.common.eventbus.EventBus;
 import com.oneandone.typedrest.*;
@@ -17,7 +17,8 @@ import rx.*;
 import rx.util.async.StoppableObservable;
 
 /**
- * Base class for building components operating on an {@link StreamEndpoint}.
+ * Base class for building view components operating on an
+ * {@link StreamEndpoint}.
  *
  * To enable server-push (real-time actualization of the web-ui), please make
  * sure to have your {@link UI} annotated with {@link Push}.
@@ -27,8 +28,8 @@ import rx.util.async.StoppableObservable;
  * @param <TElementEndpoint> The specific type of {@link ElementEndpoint} the
  * <code>TEndpoint</code> provides for individual <code>TEntity</code>s.
  */
-public abstract class AbstractStreamComponent<TEntity, TEndpoint extends StreamEndpoint<TEntity, TElementEndpoint>, TElementEndpoint extends ElementEndpoint<TEntity>>
-        extends AbstractCollectionComponent<TEntity, TEndpoint, TElementEndpoint> {
+public abstract class AbstractStreamView<TEntity, TEndpoint extends StreamEndpoint<TEntity, TElementEndpoint>, TElementEndpoint extends ElementEndpoint<TEntity>>
+        extends AbstractCollectionView<TEntity, TEndpoint, TElementEndpoint> {
 
     /**
      * Creates a new REST stream component.
@@ -37,7 +38,7 @@ public abstract class AbstractStreamComponent<TEntity, TEndpoint extends StreamE
      * @param eventBus Used to send refresh notifications.
      * @param lister A component for listing entity instances.
      */
-    protected AbstractStreamComponent(TEndpoint endpoint, EventBus eventBus, EntityLister<TEntity> lister) {
+    protected AbstractStreamView(TEndpoint endpoint, EventBus eventBus, EntityLister<TEntity> lister) {
         super(endpoint, eventBus, lister);
         setCreateEnabled(false);
         refreshButton.setVisible(false);
@@ -49,7 +50,7 @@ public abstract class AbstractStreamComponent<TEntity, TEndpoint extends StreamE
      * @param endpoint The REST endpoint this component operates on.
      * @param eventBus Used to send refresh notifications.
      */
-    protected AbstractStreamComponent(TEndpoint endpoint, EventBus eventBus) {
+    protected AbstractStreamView(TEndpoint endpoint, EventBus eventBus) {
         this(endpoint, eventBus, new AutoEntityLister<>(endpoint.getEntityType()));
     }
 

@@ -1,4 +1,4 @@
-package com.oneandone.typedrest.vaadin.components;
+package com.oneandone.typedrest.vaadin.views;
 
 import com.google.gwt.thirdparty.guava.common.eventbus.EventBus;
 import javax.naming.*;
@@ -8,9 +8,9 @@ import com.vaadin.server.*;
 import com.vaadin.ui.*;
 
 /**
- * Component operating on a {@link BlobEndpoint}.
+ * View component operating on a {@link BlobEndpoint}.
  */
-public class BlobComponent extends AbstractEndpointComponent<BlobEndpoint> {
+public class BlobView extends AbstractEndpointView<BlobEndpoint> {
 
     private static final String TYPED_REST_BLOB = "typed-rest-blob";
     protected final String TMP_DIR = System.getProperty("java.io.tmpdir");
@@ -30,7 +30,7 @@ public class BlobComponent extends AbstractEndpointComponent<BlobEndpoint> {
      * @param caption A caption for the blob.
      */
     @SuppressWarnings("OverridableMethodCallInConstructor") // False positive due to lambda
-    public BlobComponent(BlobEndpoint endpoint, EventBus eventBus, String caption) {
+    public BlobView(BlobEndpoint endpoint, EventBus eventBus, String caption) {
         super(endpoint, eventBus);
         setCaption(caption);
 

@@ -1,26 +1,26 @@
-package com.oneandone.typedrest.vaadin.sample.components;
+package com.oneandone.typedrest.vaadin.sample.views;
 
 import com.oneandone.typedrest.vaadin.sample.forms.ResourceForm;
-import com.oneandone.typedrest.vaadin.components.ElementComponent;
-import com.oneandone.typedrest.vaadin.components.StreamComponent;
+import com.oneandone.typedrest.vaadin.views.ElementView;
+import com.oneandone.typedrest.vaadin.views.StreamView;
 import com.google.gwt.thirdparty.guava.common.eventbus.EventBus;
 import com.oneandone.typedrest.sample.endpoints.*;
 import com.oneandone.typedrest.sample.models.*;
 import com.vaadin.ui.Button;
 
-public class ResourceElementComponent
-        extends ElementComponent<Resource> {
+public class ResourceElementView
+        extends ElementView<Resource> {
 
     @SuppressWarnings("FieldNameHidesFieldInSuperclass") // Covariance
     protected ResourceElement endpoint;
 
-    public ResourceElementComponent(ResourceElement endpoint, EventBus eventBus) {
+    public ResourceElementView(ResourceElement endpoint, EventBus eventBus) {
         super(endpoint, eventBus, new ResourceForm(endpoint.getResources()));
         this.endpoint = endpoint;
 
         buttonsLayout.addComponent(new Button("Events", x
-                -> open(new StreamComponent<>(endpoint.getEvents(), eventBus))));
+                -> open(new StreamView<>(endpoint.getEvents(), eventBus))));
 
-        masterLayout.addComponent(new ResourceRevisionCollectionComponent(endpoint.getRevisions(), eventBus));
+        masterLayout.addComponent(new ResourceRevisionCollectionView(endpoint.getRevisions(), eventBus));
     }
 }

@@ -10,7 +10,7 @@ import com.vaadin.ui.*;
 import java.lang.annotation.Annotation;
 
 /**
- * Common base class for entity form implementations.
+ * Base class for building entity form implementations.
  *
  * @param <TEntity> The type of entity the form operates on.
  */

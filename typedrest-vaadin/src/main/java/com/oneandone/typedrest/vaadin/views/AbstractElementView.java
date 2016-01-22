@@ -1,4 +1,4 @@
-package com.oneandone.typedrest.vaadin.components;
+package com.oneandone.typedrest.vaadin.views;
 
 import com.google.gwt.thirdparty.guava.common.eventbus.EventBus;
 import com.oneandone.typedrest.*;
@@ -11,13 +11,13 @@ import javax.naming.OperationNotSupportedException;
 import org.apache.http.*;
 
 /**
- * Common base class for components creating or updating elements.
+ * Base class for building view components that create or update elements.
  *
  * @param <TEntity> The type of entity the component represents.
  * @param <TEndpoint> The type of {@link Endpoint} to operate on.
  */
-public abstract class AbstractElementComponent<TEntity, TEndpoint extends Endpoint>
-        extends AbstractEndpointComponent<TEndpoint> {
+public abstract class AbstractElementView<TEntity, TEndpoint extends Endpoint>
+        extends AbstractEndpointView<TEndpoint> {
 
     protected final EntityForm<TEntity> entityForm;
 
@@ -33,7 +33,7 @@ public abstract class AbstractElementComponent<TEntity, TEndpoint extends Endpoi
      * @param eventBus Used to send refresh notifications.
      * @param entityForm A component for viewing/modifying entity instances.
      */
-    protected AbstractElementComponent(TEndpoint endpoint, EventBus eventBus, EntityForm<TEntity> entityForm) {
+    protected AbstractElementView(TEndpoint endpoint, EventBus eventBus, EntityForm<TEntity> entityForm) {
         super(endpoint, eventBus);
 
         this.entityForm = entityForm;

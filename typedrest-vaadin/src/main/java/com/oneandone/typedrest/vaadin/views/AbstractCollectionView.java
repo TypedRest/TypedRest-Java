@@ -1,4 +1,4 @@
-package com.oneandone.typedrest.vaadin.components;
+package com.oneandone.typedrest.vaadin.views;
 
 import com.google.gwt.thirdparty.guava.common.eventbus.EventBus;
 import com.google.gwt.thirdparty.guava.common.eventbus.Subscribe;
@@ -13,7 +13,7 @@ import java.io.IOException;
 import javax.naming.OperationNotSupportedException;
 
 /**
- * Base class for building components operating on an
+ * Base class for building view components operating on an
  * {@link CollectionEndpoint}.
  *
  * @param <TEntity> The type of entity the <code>TEndpoint</code> represents.
@@ -22,8 +22,8 @@ import javax.naming.OperationNotSupportedException;
  * @param <TElementEndpoint> The specific type of {@link ElementEndpoint} the
  * <code>TEndpoint</code> provides for individual <code>TEntity</code>s.
  */
-public abstract class AbstractCollectionComponent<TEntity, TEndpoint extends CollectionEndpoint<TEntity, TElementEndpoint>, TElementEndpoint extends ElementEndpoint<TEntity>>
-        extends AbstractEndpointComponent<TEndpoint> {
+public abstract class AbstractCollectionView<TEntity, TEndpoint extends CollectionEndpoint<TEntity, TElementEndpoint>, TElementEndpoint extends ElementEndpoint<TEntity>>
+        extends AbstractEndpointView<TEndpoint> {
 
     protected final EntityLister<TEntity> lister;
 
@@ -41,7 +41,7 @@ public abstract class AbstractCollectionComponent<TEntity, TEndpoint extends Col
      * @param lister A component for listing entity instances.
      */
     @SuppressWarnings("OverridableMethodCallInConstructor") // False positive due to lambda
-    protected AbstractCollectionComponent(TEndpoint endpoint, EventBus eventBus, EntityLister<TEntity> lister) {
+    protected AbstractCollectionView(TEndpoint endpoint, EventBus eventBus, EntityLister<TEntity> lister) {
         super(endpoint, eventBus);
         setCaption(endpoint.getEntityType().getSimpleName() + "s");
 
@@ -69,7 +69,7 @@ public abstract class AbstractCollectionComponent<TEntity, TEndpoint extends Col
      * @param endpoint The REST endpoint this component operates on.
      * @param eventBus Used to send refresh notifications.
      */
-    protected AbstractCollectionComponent(TEndpoint endpoint, EventBus eventBus) {
+    protected AbstractCollectionView(TEndpoint endpoint, EventBus eventBus) {
         this(endpoint, eventBus, new AutoEntityLister<>(endpoint.getEntityType()));
     }
 
@@ -98,18 +98,18 @@ public abstract class AbstractCollectionComponent<TEntity, TEndpoint extends Col
      * @param entity The entity that was clicked.
      */
     protected void onOpenElement(TEntity entity) {
-        open(buildElementComponent(endpoint.get(entity)));
+        open(buildElementView(endpoint.get(entity)));
     }
 
     /**
-     * Builds an {@link AbstractEndpointComponent} for viewing or editing an existing
+     * Builds an {@link AbstractEndpointView} for viewing or editing an existing
      * <code>TEntity</code> represented by the given element endpoint.
      *
      * @param elementEndpoint The endpoint representing the entity to be
      * updated.
      * @return The new component.
      */
-    protected abstract ViewComponent buildElementComponent(TElementEndpoint elementEndpoint);
+    protected abstract ViewComponent buildElementView(TElementEndpoint elementEndpoint);
 
     /**
      * Controls whether a create button is shown.
@@ -124,16 +124,16 @@ public abstract class AbstractCollectionComponent<TEntity, TEndpoint extends Col
      * Opens a view for creating a new element in the collection.
      */
     public void create() {
-        open(buildCreateElementComponent());
+        open(buildCreateElementView());
     }
 
     /**
-     * Builds an {@link AbstractEndpointComponent} for creating a new
+     * Builds an {@link AbstractEndpointView} for creating a new
      * <code>TEntity</code> in the collection endpoint.
      *
      * @return The new component.
      */
-    protected abstract ViewComponent buildCreateElementComponent();
+    protected abstract ViewComponent buildCreateElementView();
 
     // Refresh when child elements are created or updated
     @Subscribe

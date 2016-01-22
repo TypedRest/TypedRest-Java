@@ -1,4 +1,4 @@
-package com.oneandone.typedrest.vaadin.components;
+package com.oneandone.typedrest.vaadin.views;
 
 import com.google.gwt.thirdparty.guava.common.eventbus.EventBus;
 import com.oneandone.typedrest.CollectionEndpoint;
@@ -18,8 +18,8 @@ import lombok.SneakyThrows;
  * @param <TElementEndpoint> The specific type of {@link ElementEndpoint} the
  * {@link CollectionEndpoint} provides for individual <code>TEntity</code>s.
  */
-public class CreateElementComponent<TEntity, TElementEndpoint extends ElementEndpoint<TEntity>>
-        extends AbstractElementComponent<TEntity, CollectionEndpoint<TEntity, TElementEndpoint>> {
+public class CreateElementView<TEntity, TElementEndpoint extends ElementEndpoint<TEntity>>
+        extends AbstractElementView<TEntity, CollectionEndpoint<TEntity, TElementEndpoint>> {
 
     /**
      * Creates a new REST element creation component.
@@ -29,7 +29,7 @@ public class CreateElementComponent<TEntity, TElementEndpoint extends ElementEnd
      * @param entityForm A component for viewing/modifying entity instances.
      */
     @SneakyThrows
-    public CreateElementComponent(CollectionEndpoint<TEntity, TElementEndpoint> endpoint, EventBus eventBus, EntityForm<TEntity> entityForm) {
+    public CreateElementView(CollectionEndpoint<TEntity, TElementEndpoint> endpoint, EventBus eventBus, EntityForm<TEntity> entityForm) {
         super(endpoint, eventBus, entityForm);
         setCaption("New " + endpoint.getEntityType().getSimpleName());
 
@@ -42,7 +42,7 @@ public class CreateElementComponent<TEntity, TElementEndpoint extends ElementEnd
      * @param endpoint The REST endpoint this component operates on.
      * @param eventBus Used to send refresh notifications.
      */
-    public CreateElementComponent(CollectionEndpoint<TEntity, TElementEndpoint> endpoint, EventBus eventBus) {
+    public CreateElementView(CollectionEndpoint<TEntity, TElementEndpoint> endpoint, EventBus eventBus) {
         this(endpoint, eventBus, new AutoEntityForm<>(endpoint.getEntityType()));
     }
 

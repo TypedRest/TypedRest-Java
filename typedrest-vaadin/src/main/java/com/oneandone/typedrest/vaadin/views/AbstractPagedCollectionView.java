@@ -1,4 +1,4 @@
-package com.oneandone.typedrest.vaadin.components;
+package com.oneandone.typedrest.vaadin.views;
 
 import com.google.gwt.thirdparty.guava.common.eventbus.EventBus;
 import com.oneandone.typedrest.*;
@@ -12,7 +12,7 @@ import java.io.IOException;
 import javax.naming.OperationNotSupportedException;
 
 /**
- * Base class for building components operating on an
+ * Base class for building view components operating on an
  * {@link PagedCollectionEndpoint}.
  *
  * @param <TEntity> The type of entity the <code>TEndpoint</code> represents.
@@ -21,8 +21,8 @@ import javax.naming.OperationNotSupportedException;
  * @param <TElementEndpoint> The specific type of {@link ElementEndpoint} the
  * <code>TEndpoint</code> provides for individual <code>TEntity</code>s.
  */
-public abstract class AbstractPagedCollectionComponent<TEntity, TEndpoint extends PagedCollectionEndpoint<TEntity, TElementEndpoint>, TElementEndpoint extends ElementEndpoint<TEntity>>
-        extends AbstractCollectionComponent<TEntity, TEndpoint, TElementEndpoint> {
+public abstract class AbstractPagedCollectionView<TEntity, TEndpoint extends PagedCollectionEndpoint<TEntity, TElementEndpoint>, TElementEndpoint extends ElementEndpoint<TEntity>>
+        extends AbstractCollectionView<TEntity, TEndpoint, TElementEndpoint> {
 
     private final Button pageLeftButton = new Button("<");
     private final Button pageRightButton = new Button(">");
@@ -38,7 +38,7 @@ public abstract class AbstractPagedCollectionComponent<TEntity, TEndpoint extend
      * @param eventBus Used to send refresh notifications.
      * @param lister A component for listing entity instances.
      */
-    protected AbstractPagedCollectionComponent(TEndpoint endpoint, EventBus eventBus, EntityLister<TEntity> lister) {
+    protected AbstractPagedCollectionView(TEndpoint endpoint, EventBus eventBus, EntityLister<TEntity> lister) {
         super(endpoint, eventBus, lister);
         pageLeftButton.addClickListener(clickEvent -> {
             currentTo = currentFrom;
@@ -81,7 +81,7 @@ public abstract class AbstractPagedCollectionComponent<TEntity, TEndpoint extend
      * @param endpoint The REST endpoint this component operates on.
      * @param eventBus Used to send refresh notifications.
      */
-    protected AbstractPagedCollectionComponent(TEndpoint endpoint, EventBus eventBus) {
+    protected AbstractPagedCollectionView(TEndpoint endpoint, EventBus eventBus) {
         this(endpoint, eventBus, new AutoEntityLister<>(endpoint.getEntityType()));
     }
 

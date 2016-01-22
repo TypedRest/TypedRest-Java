@@ -1,10 +1,10 @@
-package com.oneandone.typedrest.vaadin.components;
+package com.oneandone.typedrest.vaadin.views;
 
 import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.Window;
 
 /**
- * Common base class for components that be wrapped in {@link Window}s.
+ * Base class for building view components that be wrapped in {@link Window}s.
  */
 public abstract class ViewComponent
         extends CustomComponent {
