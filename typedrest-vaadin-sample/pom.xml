@@ -12,10 +12,6 @@
     <name>TypedRest Vaadin Sample</name>
     <description>Sample project for using the typedrest-vaadin library</description>
 
-    <properties>
-        <vaadin.version>7.5.8</vaadin.version>
-    </properties>
-
     <dependencies>
         <dependency>
             <groupId>com.oneandone</groupId>
@@ -44,11 +40,11 @@
                 <version>1.2.7.RELEASE</version>
             </plugin>
 
+            <!-- Do not deploy sample project to repository -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-deploy-plugin</artifactId>
                 <version>2.4</version>
-                <!-- Deploy only submodules -->
                 <configuration>
                     <skip>true</skip>
                 </configuration>
