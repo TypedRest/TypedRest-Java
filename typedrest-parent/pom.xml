@@ -29,8 +29,8 @@
     </developers>
 
     <properties>
-        <typedrest.version>0.15-SNAPSHOT</typedrest.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <typedrest.version>0.15-SNAPSHOT</typedrest.version>
     </properties>
 
     <build>

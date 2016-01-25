@@ -11,45 +11,4 @@
 
     <name>TypedRest Annotations</name>
     <description>Annotations for data models to be used with TypedRest.</description>
-
-    <dependencies>
-        <!-- JSON -->
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-core</artifactId>
-            <version>2.6.3</version>
-        </dependency>
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-databind</artifactId>
-            <version>2.6.3</version>
-        </dependency>
-
-        <!-- REST -->
-        <dependency>
-            <groupId>org.apache.httpcomponents</groupId>
-            <artifactId>fluent-hc</artifactId>
-            <version>4.5</version>
-        </dependency>
-
-        <!-- Reactive Extensions -->
-        <dependency>
-            <groupId>io.reactivex</groupId>
-            <artifactId>rxjava</artifactId>
-            <version>1.0.14</version>
-        </dependency>
-        <dependency>
-            <groupId>io.reactivex</groupId>
-            <artifactId>rxjava-async-util</artifactId>
-            <version>0.21.0</version>
-        </dependency>
-
-        <!-- Unit tests -->
-        <dependency>
-            <groupId>com.github.tomakehurst</groupId>
-            <artifactId>wiremock</artifactId>
-            <version>1.57</version>
-            <scope>test</scope>
-        </dependency>
-    </dependencies>
 </project>

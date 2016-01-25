@@ -24,22 +24,21 @@
             <version>${typedrest.version}</version>
         </dependency>
 
-        <!-- Spring Boot Vaadin -->
+        <!-- Spring Boot + Vaadin -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+            <version>1.3.1.RELEASE</version>
+        </dependency>
         <dependency>
             <groupId>com.vaadin</groupId>
-            <artifactId>vaadin-spring-boot-starter</artifactId>
+            <artifactId>vaadin-spring-boot</artifactId>
             <version>1.0.0</version>
         </dependency>
     </dependencies>
 
     <build>
         <plugins>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-                <version>1.2.7.RELEASE</version>
-            </plugin>
-
             <!-- Do not deploy sample project to repository -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
