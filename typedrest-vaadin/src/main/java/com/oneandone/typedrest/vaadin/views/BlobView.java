@@ -6,6 +6,7 @@ import java.io.*;
 import com.oneandone.typedrest.*;
 import com.vaadin.server.*;
 import com.vaadin.ui.*;
+import lombok.*;
 
 /**
  * View component operating on a {@link BlobEndpoint}.
@@ -139,6 +140,13 @@ public class BlobView extends AbstractEndpointView<BlobEndpoint> {
     }
 
     /**
+     * The file name reported to the browser when downloading the blob content.
+     */
+    @Getter
+    @Setter
+    private String downloadFileName = "blob";
+
+    /**
      * Called on {@link BlobComponent#downloadButton}-click. Downloads the file
      * from {@link BlobEndpoint} to the given {@link File}. !CAUTION! File won't
      * get deleted after User's download succeeded. !CAUTION!
@@ -158,8 +166,9 @@ public class BlobView extends AbstractEndpointView<BlobEndpoint> {
                     return null;
                 }
             }, file.getName());
-            streamResource.setMIMEType(downloadMimeType);
 
+            streamResource.setFilename(downloadFileName);
+            streamResource.setMIMEType(downloadMimeType);
             setResource("file-download", streamResource);
 
             ResourceReference resourceReference = ResourceReference.create(streamResource, this, "file-download");
