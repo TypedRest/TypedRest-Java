@@ -2,6 +2,7 @@ package com.oneandone.typedrest;
 
 import com.github.tomakehurst.wiremock.client.WireMock;
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
+import static org.apache.http.HttpHeaders.*;
 import static org.apache.http.HttpStatus.*;
 import org.apache.http.client.fluent.Request;
 import org.apache.http.message.BasicHeader;
@@ -29,7 +30,7 @@ public class CustomEndpointTest extends AbstractEndpointTest {
                 .withHeader("X-Mock", WireMock.equalTo("mock"))
                 .willReturn(aResponse()
                         .withStatus(SC_NO_CONTENT)
-                        .withHeader("Link", "<a>; rel=target1-template")));
+                        .withHeader(LINK, "<a>; rel=target1-template")));
 
         endpoint.get();
     }
@@ -53,7 +54,7 @@ public class CustomEndpointTest extends AbstractEndpointTest {
         stubFor(get(urlEqualTo("/endpoint"))
                 .willReturn(aResponse()
                         .withStatus(SC_NO_CONTENT)
-                        .withHeader("Link", "<a>; rel=target1, <b>; rel=target2")));
+                        .withHeader(LINK, "<a>; rel=target1, <b>; rel=target2")));
 
         endpoint.get();
 
@@ -66,7 +67,7 @@ public class CustomEndpointTest extends AbstractEndpointTest {
         stubFor(head(urlEqualTo("/endpoint"))
                 .willReturn(aResponse()
                         .withStatus(SC_NO_CONTENT)
-                        .withHeader("Link", "<a>; rel=target1, <b>; rel=target2")));
+                        .withHeader(LINK, "<a>; rel=target1, <b>; rel=target2")));
 
         assertThat(endpoint.link("target1"), is(equalTo(endpoint.getUri().resolve("a"))));
         assertThat(endpoint.link("target2"), is(equalTo(endpoint.getUri().resolve("b"))));
@@ -77,7 +78,7 @@ public class CustomEndpointTest extends AbstractEndpointTest {
         stubFor(head(urlEqualTo("/endpoint"))
                 .willReturn(aResponse()
                         .withStatus(SC_NO_CONTENT)
-                        .withHeader("Link", "<a>; rel=target1")));
+                        .withHeader(LINK, "<a>; rel=target1")));
 
         endpoint.link("target2");
     }
@@ -87,8 +88,8 @@ public class CustomEndpointTest extends AbstractEndpointTest {
         stubFor(get(urlEqualTo("/endpoint"))
                 .willReturn(aResponse()
                         .withStatus(SC_NO_CONTENT)
-                        .withHeader("Link", "<target1>; rel=notify, <target2>; rel=notify")
-                        .withHeader("Link", "<target3>; rel=notify")));
+                        .withHeader(LINK, "<target1>; rel=notify, <target2>; rel=notify")
+                        .withHeader(LINK, "<target3>; rel=notify")));
 
         endpoint.get();
 
@@ -103,7 +104,7 @@ public class CustomEndpointTest extends AbstractEndpointTest {
         stubFor(get(urlEqualTo("/endpoint"))
                 .willReturn(aResponse()
                         .withStatus(SC_NO_CONTENT)
-                        .withHeader("Link", "<a>; rel=target1-template")));
+                        .withHeader(LINK, "<a>; rel=target1-template")));
 
         endpoint.get();
 

@@ -3,11 +3,15 @@ package com.oneandone.typedrest;
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import org.apache.http.*;
+import static org.apache.http.HttpHeaders.*;
 import static org.apache.http.HttpStatus.*;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import org.junit.*;
 import static org.junit.Assert.*;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 public class BlobEndpointTest extends AbstractEndpointTest {
 
@@ -25,7 +29,7 @@ public class BlobEndpointTest extends AbstractEndpointTest {
         stubFor(options(urlEqualTo("/endpoint"))
                 .willReturn(aResponse()
                         .withStatus(SC_OK)
-                        .withHeader("Allow", "PUT")));
+                        .withHeader(HttpHeaders.ALLOW, "PUT")));
 
         endpoint.probe();
 
@@ -40,7 +44,7 @@ public class BlobEndpointTest extends AbstractEndpointTest {
         stubFor(get(urlEqualTo("/endpoint"))
                 .willReturn(aResponse()
                         .withStatus(SC_OK)
-                        .withHeader("Content-Type", "mock/type")
+                        .withHeader(CONTENT_TYPE, "mock/type")
                         .withBody(data)));
 
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
@@ -53,7 +57,8 @@ public class BlobEndpointTest extends AbstractEndpointTest {
     @Test
     @Ignore("Works in isolation but fails when executed as part of test suite")
     public void testUpload() throws Exception {
-        stubFor(put(urlEqualTo("/endpoint")).withHeader("Content-Type", matching("mock/type"))
+        stubFor(put(urlEqualTo("/endpoint"))
+                .withHeader(CONTENT_TYPE, matching("mock/type"))
                 .willReturn(aResponse()
                         .withStatus(SC_NO_CONTENT)));
 

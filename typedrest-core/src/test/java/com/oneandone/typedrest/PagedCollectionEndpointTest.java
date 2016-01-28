@@ -1,14 +1,15 @@
 package com.oneandone.typedrest;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
-import static com.oneandone.typedrest.AbstractEndpointTest.jsonMime;
 import static java.util.Arrays.asList;
 import java.util.Collection;
+import static org.apache.http.HttpHeaders.*;
 import static org.apache.http.HttpStatus.*;
 import static org.hamcrest.CoreMatchers.*;
 import org.hamcrest.CoreMatchers;
 import static org.hamcrest.MatcherAssert.*;
 import org.junit.*;
+import static com.oneandone.typedrest.AbstractEndpointTest.JSON_MIME;
 
 public class PagedCollectionEndpointTest extends AbstractEndpointTest {
 
@@ -24,10 +25,10 @@ public class PagedCollectionEndpointTest extends AbstractEndpointTest {
     @Test
     public void testReadAll() throws Exception {
         stubFor(get(urlEqualTo("/endpoint/"))
-                .withHeader("Accept", equalTo(jsonMime))
+                .withHeader(ACCEPT, equalTo(JSON_MIME))
                 .willReturn(aResponse()
                         .withStatus(SC_OK)
-                        .withHeader("Content-Type", jsonMime)
+                        .withHeader(CONTENT_TYPE, JSON_MIME)
                         .withBody("[{\"id\":5,\"name\":\"test1\"},{\"id\":6,\"name\":\"test2\"}]")));
 
         Collection<MockEntity> expected = asList(
@@ -39,12 +40,12 @@ public class PagedCollectionEndpointTest extends AbstractEndpointTest {
     @Test
     public void testreadRangeOffset() throws Exception {
         stubFor(get(urlEqualTo("/endpoint/"))
-                .withHeader("Accept", equalTo(jsonMime))
-                .withHeader("Range", equalTo("elements=1-"))
+                .withHeader(ACCEPT, equalTo(JSON_MIME))
+                .withHeader(RANGE, equalTo("elements=1-"))
                 .willReturn(aResponse()
                         .withStatus(SC_PARTIAL_CONTENT)
-                        .withHeader("Content-Type", jsonMime)
-                        .withHeader("Content-Range", "elements 1-1/2")
+                        .withHeader(CONTENT_TYPE, JSON_MIME)
+                        .withHeader(CONTENT_RANGE, "elements 1-1/2")
                         .withBody("[{\"id\":6,\"name\":\"test2\"}]")));
 
         PartialResponse<MockEntity> response = endpoint.readRange(1l, null);
@@ -60,12 +61,12 @@ public class PagedCollectionEndpointTest extends AbstractEndpointTest {
     @Test
     public void testreadRangeHead() throws Exception {
         stubFor(get(urlEqualTo("/endpoint/"))
-                .withHeader("Accept", equalTo(jsonMime))
-                .withHeader("Range", equalTo("elements=0-1"))
+                .withHeader(ACCEPT, equalTo(JSON_MIME))
+                .withHeader(RANGE, equalTo("elements=0-1"))
                 .willReturn(aResponse()
                         .withStatus(SC_PARTIAL_CONTENT)
-                        .withHeader("Content-Type", jsonMime)
-                        .withHeader("Content-Range", "elements 0-1/2")
+                        .withHeader(CONTENT_TYPE, JSON_MIME)
+                        .withHeader(CONTENT_RANGE, "elements 0-1/2")
                         .withBody("[{\"id\":5,\"name\":\"test1\"},{\"id\":6,\"name\":\"test2\"}]")));
 
         PartialResponse<MockEntity> response = endpoint.readRange(0l, 1l);
@@ -83,12 +84,12 @@ public class PagedCollectionEndpointTest extends AbstractEndpointTest {
     @Test
     public void testreadRangeTail() throws Exception {
         stubFor(get(urlEqualTo("/endpoint/"))
-                .withHeader("Accept", equalTo(jsonMime))
-                .withHeader("Range", equalTo("elements=-1"))
+                .withHeader(ACCEPT, equalTo(JSON_MIME))
+                .withHeader(RANGE, equalTo("elements=-1"))
                 .willReturn(aResponse()
                         .withStatus(SC_PARTIAL_CONTENT)
-                        .withHeader("Content-Type", jsonMime)
-                        .withHeader("Content-Range", "elements 2-2/*")
+                        .withHeader(CONTENT_TYPE, JSON_MIME)
+                        .withHeader(CONTENT_RANGE, "elements 2-2/*")
                         .withBody("[{\"id\":6,\"name\":\"test2\"}]")));
 
         PartialResponse<MockEntity> response = endpoint.readRange(null, 1l);
@@ -104,10 +105,10 @@ public class PagedCollectionEndpointTest extends AbstractEndpointTest {
     @Test
     public void testException() throws Exception {
         stubFor(get(urlEqualTo("/endpoint/"))
-                .withHeader("Range", equalTo("elements=5-10"))
+                .withHeader(RANGE, equalTo("elements=5-10"))
                 .willReturn(aResponse()
                         .withStatus(SC_REQUESTED_RANGE_NOT_SATISFIABLE)
-                        .withHeader("Content-Type", jsonMime)
+                        .withHeader(CONTENT_TYPE, JSON_MIME)
                         .withBody("{\"message\":\"test\"}")));
 
         String exceptionMessage = null;

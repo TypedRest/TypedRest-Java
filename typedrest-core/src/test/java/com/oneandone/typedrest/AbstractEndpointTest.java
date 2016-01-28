@@ -8,7 +8,8 @@ import org.apache.http.entity.ContentType;
 public abstract class AbstractEndpointTest {
 
     protected EntryEndpoint entryEndpoint;
-    protected static final String jsonMime = ContentType.APPLICATION_JSON.getMimeType();
+    protected static final String JSON_MIME = ContentType.APPLICATION_JSON.getMimeType();
+    protected static final String LINK = "Link";
 
     private static final int port = 8089;
 

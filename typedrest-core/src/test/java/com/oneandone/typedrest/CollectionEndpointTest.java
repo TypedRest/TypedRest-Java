@@ -1,14 +1,15 @@
 package com.oneandone.typedrest;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
-import static com.oneandone.typedrest.AbstractEndpointTest.jsonMime;
 import java.net.URI;
 import static java.util.Arrays.asList;
 import java.util.Collection;
+import static org.apache.http.HttpHeaders.*;
 import static org.apache.http.HttpStatus.*;
 import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.MatcherAssert.*;
 import org.junit.*;
+import static com.oneandone.typedrest.AbstractEndpointTest.JSON_MIME;
 
 public class CollectionEndpointTest extends AbstractEndpointTest {
 
@@ -24,10 +25,10 @@ public class CollectionEndpointTest extends AbstractEndpointTest {
     @Test
     public void testReadAll() throws Exception {
         stubFor(get(urlEqualTo("/endpoint/"))
-                .withHeader("Accept", equalTo(jsonMime))
+                .withHeader(ACCEPT, equalTo(JSON_MIME))
                 .willReturn(aResponse()
                         .withStatus(SC_OK)
-                        .withHeader("Content-Type", jsonMime)
+                        .withHeader(CONTENT_TYPE, JSON_MIME)
                         .withBody("[{\"id\":5,\"name\":\"test1\"},{\"id\":6,\"name\":\"test2\"}]")));
 
         Collection<MockEntity> expected = asList(
@@ -45,7 +46,7 @@ public class CollectionEndpointTest extends AbstractEndpointTest {
                 .withRequestBody(equalToJson("{\"id\":5,\"name\":\"test\"}"))
                 .willReturn(aResponse()
                         .withStatus(SC_CREATED)
-                        .withHeader("Location", location.toASCIIString())));
+                        .withHeader(LOCATION, location.toASCIIString())));
 
         ElementEndpoint<MockEntity> element = endpoint.create(new MockEntity(5, "test"));
         assertThat(element.getUri(), is(equalTo(serverUri.resolve(location))));
@@ -66,11 +67,11 @@ public class CollectionEndpointTest extends AbstractEndpointTest {
     @Test
     public void testGetByEntityWithLinkHeader() throws Exception {
         stubFor(get(urlEqualTo("/endpoint/"))
-                .withHeader("Accept", equalTo(jsonMime))
+                .withHeader(ACCEPT, equalTo(JSON_MIME))
                 .willReturn(aResponse()
                         .withStatus(SC_OK)
-                        .withHeader("Content-Type", jsonMime)
-                        .withHeader("Link", "<children/{id}>; rel=child-template")
+                        .withHeader(CONTENT_TYPE, JSON_MIME)
+                        .withHeader(LINK, "<children/{id}>; rel=child-template")
                         .withBody("[]")));
 
         endpoint.readAll();

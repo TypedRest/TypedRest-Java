@@ -13,6 +13,7 @@ import static java.util.stream.Collectors.toSet;
 import javax.naming.OperationNotSupportedException;
 import lombok.*;
 import org.apache.http.*;
+import static org.apache.http.HttpHeaders.*;
 import org.apache.http.client.fluent.*;
 import org.apache.http.entity.ContentType;
 import org.apache.http.message.BasicHeader;
@@ -50,7 +51,7 @@ public abstract class AbstractEndpoint
         this.rest = rest;
         this.uri = uri;
 
-        defaultHeaders.add(new BasicHeader("Accept", ContentType.APPLICATION_JSON.getMimeType()));
+        defaultHeaders.add(new BasicHeader(ACCEPT, ContentType.APPLICATION_JSON.getMimeType()));
     }
 
     /**

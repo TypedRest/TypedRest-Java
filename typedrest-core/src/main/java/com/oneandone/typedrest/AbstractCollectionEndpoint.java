@@ -8,6 +8,7 @@ import org.apache.http.*;
 import org.apache.http.client.fluent.Request;
 import org.apache.http.entity.ContentType;
 import org.apache.http.util.EntityUtils;
+import static org.apache.http.HttpHeaders.*;
 import javax.naming.OperationNotSupportedException;
 import java.beans.PropertyDescriptor;
 import java.io.*;
@@ -116,7 +117,7 @@ public abstract class AbstractCollectionEndpoint<TEntity, TElementEndpoint exten
             throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, OperationNotSupportedException {
         String jsonSend = json.writeValueAsString(entity);
         HttpResponse response = execute(Request.Post(uri).bodyString(jsonSend, ContentType.APPLICATION_JSON));
-        Header locationHeader = response.getFirstHeader("Location");
+        Header locationHeader = response.getFirstHeader(LOCATION);
         return (locationHeader == null) ? null : get(URI.create(locationHeader.getValue()));
     }
 }

@@ -8,6 +8,7 @@ import javax.naming.OperationNotSupportedException;
 import org.apache.http.*;
 import org.apache.http.client.fluent.*;
 import org.apache.http.util.*;
+import static org.apache.http.HttpHeaders.*;
 
 /**
  * Base class for building REST endpoints that represents a collection of
@@ -59,12 +60,12 @@ public abstract class AbstractPagedCollectionEndpoint<TEntity, TElementEndpoint 
                 + (from == null ? "" : from.toString()) + "-"
                 + (to == null ? "" : to.toString());
 
-        HttpResponse response = execute(Request.Get(uri).addHeader("Range", range));
+        HttpResponse response = execute(Request.Get(uri).addHeader(RANGE, range));
 
         JavaType collectionType = json.getTypeFactory().constructCollectionType(List.class, entityType);
         List<TEntity> elements = json.readValue(EntityUtils.toString(response.getEntity()), collectionType);
 
-        Header contentRange = response.getFirstHeader("Content-Range");
+        Header contentRange = response.getFirstHeader(CONTENT_RANGE);
         if (contentRange == null) {
             // Server provided full instead of partial response
             return new PartialResponse<>(elements, 0L, null, null);

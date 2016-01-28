@@ -1,14 +1,15 @@
 package com.oneandone.typedrest;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
-import static com.oneandone.typedrest.AbstractEndpointTest.jsonMime;
 import static java.util.Arrays.asList;
+import static org.apache.http.HttpHeaders.*;
 import static org.apache.http.HttpStatus.*;
 import org.junit.*;
 import rx.*;
 import rx.observers.TestSubscriber;
 import rx.schedulers.Schedulers;
 import rx.schedulers.TestScheduler;
+import static com.oneandone.typedrest.AbstractEndpointTest.JSON_MIME;
 
 public class StreamEndpointTest extends AbstractEndpointTest {
 
@@ -24,21 +25,21 @@ public class StreamEndpointTest extends AbstractEndpointTest {
     @Test
     public void testGetObservable() throws Exception {
         stubFor(get(urlEqualTo("/endpoint/"))
-                .withHeader("Accept", equalTo(jsonMime))
-                .withHeader("Range", equalTo("elements=0-"))
+                .withHeader(ACCEPT, equalTo(JSON_MIME))
+                .withHeader(RANGE, equalTo("elements=0-"))
                 .willReturn(aResponse()
                         .withStatus(SC_PARTIAL_CONTENT)
-                        .withHeader("Content-Type", jsonMime)
-                        .withHeader("Content-Range", "elements 0-1/*")
+                        .withHeader(CONTENT_TYPE, JSON_MIME)
+                        .withHeader(CONTENT_RANGE, "elements 0-1/*")
                         .withBody("[{\"id\":5,\"name\":\"test1\"},{\"id\":6,\"name\":\"test2\"}]")));
 
         stubFor(get(urlEqualTo("/endpoint/"))
-                .withHeader("Accept", equalTo(jsonMime))
-                .withHeader("Range", equalTo("elements=2-"))
+                .withHeader(ACCEPT, equalTo(JSON_MIME))
+                .withHeader(RANGE, equalTo("elements=2-"))
                 .willReturn(aResponse()
                         .withStatus(SC_PARTIAL_CONTENT)
-                        .withHeader("Content-Type", jsonMime)
-                        .withHeader("Content-Range", "elements 2-2/3")
+                        .withHeader(CONTENT_TYPE, JSON_MIME)
+                        .withHeader(CONTENT_RANGE, "elements 2-2/3")
                         .withBody("[{\"id\":7,\"name\":\"test3\"}]")));
 
         TestScheduler scheduler = Schedulers.test();
@@ -59,12 +60,12 @@ public class StreamEndpointTest extends AbstractEndpointTest {
     @Test
     public void testGetObservableOffset() throws Exception {
         stubFor(get(urlEqualTo("/endpoint/"))
-                .withHeader("Accept", equalTo(jsonMime))
-                .withHeader("Range", equalTo("elements=2-"))
+                .withHeader(ACCEPT, equalTo(JSON_MIME))
+                .withHeader(RANGE, equalTo("elements=2-"))
                 .willReturn(aResponse()
                         .withStatus(SC_PARTIAL_CONTENT)
-                        .withHeader("Content-Type", jsonMime)
-                        .withHeader("Content-Range", "elements 2-2/3")
+                        .withHeader(CONTENT_TYPE, JSON_MIME)
+                        .withHeader(CONTENT_RANGE, "elements 2-2/3")
                         .withBody("[{\"id\":7,\"name\":\"test3\"}]")));
 
         TestScheduler scheduler = Schedulers.test();
@@ -82,12 +83,12 @@ public class StreamEndpointTest extends AbstractEndpointTest {
     @Test
     public void testGetObservableOffsetTail() throws Exception {
         stubFor(get(urlEqualTo("/endpoint/"))
-                .withHeader("Accept", equalTo(jsonMime))
-                .withHeader("Range", equalTo("elements=-1"))
+                .withHeader(ACCEPT, equalTo(JSON_MIME))
+                .withHeader(RANGE, equalTo("elements=-1"))
                 .willReturn(aResponse()
                         .withStatus(SC_PARTIAL_CONTENT)
-                        .withHeader("Content-Type", jsonMime)
-                        .withHeader("Content-Range", "elements 2-2/3")
+                        .withHeader(CONTENT_TYPE, JSON_MIME)
+                        .withHeader(CONTENT_RANGE, "elements 2-2/3")
                         .withBody("[{\"id\":7,\"name\":\"test3\"}]")));
 
         TestScheduler scheduler = Schedulers.test();

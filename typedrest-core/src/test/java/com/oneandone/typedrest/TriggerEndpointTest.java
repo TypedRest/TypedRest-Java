@@ -1,11 +1,13 @@
 package com.oneandone.typedrest;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
-import static com.oneandone.typedrest.AbstractEndpointTest.jsonMime;
+import static org.apache.http.HttpHeaders.*;
 import static org.apache.http.HttpStatus.*;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import org.junit.*;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 public class TriggerEndpointTest extends AbstractEndpointTest {
 
@@ -23,7 +25,7 @@ public class TriggerEndpointTest extends AbstractEndpointTest {
         stubFor(options(urlEqualTo("/endpoint"))
                 .willReturn(aResponse()
                         .withStatus(SC_OK)
-                        .withHeader("Allow", "POST")));
+                        .withHeader(ALLOW, "POST")));
 
         endpoint.probe();
         

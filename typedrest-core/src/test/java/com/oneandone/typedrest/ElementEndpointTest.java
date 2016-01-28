@@ -1,6 +1,7 @@
 package com.oneandone.typedrest;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
+import static org.apache.http.HttpHeaders.*;
 import static org.apache.http.HttpStatus.*;
 import static org.hamcrest.CoreMatchers.*;
 import org.hamcrest.CoreMatchers;
@@ -21,10 +22,10 @@ public class ElementEndpointTest extends AbstractEndpointTest {
     @Test
     public void testRead() throws Exception {
         stubFor(get(urlEqualTo("/endpoint"))
-                .withHeader("Accept", equalTo(jsonMime))
+                .withHeader(ACCEPT, equalTo(JSON_MIME))
                 .willReturn(aResponse()
                         .withStatus(SC_OK)
-                        .withHeader("Content-Type", jsonMime)
+                        .withHeader(CONTENT_TYPE, JSON_MIME)
                         .withBody("{\"id\":5,\"name\":\"test\"}")));
 
         assertThat(endpoint.read(),
@@ -45,17 +46,17 @@ public class ElementEndpointTest extends AbstractEndpointTest {
     @Test
     public void testUpdateEtag() throws Exception {
         stubFor(get(urlEqualTo("/endpoint"))
-                .withHeader("Accept", equalTo(jsonMime))
+                .withHeader(ACCEPT, equalTo(JSON_MIME))
                 .willReturn(aResponse()
                         .withStatus(SC_OK)
-                        .withHeader("Content-Type", jsonMime)
-                        .withHeader("ETag", "\"123abc\"")
+                        .withHeader(CONTENT_TYPE, JSON_MIME)
+                        .withHeader(ETAG, "\"123abc\"")
                         .withBody("{\"id\":5,\"name\":\"test\"}")));
         MockEntity entity = endpoint.read();
 
         stubFor(put(urlEqualTo("/endpoint"))
                 .withRequestBody(equalToJson("{\"id\":5,\"name\":\"test\"}"))
-                .withHeader("If-Match", matching("\"123abc\""))
+                .withHeader(IF_MATCH, matching("\"123abc\""))
                 .willReturn(aResponse()
                         .withStatus(SC_NO_CONTENT)));
         endpoint.update(entity);
@@ -86,7 +87,7 @@ public class ElementEndpointTest extends AbstractEndpointTest {
         stubFor(get(urlEqualTo("/endpoint"))
                 .willReturn(aResponse()
                         .withStatus(SC_BAD_REQUEST)
-                        .withHeader("Content-Type", jsonMime)
+                        .withHeader(CONTENT_TYPE, JSON_MIME)
                         .withBody("{\"message\":\"test\"}")));
 
         String exceptionMessage = null;
