@@ -40,7 +40,7 @@ public interface ElementEndpoint<TEntity>
     /**
      * Shows whether the server has indicated that
      * {@link #update(java.lang.Object)} is currently allowed.
-     * 
+     *
      * Uses cached data from last response.
      *
      * @return An indicator whether the verb is allowed. If no request has been
@@ -60,6 +60,9 @@ public interface ElementEndpoint<TEntity>
      * @throws FileNotFoundException {@link HttpStatus#SC_NOT_FOUND} or
      * {@link HttpStatus#SC_GONE}
      * @throws OperationNotSupportedException {@link HttpStatus#SC_CONFLICT}
+     * @throws IllegalStateException The entity has changed since it was last
+     * retrieved with {@link read()}. Your changes were rejected to prevent a
+     * lost update.
      * @throws RuntimeException Other non-success status code.
      */
     void update(TEntity entity)

@@ -43,6 +43,25 @@ public class ElementEndpointTest extends AbstractEndpointTest {
     }
 
     @Test
+    public void testUpdateEtag() throws Exception {
+        stubFor(get(urlEqualTo("/endpoint"))
+                .withHeader("Accept", equalTo(jsonMime))
+                .willReturn(aResponse()
+                        .withStatus(SC_OK)
+                        .withHeader("Content-Type", jsonMime)
+                        .withHeader("ETag", "\"123abc\"")
+                        .withBody("{\"id\":5,\"name\":\"test\"}")));
+        MockEntity entity = endpoint.read();
+
+        stubFor(put(urlEqualTo("/endpoint"))
+                .withRequestBody(equalToJson("{\"id\":5,\"name\":\"test\"}"))
+                .withHeader("If-Match", matching("\"123abc\""))
+                .willReturn(aResponse()
+                        .withStatus(SC_NO_CONTENT)));
+        endpoint.update(entity);
+    }
+
+    @Test
     @Ignore("Works in isolation but fails when executed as part of test suite")
     public void testUpdateWithNullValue() throws Exception {
         stubFor(put(urlEqualTo("/endpoint"))

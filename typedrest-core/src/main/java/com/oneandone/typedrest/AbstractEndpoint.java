@@ -93,8 +93,8 @@ public abstract class AbstractEndpoint
      * @throws FileNotFoundException {@link HttpStatus#SC_NOT_FOUND} or
      * {@link HttpStatus#SC_GONE}
      * @throws OperationNotSupportedException {@link HttpStatus#SC_CONFLICT}
-     * @throws IllegalStateException
-     * {@link HttpStatus#SC_REQUESTED_RANGE_NOT_SATISFIABLE}
+     * @throws IllegalStateException {@link HttpStatus#SC_PRECONDITION_FAILED}
+     * or {@link HttpStatus#SC_REQUESTED_RANGE_NOT_SATISFIABLE}
      * @throws RuntimeException Other non-success status code.
      */
     protected HttpResponse execute(Request request)
@@ -121,8 +121,8 @@ public abstract class AbstractEndpoint
      * @throws FileNotFoundException {@link HttpStatus#SC_NOT_FOUND} or
      * {@link HttpStatus#SC_GONE}
      * @throws OperationNotSupportedException {@link HttpStatus#SC_CONFLICT}
-     * @throws IllegalStateException
-     * {@link HttpStatus#SC_REQUESTED_RANGE_NOT_SATISFIABLE}
+     * @throws IllegalStateException {@link HttpStatus#SC_PRECONDITION_FAILED}
+     * or {@link HttpStatus#SC_REQUESTED_RANGE_NOT_SATISFIABLE}
      * @throws RuntimeException Other non-success status code.
      */
     protected void handleErrors(HttpResponse response)
@@ -157,6 +157,7 @@ public abstract class AbstractEndpoint
                 throw new FileNotFoundException(message);
             case HttpStatus.SC_CONFLICT:
                 throw new OperationNotSupportedException(message);
+            case HttpStatus.SC_PRECONDITION_FAILED:
             case HttpStatus.SC_REQUESTED_RANGE_NOT_SATISFIABLE:
                 throw new IllegalStateException(message, inner);
             default:

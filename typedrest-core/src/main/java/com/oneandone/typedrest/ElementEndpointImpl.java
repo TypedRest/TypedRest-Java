@@ -47,10 +47,17 @@ public class ElementEndpointImpl<TEntity>
         this.entityType = entityType;
     }
 
+    /**
+     * The last entity tag returned by the server. Used to avoid lost updates.
+     */
+    private String etag;
+
     @Override
     public TEntity read()
             throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, OperationNotSupportedException {
         HttpResponse response = execute(Request.Get(uri));
+        Header etagHeader = response.getLastHeader(HttpHeaders.ETAG);
+        etag = (etagHeader == null) ? null : etagHeader.getValue();
         return json.readValue(EntityUtils.toString(response.getEntity()), entityType);
     }
 
@@ -63,7 +70,11 @@ public class ElementEndpointImpl<TEntity>
     public void update(TEntity entity)
             throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, OperationNotSupportedException {
         String jsonSend = json.writeValueAsString(entity);
-        execute(Request.Put(uri).bodyString(jsonSend, ContentType.APPLICATION_JSON));
+        Request request = Request.Put(uri).bodyString(jsonSend, ContentType.APPLICATION_JSON);
+        if (etag != null) {
+            request.addHeader(HttpHeaders.IF_MATCH, etag);
+        }
+        execute(request);
     }
 
     @Override
