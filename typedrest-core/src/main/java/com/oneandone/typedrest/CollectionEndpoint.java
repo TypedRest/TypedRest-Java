@@ -4,7 +4,6 @@ import java.io.*;
 import java.net.URI;
 import java.util.Collection;
 import java.util.Optional;
-import javax.naming.OperationNotSupportedException;
 import org.apache.http.*;
 
 /**
@@ -72,11 +71,11 @@ public interface CollectionEndpoint<TEntity, TElementEndpoint extends ElementEnd
      * {@link HttpStatus#SC_FORBIDDEN}
      * @throws FileNotFoundException {@link HttpStatus#SC_NOT_FOUND} or
      * {@link HttpStatus#SC_GONE}
-     * @throws OperationNotSupportedException {@link HttpStatus#SC_CONFLICT}
+     * @throws IllegalStateException {@link HttpStatus#SC_CONFLICT}
      * @throws RuntimeException Other non-success status code.
      */
     Collection<TEntity> readAll()
-            throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, OperationNotSupportedException;
+            throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, IllegalStateException;
 
     /**
      * Shows whether the server has indicated that
@@ -103,11 +102,11 @@ public interface CollectionEndpoint<TEntity, TElementEndpoint extends ElementEnd
      * {@link HttpStatus#SC_FORBIDDEN}
      * @throws FileNotFoundException {@link HttpStatus#SC_NOT_FOUND} or
      * {@link HttpStatus#SC_GONE}
-     * @throws OperationNotSupportedException {@link HttpStatus#SC_CONFLICT}
+     * @throws IllegalStateException {@link HttpStatus#SC_CONFLICT}
      * @throws RuntimeException Other non-success status code.
      */
     TElementEndpoint create(TEntity entity)
-            throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, OperationNotSupportedException;
+            throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, IllegalStateException;
 
     /**
      * Updates an existing element in the collection.
@@ -123,11 +122,13 @@ public interface CollectionEndpoint<TEntity, TElementEndpoint extends ElementEnd
      * {@link HttpStatus#SC_FORBIDDEN}
      * @throws FileNotFoundException {@link HttpStatus#SC_NOT_FOUND} or
      * {@link HttpStatus#SC_GONE}
-     * @throws OperationNotSupportedException {@link HttpStatus#SC_CONFLICT}
+     * @throws IllegalStateException The entity has changed since it was last
+     * retrieved with {@link ElementEndpoint#read()}. Your changes were rejected
+     * to prevent a lost update.
      * @throws RuntimeException Other non-success status code.
      */
     default void update(TEntity element)
-            throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, OperationNotSupportedException {
+            throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, IllegalStateException {
         get(element).update(element);
     }
 
@@ -144,11 +145,11 @@ public interface CollectionEndpoint<TEntity, TElementEndpoint extends ElementEnd
      * {@link HttpStatus#SC_FORBIDDEN}
      * @throws FileNotFoundException {@link HttpStatus#SC_NOT_FOUND} or
      * {@link HttpStatus#SC_GONE}
-     * @throws OperationNotSupportedException {@link HttpStatus#SC_CONFLICT}
+     * @throws IllegalStateException {@link HttpStatus#SC_CONFLICT}
      * @throws RuntimeException Other non-success status code.
      */
     default void delete(TEntity element)
-            throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, OperationNotSupportedException {
+            throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, IllegalStateException {
         get(element).delete();
     }
 }

@@ -1,7 +1,6 @@
 package com.oneandone.typedrest.vaadin.views;
 
 import com.google.gwt.thirdparty.guava.common.eventbus.EventBus;
-import javax.naming.*;
 import java.io.*;
 import com.oneandone.typedrest.*;
 import com.vaadin.server.*;
@@ -73,7 +72,7 @@ public class BlobView extends AbstractEndpointView<BlobEndpoint> {
     protected void onLoad() {
         try {
             endpoint.probe();
-        } catch (IOException | IllegalAccessException | OperationNotSupportedException | RuntimeException ex) {
+        } catch (IOException | IllegalAccessException | RuntimeException ex) {
             // HTTP OPTIONS server-side implementation is optional
         }
 
@@ -124,8 +123,7 @@ public class BlobView extends AbstractEndpointView<BlobEndpoint> {
         try {
             endpoint.uploadFrom(uploadTarget, uploadMimeType);
             onUploadSuccess();
-        } catch (IOException | IllegalAccessException | IllegalArgumentException |
-                OperationNotSupportedException ex) {
+        } catch (IOException | IllegalArgumentException | IllegalAccessException | IllegalStateException ex) {
             onError(ex);
         }
     }
@@ -147,9 +145,9 @@ public class BlobView extends AbstractEndpointView<BlobEndpoint> {
     private String downloadFileName = "blob";
 
     /**
-     * Called on {@link BlobComponent#downloadButton}-click. Downloads the file
-     * from {@link BlobEndpoint} to the given {@link File}. !CAUTION! File won't
-     * get deleted after User's download succeeded. !CAUTION!
+     * Downloads the file from {@link BlobEndpoint} to the given {@link File}.
+     * !CAUTION! File won't get deleted after User's download succeeded.
+     * !CAUTION!
      *
      * @param file the file, the file retrieved should be saved to.
      */
@@ -173,8 +171,7 @@ public class BlobView extends AbstractEndpointView<BlobEndpoint> {
 
             ResourceReference resourceReference = ResourceReference.create(streamResource, this, "file-download");
             Page.getCurrent().open(resourceReference.getURL(), null);
-
-        } catch (IOException | IllegalAccessException | OperationNotSupportedException ex) {
+        } catch (IOException | IllegalArgumentException | IllegalAccessException | IllegalStateException ex) {
             onError(ex);
         }
     }

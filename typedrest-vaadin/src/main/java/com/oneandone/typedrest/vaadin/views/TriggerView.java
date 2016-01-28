@@ -5,9 +5,7 @@ import com.oneandone.typedrest.*;
 import com.oneandone.typedrest.vaadin.events.TriggerEvent;
 import com.vaadin.ui.*;
 import org.apache.http.*;
-import javax.naming.*;
 import java.io.*;
-import org.apache.http.client.fluent.Request;
 
 /**
  * View component operating on a {@link TriggerEndpoint}.
@@ -35,7 +33,7 @@ public class TriggerView extends AbstractEndpointView<TriggerEndpoint> {
     protected void onLoad() {
         try {
             endpoint.probe();
-        } catch (IOException | IllegalAccessException | OperationNotSupportedException | RuntimeException ex) {
+        } catch (IOException | IllegalAccessException | RuntimeException ex) {
             // HTTP OPTIONS server-side implementation is optional
         }
 
@@ -49,7 +47,7 @@ public class TriggerView extends AbstractEndpointView<TriggerEndpoint> {
         try {
             onTrigger();
             Notification.show(getCaption(), "Successful.", Notification.Type.TRAY_NOTIFICATION);
-        } catch (IOException | IllegalArgumentException | IllegalAccessException | OperationNotSupportedException ex) {
+        } catch (IOException | IllegalArgumentException | IllegalAccessException | IllegalStateException ex) {
             onError(ex);
         }
     }
@@ -63,11 +61,11 @@ public class TriggerView extends AbstractEndpointView<TriggerEndpoint> {
      * {@link HttpStatus#SC_FORBIDDEN}
      * @throws FileNotFoundException {@link HttpStatus#SC_NOT_FOUND} or
      * {@link HttpStatus#SC_GONE}
-     * @throws OperationNotSupportedException {@link HttpStatus#SC_CONFLICT}
+     * @throws IllegalStateException {@link HttpStatus#SC_CONFLICT}
      * @throws RuntimeException Other non-success status code.
      */
     protected void onTrigger()
-            throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, OperationNotSupportedException {
+            throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, IllegalStateException {
         endpoint.trigger();
         eventBus.post(new TriggerEvent<>(endpoint));
     }

@@ -8,7 +8,6 @@ import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import javax.naming.OperationNotSupportedException;
 import org.apache.http.HttpStatus;
 import org.vaadin.dialogs.ConfirmDialog;
 
@@ -49,7 +48,7 @@ public class ElementView<TEntity>
 
     @Override
     protected void onLoad()
-            throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, OperationNotSupportedException {
+            throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, IllegalStateException {
         TEntity entity = endpoint.read();
         setCaption(entity.toString());
         entityForm.setEntity(entity);
@@ -71,7 +70,7 @@ public class ElementView<TEntity>
 
     @Override
     protected void onSave()
-            throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, OperationNotSupportedException {
+            throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, IllegalStateException {
         endpoint.update(entityForm.getEntity());
         eventBus.post(new ElementUpdatedEvent<>(endpoint));
     }
@@ -95,7 +94,7 @@ public class ElementView<TEntity>
                 try {
                     onDelete();
                     close();
-                } catch (IOException | IllegalArgumentException | IllegalAccessException | OperationNotSupportedException ex) {
+                } catch (IOException | IllegalArgumentException | IllegalAccessException | IllegalStateException ex) {
                     onError(ex);
                 } catch (RuntimeException ex) {
                     // Must explicitly send unhandled exceptions to error handler.
@@ -115,11 +114,11 @@ public class ElementView<TEntity>
      * {@link HttpStatus#SC_FORBIDDEN}
      * @throws FileNotFoundException {@link HttpStatus#SC_NOT_FOUND} or
      * {@link HttpStatus#SC_GONE}
-     * @throws OperationNotSupportedException {@link HttpStatus#SC_CONFLICT}
+     * @throws IllegalStateException {@link HttpStatus#CONFLICT}
      * @throws RuntimeException Other non-success status code.
      */
     protected void onDelete()
-            throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, OperationNotSupportedException {
+            throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, IllegalStateException {
         endpoint.delete();
         eventBus.post(new ElementDeletedEvent<>(endpoint));
     }

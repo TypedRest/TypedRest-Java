@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.JavaType;
 import java.io.*;
 import java.net.*;
 import java.util.*;
-import javax.naming.OperationNotSupportedException;
 import org.apache.http.*;
 import org.apache.http.client.fluent.*;
 import org.apache.http.util.*;
@@ -55,7 +54,7 @@ public abstract class AbstractPagedCollectionEndpoint<TEntity, TElementEndpoint 
 
     @Override
     public PartialResponse<TEntity> readRange(Long from, Long to)
-            throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, OperationNotSupportedException, IllegalStateException {
+            throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, IllegalStateException {
         String range = RANGE_UNIT + "="
                 + (from == null ? "" : from.toString()) + "-"
                 + (to == null ? "" : to.toString());

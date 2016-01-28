@@ -2,7 +2,6 @@ package com.oneandone.typedrest;
 
 import java.io.*;
 import java.util.Optional;
-import javax.naming.OperationNotSupportedException;
 import org.apache.http.*;
 
 /**
@@ -31,11 +30,11 @@ public interface ElementEndpoint<TEntity>
      * {@link HttpStatus#SC_FORBIDDEN}
      * @throws FileNotFoundException {@link HttpStatus#SC_NOT_FOUND} or
      * {@link HttpStatus#SC_GONE}
-     * @throws OperationNotSupportedException {@link HttpStatus#SC_CONFLICT}
+     * @throws IllegalStateException {@link HttpStatus#SC_CONFLICT}
      * @throws RuntimeException Other non-success status code.
      */
     TEntity read()
-            throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, OperationNotSupportedException;
+            throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, IllegalStateException;
 
     /**
      * Shows whether the server has indicated that
@@ -59,14 +58,13 @@ public interface ElementEndpoint<TEntity>
      * {@link HttpStatus#SC_FORBIDDEN}
      * @throws FileNotFoundException {@link HttpStatus#SC_NOT_FOUND} or
      * {@link HttpStatus#SC_GONE}
-     * @throws OperationNotSupportedException {@link HttpStatus#SC_CONFLICT}
      * @throws IllegalStateException The entity has changed since it was last
-     * retrieved with {@link read()}. Your changes were rejected to prevent a
+     * retrieved with {@link #read()}. Your changes were rejected to prevent a
      * lost update.
      * @throws RuntimeException Other non-success status code.
      */
     void update(TEntity entity)
-            throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, OperationNotSupportedException;
+            throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, IllegalStateException;
 
     /**
      * Shows whether the server has indicated that {@link #delete()} is
@@ -89,9 +87,9 @@ public interface ElementEndpoint<TEntity>
      * {@link HttpStatus#SC_FORBIDDEN}
      * @throws FileNotFoundException {@link HttpStatus#SC_NOT_FOUND} or
      * {@link HttpStatus#SC_GONE}
-     * @throws OperationNotSupportedException {@link HttpStatus#SC_CONFLICT}
+     * @throws IllegalStateException {@link HttpStatus#SC_CONFLICT}
      * @throws RuntimeException Other non-success status code.
      */
     void delete()
-            throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, OperationNotSupportedException;
+            throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, IllegalStateException;
 }

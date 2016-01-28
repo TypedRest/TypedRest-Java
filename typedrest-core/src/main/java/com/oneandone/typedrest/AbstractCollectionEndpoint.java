@@ -9,7 +9,6 @@ import org.apache.http.client.fluent.Request;
 import org.apache.http.entity.ContentType;
 import org.apache.http.util.EntityUtils;
 import static org.apache.http.HttpHeaders.*;
-import javax.naming.OperationNotSupportedException;
 import java.beans.PropertyDescriptor;
 import java.io.*;
 import java.lang.reflect.InvocationTargetException;
@@ -100,7 +99,7 @@ public abstract class AbstractCollectionEndpoint<TEntity, TElementEndpoint exten
 
     @Override
     public Collection<TEntity> readAll()
-            throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, OperationNotSupportedException {
+            throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException {
         HttpResponse response = execute(Request.Get(uri));
 
         JavaType collectionType = json.getTypeFactory().constructCollectionType(List.class, entityType);
@@ -114,7 +113,7 @@ public abstract class AbstractCollectionEndpoint<TEntity, TElementEndpoint exten
 
     @Override
     public TElementEndpoint create(TEntity entity)
-            throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, OperationNotSupportedException {
+            throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException {
         String jsonSend = json.writeValueAsString(entity);
         HttpResponse response = execute(Request.Post(uri).bodyString(jsonSend, ContentType.APPLICATION_JSON));
         Header locationHeader = response.getFirstHeader(LOCATION);

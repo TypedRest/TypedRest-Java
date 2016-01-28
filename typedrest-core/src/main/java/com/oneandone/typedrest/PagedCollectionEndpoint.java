@@ -1,7 +1,6 @@
 package com.oneandone.typedrest;
 
 import java.io.*;
-import javax.naming.OperationNotSupportedException;
 import org.apache.http.*;
 
 /**
@@ -34,11 +33,9 @@ public interface PagedCollectionEndpoint<TEntity, TElementEndpoint extends Eleme
      * {@link HttpStatus#SC_FORBIDDEN}
      * @throws FileNotFoundException {@link HttpStatus#SC_NOT_FOUND} or
      * {@link HttpStatus#SC_GONE}
-     * @throws OperationNotSupportedException {@link HttpStatus#SC_CONFLICT}
-     * @throws IllegalStateException
-     * {@link HttpStatus#SC_REQUESTED_RANGE_NOT_SATISFIABLE}
+     * @throws IllegalStateException The requested range is not satisfiable.
      * @throws RuntimeException Other non-success status code.
      */
     PartialResponse<TEntity> readRange(Long from, Long to)
-            throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, OperationNotSupportedException, IllegalStateException;
+            throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, IllegalStateException;
 }

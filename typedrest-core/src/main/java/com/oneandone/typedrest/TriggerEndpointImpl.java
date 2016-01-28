@@ -4,7 +4,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URI;
 import java.util.Optional;
-import javax.naming.OperationNotSupportedException;
 import org.apache.http.client.fluent.Request;
 
 /**
@@ -22,7 +21,7 @@ public class TriggerEndpointImpl
     }
 
     @Override
-    public void probe() throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, OperationNotSupportedException {
+    public void probe() throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException {
         execute(Request.Options(uri));
     }
 
@@ -33,7 +32,7 @@ public class TriggerEndpointImpl
 
     @Override
     public void trigger()
-            throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, OperationNotSupportedException {
+            throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException {
         execute(Request.Post(uri));
     }
 }

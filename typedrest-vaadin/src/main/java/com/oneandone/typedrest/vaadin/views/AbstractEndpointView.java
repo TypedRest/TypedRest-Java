@@ -6,7 +6,6 @@ import com.oneandone.typedrest.Endpoint;
 import com.oneandone.typedrest.vaadin.events.EndpointEvent;
 import com.vaadin.ui.*;
 import java.io.*;
-import javax.naming.OperationNotSupportedException;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.http.*;
@@ -61,7 +60,7 @@ public abstract class AbstractEndpointView<TEndpoint extends Endpoint>
     public void refresh() {
         try {
             onLoad();
-        } catch (IOException | IllegalArgumentException | IllegalAccessException | OperationNotSupportedException ex) {
+        } catch (IOException | IllegalArgumentException | IllegalAccessException | IllegalStateException ex) {
             onError(ex);
         }
     }
@@ -75,11 +74,11 @@ public abstract class AbstractEndpointView<TEndpoint extends Endpoint>
      * {@link HttpStatus#SC_FORBIDDEN}
      * @throws FileNotFoundException {@link HttpStatus#SC_NOT_FOUND} or
      * {@link HttpStatus#SC_GONE}
-     * @throws OperationNotSupportedException {@link HttpStatus#SC_CONFLICT}
+     * @throws IllegalStateException {@link HttpStatus#SC_CONFLICT}
      * @throws RuntimeException Other non-success status code.
      */
     protected void onLoad()
-            throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, OperationNotSupportedException {
+            throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, IllegalStateException {
     }
 
     /**

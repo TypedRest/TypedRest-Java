@@ -10,7 +10,6 @@ import static java.util.Arrays.stream;
 import static java.util.Collections.unmodifiableMap;
 import static java.util.Collections.unmodifiableSet;
 import static java.util.stream.Collectors.toSet;
-import javax.naming.OperationNotSupportedException;
 import lombok.*;
 import org.apache.http.*;
 import static org.apache.http.HttpHeaders.*;
@@ -93,13 +92,13 @@ public abstract class AbstractEndpoint
      * {@link HttpStatus#SC_FORBIDDEN}
      * @throws FileNotFoundException {@link HttpStatus#SC_NOT_FOUND} or
      * {@link HttpStatus#SC_GONE}
-     * @throws OperationNotSupportedException {@link HttpStatus#SC_CONFLICT}
-     * @throws IllegalStateException {@link HttpStatus#SC_PRECONDITION_FAILED}
+     * @throws IllegalStateException
+     * {@link HttpStatus#SC_CONFLICT}, {@link HttpStatus#SC_PRECONDITION_FAILED}
      * or {@link HttpStatus#SC_REQUESTED_RANGE_NOT_SATISFIABLE}
      * @throws RuntimeException Other non-success status code.
      */
     protected HttpResponse execute(Request request)
-            throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, OperationNotSupportedException, IllegalStateException {
+            throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, IllegalStateException {
         defaultHeaders.forEach(request::addHeader);
 
         HttpResponse response = rest.execute(request).returnResponse();
@@ -121,13 +120,13 @@ public abstract class AbstractEndpoint
      * {@link HttpStatus#SC_FORBIDDEN}
      * @throws FileNotFoundException {@link HttpStatus#SC_NOT_FOUND} or
      * {@link HttpStatus#SC_GONE}
-     * @throws OperationNotSupportedException {@link HttpStatus#SC_CONFLICT}
-     * @throws IllegalStateException {@link HttpStatus#SC_PRECONDITION_FAILED}
+     * @throws IllegalStateException
+     * {@link HttpStatus#SC_CONFLICT}, {@link HttpStatus#SC_PRECONDITION_FAILED}
      * or {@link HttpStatus#SC_REQUESTED_RANGE_NOT_SATISFIABLE}
      * @throws RuntimeException Other non-success status code.
      */
     protected void handleErrors(HttpResponse response)
-            throws RuntimeException, IOException, IllegalAccessException, OperationNotSupportedException, FileNotFoundException, ParseException {
+            throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, IllegalStateException {
         StatusLine statusLine = response.getStatusLine();
         if (statusLine.getStatusCode() <= 299) {
             return;
@@ -157,7 +156,6 @@ public abstract class AbstractEndpoint
             case HttpStatus.SC_GONE:
                 throw new FileNotFoundException(message);
             case HttpStatus.SC_CONFLICT:
-                throw new OperationNotSupportedException(message);
             case HttpStatus.SC_PRECONDITION_FAILED:
             case HttpStatus.SC_REQUESTED_RANGE_NOT_SATISFIABLE:
                 throw new IllegalStateException(message, inner);
@@ -217,7 +215,7 @@ public abstract class AbstractEndpoint
             // Lazy lookup
             try {
                 execute(Request.Head(uri));
-            } catch (IOException | IllegalAccessException | OperationNotSupportedException | RuntimeException ex) {
+            } catch (IOException | IllegalAccessException | RuntimeException ex) {
                 throw new RuntimeException("No link with rel=" + rel + " provided by endpoint " + getUri() + ".", ex);
             }
 
@@ -240,7 +238,7 @@ public abstract class AbstractEndpoint
             // Lazy lookup
             try {
                 execute(Request.Head(uri));
-            } catch (IOException | IllegalAccessException | OperationNotSupportedException | RuntimeException ex) {
+            } catch (IOException | IllegalAccessException | RuntimeException ex) {
                 // HTTP HEAD server-side implementation is optional
             }
 

@@ -8,7 +8,6 @@ import com.oneandone.typedrest.vaadin.forms.AutoEntityForm;
 import com.oneandone.typedrest.vaadin.forms.EntityForm;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import javax.naming.OperationNotSupportedException;
 import lombok.SneakyThrows;
 
 /**
@@ -48,7 +47,7 @@ public class CreateElementView<TEntity, TElementEndpoint extends ElementEndpoint
 
     @Override
     protected void onSave()
-            throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, OperationNotSupportedException {
+            throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, IllegalStateException {
         TElementEndpoint newEndpoint = endpoint.create(entityForm.getEntity());
         eventBus.post(new ElementCreatedEvent<>(newEndpoint));
     }

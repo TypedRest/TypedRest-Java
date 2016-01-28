@@ -5,7 +5,6 @@ import com.oneandone.typedrest.EntryEndpoint;
 import com.vaadin.ui.Component;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import javax.naming.OperationNotSupportedException;
 
 /**
  * Base class for building view components operating on an
@@ -28,7 +27,7 @@ public abstract class AbstractEntryView<TEndpoint extends EntryEndpoint>
 
     @Override
     protected void onLoad()
-            throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, OperationNotSupportedException {
+            throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, IllegalStateException {
         endpoint.readMeta();
 
         setCompositionRoot(buildRoot());

@@ -10,7 +10,6 @@ import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import javax.naming.OperationNotSupportedException;
 
 /**
  * Base class for building view components operating on an
@@ -75,7 +74,7 @@ public abstract class AbstractCollectionView<TEntity, TEndpoint extends Collecti
 
     @Override
     protected void onLoad()
-            throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, OperationNotSupportedException {
+            throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, IllegalStateException {
         lister.setEntities(endpoint.readAll());
 
         endpoint.isCreateAllowed().ifPresent(this::setCreateEnabled);

@@ -3,7 +3,6 @@ package com.oneandone.typedrest;
 import java.io.*;
 import java.net.*;
 import java.util.Optional;
-import javax.naming.OperationNotSupportedException;
 import lombok.Getter;
 import org.apache.http.*;
 import org.apache.http.client.fluent.*;
@@ -54,7 +53,7 @@ public class ElementEndpointImpl<TEntity>
 
     @Override
     public TEntity read()
-            throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, OperationNotSupportedException {
+            throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException {
         HttpResponse response = execute(Request.Get(uri));
         Header etagHeader = response.getLastHeader(HttpHeaders.ETAG);
         etag = (etagHeader == null) ? null : etagHeader.getValue();
@@ -68,7 +67,7 @@ public class ElementEndpointImpl<TEntity>
 
     @Override
     public void update(TEntity entity)
-            throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, OperationNotSupportedException {
+            throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException {
         String jsonSend = json.writeValueAsString(entity);
         Request request = Request.Put(uri).bodyString(jsonSend, ContentType.APPLICATION_JSON);
         if (etag != null) {
@@ -84,7 +83,7 @@ public class ElementEndpointImpl<TEntity>
 
     @Override
     public void delete()
-            throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, OperationNotSupportedException {
+            throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException {
         execute(Request.Delete(uri));
     }
 }

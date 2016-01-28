@@ -9,7 +9,6 @@ import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import javax.naming.OperationNotSupportedException;
 
 /**
  * Base class for building view components operating on an
@@ -105,7 +104,7 @@ public abstract class AbstractPagedCollectionView<TEntity, TEndpoint extends Pag
 
     @Override
     protected void onLoad()
-            throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, OperationNotSupportedException {
+            throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, IllegalStateException {
         PartialResponse<TEntity> response = endpoint.readRange(currentFrom, currentTo);
 
         if (response.isEndReached()) {

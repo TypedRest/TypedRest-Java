@@ -3,7 +3,6 @@ package com.oneandone.typedrest;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.*;
-import javax.naming.OperationNotSupportedException;
 import org.apache.http.HttpStatus;
 import org.apache.http.auth.Credentials;
 import org.apache.http.client.fluent.*;
@@ -60,11 +59,11 @@ public class EntryEndpoint
      * {@link HttpStatus#SC_FORBIDDEN}
      * @throws FileNotFoundException {@link HttpStatus#SC_NOT_FOUND} or
      * {@link HttpStatus#SC_GONE}
-     * @throws OperationNotSupportedException {@link HttpStatus#SC_CONFLICT}
+     * @throws IllegalStateException {@link HttpStatus#SC_CONFLICT}
      * @throws RuntimeException Other non-success status code.
      */
     public void readMeta()
-            throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, OperationNotSupportedException {
+            throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, IllegalStateException {
         execute(Request.Get(uri));
     }
 }

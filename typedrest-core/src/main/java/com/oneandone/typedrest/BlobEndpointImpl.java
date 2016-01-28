@@ -3,7 +3,6 @@ package com.oneandone.typedrest;
 import java.io.*;
 import java.net.URI;
 import java.util.Optional;
-import javax.naming.OperationNotSupportedException;
 import org.apache.http.*;
 import org.apache.http.client.fluent.*;
 import org.apache.http.entity.ContentType;
@@ -24,7 +23,7 @@ public class BlobEndpointImpl
     }
 
     @Override
-    public void probe() throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, OperationNotSupportedException {
+    public void probe() throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException {
         execute(Request.Options(uri));
     }
 
@@ -34,14 +33,14 @@ public class BlobEndpointImpl
     }
 
     @Override
-    public String downloadTo(OutputStream stream) throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, OperationNotSupportedException {
+    public String downloadTo(OutputStream stream) throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException {
         HttpResponse response = execute(Request.Get(uri));
         response.getEntity().writeTo(stream);
         return ContentType.get(response.getEntity()).getMimeType();
     }
 
     @Override
-    public void uploadFrom(File file, String mimeType) throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, OperationNotSupportedException {
+    public void uploadFrom(File file, String mimeType) throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException {
         execute(Request.Put(uri).bodyFile(file, ContentType.create(mimeType)));
     }
 

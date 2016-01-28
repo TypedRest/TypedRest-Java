@@ -7,7 +7,6 @@ import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import javax.naming.OperationNotSupportedException;
 import org.apache.http.*;
 
 /**
@@ -58,7 +57,7 @@ public abstract class AbstractElementView<TEntity, TEndpoint extends Endpoint>
         try {
             onSave();
             close();
-        } catch (IOException | IllegalArgumentException | IllegalAccessException | OperationNotSupportedException ex) {
+        } catch (IOException | IllegalArgumentException | IllegalAccessException | IllegalStateException ex) {
             onError(ex);
         }
     }
@@ -72,9 +71,11 @@ public abstract class AbstractElementView<TEntity, TEndpoint extends Endpoint>
      * {@link HttpStatus#SC_FORBIDDEN}
      * @throws FileNotFoundException {@link HttpStatus#SC_NOT_FOUND} or
      * {@link HttpStatus#SC_GONE}
-     * @throws OperationNotSupportedException {@link HttpStatus#SC_CONFLICT}
+     * @throws IllegalStateException The entity has changed since it was last
+     * retrieved with {@link #onLoad()}. Your changes were rejected to
+     * prevent a lost update.
      * @throws RuntimeException Other non-success status code.
      */
     protected abstract void onSave()
-            throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, OperationNotSupportedException;
+            throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, IllegalStateException;
 }

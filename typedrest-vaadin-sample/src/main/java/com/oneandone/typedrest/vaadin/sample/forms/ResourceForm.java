@@ -7,12 +7,10 @@ import com.oneandone.typedrest.sample.models.Resource;
 import com.oneandone.typedrest.sample.models.Target;
 import com.oneandone.typedrest.vaadin.forms.AutoEntityForm;
 import com.vaadin.data.util.BeanItemContainer;
-import com.vaadin.data.validator.StringLengthValidator;
 import com.vaadin.ui.*;
 import java.beans.PropertyDescriptor;
 import java.io.IOException;
 import java.util.Collection;
-import javax.naming.OperationNotSupportedException;
 
 public class ResourceForm
         extends AutoEntityForm<Resource> {
@@ -60,7 +58,7 @@ public class ResourceForm
             resources.remove(entity); //Prevent self-references
             dependencySelector.setContainerDataSource(new BeanItemContainer<>(Resource.class, resources));
             fieldGroup.bind(dependencySelector, "dependencies");
-        } catch (IOException | IllegalArgumentException | IllegalAccessException | OperationNotSupportedException ex) {
+        } catch (IOException | IllegalArgumentException | IllegalAccessException | IllegalStateException ex) {
             UI.getCurrent().getErrorHandler().error(new com.vaadin.server.ErrorEvent(ex));
         }
 
