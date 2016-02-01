@@ -8,6 +8,7 @@ import com.vaadin.ui.themes.ValoTheme;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import org.apache.http.*;
+import org.vaadin.dialogs.ConfirmDialog;
 
 /**
  * Base class for building view components that create or update elements.
@@ -57,8 +58,15 @@ public abstract class AbstractElementView<TEntity, TEndpoint extends Endpoint>
         try {
             onSave();
             close();
-        } catch (IOException | IllegalArgumentException | IllegalAccessException | IllegalStateException ex) {
+        } catch (IOException | IllegalArgumentException | IllegalAccessException ex) {
             onError(ex);
+        } catch (IllegalStateException ex) {
+            // This usually inidicates a "lost update"
+            ConfirmDialog.show(getUI(), ex.getLocalizedMessage() + "\nDo you want to refresh this page loosing any changes you have made?", (ConfirmDialog cd) -> {
+            if (cd.isConfirmed()) {
+                refresh();
+            }
+        });
         }
     }
 
