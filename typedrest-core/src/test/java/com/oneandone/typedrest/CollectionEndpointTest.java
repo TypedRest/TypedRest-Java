@@ -71,7 +71,7 @@ public class CollectionEndpointTest extends AbstractEndpointTest {
                 .willReturn(aResponse()
                         .withStatus(SC_OK)
                         .withHeader(CONTENT_TYPE, JSON_MIME)
-                        .withHeader(LINK, "<children/{id}>; rel=child-template")
+                        .withHeader(LINK, "<children/{id}>; rel=child; templated=true")
                         .withBody("[]")));
 
         endpoint.readAll();

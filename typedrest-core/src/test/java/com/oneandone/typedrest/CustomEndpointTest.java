@@ -104,7 +104,7 @@ public class CustomEndpointTest extends AbstractEndpointTest {
         stubFor(get(urlEqualTo("/endpoint"))
                 .willReturn(aResponse()
                         .withStatus(SC_NO_CONTENT)
-                        .withHeader(LINK, "<a>; rel=target1-template")));
+                        .withHeader(LINK, "<a>; rel=target1; templated=true")));
 
         endpoint.get();
 

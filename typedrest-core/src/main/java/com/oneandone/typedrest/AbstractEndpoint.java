@@ -1,8 +1,8 @@
 package com.oneandone.typedrest;
 
 import com.damnhandy.uri.template.UriTemplate;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.databind.*;
 import java.io.*;
 import java.net.*;
 import java.util.*;
@@ -141,7 +141,10 @@ public abstract class AbstractEndpoint
             body = EntityUtils.toString(entity);
             Header contentType = entity.getContentType();
             if ((contentType != null) && contentType.getValue().startsWith("application/json")) {
-                message = json.readTree(body).get("message").asText();
+                JsonNode messageNode = json.readTree(body).get("message");
+                if (messageNode != null) {
+                    message = messageNode.asText();
+                }
             }
         }
 
@@ -174,14 +177,29 @@ public abstract class AbstractEndpoint
         Map<String, Set<URI>> links = new HashMap<>();
         Map<String, String> linkTemplates = new HashMap<>();
 
+        handleHeaderLinks(response, links, linkTemplates);
+
+        this.links = unmodifiableMap(links);
+        this.linkTemplates = unmodifiableMap(linkTemplates);
+    }
+
+    /**
+     * Handles links embedded in HTTP response headers.
+     *
+     * @param response The response to check for links.
+     * @param links A dictionary to add found links to.
+     * @param linkTemplates A dictionary to add found link templates to.
+     */
+    protected void handleHeaderLinks(HttpResponse response, Map<String, Set<URI>> links, Map<String, String> linkTemplates) {
         for (Header header : response.getHeaders("Link")) {
             for (HeaderElement element : header.getElements()) {
                 String href = element.getName().substring(1, element.getName().length() - 1);
 
                 NameValuePair relParameter = element.getParameterByName("rel");
                 if (relParameter != null) {
-                    if (relParameter.getValue().endsWith("-template")) {
-                        String rel = relParameter.getValue().substring(0, relParameter.getValue().length() - "-template".length());
+                    NameValuePair templatedParameter = element.getParameterByName("templated");
+                    if (templatedParameter != null && templatedParameter.getValue().equals("true")) {
+                        String rel = relParameter.getValue();
                         linkTemplates.put(rel, href);
                     } else {
                         String rel = relParameter.getValue();
@@ -194,9 +212,6 @@ public abstract class AbstractEndpoint
                 }
             }
         }
-
-        this.links = unmodifiableMap(links);
-        this.linkTemplates = unmodifiableMap(linkTemplates);
     }
 
     // NOTE: Always replace entire dictionary rather than modifying it to ensure thread-safety.
