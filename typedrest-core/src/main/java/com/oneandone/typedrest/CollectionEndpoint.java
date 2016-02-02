@@ -62,6 +62,36 @@ public interface CollectionEndpoint<TEntity, TElementEndpoint extends ElementEnd
     TElementEndpoint get(TEntity entity);
 
     /**
+     * Shows whether the server has indicated that
+     * {@link #setAll(java.util.Collection)} is currently allowed.
+     *
+     * Uses cached data from last response.
+     *
+     * @return An indicator whether the verb is allowed. If no request has been
+     * sent yet or the server did not specify allowed verbs
+     * {@link Optional#empty()} is returned.
+     */
+    Optional<Boolean> isSetAllAllowed();
+
+    /**
+     * Replaces the entire content of the collection with new
+     * <code>TEntity</code>s.
+     *
+     * @param entities >The new set of <code>TEntity</code>s the collection
+     * shall contain.
+     * @throws IOException Network communication failed.
+     * @throws IllegalArgumentException {@link HttpStatus#SC_BAD_REQUEST}
+     * @throws IllegalAccessException {@link HttpStatus#SC_UNAUTHORIZED} or
+     * {@link HttpStatus#SC_FORBIDDEN}
+     * @throws FileNotFoundException {@link HttpStatus#SC_NOT_FOUND} or
+     * {@link HttpStatus#SC_GONE}
+     * @throws IllegalStateException {@link HttpStatus#SC_CONFLICT}
+     * @throws RuntimeException Other non-success status code.
+     */
+    void setAll(Collection<TEntity> entities)
+            throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException;
+
+    /**
      * Returns all <code>TEntity</code>s.
      *
      * @return All <code>TEntity</code>s.

@@ -107,6 +107,18 @@ public abstract class AbstractCollectionEndpoint<TEntity, TElementEndpoint exten
     }
 
     @Override
+    public Optional<Boolean> isSetAllAllowed() {
+        return isVerbAllowed("PUT");
+    }
+
+    @Override
+    public void setAll(Collection<TEntity> entities)
+            throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException {
+        String jsonSend = json.writeValueAsString(entities);
+        execute(Request.Put(uri).bodyString(jsonSend, ContentType.APPLICATION_JSON));
+    }
+
+    @Override
     public Optional<Boolean> isCreateAllowed() {
         return isVerbAllowed("POST");
     }
