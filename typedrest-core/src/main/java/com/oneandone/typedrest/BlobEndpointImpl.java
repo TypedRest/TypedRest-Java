@@ -24,7 +24,7 @@ public class BlobEndpointImpl
 
     @Override
     public void probe() throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException {
-        execute(Request.Options(uri));
+        executeAndHandle(Request.Options(uri));
     }
 
     @Override
@@ -34,14 +34,14 @@ public class BlobEndpointImpl
 
     @Override
     public String downloadTo(OutputStream stream) throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException {
-        HttpResponse response = execute(Request.Get(uri));
+        HttpResponse response = executeAndHandle(Request.Get(uri));
         response.getEntity().writeTo(stream);
         return ContentType.get(response.getEntity()).getMimeType();
     }
 
     @Override
     public void uploadFrom(File file, String mimeType) throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException {
-        execute(Request.Put(uri).bodyFile(file, ContentType.create(mimeType)));
+        executeAndHandle(Request.Put(uri).bodyFile(file, ContentType.create(mimeType)));
     }
 
     @Override

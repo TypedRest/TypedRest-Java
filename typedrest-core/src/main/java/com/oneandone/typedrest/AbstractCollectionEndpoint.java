@@ -100,7 +100,7 @@ public abstract class AbstractCollectionEndpoint<TEntity, TElementEndpoint exten
     @Override
     public Collection<TEntity> readAll()
             throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException {
-        HttpResponse response = execute(Request.Get(uri));
+        HttpResponse response = executeAndHandle(Request.Get(uri));
 
         JavaType collectionType = json.getTypeFactory().constructCollectionType(List.class, entityType);
         return json.readValue(EntityUtils.toString(response.getEntity()), collectionType);
@@ -115,7 +115,7 @@ public abstract class AbstractCollectionEndpoint<TEntity, TElementEndpoint exten
     public void setAll(Collection<TEntity> entities)
             throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException {
         String jsonSend = json.writeValueAsString(entities);
-        execute(Request.Put(uri).bodyString(jsonSend, ContentType.APPLICATION_JSON));
+        executeAndHandle(Request.Put(uri).bodyString(jsonSend, ContentType.APPLICATION_JSON));
     }
 
     @Override
@@ -127,7 +127,7 @@ public abstract class AbstractCollectionEndpoint<TEntity, TElementEndpoint exten
     public TElementEndpoint create(TEntity entity)
             throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException {
         String jsonSend = json.writeValueAsString(entity);
-        HttpResponse response = execute(Request.Post(uri).bodyString(jsonSend, ContentType.APPLICATION_JSON));
+        HttpResponse response = executeAndHandle(Request.Post(uri).bodyString(jsonSend, ContentType.APPLICATION_JSON));
         Header locationHeader = response.getFirstHeader(LOCATION);
         return (locationHeader == null) ? null : get(URI.create(locationHeader.getValue()));
     }

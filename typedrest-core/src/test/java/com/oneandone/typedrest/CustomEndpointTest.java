@@ -121,7 +121,7 @@ public class CustomEndpointTest extends AbstractEndpointTest {
         }
 
         public void get() throws Exception {
-            execute(Request.Get(uri));
+            executeAndHandle(Request.Get(uri));
         }
     }
 }

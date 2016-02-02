@@ -59,7 +59,7 @@ public abstract class AbstractPagedCollectionEndpoint<TEntity, TElementEndpoint 
                 + (from == null ? "" : from.toString()) + "-"
                 + (to == null ? "" : to.toString());
 
-        HttpResponse response = execute(Request.Get(uri).addHeader(RANGE, range));
+        HttpResponse response = executeAndHandle(Request.Get(uri).addHeader(RANGE, range));
 
         JavaType collectionType = json.getTypeFactory().constructCollectionType(List.class, entityType);
         List<TEntity> elements = json.readValue(EntityUtils.toString(response.getEntity()), collectionType);

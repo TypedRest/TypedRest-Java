@@ -22,7 +22,7 @@ public class TriggerEndpointImpl
 
     @Override
     public void probe() throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException {
-        execute(Request.Options(uri));
+        executeAndHandle(Request.Options(uri));
     }
 
     @Override
@@ -33,6 +33,6 @@ public class TriggerEndpointImpl
     @Override
     public void trigger()
             throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException {
-        execute(Request.Post(uri));
+        executeAndHandle(Request.Post(uri));
     }
 }

@@ -64,6 +64,6 @@ public class EntryEndpoint
      */
     public void readMeta()
             throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, IllegalStateException {
-        execute(Request.Get(uri));
+        executeAndHandle(Request.Get(uri));
     }
 }

@@ -54,7 +54,7 @@ public class ElementEndpointImpl<TEntity>
     @Override
     public TEntity read()
             throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException {
-        HttpResponse response = execute(Request.Get(uri));
+        HttpResponse response = executeAndHandle(Request.Get(uri));
         Header etagHeader = response.getLastHeader(HttpHeaders.ETAG);
         etag = (etagHeader == null) ? null : etagHeader.getValue();
         return json.readValue(EntityUtils.toString(response.getEntity()), entityType);
@@ -73,7 +73,7 @@ public class ElementEndpointImpl<TEntity>
         if (etag != null) {
             request.addHeader(HttpHeaders.IF_MATCH, etag);
         }
-        execute(request);
+        executeAndHandle(request);
     }
 
     @Override
@@ -84,6 +84,6 @@ public class ElementEndpointImpl<TEntity>
     @Override
     public void delete()
             throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException {
-        execute(Request.Delete(uri));
+        executeAndHandle(Request.Delete(uri));
     }
 }

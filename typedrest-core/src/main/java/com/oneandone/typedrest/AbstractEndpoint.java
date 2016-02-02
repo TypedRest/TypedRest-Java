@@ -97,16 +97,50 @@ public abstract class AbstractEndpoint
      * or {@link HttpStatus#SC_REQUESTED_RANGE_NOT_SATISFIABLE}
      * @throws RuntimeException Other non-success status code.
      */
-    protected HttpResponse execute(Request request)
+    protected HttpResponse executeAndHandle(Request request)
             throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, IllegalStateException {
-        defaultHeaders.forEach(request::addHeader);
+        HttpResponse response = execute(request);
+        handleResponse(response);
+        return response;
+    }
 
-        HttpResponse response = rest.execute(request).returnResponse();
+    /**
+     * Executes a REST request adding any configured {@link #defaultHeaders}.
+     *
+     * @param request The request to execute.
+     * @return The HTTP response to the request.
+     *
+     * @throws IOException Network communication failed.
+     * @throws RuntimeException Other non-success status code.
+     */
+    protected HttpResponse execute(Request request)
+            throws IOException {
+        defaultHeaders.forEach(request::addHeader);
+        return rest.execute(request).returnResponse();
+    }
+
+    /**
+     * Handles the response of a REST request and wraps HTTP status codes in
+     * appropriate {@link Exception} types.
+     *
+     * @param response The response to handle.
+     * 
+     * @throws IOException Network communication failed.
+     * @throws IllegalArgumentException {@link HttpStatus#SC_BAD_REQUEST}
+     * @throws IllegalAccessException {@link HttpStatus#SC_UNAUTHORIZED} or
+     * {@link HttpStatus#SC_FORBIDDEN}
+     * @throws FileNotFoundException {@link HttpStatus#SC_NOT_FOUND} or
+     * {@link HttpStatus#SC_GONE}
+     * @throws IllegalStateException
+     * {@link HttpStatus#SC_CONFLICT}, {@link HttpStatus#SC_PRECONDITION_FAILED}
+     * or {@link HttpStatus#SC_REQUESTED_RANGE_NOT_SATISFIABLE}
+     * @throws RuntimeException Other non-success status code.
+     */
+    protected void handleResponse(HttpResponse response)
+            throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, IllegalStateException {
         handleLinks(response);
         handleAllow(response);
         handleErrors(response);
-
-        return response;
     }
 
     /**
@@ -229,7 +263,7 @@ public abstract class AbstractEndpoint
         if (linkSet.isEmpty()) {
             // Lazy lookup
             try {
-                execute(Request.Head(uri));
+                executeAndHandle(Request.Head(uri));
             } catch (IOException | IllegalAccessException | RuntimeException ex) {
                 throw new RuntimeException("No link with rel=" + rel + " provided by endpoint " + getUri() + ".", ex);
             }
@@ -252,7 +286,7 @@ public abstract class AbstractEndpoint
         if (template == null) {
             // Lazy lookup
             try {
-                execute(Request.Head(uri));
+                executeAndHandle(Request.Head(uri));
             } catch (IOException | IllegalAccessException | RuntimeException ex) {
                 // HTTP HEAD server-side implementation is optional
             }
