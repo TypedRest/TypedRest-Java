@@ -81,7 +81,7 @@ public class StreamEndpointTest extends AbstractEndpointTest {
     }
 
     @Test
-    public void testGetObservableOffsetTail() throws Exception {
+    public void testGetObservableTail() throws Exception {
         stubFor(get(urlEqualTo("/endpoint/"))
                 .withHeader(ACCEPT, equalTo(JSON_MIME))
                 .withHeader(RANGE, equalTo("elements=-1"))

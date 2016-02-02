@@ -38,7 +38,7 @@ public class PagedCollectionEndpointTest extends AbstractEndpointTest {
     }
 
     @Test
-    public void testreadRangeOffset() throws Exception {
+    public void testReadRangeOffset() throws Exception {
         stubFor(get(urlEqualTo("/endpoint/"))
                 .withHeader(ACCEPT, equalTo(JSON_MIME))
                 .withHeader(RANGE, equalTo("elements=1-"))
@@ -59,7 +59,7 @@ public class PagedCollectionEndpointTest extends AbstractEndpointTest {
     }
 
     @Test
-    public void testreadRangeHead() throws Exception {
+    public void testReadRangeHead() throws Exception {
         stubFor(get(urlEqualTo("/endpoint/"))
                 .withHeader(ACCEPT, equalTo(JSON_MIME))
                 .withHeader(RANGE, equalTo("elements=0-1"))
@@ -82,7 +82,7 @@ public class PagedCollectionEndpointTest extends AbstractEndpointTest {
     }
 
     @Test
-    public void testreadRangeTail() throws Exception {
+    public void testReadRangeTail() throws Exception {
         stubFor(get(urlEqualTo("/endpoint/"))
                 .withHeader(ACCEPT, equalTo(JSON_MIME))
                 .withHeader(RANGE, equalTo("elements=-1"))
