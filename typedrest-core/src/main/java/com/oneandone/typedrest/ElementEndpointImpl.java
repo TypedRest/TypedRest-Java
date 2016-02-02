@@ -5,6 +5,7 @@ import java.net.*;
 import java.util.Optional;
 import lombok.Getter;
 import org.apache.http.*;
+import static org.apache.http.HttpHeaders.IF_NONE_MATCH;
 import org.apache.http.client.fluent.*;
 import org.apache.http.entity.*;
 import org.apache.http.util.*;
@@ -47,17 +48,33 @@ public class ElementEndpointImpl<TEntity>
     }
 
     /**
-     * The last entity tag returned by the server. Used to avoid lost updates.
+     * The last entity tag returned by the server. Used for caching and to avoid
+     * lost updates.
      */
     private String etag;
+
+    /**
+     * The last entity returned by the server. Used for caching.
+     */
+    private TEntity cachedResponse;
 
     @Override
     public TEntity read()
             throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException {
-        HttpResponse response = executeAndHandle(Request.Get(uri));
+        Request request = Request.Get(uri);
+        if (etag != null) {
+            request = request.addHeader(IF_NONE_MATCH, etag);
+        }
+
+        HttpResponse response = execute(request);
+        if (response.getStatusLine().getStatusCode() == HttpStatus.SC_NOT_MODIFIED && cachedResponse != null) {
+            return cachedResponse;
+        }
+
+        handleResponse(response);
         Header etagHeader = response.getLastHeader(HttpHeaders.ETAG);
         etag = (etagHeader == null) ? null : etagHeader.getValue();
-        return json.readValue(EntityUtils.toString(response.getEntity()), entityType);
+        return cachedResponse = json.readValue(EntityUtils.toString(response.getEntity()), entityType);
     }
 
     @Override

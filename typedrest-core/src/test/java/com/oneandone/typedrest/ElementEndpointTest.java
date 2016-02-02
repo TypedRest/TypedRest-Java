@@ -26,6 +26,28 @@ public class ElementEndpointTest extends AbstractEndpointTest {
                 .willReturn(aResponse()
                         .withStatus(SC_OK)
                         .withHeader(CONTENT_TYPE, JSON_MIME)
+                        .withHeader(ETAG, "\"123abc\"")
+                        .withBody("{\"id\":5,\"name\":\"test\"}")));
+        assertThat(endpoint.read(),
+                is(equalTo(new MockEntity(5, "test"))));
+
+        stubFor(get(urlEqualTo("/endpoint"))
+                .withHeader(ACCEPT, equalTo(JSON_MIME))
+                .withHeader(IF_NONE_MATCH, equalTo("\"123abc\""))
+                .willReturn(aResponse()
+                        .withStatus(SC_NOT_MODIFIED)));
+        assertThat(endpoint.read(),
+                is(equalTo(new MockEntity(5, "test"))));
+
+    }
+
+    @Test
+    public void testReadCache() throws Exception {
+        stubFor(get(urlEqualTo("/endpoint"))
+                .withHeader(ACCEPT, equalTo(JSON_MIME))
+                .willReturn(aResponse()
+                        .withStatus(SC_OK)
+                        .withHeader(CONTENT_TYPE, JSON_MIME)
                         .withBody("{\"id\":5,\"name\":\"test\"}")));
 
         assertThat(endpoint.read(),
