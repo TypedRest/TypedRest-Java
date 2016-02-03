@@ -67,6 +67,6 @@ public class TriggerView extends AbstractEndpointView<TriggerEndpoint> {
     protected void onTrigger()
             throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, IllegalStateException {
         endpoint.trigger();
-        eventBus.post(new TriggerEvent<>(endpoint));
+        eventBus.post(new TriggerEvent(endpoint));
     }
 }

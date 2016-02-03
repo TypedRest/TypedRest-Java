@@ -3,6 +3,7 @@ package com.oneandone.typedrest.vaadin.views;
 import com.google.gwt.thirdparty.guava.common.eventbus.EventBus;
 import java.io.*;
 import com.oneandone.typedrest.*;
+import com.oneandone.typedrest.vaadin.events.BlobUploadEvent;
 import com.vaadin.server.*;
 import com.vaadin.ui.*;
 import lombok.*;
@@ -122,6 +123,7 @@ public class BlobView extends AbstractEndpointView<BlobEndpoint> {
     protected void uploadFrom() {
         try {
             endpoint.uploadFrom(uploadTarget, uploadMimeType);
+            eventBus.post(new BlobUploadEvent(endpoint));
             onUploadSuccess();
         } catch (IOException | IllegalArgumentException | IllegalAccessException | IllegalStateException ex) {
             onError(ex);
