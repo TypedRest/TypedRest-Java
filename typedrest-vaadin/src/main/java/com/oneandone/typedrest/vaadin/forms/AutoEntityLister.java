@@ -49,12 +49,6 @@ public class AutoEntityLister<TEntity>
     }
 
     @Override
-    public void clearEntities() {
-        super.clearEntities();
-        grid.getSelectionModel().reset();
-    }
-
-    @Override
     public void scrollToEnd() {
         grid.scrollToEnd();
     }
