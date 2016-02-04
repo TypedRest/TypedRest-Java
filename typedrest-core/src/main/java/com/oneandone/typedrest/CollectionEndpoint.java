@@ -139,6 +139,23 @@ public interface CollectionEndpoint<TEntity, TElementEndpoint extends ElementEnd
             throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, IllegalStateException;
 
     /**
+     * Creates multiple new <code>TEntity</code>s.
+     *
+     * @param entities The new <code>TEntity</code>s.
+     *
+     * @throws IOException Network communication failed.
+     * @throws IllegalArgumentException {@link HttpStatus#SC_BAD_REQUEST}
+     * @throws IllegalAccessException {@link HttpStatus#SC_UNAUTHORIZED} or
+     * {@link HttpStatus#SC_FORBIDDEN}
+     * @throws FileNotFoundException {@link HttpStatus#SC_NOT_FOUND} or
+     * {@link HttpStatus#SC_GONE}
+     * @throws IllegalStateException {@link HttpStatus#SC_CONFLICT}
+     * @throws RuntimeException Other non-success status code.
+     */
+    void create(Iterable<TEntity> entities)
+            throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, IllegalStateException;
+
+    /**
      * Updates an existing element in the collection.
      *
      * This is a convenience method equivalent to combining

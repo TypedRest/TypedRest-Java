@@ -131,4 +131,11 @@ public abstract class AbstractCollectionEndpoint<TEntity, TElementEndpoint exten
         Header locationHeader = response.getFirstHeader(LOCATION);
         return (locationHeader == null) ? null : get(URI.create(locationHeader.getValue()));
     }
+
+    @Override
+    public void create(Iterable<TEntity> entities)
+            throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException {
+        String jsonSend = json.writeValueAsString(entities);
+        executeAndHandle(Request.Post(uri).bodyString(jsonSend, ContentType.APPLICATION_JSON));
+    }
 }

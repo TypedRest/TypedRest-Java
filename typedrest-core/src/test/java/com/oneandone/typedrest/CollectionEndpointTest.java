@@ -67,6 +67,19 @@ public class CollectionEndpointTest extends AbstractEndpointTest {
     }
 
     @Test
+    @Ignore("Works in isolation but fails when executed as part of test suite")
+    public void testCreateBulk() throws Exception {
+        stubFor(post(urlEqualTo("/endpoint/"))
+                .withRequestBody(equalToJson("[{\"id\":5,\"name\":\"test1\"},{\"id\":6,\"name\":\"test2\"}]"))
+                .willReturn(aResponse()
+                        .withStatus(SC_ACCEPTED)));
+
+        endpoint.create(asList(
+                new MockEntity(5, "test1"),
+                new MockEntity(6, "test2")));
+    }
+
+    @Test
     public void testGetByRelativeUri() {
         assertThat(endpoint.get(URI.create("1")).getUri(),
                 is(equalTo(endpoint.getUri().resolve("1"))));
