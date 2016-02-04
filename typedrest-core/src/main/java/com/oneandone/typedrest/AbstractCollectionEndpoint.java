@@ -9,6 +9,7 @@ import org.apache.http.client.fluent.Request;
 import org.apache.http.entity.ContentType;
 import org.apache.http.util.EntityUtils;
 import static org.apache.http.HttpHeaders.*;
+import static org.apache.http.HttpStatus.*;
 import java.beans.PropertyDescriptor;
 import java.io.*;
 import java.lang.reflect.InvocationTargetException;
@@ -129,7 +130,9 @@ public abstract class AbstractCollectionEndpoint<TEntity, TElementEndpoint exten
         String jsonSend = json.writeValueAsString(entity);
         HttpResponse response = executeAndHandle(Request.Post(uri).bodyString(jsonSend, ContentType.APPLICATION_JSON));
         Header locationHeader = response.getFirstHeader(LOCATION);
-        return (locationHeader == null) ? null : get(URI.create(locationHeader.getValue()));
+        return (response.getStatusLine().getStatusCode() == SC_CREATED || response.getStatusLine().getStatusCode() == SC_ACCEPTED) && (locationHeader != null)
+                ? get(URI.create(locationHeader.getValue()))
+                : null;
     }
 
     @Override
