@@ -1,13 +1,12 @@
 package com.oneandone.typedrest;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
-import java.io.ByteArrayOutputStream;
+import static com.google.common.io.ByteStreams.toByteArray;
 import java.io.File;
+import java.io.InputStream;
 import org.apache.http.*;
 import static org.apache.http.HttpHeaders.*;
 import static org.apache.http.HttpStatus.*;
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.MatcherAssert.assertThat;
 import org.junit.*;
 import static org.junit.Assert.*;
 import static org.hamcrest.CoreMatchers.is;
@@ -44,14 +43,11 @@ public class BlobEndpointTest extends AbstractEndpointTest {
         stubFor(get(urlEqualTo("/endpoint"))
                 .willReturn(aResponse()
                         .withStatus(SC_OK)
-                        .withHeader(CONTENT_TYPE, "mock/type")
                         .withBody(data)));
 
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        String mimeType = endpoint.downloadTo(stream);
+        InputStream stream = endpoint.download();
 
-        assertEquals("mock/type", mimeType);
-        assertArrayEquals(data, stream.toByteArray());
+        assertArrayEquals(data, toByteArray(stream));
     }
 
     @Test

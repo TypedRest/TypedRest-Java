@@ -33,10 +33,9 @@ public class BlobEndpointImpl
     }
 
     @Override
-    public String downloadTo(OutputStream stream) throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException {
+    public InputStream download() throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException {
         HttpResponse response = executeAndHandle(Request.Get(uri));
-        response.getEntity().writeTo(stream);
-        return ContentType.get(response.getEntity()).getMimeType();
+        return response.getEntity().getContent();
     }
 
     @Override

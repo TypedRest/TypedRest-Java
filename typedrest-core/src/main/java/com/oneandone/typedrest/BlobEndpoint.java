@@ -28,7 +28,7 @@ public interface BlobEndpoint extends Endpoint {
 
     /**
      * Shows whether the server has indicated that
-     * {@link #downloadTo(java.io.OutputStream)} is currently allowed.
+     * {@link #download()} is currently allowed.
      *
      * Uses cached data from last response.
      *
@@ -41,8 +41,7 @@ public interface BlobEndpoint extends Endpoint {
     /**
      * Downloads the blob's content.
      *
-     * @param stream The stream to write the downloaded data to.
-     * @return The MIME type of the downloaded blob.
+     * @return A stream with the blob's content.
      *
      * @throws IOException Network communication failed.
      * @throws IllegalArgumentException {@link HttpStatus#SC_BAD_REQUEST}
@@ -53,7 +52,7 @@ public interface BlobEndpoint extends Endpoint {
      * @throws IllegalStateException {@link HttpStatus#SC_CONFLICT}
      * @throws RuntimeException Other non-success status code.
      */
-    String downloadTo(OutputStream stream)
+    InputStream download()
             throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, IllegalStateException;
 
     /**
