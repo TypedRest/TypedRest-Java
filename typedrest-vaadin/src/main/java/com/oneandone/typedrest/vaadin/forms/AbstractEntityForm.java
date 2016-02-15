@@ -33,7 +33,8 @@ public abstract class AbstractEntityForm<TEntity>
     }
 
     @Override
-    public TEntity getEntity() {
+    public TEntity getEntity()
+            throws Validator.InvalidValueException {
         try {
             fieldGroup.commit();
         } catch (FieldGroup.CommitException ex) {

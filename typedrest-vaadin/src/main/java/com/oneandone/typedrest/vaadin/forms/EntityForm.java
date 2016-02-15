@@ -1,5 +1,6 @@
 package com.oneandone.typedrest.vaadin.forms;
 
+import com.vaadin.data.Validator;
 import com.vaadin.ui.Component;
 
 /**
@@ -12,9 +13,11 @@ public interface EntityForm<TEntity> extends Component {
     /**
      * Returns the entity the form operates on.
      *
+     * @throws Validator.InvalidValueException The user input is invalid.
      * @return the entity the form operates on.
      */
-    TEntity getEntity();
+    TEntity getEntity()
+            throws Validator.InvalidValueException;
 
     /**
      * Sets the entity the form operates on. This must be called before the form

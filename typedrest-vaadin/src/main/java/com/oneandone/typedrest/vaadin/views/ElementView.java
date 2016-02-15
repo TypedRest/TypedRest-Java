@@ -4,6 +4,7 @@ import com.google.gwt.thirdparty.guava.common.eventbus.EventBus;
 import com.oneandone.typedrest.*;
 import com.oneandone.typedrest.vaadin.events.*;
 import com.oneandone.typedrest.vaadin.forms.*;
+import com.vaadin.data.Validator;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
 import java.io.FileNotFoundException;
@@ -70,7 +71,7 @@ public class ElementView<TEntity>
 
     @Override
     protected void onSave()
-            throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, IllegalStateException {
+            throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, IllegalStateException, Validator.InvalidValueException {
         endpoint.update(entityForm.getEntity());
         eventBus.post(new ElementUpdatedEvent<>(endpoint));
     }

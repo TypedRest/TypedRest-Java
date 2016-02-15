@@ -6,6 +6,7 @@ import com.oneandone.typedrest.ElementEndpoint;
 import com.oneandone.typedrest.vaadin.events.ElementCreatedEvent;
 import com.oneandone.typedrest.vaadin.forms.AutoEntityForm;
 import com.oneandone.typedrest.vaadin.forms.EntityForm;
+import com.vaadin.data.Validator;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import lombok.SneakyThrows;
@@ -47,7 +48,7 @@ public class CreateElementView<TEntity, TElementEndpoint extends ElementEndpoint
 
     @Override
     protected void onSave()
-            throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, IllegalStateException {
+            throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, IllegalStateException, Validator.InvalidValueException {
         TElementEndpoint newEndpoint = endpoint.create(entityForm.getEntity());
         eventBus.post(new ElementCreatedEvent<>(newEndpoint));
     }

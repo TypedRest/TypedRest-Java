@@ -3,6 +3,7 @@ package com.oneandone.typedrest.vaadin.views;
 import com.google.gwt.thirdparty.guava.common.eventbus.EventBus;
 import com.oneandone.typedrest.*;
 import com.oneandone.typedrest.vaadin.forms.EntityForm;
+import com.vaadin.data.Validator;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
 import java.io.FileNotFoundException;
@@ -58,7 +59,7 @@ public abstract class AbstractElementView<TEntity, TEndpoint extends Endpoint>
         try {
             onSave();
             close();
-        } catch (IOException | IllegalArgumentException | IllegalAccessException ex) {
+        } catch (IOException | IllegalArgumentException | IllegalAccessException | Validator.InvalidValueException ex) {
             onError(ex);
         } catch (IllegalStateException ex) {
             // This usually inidicates a "lost update"
@@ -82,8 +83,9 @@ public abstract class AbstractElementView<TEntity, TEndpoint extends Endpoint>
      * @throws IllegalStateException The entity has changed since it was last
      * retrieved with {@link #onLoad()}. Your changes were rejected to
      * prevent a lost update.
+     * @throws Validator.InvalidValueException The user input is invalid.
      * @throws RuntimeException Other non-success status code.
      */
     protected abstract void onSave()
-            throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, IllegalStateException;
+            throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, IllegalStateException, Validator.InvalidValueException;
 }
