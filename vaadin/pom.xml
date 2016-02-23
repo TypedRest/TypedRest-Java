@@ -5,7 +5,7 @@
         <groupId>com.oneandone</groupId>
         <artifactId>typedrest-parent</artifactId>
         <version>0.15-SNAPSHOT</version>
-        <relativePath>../typedrest-parent</relativePath>
+        <relativePath>../parent</relativePath>
     </parent>
     <artifactId>typedrest-vaadin</artifactId>
 

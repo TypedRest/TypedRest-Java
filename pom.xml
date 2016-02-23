@@ -10,12 +10,12 @@
     <description>Groups all TypedRest libraries as modules.</description>
 
     <modules>
-        <module>typedrest-parent</module>
-        <module>typedrest-annotations</module>
-        <module>typedrest-core</module>
-        <module>typedrest-core-sample</module>
-        <module>typedrest-vaadin</module>
-        <module>typedrest-vaadin-sample</module>
+        <module>parent</module>
+        <module>annotations</module>
+        <module>core</module>
+        <module>core-sample</module>
+        <module>vaadin</module>
+        <module>vaadin-sample</module>
     </modules>
 
     <build>
