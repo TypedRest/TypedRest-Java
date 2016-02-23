@@ -6,6 +6,7 @@ Maven artifacts:
 * `com.oneandone.typedrest-annotations`
 * `com.oneandone.typedrest-core`
 * `com.oneandone.typedrest-vaadin`
+* `com.oneandone.typedrest-archetype`
 
 
 ## Nomenclature

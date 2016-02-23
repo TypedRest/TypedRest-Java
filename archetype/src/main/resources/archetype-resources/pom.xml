@@ -2,22 +2,20 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.oneandone</groupId>
-    <artifactId>typedrest</artifactId>
-    <version>0.15-SNAPSHOT</version>
+    <groupId>${groupId}</groupId>
+    <artifactId>${artifactId}</artifactId>
+    <version>${version}</version>
     <packaging>pom</packaging>
 
-    <name>TypedRest</name>
-    <description>Groups all TypedRest libraries as modules.</description>
+    <name>${artifactId}</name>
+    <description>Libraries for interacting with ${artifactId} in Java</description>
 
     <modules>
         <module>parent</module>
-        <module>annotations</module>
-        <module>core</module>
-        <module>core-sample</module>
-        <module>vaadin</module>
-        <module>vaadin-sample</module>
-        <module>archetype</module>
+        <module>model</module>
+        <module>client</module>
+        <module>client-vaadin</module>
+        <module>client-vaadin-boot</module>
     </modules>
 
     <build>

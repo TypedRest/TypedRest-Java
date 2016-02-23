@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>${groupId}</groupId>
+        <artifactId>${artifactId}-parent</artifactId>
+        <version>${version}</version>
+        <relativePath>../parent</relativePath>
+    </parent>
+    <artifactId>${artifactId}-client-vaadin</artifactId>
+
+    <name>${artifactId} Client Vaadin</name>
+    <description>Vaadin GUI for ${artifactId}</description>
+
+    <dependencies>
+        <dependency>
+            <groupId>${groupId}</groupId>
+            <artifactId>${artifactId}-client</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <!-- TypedRest -->
+        <dependency>
+            <groupId>com.oneandone</groupId>
+            <artifactId>typedrest-vaadin</artifactId>
+            <version>${typedrest.version}</version>
+        </dependency>
+
+        <!-- JSON -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.datatype</groupId>
+            <artifactId>jackson-datatype-jsr310</artifactId>
+            <version>2.6.4</version>
+        </dependency>
+
+        <!-- Unit tests -->
+        <dependency>
+            <groupId>com.github.tomakehurst</groupId>
+            <artifactId>wiremock</artifactId>
+            <version>1.57</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+</project>
