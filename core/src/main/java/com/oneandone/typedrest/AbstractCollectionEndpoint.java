@@ -108,18 +108,6 @@ public abstract class AbstractCollectionEndpoint<TEntity, TElementEndpoint exten
     }
 
     @Override
-    public Optional<Boolean> isSetAllAllowed() {
-        return isVerbAllowed("PUT");
-    }
-
-    @Override
-    public void setAll(Collection<TEntity> entities)
-            throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException {
-        String jsonSend = json.writeValueAsString(entities);
-        executeAndHandle(Request.Put(uri).bodyString(jsonSend, ContentType.APPLICATION_JSON));
-    }
-
-    @Override
     public Optional<Boolean> isCreateAllowed() {
         return isVerbAllowed("POST");
     }
@@ -133,12 +121,5 @@ public abstract class AbstractCollectionEndpoint<TEntity, TElementEndpoint exten
         return (response.getStatusLine().getStatusCode() == SC_CREATED || response.getStatusLine().getStatusCode() == SC_ACCEPTED) && (locationHeader != null)
                 ? get(URI.create(locationHeader.getValue()))
                 : null;
-    }
-
-    @Override
-    public void create(Iterable<TEntity> entities)
-            throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException {
-        String jsonSend = json.writeValueAsString(entities);
-        executeAndHandle(Request.Post(uri).bodyString(jsonSend, ContentType.APPLICATION_JSON));
     }
 }

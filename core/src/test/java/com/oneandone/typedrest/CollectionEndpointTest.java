@@ -39,20 +39,6 @@ public class CollectionEndpointTest extends AbstractEndpointTest {
 
     @Test
     @Ignore("Works in isolation but fails when executed as part of test suite")
-    public void testSetAll() throws Exception {
-        stubFor(put(urlEqualTo("/endpoint/"))
-                .withHeader(ACCEPT, equalTo(JSON_MIME))
-                .withRequestBody(equalToJson("[{\"id\":5,\"name\":\"test1\"},{\"id\":6,\"name\":\"test2\"}]"))
-                .willReturn(aResponse()
-                        .withStatus(SC_NO_CONTENT)));
-
-        endpoint.setAll(asList(
-                new MockEntity(5, "test1"),
-                new MockEntity(6, "test2")));
-    }
-
-    @Test
-    @Ignore("Works in isolation but fails when executed as part of test suite")
     public void testCreate() throws Exception {
         URI location = URI.create("/endpoint/new");
 
@@ -64,19 +50,6 @@ public class CollectionEndpointTest extends AbstractEndpointTest {
 
         ElementEndpoint<MockEntity> element = endpoint.create(new MockEntity(5, "test"));
         assertThat(element.getUri(), is(equalTo(serverUri.resolve(location))));
-    }
-
-    @Test
-    @Ignore("Works in isolation but fails when executed as part of test suite")
-    public void testCreateBulk() throws Exception {
-        stubFor(post(urlEqualTo("/endpoint/"))
-                .withRequestBody(equalToJson("[{\"id\":5,\"name\":\"test1\"},{\"id\":6,\"name\":\"test2\"}]"))
-                .willReturn(aResponse()
-                        .withStatus(SC_ACCEPTED)));
-
-        endpoint.create(asList(
-                new MockEntity(5, "test1"),
-                new MockEntity(6, "test2")));
     }
 
     @Test
