@@ -2,6 +2,7 @@ package com.oneandone.typedrest;
 
 import com.damnhandy.uri.template.UriTemplate;
 import java.net.*;
+import java.util.Map;
 import java.util.Set;
 import org.apache.http.client.fluent.*;
 
@@ -32,6 +33,16 @@ public interface Endpoint {
      * @return The hrefs of the links resolved relative to this endpoint's URI.
      */
     Set<URI> getLinks(String rel);
+
+    /**
+     * Retrieves all links (with titles) with a specific relation type cached
+     * from the last request.
+     *
+     * @param rel The relation type of the links to look for.
+     * @return A map of hrefs (resolved relative to this endpoint's URI) to
+     * titles (may be <code>null</code>).
+     */
+    Map<URI, String> getLinksWithTitles(String rel);
 
     /**
      * Retrieves a single link with a specific relation type.

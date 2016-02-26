@@ -2,7 +2,9 @@ package com.oneandone.typedrest;
 
 import com.github.tomakehurst.wiremock.client.WireMock;
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
-import static org.apache.http.HttpHeaders.*;
+import java.net.URI;
+import java.util.HashMap;
+import java.util.Map;
 import static org.apache.http.HttpStatus.*;
 import org.apache.http.client.fluent.Request;
 import org.apache.http.message.BasicHeader;
@@ -97,6 +99,23 @@ public class CustomEndpointTest extends AbstractEndpointTest {
                 endpoint.getUri().resolve("target1"),
                 endpoint.getUri().resolve("target2"),
                 endpoint.getUri().resolve("target3")));
+    }
+
+    @Test
+    public void testGetLinksWithTitles() throws Exception {
+        stubFor(get(urlEqualTo("/endpoint"))
+                .willReturn(aResponse()
+                        .withStatus(SC_NO_CONTENT)
+                        .withHeader(LINK, "<target1>; rel=child; title=\"Title 1\"")
+                        .withHeader(LINK, "<target2>; rel=child")));
+
+        endpoint.get();
+
+        Map<URI, String> expected = new HashMap<>();
+        expected.put(endpoint.getUri().resolve("target1"), "Title 1");
+        expected.put(endpoint.getUri().resolve("target2"), null);
+        assertThat(endpoint.getLinksWithTitles("child").entrySet(), equalTo(
+                expected.entrySet()));
     }
 
     @Test

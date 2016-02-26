@@ -124,7 +124,7 @@ public abstract class AbstractEndpoint
      * appropriate {@link Exception} types.
      *
      * @param response The response to handle.
-     * 
+     *
      * @throws IOException Network communication failed.
      * @throws IllegalArgumentException {@link HttpStatus#SC_BAD_REQUEST}
      * @throws IllegalAccessException {@link HttpStatus#SC_UNAUTHORIZED} or
@@ -208,7 +208,7 @@ public abstract class AbstractEndpoint
      */
     @SuppressWarnings("LocalVariableHidesMemberVariable")
     private void handleLinks(HttpResponse response) {
-        Map<String, Set<URI>> links = new HashMap<>();
+        Map<String, Map<URI, String>> links = new HashMap<>();
         Map<String, String> linkTemplates = new HashMap<>();
 
         handleHeaderLinks(response, links, linkTemplates);
@@ -224,7 +224,7 @@ public abstract class AbstractEndpoint
      * @param links A dictionary to add found links to.
      * @param linkTemplates A dictionary to add found link templates to.
      */
-    protected void handleHeaderLinks(HttpResponse response, Map<String, Set<URI>> links, Map<String, String> linkTemplates) {
+    protected void handleHeaderLinks(HttpResponse response, Map<String, Map<URI, String>> links, Map<String, String> linkTemplates) {
         for (Header header : response.getHeaders("Link")) {
             for (HeaderElement element : header.getElements()) {
                 String href = element.getName().substring(1, element.getName().length() - 1);
@@ -237,11 +237,15 @@ public abstract class AbstractEndpoint
                         linkTemplates.put(rel, href);
                     } else {
                         String rel = relParameter.getValue();
-                        Set<URI> linkSet = links.get(rel);
-                        if (linkSet == null) {
-                            links.put(rel, linkSet = new HashSet<>());
+                        Map<URI, String> selectedLinks = links.get(rel);
+                        if (selectedLinks == null) {
+                            links.put(rel, selectedLinks = new HashMap<>());
                         }
-                        linkSet.add(uri.resolve(href));
+
+                        NameValuePair titleParameter = element.getParameterByName("title");
+                        String title = (titleParameter == null) ? null : titleParameter.getValue();
+
+                        selectedLinks.put(uri.resolve(href), title);
                     }
                 }
             }
@@ -249,12 +253,17 @@ public abstract class AbstractEndpoint
     }
 
     // NOTE: Always replace entire dictionary rather than modifying it to ensure thread-safety.
-    private Map<String, Set<URI>> links = unmodifiableMap(new HashMap<>());
+    private Map<String, Map<URI, String>> links = unmodifiableMap(new HashMap<>());
+
+    @Override
+    public Map<URI, String> getLinksWithTitles(String rel) {
+        Map<URI, String> linksForRel = links.get(rel);
+        return (linksForRel == null) ? new HashMap<>() : unmodifiableMap(linksForRel);
+    }
 
     @Override
     public Set<URI> getLinks(String rel) {
-        Set<URI> uris = links.get(rel);
-        return (uris == null) ? new HashSet<>() : unmodifiableSet(uris);
+        return getLinksWithTitles(rel).keySet();
     }
 
     @Override
