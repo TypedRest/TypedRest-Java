@@ -3,10 +3,9 @@ package ${package}.model;
 import com.oneandone.typedrest.*;
 import lombok.*;
 
+@Data
 public class MyEntity {
 
-    @Getter
-	@Setter
-	@Id
-	private String id;
+    @Id
+    private String id;
 }

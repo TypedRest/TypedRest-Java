@@ -1,6 +1,5 @@
 package ${package}.client.vaadin.views;
 
-import ${package}.model.*;
 import ${package}.client.*;
 import com.oneandone.typedrest.vaadin.views.*;
 import com.vaadin.ui.Component;
