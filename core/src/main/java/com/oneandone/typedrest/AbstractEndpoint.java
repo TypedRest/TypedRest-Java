@@ -339,4 +339,9 @@ public abstract class AbstractEndpoint
         }
         return Optional.of(allowedVerbs.contains(verb));
     }
+
+    @Override
+    public String toString() {
+        return getClass().getName() + ": " + uri;
+    }
 }
