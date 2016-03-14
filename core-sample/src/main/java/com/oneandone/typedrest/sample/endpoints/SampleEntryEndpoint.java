@@ -13,8 +13,8 @@ public class SampleEntryEndpoint extends EntryEndpoint {
         super(uri, username, password);
     }
 
-    public ResourceCollection getResources() {
-        return new ResourceCollection(this);
+    public ResourceCollectionEndpoint getResources() {
+        return new ResourceCollectionEndpoint(this);
     }
 
     public CollectionEndpointImpl<Target> getTargets() {

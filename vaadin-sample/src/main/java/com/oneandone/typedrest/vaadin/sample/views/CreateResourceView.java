@@ -6,10 +6,10 @@ import com.google.gwt.thirdparty.guava.common.eventbus.EventBus;
 import com.oneandone.typedrest.sample.endpoints.*;
 import com.oneandone.typedrest.sample.models.*;
 
-public class CreateResourceElementView
-        extends CreateElementView<Resource, ResourceElement> {
+public class CreateResourceView
+        extends CreateElementView<Resource, ResourceEndpoint> {
 
-    public CreateResourceElementView(ResourceCollection endpoint, EventBus eventBus) {
+    public CreateResourceView(ResourceCollectionEndpoint endpoint, EventBus eventBus) {
         super(endpoint, eventBus, new ResourceForm(endpoint));
     }
 }

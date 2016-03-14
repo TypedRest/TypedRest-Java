@@ -8,13 +8,13 @@ import com.oneandone.typedrest.sample.endpoints.*;
 import com.oneandone.typedrest.sample.models.*;
 import com.vaadin.ui.Button;
 
-public class ResourceElementView
+public class ResourceView
         extends ElementView<Resource> {
 
     @SuppressWarnings("FieldNameHidesFieldInSuperclass") // Covariance
-    protected ResourceElement endpoint;
+    protected ResourceEndpoint endpoint;
 
-    public ResourceElementView(ResourceElement endpoint, EventBus eventBus) {
+    public ResourceView(ResourceEndpoint endpoint, EventBus eventBus) {
         super(endpoint, eventBus, new ResourceForm(endpoint.getResources()));
         this.endpoint = endpoint;
 

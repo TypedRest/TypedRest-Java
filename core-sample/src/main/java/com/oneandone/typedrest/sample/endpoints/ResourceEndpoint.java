@@ -7,9 +7,9 @@ import java.net.URI;
 /**
  * REST endpoint that represents a {@link Resource}.
  */
-public class ResourceElement extends ElementEndpointImpl<Resource> {
+public class ResourceEndpoint extends ElementEndpointImpl<Resource> {
 
-    public ResourceElement(ResourceCollection parent, URI relativeUri) {
+    public ResourceEndpoint(ResourceCollectionEndpoint parent, URI relativeUri) {
         super(parent, relativeUri, Resource.class);
     }
 
@@ -18,8 +18,8 @@ public class ResourceElement extends ElementEndpointImpl<Resource> {
      *
      * @return An endpoint.
      */
-    public ResourceRevisionCollection getRevisions() {
-        return new ResourceRevisionCollection(this);
+    public ResourceRevisionCollectionEndpoint getRevisions() {
+        return new ResourceRevisionCollectionEndpoint(this);
     }
 
     /**
@@ -36,7 +36,7 @@ public class ResourceElement extends ElementEndpointImpl<Resource> {
      *
      * @return An endpoint.
      */
-    public ResourceCollection getResources() {
-        return new ResourceCollection(this);
+    public ResourceCollectionEndpoint getResources() {
+        return new ResourceCollectionEndpoint(this);
     }
 }

@@ -7,9 +7,9 @@ import java.net.*;
 /**
  * REST endpoint that represents a {@link ResourceRevision}.
  */
-public class ResourceRevisionElement extends ElementEndpointImpl<ResourceRevision> {
+public class ResourceRevisionEndpoint extends ElementEndpointImpl<ResourceRevision> {
 
-    public ResourceRevisionElement(ResourceRevisionCollection parent, URI relativeUri) {
+    public ResourceRevisionEndpoint(ResourceRevisionCollectionEndpoint parent, URI relativeUri) {
         super(parent, relativeUri, ResourceRevision.class);
     }
 

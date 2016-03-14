@@ -6,13 +6,13 @@ import com.google.gwt.thirdparty.guava.common.eventbus.EventBus;
 import com.oneandone.typedrest.sample.endpoints.*;
 import com.oneandone.typedrest.sample.models.*;
 
-public class ResourceRevisionElementView
+public class ResourceRevisionView
         extends ElementView<ResourceRevision> {
 
     @SuppressWarnings("FieldNameHidesFieldInSuperclass") // Covariance
-    protected ResourceRevisionElement endpoint;
+    protected ResourceRevisionEndpoint endpoint;
 
-    public ResourceRevisionElementView(ResourceRevisionElement endpoint, EventBus eventBus) {
+    public ResourceRevisionView(ResourceRevisionEndpoint endpoint, EventBus eventBus) {
         super(endpoint, eventBus);
         this.endpoint = endpoint;
 

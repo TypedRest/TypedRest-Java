@@ -2,7 +2,7 @@ package com.oneandone.typedrest.vaadin.sample.forms;
 
 import com.oneandone.typedrest.CollectionEndpointImpl;
 import com.oneandone.typedrest.Endpoint;
-import com.oneandone.typedrest.sample.endpoints.ResourceCollection;
+import com.oneandone.typedrest.sample.endpoints.ResourceCollectionEndpoint;
 import com.oneandone.typedrest.sample.models.Resource;
 import com.oneandone.typedrest.sample.models.Target;
 import com.oneandone.typedrest.vaadin.forms.AutoEntityForm;
@@ -51,9 +51,9 @@ public class ResourceForm
         try {
             targetCombobox.setItems(new CollectionEndpointImpl<>(endpoint, endpoint.link("targets"), Target.class).readAll());
 
-            ResourceCollection resourcesEndpoint = (endpoint instanceof ResourceCollection)
-                    ? (ResourceCollection) endpoint
-                    : new ResourceCollection(endpoint);
+            ResourceCollectionEndpoint resourcesEndpoint = (endpoint instanceof ResourceCollectionEndpoint)
+                    ? (ResourceCollectionEndpoint) endpoint
+                    : new ResourceCollectionEndpoint(endpoint);
             Collection<Resource> resources = resourcesEndpoint.readAll();
             resources.remove(entity); //Prevent self-references
             dependencySelector.setContainerDataSource(new BeanItemContainer<>(Resource.class, resources));

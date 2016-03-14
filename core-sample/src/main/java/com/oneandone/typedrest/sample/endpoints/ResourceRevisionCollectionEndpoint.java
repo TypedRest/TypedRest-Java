@@ -8,15 +8,15 @@ import java.net.URI;
  * REST endpoint that represents the {@link ResourceRevision}s of a
  * {@link Resource}.
  */
-public class ResourceRevisionCollection extends AbstractCollectionEndpoint<ResourceRevision, ResourceRevisionElement> {
+public class ResourceRevisionCollectionEndpoint extends AbstractCollectionEndpoint<ResourceRevision, ResourceRevisionEndpoint> {
 
-    public ResourceRevisionCollection(Endpoint parent) {
+    public ResourceRevisionCollectionEndpoint(Endpoint parent) {
         super(parent, parent.link("revisions"), ResourceRevision.class);
     }
 
     @Override
-    public ResourceRevisionElement get(URI relativeUri) {
-        return new ResourceRevisionElement(this, relativeUri);
+    public ResourceRevisionEndpoint get(URI relativeUri) {
+        return new ResourceRevisionEndpoint(this, relativeUri);
     }
 
     /**
@@ -24,7 +24,7 @@ public class ResourceRevisionCollection extends AbstractCollectionEndpoint<Resou
      *
      * @return An endpoint.
      */
-    public ResourceRevisionElement getLatest() {
-        return new ResourceRevisionElement(this, link("latest"));
+    public ResourceRevisionEndpoint getLatest() {
+        return new ResourceRevisionEndpoint(this, link("latest"));
     }
 }

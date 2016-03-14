@@ -7,20 +7,20 @@ import com.oneandone.typedrest.sample.models.*;
 import com.oneandone.typedrest.vaadin.views.ViewComponent;
 
 public class ResourceRevisionCollectionView
-        extends AbstractCollectionView<ResourceRevision, ResourceRevisionCollection, ResourceRevisionElement> {
+        extends AbstractCollectionView<ResourceRevision, ResourceRevisionCollectionEndpoint, ResourceRevisionEndpoint> {
 
-    public ResourceRevisionCollectionView(ResourceRevisionCollection endpoint, EventBus eventBus) {
+    public ResourceRevisionCollectionView(ResourceRevisionCollectionEndpoint endpoint, EventBus eventBus) {
         super(endpoint, eventBus);
         setCaption("Revisions");
     }
 
     @Override
-    protected ViewComponent buildElementView(ResourceRevisionElement elementEndpoint) {
-        return new ResourceRevisionElementView(elementEndpoint, eventBus);
+    protected ViewComponent buildElementView(ResourceRevisionEndpoint elementEndpoint) {
+        return new ResourceRevisionView(elementEndpoint, eventBus);
     }
 
     @Override
     protected ViewComponent buildCreateElementView() {
-        return new CreateResourceRevisionElementView(endpoint, eventBus);
+        return new CreateResourceRevisionView(endpoint, eventBus);
     }
 }
