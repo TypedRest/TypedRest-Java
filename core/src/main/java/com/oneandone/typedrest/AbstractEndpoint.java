@@ -3,6 +3,7 @@ package com.oneandone.typedrest;
 import com.damnhandy.uri.template.UriTemplate;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.*;
+import com.fasterxml.jackson.databind.node.*;
 import java.io.*;
 import java.net.*;
 import java.util.*;
@@ -213,6 +214,19 @@ public abstract class AbstractEndpoint
 
         handleHeaderLinks(response, links, linkTemplates);
 
+        HttpEntity entity = response.getEntity();
+        if (entity != null) {
+            Header contentType = entity.getContentType();
+            if ((contentType != null) && contentType.getValue().startsWith("application/json")) {
+                try {
+                    handleBodyLinks(json.readTree(entity.getContent()), links, linkTemplates);
+                } catch (IOException ex) {
+                    throw new RuntimeException();
+                    // Body error handling is done elsewhere
+                }
+            }
+        }
+
         this.links = unmodifiableMap(links);
         this.linkTemplates = unmodifiableMap(linkTemplates);
     }
@@ -249,6 +263,74 @@ public abstract class AbstractEndpoint
                     }
                 }
             }
+        }
+    }
+
+    /**
+     * Handles links embedded in JSON response bodies.
+     *
+     * @param jsonBody The body to check for links.
+     * @param links A dictionary to add found links to.
+     * @param linkTemplates A dictionary to add found link templates to.
+     */
+    protected void handleBodyLinks(JsonNode jsonBody, Map<String, Map<URI, String>> links, Map<String, String> linkTemplates) {
+        if (jsonBody.getNodeType() != JsonNodeType.OBJECT) {
+            return;
+        }
+
+        JsonNode linksNode = jsonBody.get("_links");
+        if (linksNode == null) {
+            linksNode = jsonBody.get("links");
+        }
+        if (linksNode == null) {
+            return;
+        }
+
+        linksNode.fields().forEachRemaining(x -> {
+            Map<URI, String> linksForRel = links.get(x.getKey());
+            if (linksForRel == null) {
+                links.put(x.getKey(), linksForRel = new HashMap<>());
+            }
+
+            switch (x.getValue().getNodeType()) {
+                case ARRAY:
+                    for (JsonNode subobj : x.getValue()) {
+                        if (subobj.getNodeType() == JsonNodeType.OBJECT) {
+                            parseLinkObject(x.getKey(), (ObjectNode) subobj, linksForRel, linkTemplates);
+                        }
+                    }
+                    break;
+                case OBJECT:
+                    parseLinkObject(x.getKey(), (ObjectNode) x.getValue(), linksForRel, linkTemplates);
+                    break;
+            }
+        });
+    }
+
+    /**
+     * Parses a JSON object for link information.
+     *
+     * @param rel The relation type of the link.
+     * @param obj The JSON object to parse for link information.
+     * @param linksForRel A dictionary to add found links to. Maps hrefs to
+     * titles.
+     * @param linkTemplates A dictionary to add found link templates to. Maps
+     * rels to templated hrefs.
+     */
+    private void parseLinkObject(String rel, ObjectNode obj, Map<URI, String> linksForRel, Map<String, String> linkTemplates) {
+        JsonNode href = obj.findValue("href");
+        if (href == null) {
+            return;
+        }
+
+        JsonNode templated = obj.findValue("templated");
+        if (templated != null && templated.isBoolean() && templated.asBoolean()) {
+            linkTemplates.put(rel, href.asText());
+        } else {
+            JsonNode title = obj.findValue("title");
+            linksForRel.put(
+                    uri.resolve(href.asText()),
+                    (title != null && title.getNodeType() == JsonNodeType.STRING) ? title.asText() : null);
         }
     }
 

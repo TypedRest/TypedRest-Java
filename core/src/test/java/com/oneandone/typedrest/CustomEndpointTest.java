@@ -6,6 +6,7 @@ import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
 import static org.apache.http.HttpStatus.*;
+import static org.apache.http.HttpHeaders.*;
 import org.apache.http.client.fluent.Request;
 import org.apache.http.message.BasicHeader;
 import static org.hamcrest.CoreMatchers.equalTo;
@@ -129,6 +130,33 @@ public class CustomEndpointTest extends AbstractEndpointTest {
 
         assertThat(endpoint.linkTemplate("target1").getTemplate(), is(equalTo("a")));
         assertThat(endpoint.linkTemplate("target2"), is(nullValue()));
+    }
+
+    @Test
+    public void testLinkBody() throws Exception {
+        stubFor(get(urlEqualTo("/endpoint"))
+                .willReturn(aResponse()
+                        .withStatus(SC_OK)
+                        .withHeader(CONTENT_TYPE, JSON_MIME)
+                        .withBody("{\"links\": {"
+                                + "  \"single\": {\"href\": \"a\"},"
+                                + "  \"collection\": [{\"href\": \"b\", \"title\": \"Title 1\"},{\"href\": \"c\"},true,{\"something\":false}],"
+                                + "  \"template\": {\"href\": \"{id}\",\"templated\": true}"
+                                + "}}")));
+
+        endpoint.get();
+
+        assertThat(endpoint.link("single"), is(equalTo(endpoint.getUri().resolve("a"))));
+        assertThat(endpoint.getLinks("collection"), containsInAnyOrder(
+                endpoint.getUri().resolve("b"),
+                endpoint.getUri().resolve("c")));
+        assertThat(endpoint.linkTemplate("template").getTemplate(), is(equalTo("{id}")));
+
+        Map<URI, String> expected = new HashMap<>();
+        expected.put(endpoint.getUri().resolve("b"), "Title 1");
+        expected.put(endpoint.getUri().resolve("c"), null);
+        assertThat(endpoint.getLinksWithTitles("collection").entrySet(), equalTo(
+                expected.entrySet()));
     }
 
     private class CustomEndpoint extends AbstractEndpoint {
