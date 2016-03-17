@@ -47,13 +47,15 @@ Include this in your Maven ```pom.xml``` to use the library:
 </dependency>
 ```
 
-You can then use the classes `EntryEndpoint`, `CollectionEndpointImpl`, `ElementEndpointImpl`, `TriggerEndpointImpl`, `PaginationEndpointImpl`, `StreamEndpointImpl` and `BlobEndpointImpl`. to build a local representation of a remote REST service. Based on our usecase sample this could look like this:
+You can then use the classes `EntryEndpoint`, `CollectionEndpointImpl`, `ElementEndpointImpl`, `TriggerEndpointImpl`, `PaginationEndpointImpl`, `StreamEndpointImpl` and `BlobEndpointImpl` to build a local representation of a remote REST service. Based on our usecase sample this could look like this:
 ```java
 class SampleEntryEndpoint extends EntryEndpoint {
-  public final CollectionEndpoint<PackageEntity> packages = new CollectionEndpointImpl<>(this, "packages", PackageEntity.class);
-
   public SampleEntryEndpoint(URI uri) {
     super(uri);
+  }
+
+  public CollectionEndpointImpl<PackageEntity> getPackages() {
+    return new CollectionEndpointImpl<>(this, "packages", PackageEntity.class);
   }
 }
 ```
