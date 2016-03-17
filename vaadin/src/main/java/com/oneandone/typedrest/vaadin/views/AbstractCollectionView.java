@@ -21,7 +21,7 @@ import java.io.IOException;
  * @param <TElementEndpoint> The specific type of {@link ElementEndpoint} the
  * <code>TEndpoint</code> provides for individual <code>TEntity</code>s.
  */
-public abstract class AbstractCollectionView<TEntity, TEndpoint extends CollectionEndpoint<TEntity, TElementEndpoint>, TElementEndpoint extends ElementEndpoint<TEntity>>
+public abstract class AbstractCollectionView<TEntity, TEndpoint extends GenericCollectionEndpoint<TEntity, TElementEndpoint>, TElementEndpoint extends ElementEndpoint<TEntity>>
         extends AbstractEndpointView<TEndpoint> {
 
     protected final EntityLister<TEntity> lister;

@@ -16,7 +16,7 @@ import java.util.*;
  * provide for individual <code>TEntity</code>s.
  */
 public abstract class AbstractBulkCollectionEndpoint<TEntity, TElementEndpoint extends ElementEndpoint<TEntity>>
-        extends AbstractCollectionEndpoint<TEntity, TElementEndpoint> implements BulkCollectionEndpoint<TEntity, TElementEndpoint> {
+        extends AbstractCollectionEndpoint<TEntity, TElementEndpoint> implements GenericBulkCollectionEndpoint<TEntity, TElementEndpoint> {
 
     /**
      * Creates a new bulk collection endpoint.

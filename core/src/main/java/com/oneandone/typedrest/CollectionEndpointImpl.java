@@ -9,7 +9,8 @@ import java.net.*;
  * @param <TEntity> The type of entity the endpoint represents.
  */
 public class CollectionEndpointImpl<TEntity>
-        extends AbstractCollectionEndpoint<TEntity, ElementEndpoint<TEntity>> {
+        extends AbstractCollectionEndpoint<TEntity, ElementEndpoint<TEntity>>
+        implements CollectionEndpoint<TEntity> {
 
     /**
      * Creates a new element collection endpoint.

@@ -5,6 +5,7 @@ import rx.*;
 import rx.schedulers.Schedulers;
 import static rx.util.async.Async.runAsync;
 import rx.util.async.StoppableObservable;
+import static rx.util.async.Async.runAsync;
 
 /**
  * Base class for building REST endpoints that represents a stream of
@@ -15,7 +16,7 @@ import rx.util.async.StoppableObservable;
  * provide for individual <code>TEntity</code>s.
  */
 public abstract class AbstractStreamEndpoint<TEntity, TElementEndpoint extends ElementEndpoint<TEntity>>
-        extends AbstractPagedCollectionEndpoint<TEntity, TElementEndpoint> implements StreamEndpoint<TEntity, TElementEndpoint> {
+        extends AbstractPagedCollectionEndpoint<TEntity, TElementEndpoint> implements GenericStreamEndpoint<TEntity, TElementEndpoint> {
 
     /**
      * Creates a new element stream endpoint.

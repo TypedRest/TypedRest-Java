@@ -5,13 +5,13 @@ import com.oneandone.typedrest.*;
 import com.oneandone.typedrest.vaadin.forms.EntityLister;
 
 /**
- * View component operating on an {@link PagedCollectionEndpointImpl}.
+ * View component operating on an {@link PagedCollectionEndpoint}.
  *
- * @param <TEntity> The type of entity the {@link PagedCollectionEndpointImpl}
+ * @param <TEntity> The type of entity the {@link PagedCollectionEndpoint}
  * represents.
  */
 public class PagedCollectionView<TEntity>
-        extends AbstractPagedCollectionView<TEntity, PagedCollectionEndpointImpl<TEntity>, ElementEndpoint<TEntity>> {
+        extends AbstractPagedCollectionView<TEntity, PagedCollectionEndpoint<TEntity>, ElementEndpoint<TEntity>> {
 
     /**
      * Creates a new REST paged collection component.
@@ -20,7 +20,7 @@ public class PagedCollectionView<TEntity>
      * @param lister A component for listing entity instances.
      * @param eventBus Used to send refresh notifications.
      */
-    public PagedCollectionView(PagedCollectionEndpointImpl<TEntity> endpoint, EventBus eventBus, EntityLister<TEntity> lister) {
+    public PagedCollectionView(PagedCollectionEndpoint<TEntity> endpoint, EventBus eventBus, EntityLister<TEntity> lister) {
         super(endpoint, eventBus, lister);
     }
 
@@ -30,7 +30,7 @@ public class PagedCollectionView<TEntity>
      * @param endpoint The REST endpoint this component operates on.
      * @param eventBus Used to send refresh notifications.
      */
-    public PagedCollectionView(PagedCollectionEndpointImpl<TEntity> endpoint, EventBus eventBus) {
+    public PagedCollectionView(PagedCollectionEndpoint<TEntity> endpoint, EventBus eventBus) {
         super(endpoint, eventBus);
     }
 

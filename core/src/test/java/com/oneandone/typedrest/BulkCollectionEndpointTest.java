@@ -9,7 +9,7 @@ import static com.oneandone.typedrest.AbstractEndpointTest.JSON_MIME;
 
 public class BulkCollectionEndpointTest extends AbstractEndpointTest {
 
-    private BulkCollectionEndpointImpl<MockEntity> endpoint;
+    private BulkCollectionEndpoint<MockEntity> endpoint;
 
     @Before
     @Override

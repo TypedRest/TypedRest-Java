@@ -24,7 +24,7 @@ public class ResourceRevisionCollectionEndpoint extends AbstractCollectionEndpoi
      *
      * @return An endpoint.
      */
-    public ResourceRevisionEndpoint getLatest() {
-        return new ResourceRevisionEndpoint(this, link("latest"));
+    public ElementEndpoint<ResourceRevision> getLatest() {
+        return new ElementEndpointImpl<>(this, link("latest"), ResourceRevision.class);
     }
 }

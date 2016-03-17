@@ -9,7 +9,8 @@ import java.net.*;
  * @param <TEntity> The type of entity the endpoint represents.
  */
 public class PagedCollectionEndpointImpl<TEntity>
-        extends AbstractPagedCollectionEndpoint<TEntity, ElementEndpoint<TEntity>> {
+        extends AbstractPagedCollectionEndpoint<TEntity, ElementEndpoint<TEntity>>
+        implements PagedCollectionEndpoint<TEntity> {
 
     /**
      * Creates a new paged collection endpoint.

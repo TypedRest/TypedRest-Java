@@ -13,7 +13,7 @@ import static com.oneandone.typedrest.AbstractEndpointTest.JSON_MIME;
 
 public class PagedCollectionEndpointTest extends AbstractEndpointTest {
 
-    private PagedCollectionEndpointImpl<MockEntity> endpoint;
+    private PagedCollectionEndpoint<MockEntity> endpoint;
 
     @Before
     @Override

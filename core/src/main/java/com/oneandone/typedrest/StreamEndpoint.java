@@ -1,32 +1,11 @@
 package com.oneandone.typedrest;
 
-import rx.util.async.StoppableObservable;
-
 /**
- * REST endpoint that represents a stream of <code>TEntity</code>s.
+ * REST endpoint that represents a stream of <code>TEntity</code>s as
+ * {@link ElementEndpoint}s.
  *
  * @param <TEntity> The type of entity the endpoint represents.
- * @param <TElementEndpoint> The specific type of {@link ElementEndpoint} to
- * provide for individual <code>TEntity</code>s.
  */
-public interface StreamEndpoint<TEntity, TElementEndpoint extends ElementEndpoint<TEntity>>
-        extends PagedCollectionEndpoint<TEntity, TElementEndpoint> {
-
-    /**
-     * Provides an observable stream of elements.
-     *
-     * @return An observable stream of elements.
-     */
-    default StoppableObservable<TEntity> getObservable() {
-        return getObservable(0);
-    }
-
-    /**
-     * Provides an observable stream of elements.
-     *
-     * @param startIndex The index of the first element to return in the stream.
-     * Use negative values to start counting from the end of the stream.
-     * @return An observable stream of elements.
-     */
-    StoppableObservable<TEntity> getObservable(long startIndex);
+public interface StreamEndpoint<TEntity>
+        extends GenericStreamEndpoint<TEntity, ElementEndpoint<TEntity>>, CollectionEndpoint<TEntity>, PagedCollectionEndpoint<TEntity> {
 }

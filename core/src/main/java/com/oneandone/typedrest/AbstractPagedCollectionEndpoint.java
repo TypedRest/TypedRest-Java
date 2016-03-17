@@ -19,7 +19,7 @@ import static org.apache.http.HttpHeaders.*;
  * provide for individual <code>TEntity</code>s.
  */
 public abstract class AbstractPagedCollectionEndpoint<TEntity, TElementEndpoint extends ElementEndpoint<TEntity>>
-        extends AbstractCollectionEndpoint<TEntity, TElementEndpoint> implements PagedCollectionEndpoint<TEntity, TElementEndpoint> {
+        extends AbstractCollectionEndpoint<TEntity, TElementEndpoint> implements GenericPagedCollectionEndpoint<TEntity, TElementEndpoint> {
 
     /**
      * Creates a new paged collection endpoint.

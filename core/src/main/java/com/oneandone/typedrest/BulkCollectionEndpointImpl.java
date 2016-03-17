@@ -9,7 +9,8 @@ import java.net.*;
  * @param <TEntity> The type of entity the endpoint represents.
  */
 public class BulkCollectionEndpointImpl<TEntity>
-        extends AbstractBulkCollectionEndpoint<TEntity, ElementEndpoint<TEntity>> {
+        extends AbstractBulkCollectionEndpoint<TEntity, ElementEndpoint<TEntity>>
+        implements BulkCollectionEndpoint<TEntity> {
 
     /**
      * Creates a new paged collection endpoint.

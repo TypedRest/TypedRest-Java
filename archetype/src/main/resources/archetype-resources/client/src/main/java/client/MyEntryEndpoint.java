@@ -10,7 +10,7 @@ public class MyEntryEndpoint extends EntryEndpoint {
         super(uri, username, password);
     }
 
-    public CollectionEndpointImpl<MyEntity> getEntities() {
+    public CollectionEndpoint<MyEntity> getEntities() {
         return new CollectionEndpointImpl<>(this, "entities", MyEntity.class);
     }
 }

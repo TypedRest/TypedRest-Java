@@ -27,7 +27,7 @@ public class ResourceEndpoint extends ElementEndpointImpl<Resource> {
      *
      * @return An endpoint.
      */
-    public StreamEndpointImpl<LogEvent> getEvents() {
+    public StreamEndpoint<LogEvent> getEvents() {
         return new StreamEndpointImpl<>(this, link("events"), LogEvent.class);
     }
 

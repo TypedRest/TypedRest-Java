@@ -5,13 +5,13 @@ import com.oneandone.typedrest.*;
 import com.oneandone.typedrest.vaadin.forms.EntityLister;
 
 /**
- * View component operating on an {@link CollectionEndpointImpl}.
+ * View component operating on an {@link CollectionEndpoint}.
  *
- * @param <TEntity> The type of entity the {@link CollectionEndpointImpl}
+ * @param <TEntity> The type of entity the {@link CollectionEndpoint}
  * represents.
  */
 public class CollectionView<TEntity>
-        extends AbstractCollectionView<TEntity, CollectionEndpointImpl<TEntity>, ElementEndpoint<TEntity>> {
+        extends AbstractCollectionView<TEntity, CollectionEndpoint<TEntity>, ElementEndpoint<TEntity>> {
 
     /**
      * Creates a new REST collection component.
@@ -20,7 +20,7 @@ public class CollectionView<TEntity>
      * @param eventBus Used to send refresh notifications.
      * @param lister A component for listing entity instances.
      */
-    public CollectionView(CollectionEndpointImpl<TEntity> endpoint, EventBus eventBus, EntityLister<TEntity> lister) {
+    public CollectionView(CollectionEndpoint<TEntity> endpoint, EventBus eventBus, EntityLister<TEntity> lister) {
         super(endpoint, eventBus, lister);
     }
 
@@ -30,7 +30,7 @@ public class CollectionView<TEntity>
      * @param endpoint The REST endpoint this component operates on.
      * @param eventBus Used to send refresh notifications.
      */
-    public CollectionView(CollectionEndpointImpl<TEntity> endpoint, EventBus eventBus) {
+    public CollectionView(CollectionEndpoint<TEntity> endpoint, EventBus eventBus) {
         super(endpoint, eventBus);
     }
 

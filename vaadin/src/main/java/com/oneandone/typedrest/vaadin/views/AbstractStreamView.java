@@ -17,18 +17,18 @@ import rx.*;
 import rx.util.async.StoppableObservable;
 
 /**
- * Base class for building view components operating on an
- * {@link StreamEndpoint}.
+ * Base class for building view components operating on a
+ * {@link GenericStreamEndpoint}.
  *
  * To enable server-push (real-time actualization of the web-ui), please make
  * sure to have your {@link UI} annotated with {@link Push}.
  *
  * @param <TEntity> The type of entity the <code>TEndpoint</code> represents.
- * @param <TEndpoint> The specific type of {@link StreamEndpoint} to operate on.
+ * @param <TEndpoint> The specific type of {@link GenericStreamEndpoint} to operate on.
  * @param <TElementEndpoint> The specific type of {@link ElementEndpoint} the
  * <code>TEndpoint</code> provides for individual <code>TEntity</code>s.
  */
-public abstract class AbstractStreamView<TEntity, TEndpoint extends StreamEndpoint<TEntity, TElementEndpoint>, TElementEndpoint extends ElementEndpoint<TEntity>>
+public abstract class AbstractStreamView<TEntity, TEndpoint extends GenericStreamEndpoint<TEntity, TElementEndpoint>, TElementEndpoint extends ElementEndpoint<TEntity>>
         extends AbstractCollectionView<TEntity, TEndpoint, TElementEndpoint> {
 
     /**

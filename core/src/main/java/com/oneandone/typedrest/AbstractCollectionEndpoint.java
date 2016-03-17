@@ -26,7 +26,7 @@ import lombok.*;
  * provide for individual <code>TEntity</code>s.
  */
 public abstract class AbstractCollectionEndpoint<TEntity, TElementEndpoint extends ElementEndpoint<TEntity>>
-        extends AbstractEndpoint implements CollectionEndpoint<TEntity, TElementEndpoint> {
+        extends AbstractEndpoint implements GenericCollectionEndpoint<TEntity, TElementEndpoint> {
 
     @Getter
     protected final Class<TEntity> entityType;
@@ -83,7 +83,7 @@ public abstract class AbstractCollectionEndpoint<TEntity, TElementEndpoint exten
 
     /**
      * Maps a <code>TEntity</code> to a key usable by
-     * {@link CollectionEndpoint#get(java.net.URI)}.
+     * {@link GenericCollectionEndpoint#get(java.net.URI)}.
      *
      * @param entity The entity to get the key for.
      * @return The key.

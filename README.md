@@ -54,7 +54,7 @@ class SampleEntryEndpoint extends EntryEndpoint {
     super(uri);
   }
 
-  public CollectionEndpointImpl<PackageEntity> getPackages() {
+  public CollectionEndpoint<PackageEntity> getPackages() {
     return new CollectionEndpointImpl<>(this, "packages", PackageEntity.class);
   }
 }

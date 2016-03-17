@@ -17,7 +17,7 @@ public class SampleEntryEndpoint extends EntryEndpoint {
         return new ResourceCollectionEndpoint(this);
     }
 
-    public CollectionEndpointImpl<Target> getTargets() {
+    public CollectionEndpoint<Target> getTargets() {
         return new CollectionEndpointImpl<>(this, link("targets"), Target.class);
     }
 }

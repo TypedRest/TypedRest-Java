@@ -3,6 +3,7 @@ package com.oneandone.typedrest.vaadin.views;
 import com.google.gwt.thirdparty.guava.common.eventbus.EventBus;
 import com.oneandone.typedrest.CollectionEndpoint;
 import com.oneandone.typedrest.ElementEndpoint;
+import com.oneandone.typedrest.GenericCollectionEndpoint;
 import com.oneandone.typedrest.vaadin.events.ElementCreatedEvent;
 import com.oneandone.typedrest.vaadin.forms.AutoEntityForm;
 import com.oneandone.typedrest.vaadin.forms.EntityForm;
@@ -12,14 +13,16 @@ import java.io.IOException;
 import lombok.SneakyThrows;
 
 /**
- * Component for creating a new element in a {@link CollectionEndpoint}.
+ * Component for creating a new element in a {@link GenericCollectionEndpoint}.
+ *
+ * Use the more constrained {@link CreateElementView} when possible.
  *
  * @param <TEntity> The type of entity to create.
  * @param <TElementEndpoint> The specific type of {@link ElementEndpoint} the
  * {@link CollectionEndpoint} provides for individual <code>TEntity</code>s.
  */
 public class CreateElementView<TEntity, TElementEndpoint extends ElementEndpoint<TEntity>>
-        extends AbstractElementView<TEntity, CollectionEndpoint<TEntity, TElementEndpoint>> {
+        extends AbstractElementView<TEntity, GenericCollectionEndpoint<TEntity, TElementEndpoint>> {
 
     /**
      * Creates a new REST element creation component.
@@ -29,7 +32,7 @@ public class CreateElementView<TEntity, TElementEndpoint extends ElementEndpoint
      * @param entityForm A component for viewing/modifying entity instances.
      */
     @SneakyThrows
-    public CreateElementView(CollectionEndpoint<TEntity, TElementEndpoint> endpoint, EventBus eventBus, EntityForm<TEntity> entityForm) {
+    public CreateElementView(GenericCollectionEndpoint<TEntity, TElementEndpoint> endpoint, EventBus eventBus, EntityForm<TEntity> entityForm) {
         super(endpoint, eventBus, entityForm);
         setCaption("New " + endpoint.getEntityType().getSimpleName());
 
@@ -42,7 +45,7 @@ public class CreateElementView<TEntity, TElementEndpoint extends ElementEndpoint
      * @param endpoint The REST endpoint this component operates on.
      * @param eventBus Used to send refresh notifications.
      */
-    public CreateElementView(CollectionEndpoint<TEntity, TElementEndpoint> endpoint, EventBus eventBus) {
+    public CreateElementView(GenericCollectionEndpoint<TEntity, TElementEndpoint> endpoint, EventBus eventBus) {
         this(endpoint, eventBus, new AutoEntityForm<>(endpoint.getEntityType()));
     }
 

@@ -5,13 +5,12 @@ import com.oneandone.typedrest.*;
 import com.oneandone.typedrest.vaadin.forms.EntityLister;
 
 /**
- * View component operating on an {@link StreamEndpointImpl}.
+ * View component operating on an {@link StreamEndpoint}.
  *
- * @param <TEntity> The type of entity the {@link StreamEndpointImpl}
- * represents.
+ * @param <TEntity> The type of entity the {@link StreamEndpoint} represents.
  */
 public class StreamView<TEntity>
-        extends AbstractStreamView<TEntity, StreamEndpointImpl<TEntity>, ElementEndpoint<TEntity>> {
+        extends AbstractStreamView<TEntity, StreamEndpoint<TEntity>, ElementEndpoint<TEntity>> {
 
     /**
      * Creates a new REST stream component.
@@ -20,7 +19,7 @@ public class StreamView<TEntity>
      * @param eventBus Used to send refresh notifications.
      * @param lister A component for listing entity instances.
      */
-    public StreamView(StreamEndpointImpl<TEntity> endpoint, EventBus eventBus, EntityLister<TEntity> lister) {
+    public StreamView(StreamEndpoint<TEntity> endpoint, EventBus eventBus, EntityLister<TEntity> lister) {
         super(endpoint, eventBus, lister);
     }
 
@@ -30,7 +29,7 @@ public class StreamView<TEntity>
      * @param endpoint The REST endpoint this component operates on.
      * @param eventBus Used to send refresh notifications.
      */
-    public StreamView(StreamEndpointImpl<TEntity> endpoint, EventBus eventBus) {
+    public StreamView(StreamEndpoint<TEntity> endpoint, EventBus eventBus) {
         super(endpoint, eventBus);
     }
 

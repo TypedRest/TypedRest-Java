@@ -12,15 +12,15 @@ import java.io.IOException;
 
 /**
  * Base class for building view components operating on an
- * {@link PagedCollectionEndpoint}.
+ * {@link GenericPagedCollectionEndpoint}.
  *
  * @param <TEntity> The type of entity the <code>TEndpoint</code> represents.
- * @param <TEndpoint> The specific type of {@link PagedCollectionEndpoint} to
- * operate on.
+ * @param <TEndpoint> The specific type of
+ * {@link GenericPagedCollectionEndpoint} to operate on.
  * @param <TElementEndpoint> The specific type of {@link ElementEndpoint} the
  * <code>TEndpoint</code> provides for individual <code>TEntity</code>s.
  */
-public abstract class AbstractPagedCollectionView<TEntity, TEndpoint extends PagedCollectionEndpoint<TEntity, TElementEndpoint>, TElementEndpoint extends ElementEndpoint<TEntity>>
+public abstract class AbstractPagedCollectionView<TEntity, TEndpoint extends GenericPagedCollectionEndpoint<TEntity, TElementEndpoint>, TElementEndpoint extends ElementEndpoint<TEntity>>
         extends AbstractCollectionView<TEntity, TEndpoint, TElementEndpoint> {
 
     private final Button pageLeftButton = new Button("<");

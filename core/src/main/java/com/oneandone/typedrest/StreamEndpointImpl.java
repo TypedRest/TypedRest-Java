@@ -9,7 +9,8 @@ import java.net.*;
  * @param <TEntity> The type of entity the endpoint represents.
  */
 public class StreamEndpointImpl<TEntity>
-        extends AbstractStreamEndpoint<TEntity, ElementEndpoint<TEntity>> {
+        extends AbstractStreamEndpoint<TEntity, ElementEndpoint<TEntity>>
+        implements StreamEndpoint<TEntity> {
 
     /**
      * Creates a new stream endpoint.
