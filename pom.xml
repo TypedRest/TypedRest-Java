@@ -14,9 +14,10 @@
         <module>parent</module>
         <module>annotations</module>
         <module>core</module>
-        <module>core-sample</module>
         <module>vaadin</module>
-        <module>vaadin-sample</module>
+        <module>sample-model</module>
+        <module>sample-client</module>
+        <module>sample-client-vaadin</module>
         <module>archetype</module>
     </modules>
 

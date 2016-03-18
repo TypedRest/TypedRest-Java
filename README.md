@@ -87,6 +87,8 @@ Include this in your Maven ```pom.xml``` to build GUIs with [Vaadin](https://vaa
 
 The source code includes sample projects.
 
-`typedrest-sample` demonstrates how to create a client library for a REST interface using `typedrest`.
+`sample-model` contains a sample domain model used by the other sample projects.
 
-`typedrest-vaadin-sample` demonstrates how to use such a client library and `typedrest-vaadin` to create a Vaadin client for a REST interface.
+`sample-client` demonstrates how to create a client library for a REST interface using `typedrest-core`.
+
+`sample-client-vaadin` demonstrates how to use such a client library and `typedrest-vaadin` to create a Vaadin client for a REST interface.
