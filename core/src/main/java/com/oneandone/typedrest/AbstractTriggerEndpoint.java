@@ -7,16 +7,17 @@ import java.util.Optional;
 import org.apache.http.client.fluent.Request;
 
 /**
- * REST endpoint that represents a single triggerable action.
+ * Base class for building REST RPC-like endpoints.
  */
-public class TriggerEndpointImpl
-        extends AbstractEndpoint implements TriggerEndpoint {
+public abstract class AbstractTriggerEndpoint
+        extends AbstractEndpoint
+        implements TriggerEndpoint {
 
-    public TriggerEndpointImpl(Endpoint parent, URI relativeUri) {
+    protected AbstractTriggerEndpoint(Endpoint parent, URI relativeUri) {
         super(parent, relativeUri);
     }
 
-    public TriggerEndpointImpl(Endpoint parent, String relativeUri) {
+    protected AbstractTriggerEndpoint(Endpoint parent, String relativeUri) {
         super(parent, relativeUri);
     }
 
@@ -28,11 +29,5 @@ public class TriggerEndpointImpl
     @Override
     public Optional<Boolean> isTriggerAllowed() {
         return isVerbAllowed("POST");
-    }
-
-    @Override
-    public void trigger()
-            throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException {
-        executeAndHandle(Request.Post(uri));
     }
 }

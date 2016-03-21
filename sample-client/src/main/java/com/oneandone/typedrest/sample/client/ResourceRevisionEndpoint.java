@@ -18,8 +18,8 @@ public class ResourceRevisionEndpoint extends ElementEndpointImpl<ResourceRevisi
      *
      * @return An endpoint.
      */
-    public TriggerEndpoint getPromote() {
-        return new TriggerEndpointImpl(this, link("promote"));
+    public ActionEndpoint getPromote() {
+        return new ActionEndpointImpl(this, link("promote"));
     }
 
     /**

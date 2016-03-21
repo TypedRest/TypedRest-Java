@@ -8,9 +8,9 @@ import org.apache.http.*;
 import java.io.*;
 
 /**
- * View component operating on a {@link TriggerEndpoint}.
+ * View component operating on a {@link ActionEndpoint}.
  */
-public class TriggerView extends AbstractEndpointView<TriggerEndpoint> {
+public class ActionView extends AbstractEndpointView<ActionEndpoint> {
 
     protected final Button button;
 
@@ -22,7 +22,7 @@ public class TriggerView extends AbstractEndpointView<TriggerEndpoint> {
      * @param caption A caption for the triggerable action.
      */
     @SuppressWarnings("OverridableMethodCallInConstructor") // False positive due to lambda
-    public TriggerView(TriggerEndpoint endpoint, EventBus eventBus, String caption) {
+    public ActionView(ActionEndpoint endpoint, EventBus eventBus, String caption) {
         super(endpoint, eventBus);
         setWidthUndefined();
 

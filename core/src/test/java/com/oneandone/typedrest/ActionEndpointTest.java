@@ -6,18 +6,16 @@ import static org.apache.http.HttpStatus.*;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import org.junit.*;
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.MatcherAssert.assertThat;
 
-public class TriggerEndpointTest extends AbstractEndpointTest {
+public class ActionEndpointTest extends AbstractEndpointTest {
 
-    private TriggerEndpoint endpoint;
+    private ActionEndpoint endpoint;
 
     @Before
     @Override
     public void before() {
         super.before();
-        endpoint = new TriggerEndpointImpl(entryEndpoint, "endpoint");
+        endpoint = new ActionEndpointImpl(entryEndpoint, "endpoint");
     }
 
     @Test
@@ -28,7 +26,7 @@ public class TriggerEndpointTest extends AbstractEndpointTest {
                         .withHeader(ALLOW, "POST")));
 
         endpoint.probe();
-        
+
         assertThat(endpoint.isTriggerAllowed().get(), is(true));
     }
 

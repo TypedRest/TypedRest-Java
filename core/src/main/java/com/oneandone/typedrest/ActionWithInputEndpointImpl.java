@@ -1,0 +1,54 @@
+package com.oneandone.typedrest;
+
+import java.io.*;
+import java.net.*;
+import lombok.Getter;
+import org.apache.http.client.fluent.*;
+import org.apache.http.entity.*;
+
+/**
+ * REST endpoint that represents an RPC-like action which takes
+ * <code>TEntity</code> as input.
+ *
+ * @param <TEntity> The type of entity the endpoint takes as input.
+ */
+public class ActionWithInputEndpointImpl<TEntity>
+        extends AbstractTriggerEndpoint
+        implements ActionWithInputEndpoint<TEntity> {
+
+    @Getter
+    private final Class<TEntity> entityType;
+
+    /**
+     * Creates a new action endpoint with a relative URI.
+     *
+     * @param parent The parent endpoint containing this one.
+     * @param relativeUri The URI of this endpoint relative to the
+     * <code>parent</code>'s.
+     * @param entityType The type of entity the endpoint takes as input.
+     */
+    public ActionWithInputEndpointImpl(Endpoint parent, URI relativeUri, Class<TEntity> entityType) {
+        super(parent, relativeUri);
+        this.entityType = entityType;
+    }
+
+    /**
+     * Creates a new action endpoint with a relative URI.
+     *
+     * @param parent The parent endpoint containing this one.
+     * @param relativeUri The URI of this endpoint relative to the
+     * <code>parent</code>'s.
+     * @param entityType The type of entity the endpoint takes as input.
+     */
+    public ActionWithInputEndpointImpl(Endpoint parent, String relativeUri, Class<TEntity> entityType) {
+        super(parent, relativeUri);
+        this.entityType = entityType;
+    }
+
+    @Override
+    public void trigger(TEntity entity)
+            throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException {
+        String jsonSend = json.writeValueAsString(entity);
+        executeAndHandle(Request.Put(uri).bodyString(jsonSend, ContentType.APPLICATION_JSON));
+    }
+}

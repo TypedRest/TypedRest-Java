@@ -1,18 +1,18 @@
 package com.oneandone.typedrest.vaadin.events;
 
-import com.oneandone.typedrest.TriggerEndpoint;
+import com.oneandone.typedrest.ActionEndpoint;
 
 /**
- * Indicates that {@link TriggerEndpoint#trigger()} was called.
+ * Indicates that {@link ActionEndpoint#trigger()} was called.
  */
-public class TriggerEvent extends EndpointEvent<TriggerEndpoint> {
+public class TriggerEvent extends EndpointEvent<ActionEndpoint> {
 
     /**
      * Creates a new trigger event.
      *
      * @param endpoint The endpoint that was triggered.
      */
-    public TriggerEvent(TriggerEndpoint endpoint) {
+    public TriggerEvent(ActionEndpoint endpoint) {
         super(endpoint);
     }
 }
