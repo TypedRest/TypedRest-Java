@@ -1,5 +1,6 @@
 package com.oneandone.typedrest;
 
+import static com.oneandone.typedrest.URIUtils.ensureTrailingSlash;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.*;
@@ -21,7 +22,7 @@ public class EntryEndpoint
      * will be appended automatically.
      */
     public EntryEndpoint(URI uri) {
-        super(Executor.newInstance(), uri);
+        super(Executor.newInstance(), ensureTrailingSlash(uri));
     }
 
     /**
@@ -33,7 +34,7 @@ public class EntryEndpoint
      * interface.
      */
     public EntryEndpoint(URI uri, Credentials credentials) {
-        super(Executor.newInstance().authPreemptive(uri.getHost()).auth(credentials), uri);
+        super(Executor.newInstance().authPreemptive(uri.getHost()).auth(credentials), ensureTrailingSlash(uri));
     }
 
     /**
@@ -47,7 +48,7 @@ public class EntryEndpoint
      * interface.
      */
     public EntryEndpoint(URI uri, String username, String password) {
-        super(Executor.newInstance().authPreemptive(uri.getHost()).auth(username, password), uri);
+        super(Executor.newInstance().authPreemptive(uri.getHost()).auth(username, password), ensureTrailingSlash(uri));
     }
 
     /**
