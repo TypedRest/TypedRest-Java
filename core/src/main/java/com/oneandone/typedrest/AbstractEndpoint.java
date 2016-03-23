@@ -101,7 +101,7 @@ public abstract class AbstractEndpoint
     protected HttpResponse executeAndHandle(Request request)
             throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, IllegalStateException {
         HttpResponse response = execute(request);
-        handleResponse(response);
+        handleResponse(response, request);
         return response;
     }
 
@@ -137,11 +137,11 @@ public abstract class AbstractEndpoint
      * or {@link HttpStatus#SC_REQUESTED_RANGE_NOT_SATISFIABLE}
      * @throws RuntimeException Other non-success status code.
      */
-    protected void handleResponse(HttpResponse response)
+    protected void handleResponse(HttpResponse response, Request request)
             throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, IllegalStateException {
         handleLinks(response);
         handleAllow(response);
-        handleErrors(response);
+        handleErrors(response, request);
     }
 
     /**
@@ -160,14 +160,15 @@ public abstract class AbstractEndpoint
      * or {@link HttpStatus#SC_REQUESTED_RANGE_NOT_SATISFIABLE}
      * @throws RuntimeException Other non-success status code.
      */
-    protected void handleErrors(HttpResponse response)
+    protected void handleErrors(HttpResponse response, Request request)
             throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, IllegalStateException {
         StatusLine statusLine = response.getStatusLine();
         if (statusLine.getStatusCode() <= 299) {
             return;
         }
 
-        String message = statusLine.toString();
+        String message = request + " responded with " + statusLine.getStatusCode() + " " + statusLine.getReasonPhrase();
+
         HttpEntity entity = response.getEntity();
         String body;
         if (entity == null) {

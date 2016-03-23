@@ -71,7 +71,7 @@ public class ElementEndpointImpl<TEntity>
             return cachedResponse;
         }
 
-        handleResponse(response);
+        handleResponse(response, request);
         Header etagHeader = response.getLastHeader(HttpHeaders.ETAG);
         etag = (etagHeader == null) ? null : etagHeader.getValue();
         return cachedResponse = json.readValue(EntityUtils.toString(response.getEntity()), entityType);

@@ -15,6 +15,8 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsInAnyOrder;
+import org.hamcrest.core.StringContains;
+import org.junit.rules.ExpectedException;
 
 public class CustomEndpointTest extends AbstractEndpointTest {
 
@@ -157,6 +159,19 @@ public class CustomEndpointTest extends AbstractEndpointTest {
         expected.put(endpoint.getUri().resolve("c"), null);
         assertThat(endpoint.getLinksWithTitles("collection").entrySet(), equalTo(
                 expected.entrySet()));
+    }
+    
+    @Rule
+    public final ExpectedException exception = ExpectedException.none();
+
+    @Test
+    public void testErrorHandling() throws Exception {
+        stubFor(get(urlEqualTo("/endpoint"))
+                .willReturn(aResponse()
+                        .withStatus(SC_CONFLICT)));
+
+        exception.expectMessage(new StringContains(" responded with 409 Conflict"));
+        endpoint.get();
     }
 
     private class CustomEndpoint extends AbstractEndpoint {
