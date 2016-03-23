@@ -83,14 +83,18 @@ public class ElementEndpointImpl<TEntity>
     }
 
     @Override
-    public void update(TEntity entity)
+    public TEntity update(TEntity entity)
             throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException {
         String jsonSend = json.writeValueAsString(entity);
         Request request = Request.Put(uri).bodyString(jsonSend, ContentType.APPLICATION_JSON);
         if (etag != null) {
             request.addHeader(HttpHeaders.IF_MATCH, etag);
         }
-        executeAndHandle(request);
+        HttpResponse response = executeAndHandle(request);
+        
+        return (response.getEntity() == null)
+                ? null
+                : json.readValue(EntityUtils.toString(response.getEntity()), entityType);
     }
 
     @Override

@@ -56,13 +56,26 @@ public class ElementEndpointTest extends AbstractEndpointTest {
 
     @Test
     @Ignore("Works in isolation but fails when executed as part of test suite")
-    public void testUpdate() throws Exception {
+    public void testUpdateNoResult() throws Exception {
         stubFor(put(urlEqualTo("/endpoint"))
                 .withRequestBody(equalToJson("{\"id\":5,\"name\":\"test\"}"))
                 .willReturn(aResponse()
                         .withStatus(SC_NO_CONTENT)));
 
         endpoint.update(new MockEntity(5, "test"));
+    }
+
+    @Test
+    @Ignore("Works in isolation but fails when executed as part of test suite")
+    public void testUpdateResult() throws Exception {
+        stubFor(put(urlEqualTo("/endpoint"))
+                .withRequestBody(equalToJson("{\"id\":5,\"name\":\"test\"}"))
+                .willReturn(aResponse()
+                        .withHeader(CONTENT_TYPE, JSON_MIME)
+                        .withBody("{\"id\":5,\"name\":\"testXXX\"}")));
+
+        assertThat(endpoint.update(new MockEntity(5, "test")),
+                is(equalTo(new MockEntity(5, "testXXX"))));
     }
 
     @Test

@@ -52,6 +52,9 @@ public interface ElementEndpoint<TEntity>
      * Updates the <code>TEntity</code>.
      *
      * @param entity The modified <code>TEntity</code>.
+     * @return The <code>TEntity</code> as returned by the server, possibly with
+     * additional fields set. <code>null</code> if the server does not respond
+     * with a result entity.
      * @throws IOException Network communication failed.
      * @throws IllegalArgumentException {@link HttpStatus#SC_BAD_REQUEST}
      * @throws IllegalAccessException {@link HttpStatus#SC_UNAUTHORIZED} or
@@ -63,7 +66,7 @@ public interface ElementEndpoint<TEntity>
      * lost update.
      * @throws RuntimeException Other non-success status code.
      */
-    void update(TEntity entity)
+    TEntity update(TEntity entity)
             throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, IllegalStateException;
 
     /**

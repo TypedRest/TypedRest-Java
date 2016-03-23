@@ -118,6 +118,9 @@ public interface GenericCollectionEndpoint<TEntity, TElementEndpoint extends Ele
      * {@link ElementEndpoint#update(java.lang.Object)}.
      *
      * @param element The element to be updated.
+     * @return The <code>TEntity</code> as returned by the server, possibly with
+     * additional fields set. <code>null</code> if the server does not respond
+     * with a result entity.
      * @throws IOException Network communication failed.
      * @throws IllegalArgumentException {@link HttpStatus#SC_BAD_REQUEST}
      * @throws IllegalAccessException {@link HttpStatus#SC_UNAUTHORIZED} or
@@ -129,9 +132,9 @@ public interface GenericCollectionEndpoint<TEntity, TElementEndpoint extends Ele
      * to prevent a lost update.
      * @throws RuntimeException Other non-success status code.
      */
-    default void update(TEntity element)
+    default TEntity update(TEntity element)
             throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, IllegalStateException {
-        get(element).update(element);
+        return get(element).update(element);
     }
 
     /**
