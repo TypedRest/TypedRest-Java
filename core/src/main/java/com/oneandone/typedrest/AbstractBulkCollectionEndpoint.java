@@ -5,6 +5,7 @@ import org.apache.http.entity.ContentType;
 import java.io.*;
 import java.net.URI;
 import java.util.*;
+import lombok.*;
 
 /**
  * Base class for building REST endpoints that represents a collection of
@@ -56,10 +57,19 @@ public abstract class AbstractBulkCollectionEndpoint<TEntity, TElementEndpoint e
         executeAndHandle(Request.Put(uri).bodyString(jsonSend, ContentType.APPLICATION_JSON));
     }
 
+    /**
+     * A relative URI that gets appended to {@link #getUri()} for
+     * {@link #create(java.lang.Iterable)} calls.
+     */
+    @Getter
+    @Setter
+    private URI bulkCreateSuffix;
+
     @Override
     public void create(Iterable<TEntity> entities)
             throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException {
+        URI bulkUri = (bulkCreateSuffix == null) ? uri : uri.resolve(bulkCreateSuffix);
         String jsonSend = json.writeValueAsString(entities);
-        executeAndHandle(Request.Post(uri).bodyString(jsonSend, ContentType.APPLICATION_JSON));
+        executeAndHandle(Request.Post(bulkUri).bodyString(jsonSend, ContentType.APPLICATION_JSON));
     }
 }
