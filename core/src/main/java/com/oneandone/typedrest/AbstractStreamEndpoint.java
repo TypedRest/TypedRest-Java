@@ -1,5 +1,6 @@
 package com.oneandone.typedrest;
 
+import java.io.IOException;
 import java.net.*;
 import rx.*;
 import rx.schedulers.Schedulers;
@@ -69,7 +70,7 @@ public abstract class AbstractStreamEndpoint<TEntity, TElementEndpoint extends E
                 } catch (IllegalStateException ex) {
                     // No new data available yet, keep polling
                     continue;
-                } catch (Throwable error) {
+                } catch (IOException | IllegalArgumentException | IllegalAccessException error) {
                     observer.onError(error);
                     return;
                 }

@@ -24,7 +24,8 @@ import rx.util.async.StoppableObservable;
  * sure to have your {@link UI} annotated with {@link Push}.
  *
  * @param <TEntity> The type of entity the <code>TEndpoint</code> represents.
- * @param <TEndpoint> The specific type of {@link GenericStreamEndpoint} to operate on.
+ * @param <TEndpoint> The specific type of {@link GenericStreamEndpoint} to
+ * operate on.
  * @param <TElementEndpoint> The specific type of {@link ElementEndpoint} the
  * <code>TEndpoint</code> provides for individual <code>TEntity</code>s.
  */
@@ -97,48 +98,16 @@ public abstract class AbstractStreamView<TEntity, TEndpoint extends GenericStrea
         observable = endpoint.getObservable(lister.entityCount());
         observable
                 .buffer(1, TimeUnit.SECONDS).filter(x -> !x.isEmpty())
-                .subscribe(new EntitySubscriber(UI.getCurrent()));
+                .subscribe(new UISubscriber<>(x -> {
+                    lister.addEntities(x);
+                    lister.scrollToEnd();
+                }));
     }
 
     private void stopStreaming() {
         if (observable != null) {
             observable.unsubscribe();
             observable = null;
-        }
-    }
-
-    private final class EntitySubscriber implements Observer<List<TEntity>> {
-
-        private final UI ui;
-
-        public EntitySubscriber(UI ui) {
-            this.ui = ui;
-        }
-
-        @Override
-        public void onCompleted() {
-            ui.access(() -> {
-                Notification.show("Done", "No more data available.", Notification.Type.TRAY_NOTIFICATION);
-                ui.push();
-            });
-        }
-
-        @Override
-        public void onError(final Throwable throwable) {
-            ui.access(() -> {
-                Logger.getLogger(NotificationErrorHandler.class.getName()).log(Level.WARNING, null, throwable);
-                Notification.show("Error", getFullMessage(throwable), Notification.Type.WARNING_MESSAGE);
-                ui.push();
-            });
-        }
-
-        @Override
-        public void onNext(final List<TEntity> entities) {
-            ui.access(() -> {
-                lister.addEntities(entities);
-                lister.scrollToEnd();
-                ui.push();
-            });
         }
     }
 }

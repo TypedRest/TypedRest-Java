@@ -5,7 +5,7 @@ import com.oneandone.typedrest.*;
 import com.oneandone.typedrest.vaadin.forms.EntityLister;
 
 /**
- * View component operating on an {@link StreamEndpoint}.
+ * View component operating on a {@link StreamEndpoint}.
  *
  * @param <TEntity> The type of entity the {@link StreamEndpoint} represents.
  */
