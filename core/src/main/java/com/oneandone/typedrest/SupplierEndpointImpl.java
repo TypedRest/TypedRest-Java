@@ -5,22 +5,17 @@ import java.net.*;
 import lombok.Getter;
 import org.apache.http.*;
 import org.apache.http.client.fluent.*;
-import org.apache.http.entity.ContentType;
 import org.apache.http.util.*;
 
 /**
- * REST endpoint that represents an RPC-like function which takes
- * <code>TEntity</code> as input and returns <code>TResult</code> as output.
+ * REST endpoint that represents a single RPC-like function which returns
+ * <code>TResult</code>.
  *
- * @param <TEntity> The type of entity the endpoint takes as input.
  * @param <TResult> The type of entity the endpoint returns as output.
  */
-public class FunctionWithInputEndpointImpl<TEntity, TResult>
+public class SupplierEndpointImpl<TResult>
         extends AbstractTriggerEndpoint
-        implements FunctionWithInputEndpoint<TEntity, TResult> {
-
-    @Getter
-    private final Class<TEntity> entityType;
+        implements SupplierEndpoint<TResult> {
 
     @Getter
     private final Class<TResult> resultType;
@@ -31,12 +26,10 @@ public class FunctionWithInputEndpointImpl<TEntity, TResult>
      * @param parent The parent endpoint containing this one.
      * @param relativeUri The URI of this endpoint relative to the
      * <code>parent</code>'s.
-     * @param entityType The type of entity the endpoint takes as input.
      * @param resultType The type of entity the endpoint returns as output.
      */
-    public FunctionWithInputEndpointImpl(Endpoint parent, URI relativeUri, Class<TEntity> entityType, Class<TResult> resultType) {
+    public SupplierEndpointImpl(Endpoint parent, URI relativeUri, Class<TResult> resultType) {
         super(parent, relativeUri);
-        this.entityType = entityType;
         this.resultType = resultType;
     }
 
@@ -46,20 +39,17 @@ public class FunctionWithInputEndpointImpl<TEntity, TResult>
      * @param parent The parent endpoint containing this one.
      * @param relativeUri The URI of this endpoint relative to the
      * <code>parent</code>'s.
-     * @param entityType The type of entity the endpoint takes as input.
      * @param resultType The type of entity the endpoint returns as output.
      */
-    public FunctionWithInputEndpointImpl(Endpoint parent, String relativeUri, Class<TEntity> entityType, Class<TResult> resultType) {
+    public SupplierEndpointImpl(Endpoint parent, String relativeUri, Class<TResult> resultType) {
         super(parent, relativeUri);
-        this.entityType = entityType;
         this.resultType = resultType;
     }
 
     @Override
-    public TResult trigger(TEntity entity)
+    public TResult trigger()
             throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException {
-        String jsonSend = json.writeValueAsString(entity);
-        HttpResponse response = executeAndHandle(Request.Post(uri).bodyString(jsonSend, ContentType.APPLICATION_JSON));
+        HttpResponse response = executeAndHandle(Request.Post(uri));
         return json.readValue(EntityUtils.toString(response.getEntity()), resultType);
     }
 }

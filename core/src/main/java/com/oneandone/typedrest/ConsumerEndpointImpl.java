@@ -12,9 +12,9 @@ import org.apache.http.entity.*;
  *
  * @param <TEntity> The type of entity the endpoint takes as input.
  */
-public class ActionWithInputEndpointImpl<TEntity>
+public class ConsumerEndpointImpl<TEntity>
         extends AbstractTriggerEndpoint
-        implements ActionWithInputEndpoint<TEntity> {
+        implements ConsumerEndpoint<TEntity> {
 
     @Getter
     private final Class<TEntity> entityType;
@@ -27,7 +27,7 @@ public class ActionWithInputEndpointImpl<TEntity>
      * <code>parent</code>'s.
      * @param entityType The type of entity the endpoint takes as input.
      */
-    public ActionWithInputEndpointImpl(Endpoint parent, URI relativeUri, Class<TEntity> entityType) {
+    public ConsumerEndpointImpl(Endpoint parent, URI relativeUri, Class<TEntity> entityType) {
         super(parent, relativeUri);
         this.entityType = entityType;
     }
@@ -40,7 +40,7 @@ public class ActionWithInputEndpointImpl<TEntity>
      * <code>parent</code>'s.
      * @param entityType The type of entity the endpoint takes as input.
      */
-    public ActionWithInputEndpointImpl(Endpoint parent, String relativeUri, Class<TEntity> entityType) {
+    public ConsumerEndpointImpl(Endpoint parent, String relativeUri, Class<TEntity> entityType) {
         super(parent, relativeUri);
         this.entityType = entityType;
     }

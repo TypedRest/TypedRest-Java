@@ -4,25 +4,25 @@ import java.io.*;
 import org.apache.http.*;
 
 /**
- * REST endpoint that represents an RPC-like action which takes
- * <code>TEntity</code> as input.
+ * REST endpoint that represents an RPC-like function which returns
+ * <code>TResult</code> as output.
  *
- * @param <TEntity> The type of entity the endpoint takes as input.
+ * @param <TResult> The type of entity the endpoint returns as output.
  */
-public interface ActionWithInputEndpoint<TEntity>
+public interface SupplierEndpoint<TResult>
         extends TriggerEndpoint {
 
     /**
-     * Returns the type of entity the endpoint takes as input.
+     * Returns The type of entity the endpoint returns as output.
      *
      * @return The class type.
      */
-    Class<TEntity> getEntityType();
+    Class<TResult> getResultType();
 
     /**
-     * Triggers the action.
+     * Triggers the function.
      *
-     * @param entity The <code>TEntity</code> to post as input.
+     * @return The result returned by the server.
      * @throws IOException Network communication failed.
      * @throws IllegalArgumentException {@link HttpStatus#SC_BAD_REQUEST}
      * @throws IllegalAccessException {@link HttpStatus#SC_UNAUTHORIZED} or
@@ -32,6 +32,7 @@ public interface ActionWithInputEndpoint<TEntity>
      * @throws IllegalStateException {@link HttpStatus#SC_CONFLICT}
      * @throws RuntimeException Other non-success status code.
      */
-    void trigger(TEntity entity)
+    TResult trigger()
             throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, IllegalStateException;
+
 }

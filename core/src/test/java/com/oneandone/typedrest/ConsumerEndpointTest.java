@@ -4,15 +4,15 @@ import static com.github.tomakehurst.wiremock.client.WireMock.*;
 import static org.apache.http.HttpStatus.*;
 import org.junit.*;
 
-public class ActionWithInputEndpointTest extends AbstractEndpointTest {
+public class ConsumerEndpointTest extends AbstractEndpointTest {
 
-    private ActionWithInputEndpoint<MockEntity> endpoint;
+    private ConsumerEndpoint<MockEntity> endpoint;
 
     @Before
     @Override
     public void before() {
         super.before();
-        endpoint = new ActionWithInputEndpointImpl<>(entryEndpoint, "endpoint", MockEntity.class);
+        endpoint = new ConsumerEndpointImpl<>(entryEndpoint, "endpoint", MockEntity.class);
     }
 
     @Test
@@ -21,7 +21,7 @@ public class ActionWithInputEndpointTest extends AbstractEndpointTest {
         stubFor(post(urlEqualTo("/endpoint"))
                 .withRequestBody(equalToJson("{\"id\":1,\"name\":\"input\"}"))
                 .willReturn(aResponse().withStatus(SC_OK)));
-
-        endpoint.trigger(new MockEntity(1, "input"));
+ 
+       endpoint.trigger(new MockEntity(1, "input"));
     }
 }

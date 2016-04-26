@@ -1,22 +1,23 @@
 package com.oneandone.typedrest;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
+import static com.oneandone.typedrest.AbstractEndpointTest.JSON_MIME;
 import static org.apache.http.HttpHeaders.*;
 import static org.apache.http.HttpStatus.*;
 import static org.hamcrest.CoreMatchers.equalTo;
+import org.junit.*;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
-import org.junit.*;
 
 public class FunctionEndpointTest extends AbstractEndpointTest {
 
-    private FunctionEndpoint<MockEntity> endpoint;
+    private FunctionEndpoint<MockEntity, MockEntity> endpoint;
 
     @Before
     @Override
     public void before() {
         super.before();
-        endpoint = new FunctionEndpointImpl<>(entryEndpoint, "endpoint", MockEntity.class);
+        endpoint = new FunctionEndpointImpl<>(entryEndpoint, "endpoint", MockEntity.class, MockEntity.class);
     }
 
     @Test
@@ -28,8 +29,7 @@ public class FunctionEndpointTest extends AbstractEndpointTest {
                         .withHeader(CONTENT_TYPE, JSON_MIME)
                         .withBody("{\"id\":2,\"name\":\"result\"}")));
 
-        
-        assertThat(endpoint.trigger(),
+        assertThat(endpoint.trigger(new MockEntity(1, "input")),
                 is(equalTo(new MockEntity(2, "result"))));
     }
 }
