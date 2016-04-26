@@ -125,6 +125,7 @@ public abstract class AbstractEndpoint
      * appropriate {@link Exception} types.
      *
      * @param response The response to handle.
+     * @param request The original request the reponse is for.
      *
      * @throws IOException Network communication failed.
      * @throws IllegalArgumentException {@link HttpStatus#SC_BAD_REQUEST}
@@ -148,6 +149,7 @@ public abstract class AbstractEndpoint
      * Wraps HTTP status codes in appropriate {@link Exception} types.
      *
      * @param response The response to check for errors.
+     * @param request The original request the reponse is for.
      *
      * @throws IOException Network communication failed.
      * @throws IllegalArgumentException {@link HttpStatus#SC_BAD_REQUEST}
