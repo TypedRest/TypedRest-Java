@@ -115,6 +115,10 @@ public abstract class AbstractCollectionEndpoint<TEntity, TElementEndpoint exten
     @Override
     public TElementEndpoint create(TEntity entity)
             throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException {
+        if (entity == null) {
+            throw new IllegalArgumentException("entity must not be null.");
+        }
+
         String jsonSend = json.writeValueAsString(entity);
         HttpResponse response = executeAndHandle(Request.Post(uri).bodyString(jsonSend, ContentType.APPLICATION_JSON));
         Header locationHeader = response.getFirstHeader(LOCATION);

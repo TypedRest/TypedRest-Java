@@ -58,6 +58,10 @@ public class FunctionEndpointImpl<TEntity, TResult>
     @Override
     public TResult trigger(TEntity entity)
             throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException {
+        if (entity == null) {
+            throw new IllegalArgumentException("entity must not be null.");
+        }
+
         String jsonSend = json.writeValueAsString(entity);
         HttpResponse response = executeAndHandle(Request.Post(uri).bodyString(jsonSend, ContentType.APPLICATION_JSON));
         return json.readValue(EntityUtils.toString(response.getEntity()), resultType);

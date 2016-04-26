@@ -48,6 +48,10 @@ public class ConsumerEndpointImpl<TEntity>
     @Override
     public void trigger(TEntity entity)
             throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException {
+        if (entity == null) {
+            throw new IllegalArgumentException("entity must not be null.");
+        }
+
         String jsonSend = json.writeValueAsString(entity);
         executeAndHandle(Request.Put(uri).bodyString(jsonSend, ContentType.APPLICATION_JSON));
     }

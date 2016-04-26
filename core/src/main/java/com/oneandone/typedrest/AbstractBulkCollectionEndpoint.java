@@ -53,6 +53,10 @@ public abstract class AbstractBulkCollectionEndpoint<TEntity, TElementEndpoint e
     @Override
     public void setAll(Collection<TEntity> entities)
             throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException {
+        if (entities == null) {
+            throw new IllegalArgumentException("entities must not be null.");
+        }
+
         String jsonSend = json.writeValueAsString(entities);
         executeAndHandle(Request.Put(uri).bodyString(jsonSend, ContentType.APPLICATION_JSON));
     }
@@ -68,6 +72,10 @@ public abstract class AbstractBulkCollectionEndpoint<TEntity, TElementEndpoint e
     @Override
     public void create(Iterable<TEntity> entities)
             throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException {
+        if (entities == null) {
+            throw new IllegalArgumentException("entities must not be null.");
+        }
+
         URI bulkUri = (bulkCreateSuffix == null) ? uri : uri.resolve(bulkCreateSuffix);
         String jsonSend = json.writeValueAsString(entities);
         executeAndHandle(Request.Post(bulkUri).bodyString(jsonSend, ContentType.APPLICATION_JSON));

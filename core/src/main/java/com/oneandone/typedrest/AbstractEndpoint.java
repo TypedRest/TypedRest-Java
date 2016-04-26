@@ -48,6 +48,13 @@ public abstract class AbstractEndpoint
      * @param uri The HTTP URI of the remote element.
      */
     protected AbstractEndpoint(Executor rest, URI uri) {
+        if (rest == null) {
+            throw new IllegalArgumentException("rest must not be null.");
+        }
+        if (uri == null) {
+            throw new IllegalArgumentException("uri must not be null.");
+        }
+
         this.rest = rest;
         this.uri = uri;
 
