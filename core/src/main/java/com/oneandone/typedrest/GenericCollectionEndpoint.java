@@ -40,21 +40,18 @@ public interface GenericCollectionEndpoint<TEntity, TElementEndpoint extends Ele
 
     /**
      * Returns a {@link ElementEndpoint} for a specific child element of this
-     * collection. Does not perform any network traffic yet.
+     * collection. May perform network traffic to look up an URI template.
      *
-     * @param relativeUri The URI of the child endpoint relative to the this
-     * endpoint.
+     * @param key The key identifying the entity in the collection.
      *
      * @return An {@link ElementEndpoint} for a specific element of this
      * collection.
      */
-    default TElementEndpoint get(String relativeUri) {
-        return get(URI.create(relativeUri));
-    }
+    TElementEndpoint get(String key);
 
     /**
      * Returns a {@link ElementEndpoint} for a specific child element of this
-     * collection. Does not perform any network traffic yet.
+     * collection. May perform network traffic to look up an URI template.
      *
      * @param entity A previously fetched instance of the entity to retrieve a
      * new state for.

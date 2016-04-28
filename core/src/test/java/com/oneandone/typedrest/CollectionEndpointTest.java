@@ -13,7 +13,7 @@ import static com.oneandone.typedrest.AbstractEndpointTest.JSON_MIME;
 
 public class CollectionEndpointTest extends AbstractEndpointTest {
 
-    private CollectionEndpoint<MockEntity> endpoint;
+    private CollectionEndpointImpl<MockEntity> endpoint;
 
     @Before
     @Override
@@ -65,13 +65,33 @@ public class CollectionEndpointTest extends AbstractEndpointTest {
     }
 
     @Test
-    public void testGetByEntityWithLinkHeader() throws Exception {
+    public void testGetByEntityWithLinkHeaderRelative() throws Exception {
+        endpoint.setChildTemplateRel("child");
+
         stubFor(get(urlEqualTo("/endpoint/"))
                 .withHeader(ACCEPT, equalTo(JSON_MIME))
                 .willReturn(aResponse()
                         .withStatus(SC_OK)
                         .withHeader(CONTENT_TYPE, JSON_MIME)
                         .withHeader(LINK, "<children/{id}>; rel=child; templated=true")
+                        .withBody("[]")));
+
+        endpoint.readAll();
+
+        assertThat(endpoint.get(new MockEntity(1, "test")).getUri(),
+                is(equalTo(endpoint.getUri().resolve("children/1"))));
+    }
+
+    @Test
+    public void testGetByEntityWithLinkHeaderAbsolute() throws Exception {
+        endpoint.setChildTemplateRel("child");
+
+        stubFor(get(urlEqualTo("/endpoint/"))
+                .withHeader(ACCEPT, equalTo(JSON_MIME))
+                .willReturn(aResponse()
+                        .withStatus(SC_OK)
+                        .withHeader(CONTENT_TYPE, JSON_MIME)
+                        .withHeader(LINK, "<" + endpoint.getUri() + "children/{id}>; rel=child; templated=true")
                         .withBody("[]")));
 
         endpoint.readAll();

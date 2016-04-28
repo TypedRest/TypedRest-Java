@@ -62,21 +62,27 @@ public abstract class AbstractCollectionEndpoint<TEntity, TElementEndpoint exten
 
     /**
      * The Link relation type used by the server to set the collection child
-     * element URI template.
+     * element URI template. <code>null</code> to use a simple relative URI
+     * rather than a URI template.
      */
     @Getter
     @Setter
-    private String childTemplateRel = "child";
+    private String childTemplateRel;
+
+    @Override
+    public TElementEndpoint get(String key) {
+        if (key == null) {
+            throw new IllegalArgumentException("key");
+        }
+
+        return get((childTemplateRel == null)
+                ? uri.resolve(key)
+                : linkTemplateExpanded(childTemplateRel, "id", key));
+    }
 
     @Override
     public TElementEndpoint get(TEntity entity) {
-        String id = getCollectionKey(entity);
-        UriTemplate template = linkTemplate(childTemplateRel);
-
-        String href = (template == null)
-                ? id
-                : template.set("id", getCollectionKey(entity)).expand();
-        return get(uri.resolve(href));
+        return get(getCollectionKey(entity));
     }
 
     private final Optional<PropertyDescriptor> keyProperty;
