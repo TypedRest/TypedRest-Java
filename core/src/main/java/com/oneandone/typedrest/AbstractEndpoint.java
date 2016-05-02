@@ -2,6 +2,7 @@ package com.oneandone.typedrest;
 
 import com.damnhandy.uri.template.UriTemplate;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.databind.node.*;
 import java.io.*;
@@ -186,9 +187,12 @@ public abstract class AbstractEndpoint
             body = EntityUtils.toString(entity);
             Header contentType = entity.getContentType();
             if ((contentType != null) && contentType.getValue().startsWith("application/json")) {
-                JsonNode messageNode = json.readTree(body).get("message");
-                if (messageNode != null) {
-                    message = messageNode.asText();
+                try {
+                    JsonNode messageNode = json.readTree(body).get("message");
+                    if (messageNode != null) {
+                        message = messageNode.asText();
+                    }
+                } catch (JsonProcessingException ex) {
                 }
             }
         }
