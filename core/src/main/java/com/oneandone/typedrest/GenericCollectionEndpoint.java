@@ -108,6 +108,46 @@ public interface GenericCollectionEndpoint<TEntity, TElementEndpoint extends Ele
             throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, IllegalStateException;
 
     /**
+     * Determines whether the collection contains a specific entity.
+     *
+     * This is a convenience method equivalent to combining
+     * {@link #get(java.lang.String)} with {@link ElementEndpoint#exists()}.
+     *
+     * @param key The key identifying the entity in the collection.
+     * @return <code>true</code> if the collection contains the entity,
+     * <code>false</code> if it does not.
+     *
+     * @throws IOException Network communication failed.
+     * @throws IllegalAccessException {@link HttpStatus#SC_UNAUTHORIZED} or
+     * {@link HttpStatus#SC_FORBIDDEN}
+     * @throws RuntimeException Other non-success status code.
+     */
+    default boolean contains(String key)
+            throws IOException, IllegalAccessException {
+        return get(key).exists();
+    }
+
+    /**
+     * Determines whether the collection contains a specific entity.
+     *
+     * This is a convenience method equivalent to combining
+     * {@link #get(java.lang.Object)} with {@link ElementEndpoint#exists()}.
+     *
+     * @param element The element to be checked.
+     * @return <code>true</code> if the collection contains the entity,
+     * <code>false</code> if it does not.
+     *
+     * @throws IOException Network communication failed.
+     * @throws IllegalAccessException {@link HttpStatus#SC_UNAUTHORIZED} or
+     * {@link HttpStatus#SC_FORBIDDEN}
+     * @throws RuntimeException Other non-success status code.
+     */
+    default boolean contains(TEntity element)
+            throws IOException, IllegalAccessException {
+        return get(element).exists();
+    }
+
+    /**
      * Updates an existing element in the collection.
      *
      * This is a convenience method equivalent to combining

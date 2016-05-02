@@ -55,6 +55,24 @@ public class ElementEndpointTest extends AbstractEndpointTest {
     }
 
     @Test
+    public void testExistsTrue() throws Exception {
+        stubFor(head(urlEqualTo("/endpoint"))
+                .willReturn(aResponse()
+                        .withStatus(SC_OK)));
+
+        assertThat(endpoint.exists(), is(true));
+    }
+
+    @Test
+    public void testExistsFalse() throws Exception {
+        stubFor(head(urlEqualTo("/endpoint"))
+                .willReturn(aResponse()
+                        .withStatus(SC_NOT_FOUND)));
+
+        assertThat(endpoint.exists(), is(false));
+    }
+
+    @Test
     @Ignore("Works in isolation but fails when executed as part of test suite")
     public void testUpdateNoResult() throws Exception {
         stubFor(put(urlEqualTo("/endpoint"))

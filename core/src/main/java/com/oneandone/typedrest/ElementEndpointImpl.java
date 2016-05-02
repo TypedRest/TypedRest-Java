@@ -78,6 +78,21 @@ public class ElementEndpointImpl<TEntity>
     }
 
     @Override
+    public boolean exists()
+            throws IOException, IllegalAccessException
+    {
+        try
+        {
+            executeAndHandle(Request.Head(uri));
+        }
+        catch (FileNotFoundException ex)
+        {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
     public Optional<Boolean> isUpdateAllowed() {
         return isVerbAllowed("PUT");
     }

@@ -37,6 +37,20 @@ public interface ElementEndpoint<TEntity>
             throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, IllegalStateException;
 
     /**
+     * Determines whether the entity currently exists.
+     *
+     * @return <code>true</code> if the entity currently exists,
+     * <code>false</code> if it does not.
+     *
+     * @throws IOException Network communication failed.
+     * @throws IllegalAccessException {@link HttpStatus#SC_UNAUTHORIZED} or
+     * {@link HttpStatus#SC_FORBIDDEN}
+     * @throws RuntimeException Other non-success status code.
+     */
+    boolean exists()
+            throws IOException, IllegalAccessException;
+
+    /**
      * Shows whether the server has indicated that
      * {@link #update(java.lang.Object)} is currently allowed.
      *
