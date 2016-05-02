@@ -1,8 +1,8 @@
 package com.oneandone.typedrest;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.io.*;
 import java.util.Optional;
+import org.apache.http.*;
 
 /**
  * An RPC-like trigger endpoint.
