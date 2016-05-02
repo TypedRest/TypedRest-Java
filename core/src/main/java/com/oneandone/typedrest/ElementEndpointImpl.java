@@ -60,7 +60,7 @@ public class ElementEndpointImpl<TEntity>
 
     @Override
     public TEntity read()
-            throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException {
+            throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, IllegalStateException {
         Request request = Request.Get(uri);
         if (etag != null) {
             request = request.addHeader(IF_NONE_MATCH, etag);

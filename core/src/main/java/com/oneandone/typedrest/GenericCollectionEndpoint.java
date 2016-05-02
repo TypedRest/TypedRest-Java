@@ -138,6 +138,27 @@ public interface GenericCollectionEndpoint<TEntity, TElementEndpoint extends Ele
      * Deletes an existing element from the collection.
      *
      * This is a convenience method equivalent to combining
+     * {@link #get(java.lang.String)} with {@link ElementEndpoint#delete()}.
+     *
+     * @param key The key identifying the entity in the collection.
+     * @throws IOException Network communication failed.
+     * @throws IllegalArgumentException {@link HttpStatus#SC_BAD_REQUEST}
+     * @throws IllegalAccessException {@link HttpStatus#SC_UNAUTHORIZED} or
+     * {@link HttpStatus#SC_FORBIDDEN}
+     * @throws FileNotFoundException {@link HttpStatus#SC_NOT_FOUND} or
+     * {@link HttpStatus#SC_GONE}
+     * @throws IllegalStateException {@link HttpStatus#SC_CONFLICT}
+     * @throws RuntimeException Other non-success status code.
+     */
+    default void delete(String key)
+            throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, IllegalStateException {
+        get(key).delete();
+    }
+
+    /**
+     * Deletes an existing element from the collection.
+     *
+     * This is a convenience method equivalent to combining
      * {@link #get(java.lang.Object)} with {@link ElementEndpoint#delete()}.
      *
      * @param element The element to be deletes.
