@@ -10,7 +10,7 @@ import org.apache.http.*;
 public interface TriggerEndpoint extends Endpoint {
 
     /**
-     * Shows whether the server has indicated that {@link #trigger()} is
+     * Shows whether the server has indicated that the trigger method is
      * currently allowed.
      *
      * Uses cached data from last response.
