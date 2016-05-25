@@ -121,6 +121,18 @@ public class CustomEndpointTest extends AbstractEndpointTest {
     }
 
     @Test
+    public void testDefaultLink() throws Exception {
+        endpoint.addDefaultLink("target1", "child", "Title 1");
+        endpoint.addDefaultLink("target2", "child");
+
+        Map<URI, String> expected = new HashMap<>();
+        expected.put(endpoint.getUri().resolve("target1"), "Title 1");
+        expected.put(endpoint.getUri().resolve("target2"), null);
+        assertThat(endpoint.getLinksWithTitles("child").entrySet(), equalTo(
+                expected.entrySet()));
+    }
+
+    @Test
     public void testLinkTemplate() throws Exception {
         stubFor(get(urlEqualTo("/endpoint"))
                 .willReturn(aResponse()
@@ -140,6 +152,13 @@ public class CustomEndpointTest extends AbstractEndpointTest {
                         .withHeader(LINK, "<a>; rel=child; templated=true")));
 
         endpoint.linkTemplate("child2");
+    }
+
+    @Test
+    public void testDefaultLinkTemplate() throws Exception {
+        endpoint.addDefaultLinkTemplate("a", "child");
+
+        assertThat(endpoint.linkTemplate("child").getTemplate(), is(equalTo("a")));
     }
 
     @Test

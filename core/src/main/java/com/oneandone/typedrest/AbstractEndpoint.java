@@ -88,6 +88,59 @@ public abstract class AbstractEndpoint
         this(parent, URI.create(relativeUri));
     }
 
+    private final Map<String, Map<URI, String>> defaultLinks = new HashMap<>();
+
+    /**
+     * Adds a link to the list of links provided by the server.
+     *
+     * This method is not thread-safe! Call this before performing any requests.
+     *
+     * @param href The href of the link relative to this endpoint's URI.
+     * @param rel The relation type of the link to add.
+     * @param title The title of the link.
+     *
+     * @see Endpoint#getLinks(java.lang.String)
+     * @see Endpoint#getLinksWithTitles(java.lang.String)
+     * @see Endpoint#link(java.lang.String)
+     */
+    public final void addDefaultLink(String href, String rel, String title) {
+        getOrAdd(defaultLinks, rel).put(uri.resolve(href), title);
+    }
+
+    /**
+     * Adds a link to the list of links provided by the server.
+     *
+     * This method is not thread-safe! Call this before performing any requests.
+     *
+     * @param href The href of the link relative to this endpoint's URI.
+     * @param rel The relation type of the link to add.
+     *
+     * @see Endpoint#getLinks(java.lang.String)
+     * @see Endpoint#getLinksWithTitles(java.lang.String)
+     * @see Endpoint#link(java.lang.String)
+     */
+    public final void addDefaultLink(String href, String rel) {
+        addDefaultLink(href, rel, null);
+    }
+
+    private final Map<String, String> defaultLinkTemplates = new HashMap<>();
+
+    /**
+     * Adds a link template to the list of link templates provided by the
+     * server.
+     *
+     * This method is not thread-safe! Call this before performing any requests.
+     *
+     * @param href The href of the link template relative to this endpoint's
+     * URI.
+     * @param rel The relation type of the link template to add.
+     *
+     * @see Endpoint#linkTemplate(java.lang.String)
+     */
+    public final void addDefaultLinkTemplate(String href, String rel) {
+        defaultLinkTemplates.put(rel, href);
+    }
+
     /**
      * Executes a REST request and wraps HTTP status codes in appropriate
      * {@link Exception} types.
@@ -223,8 +276,8 @@ public abstract class AbstractEndpoint
      */
     @SuppressWarnings("LocalVariableHidesMemberVariable")
     private void handleLinks(HttpResponse response) {
-        Map<String, Map<URI, String>> links = new HashMap<>();
-        Map<String, String> linkTemplates = new HashMap<>();
+        Map<String, Map<URI, String>> links = new HashMap<>(defaultLinks);
+        Map<String, String> linkTemplates = new HashMap<>(defaultLinkTemplates);
 
         handleHeaderLinks(response, links, linkTemplates);
 
@@ -356,11 +409,11 @@ public abstract class AbstractEndpoint
     }
 
     // NOTE: Always replace entire dictionary rather than modifying it to ensure thread-safety.
-    private Map<String, Map<URI, String>> links = unmodifiableMap(new HashMap<>());
+    private Map<String, Map<URI, String>> links;
 
     @Override
     public Map<URI, String> getLinksWithTitles(String rel) {
-        Map<URI, String> linksForRel = links.get(rel);
+        Map<URI, String> linksForRel = (links == null ? defaultLinks : links).get(rel);
         return (linksForRel == null) ? new HashMap<>() : unmodifiableMap(linksForRel);
     }
 
@@ -394,7 +447,7 @@ public abstract class AbstractEndpoint
 
     @Override
     public UriTemplate linkTemplate(String rel) {
-        String template = linkTemplates.get(rel);
+        String template = (linkTemplates == null ? defaultLinkTemplates : linkTemplates).get(rel);
         if (template == null) {
             // Lazy lookup
             try {
@@ -403,9 +456,11 @@ public abstract class AbstractEndpoint
                 // HTTP HEAD server-side implementation is optional
             }
 
-            template = linkTemplates.get(rel);
-            if (template == null) {
-                throw new RuntimeException("No link template with rel=" + rel + " provided by endpoint " + getUri() + ".");
+            if (linkTemplates != null) {
+                template = linkTemplates.get(rel);
+                if (template == null) {
+                    throw new RuntimeException("No link template with rel=" + rel + " provided by endpoint " + getUri() + ".");
+                }
             }
         }
 
