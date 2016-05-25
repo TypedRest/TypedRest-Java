@@ -125,11 +125,11 @@ public class CustomEndpointTest extends AbstractEndpointTest {
         stubFor(get(urlEqualTo("/endpoint"))
                 .willReturn(aResponse()
                         .withStatus(SC_NO_CONTENT)
-                        .withHeader(LINK, "<a>; rel=target1; templated=true")));
+                        .withHeader(LINK, "<a>; rel=child; templated=true")));
 
         endpoint.get();
 
-        assertThat(endpoint.linkTemplate("target1").getTemplate(), is(equalTo("a")));
+        assertThat(endpoint.linkTemplate("child").getTemplate(), is(equalTo("a")));
     }
 
     @Test(expected = RuntimeException.class)
@@ -137,9 +137,9 @@ public class CustomEndpointTest extends AbstractEndpointTest {
         stubFor(head(urlEqualTo("/endpoint"))
                 .willReturn(aResponse()
                         .withStatus(SC_NO_CONTENT)
-                        .withHeader(LINK, "<a>; rel=target1; templated=true")));
+                        .withHeader(LINK, "<a>; rel=child; templated=true")));
 
-        endpoint.linkTemplate("target2");
+        endpoint.linkTemplate("child2");
     }
 
     @Test
@@ -168,7 +168,7 @@ public class CustomEndpointTest extends AbstractEndpointTest {
         assertThat(endpoint.getLinksWithTitles("collection").entrySet(), equalTo(
                 expected.entrySet()));
     }
-    
+
     @Rule
     public final ExpectedException exception = ExpectedException.none();
 

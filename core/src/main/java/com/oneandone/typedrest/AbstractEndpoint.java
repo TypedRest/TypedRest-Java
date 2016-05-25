@@ -259,21 +259,14 @@ public abstract class AbstractEndpoint
 
                 NameValuePair relParameter = element.getParameterByName("rel");
                 if (relParameter != null) {
+                    String rel = relParameter.getValue();
                     NameValuePair templatedParameter = element.getParameterByName("templated");
                     if (templatedParameter != null && templatedParameter.getValue().equals("true")) {
-                        String rel = relParameter.getValue();
                         linkTemplates.put(rel, href);
                     } else {
-                        String rel = relParameter.getValue();
-                        Map<URI, String> selectedLinks = links.get(rel);
-                        if (selectedLinks == null) {
-                            links.put(rel, selectedLinks = new HashMap<>());
-                        }
-
                         NameValuePair titleParameter = element.getParameterByName("title");
                         String title = (titleParameter == null) ? null : titleParameter.getValue();
-
-                        selectedLinks.put(uri.resolve(href), title);
+                        getOrAdd(links, rel).put(uri.resolve(href), title);
                     }
                 }
             }
@@ -301,21 +294,19 @@ public abstract class AbstractEndpoint
         }
 
         linksNode.fields().forEachRemaining(x -> {
-            Map<URI, String> linksForRel = links.get(x.getKey());
-            if (linksForRel == null) {
-                links.put(x.getKey(), linksForRel = new HashMap<>());
-            }
+            String rel = x.getKey();
+            Map<URI, String> linksForRel = getOrAdd(links, rel);
 
             switch (x.getValue().getNodeType()) {
                 case ARRAY:
                     for (JsonNode subobj : x.getValue()) {
                         if (subobj.getNodeType() == JsonNodeType.OBJECT) {
-                            parseLinkObject(x.getKey(), (ObjectNode) subobj, linksForRel, linkTemplates);
+                            parseLinkObject(rel, (ObjectNode) subobj, linksForRel, linkTemplates);
                         }
                     }
                     break;
                 case OBJECT:
-                    parseLinkObject(x.getKey(), (ObjectNode) x.getValue(), linksForRel, linkTemplates);
+                    parseLinkObject(rel, (ObjectNode) x.getValue(), linksForRel, linkTemplates);
                     break;
             }
         });
@@ -346,6 +337,22 @@ public abstract class AbstractEndpoint
                     uri.resolve(href.asText()),
                     (title != null && title.getNodeType() == JsonNodeType.STRING) ? title.asText() : null);
         }
+    }
+
+    /**
+     * Returns the element with the specified key from the map. Creates, adds
+     * and returns a new element if no match was found.
+     *
+     * @param map The map to look in.
+     * @param key The key to look for.
+     * @return The existing or new element.
+     */
+    private static Map<URI, String> getOrAdd(Map<String, Map<URI, String>> map, String key) {
+        Map<URI, String> value = map.get(key);
+        if (value == null) {
+            map.put(key, value = new HashMap<>());
+        }
+        return value;
     }
 
     // NOTE: Always replace entire dictionary rather than modifying it to ensure thread-safety.
