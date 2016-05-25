@@ -43,6 +43,8 @@ public abstract class AbstractCollectionEndpoint<TEntity, TElementEndpoint exten
         super(parent, ensureTrailingSlash(relativeUri));
         this.entityType = entityType;
         this.keyProperty = getPropertiesWithAnnotation(entityType, Id.class).stream().findFirst();
+
+        addDefaultLinkTemplate("{id}", "child");
     }
 
     /**
@@ -59,24 +61,13 @@ public abstract class AbstractCollectionEndpoint<TEntity, TElementEndpoint exten
         this(parent, URI.create(relativeUri), entityType);
     }
 
-    /**
-     * The Link relation type used by the server to set the collection child
-     * element URI template. <code>null</code> to use a simple relative URI
-     * rather than a URI template.
-     */
-    @Getter
-    @Setter
-    private String childTemplateRel;
-
     @Override
     public TElementEndpoint get(String key) {
         if (key == null) {
             throw new IllegalArgumentException("key");
         }
 
-        return get((childTemplateRel == null)
-                ? uri.resolve(key)
-                : getUri().resolve(linkTemplate(childTemplateRel).set("id", key).expand()));
+        return get(getUri().resolve(linkTemplate("child").set("id", key).expand()));
     }
 
     @Override

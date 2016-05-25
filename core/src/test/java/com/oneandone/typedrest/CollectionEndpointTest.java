@@ -66,8 +66,6 @@ public class CollectionEndpointTest extends AbstractEndpointTest {
 
     @Test
     public void testGetByEntityWithLinkHeaderRelative() throws Exception {
-        endpoint.setChildTemplateRel("child");
-
         stubFor(get(urlEqualTo("/endpoint/"))
                 .withHeader(ACCEPT, equalTo(JSON_MIME))
                 .willReturn(aResponse()
@@ -84,8 +82,6 @@ public class CollectionEndpointTest extends AbstractEndpointTest {
 
     @Test
     public void testGetByEntityWithLinkHeaderAbsolute() throws Exception {
-        endpoint.setChildTemplateRel("child");
-
         stubFor(get(urlEqualTo("/endpoint/"))
                 .withHeader(ACCEPT, equalTo(JSON_MIME))
                 .willReturn(aResponse()
