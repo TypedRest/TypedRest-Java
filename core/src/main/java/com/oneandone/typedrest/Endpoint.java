@@ -63,10 +63,10 @@ public interface Endpoint {
      * Uses cached data from last response if possible. Tries lazy lookup with
      * HTTP HEAD on cache miss.
      *
-     * @param rel The relation type of the template to look for. "-template" is
-     * appended implicitly for HTTP Link Headers.
-     * @return The link template; <code>null</code> if no link template with the
-     * specified relation type could be found.
+     * @param rel The relation type of the template to look for.
+     * @return The link template.
+     * @throws RuntimeException No link template with the specified relation
+     * type could be found.
      */
     UriTemplate linkTemplate(String rel);
 
@@ -74,8 +74,7 @@ public interface Endpoint {
      * Helper method that retrieves a link template with a specific relation
      * type and expands it using a single variable.
      *
-     * @param rel The relation type of the template to look for. "-template" is
-     * appended implicitly for HTTP Link Headers.
+     * @param rel The relation type of the template to look for.
      * @param variableName The name of the variable to insert.
      * @param value The value to insert for the variable.
      * @return The href of the resolved template.
@@ -84,10 +83,6 @@ public interface Endpoint {
      */
     default URI linkTemplateExpanded(String rel, String variableName, Object value) {
         UriTemplate template = linkTemplate(rel);
-        if (template == null) {
-            throw new RuntimeException("No link template with rel=" + rel + " provided by endpoint " + getUri() + ".");
-        }
-
         return getUri().resolve(template.set(variableName, value).expand());
     }
 }

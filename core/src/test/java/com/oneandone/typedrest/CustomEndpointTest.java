@@ -12,7 +12,6 @@ import org.apache.http.message.BasicHeader;
 import static org.hamcrest.CoreMatchers.equalTo;
 import org.junit.*;
 import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsInAnyOrder;
 import org.hamcrest.core.StringContains;
@@ -131,7 +130,16 @@ public class CustomEndpointTest extends AbstractEndpointTest {
         endpoint.get();
 
         assertThat(endpoint.linkTemplate("target1").getTemplate(), is(equalTo("a")));
-        assertThat(endpoint.linkTemplate("target2"), is(nullValue()));
+    }
+
+    @Test(expected = RuntimeException.class)
+    public void testLinkTemplateException() throws Exception {
+        stubFor(head(urlEqualTo("/endpoint"))
+                .willReturn(aResponse()
+                        .withStatus(SC_NO_CONTENT)
+                        .withHeader(LINK, "<a>; rel=target1; templated=true")));
+
+        endpoint.linkTemplate("target2");
     }
 
     @Test

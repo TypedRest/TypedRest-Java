@@ -397,10 +397,13 @@ public abstract class AbstractEndpoint
             }
 
             template = linkTemplates.get(rel);
+            if (template == null) {
+                throw new RuntimeException("No link template with rel=" + rel + " provided by endpoint " + getUri() + ".");
+            }
         }
 
         // Create new template instance for each request because UriTemplate is not immutable
-        return (template == null) ? null : UriTemplate.fromTemplate(template);
+        return UriTemplate.fromTemplate(template);
     }
 
     /**

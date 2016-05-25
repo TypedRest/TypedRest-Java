@@ -1,6 +1,5 @@
 package com.oneandone.typedrest;
 
-import com.damnhandy.uri.template.UriTemplate;
 import com.fasterxml.jackson.databind.JavaType;
 import static com.oneandone.typedrest.BeanUtils.*;
 import static com.oneandone.typedrest.URIUtils.ensureTrailingSlash;
