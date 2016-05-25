@@ -11,7 +11,7 @@
 
     <groupId>com.oneandone</groupId>
     <artifactId>typedrest-parent</artifactId>
-    <version>0.19-SNAPSHOT</version>
+    <version>0.19</version>
     <packaging>pom</packaging>
 
     <name>TypedRest Parent</name>
@@ -37,7 +37,7 @@
     </developers>
 
     <properties>
-        <typedrest.version>0.19-SNAPSHOT</typedrest.version>
+        <typedrest.version>0.19</typedrest.version>
     </properties>
 
     <profiles>
