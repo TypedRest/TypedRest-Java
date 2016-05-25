@@ -64,9 +64,23 @@ public interface Endpoint {
      * HTTP HEAD on cache miss.
      *
      * @param rel The relation type of the template to look for.
-     * @return The link template.
+     * @return The unresolved link template.
      * @throws RuntimeException No link template with the specified relation
      * type could be found.
      */
     UriTemplate linkTemplate(String rel);
+
+    /**
+     * Retrieves a link template with a specific relation type and resolves it.
+     *
+     * @param rel The relation type of the template to look for.
+     * @param variableName The name of the variable to insert.
+     * @param value The value to insert for the variable.
+     * @return The href of the link resolved relative to this endpoint's URI.
+     * @throws RuntimeException No link template with the specified relation
+     * type could be found.
+     */
+    default URI linkTemplate(String rel, String variableName, Object value) {
+        return getUri().resolve(linkTemplate(rel).set(variableName, value).expand());
+    }
 }

@@ -67,7 +67,7 @@ public abstract class AbstractCollectionEndpoint<TEntity, TElementEndpoint exten
             throw new IllegalArgumentException("key");
         }
 
-        return get(getUri().resolve(linkTemplate("child").set("id", key).expand()));
+        return get(linkTemplate("child", "id", key));
     }
 
     @Override
