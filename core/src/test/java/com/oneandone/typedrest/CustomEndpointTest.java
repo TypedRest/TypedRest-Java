@@ -77,6 +77,18 @@ public class CustomEndpointTest extends AbstractEndpointTest {
         assertThat(endpoint.link("target2"), is(equalTo(endpoint.getUri().resolve("b"))));
     }
 
+    @Test
+    public void testLinkAbsolute() throws Exception {
+        stubFor(get(urlEqualTo("/endpoint"))
+                .willReturn(aResponse()
+                        .withStatus(SC_NO_CONTENT)
+                        .withHeader(LINK, "<http://localhost/b>; rel=target1")));
+
+        endpoint.get();
+
+        assertThat(endpoint.link("target1"), is(equalTo(URI.create("http://localhost/b"))));
+    }
+
     @Test(expected = RuntimeException.class)
     public void testLinkException() throws Exception {
         stubFor(head(urlEqualTo("/endpoint"))
@@ -121,6 +133,22 @@ public class CustomEndpointTest extends AbstractEndpointTest {
     }
 
     @Test
+    public void testGetLinksWithTitlesEscaping() throws Exception {
+        stubFor(get(urlEqualTo("/endpoint"))
+                .willReturn(aResponse()
+                        .withStatus(SC_NO_CONTENT)
+                        .withHeader(LINK, "<target1>; rel=child; title=\"Title,1\", <target2>; rel=child")));
+
+        endpoint.get();
+
+        Map<URI, String> expected = new HashMap<>();
+        expected.put(endpoint.getUri().resolve("target1"), "Title,1");
+        expected.put(endpoint.getUri().resolve("target2"), null);
+        assertThat(endpoint.getLinksWithTitles("child").entrySet(), equalTo(
+                expected.entrySet()));
+    }
+
+    @Test
     public void testDefaultLink() throws Exception {
         endpoint.addDefaultLink("target1", "child", "Title 1");
         endpoint.addDefaultLink("target2", "child");
@@ -137,11 +165,37 @@ public class CustomEndpointTest extends AbstractEndpointTest {
         stubFor(get(urlEqualTo("/endpoint"))
                 .willReturn(aResponse()
                         .withStatus(SC_NO_CONTENT)
-                        .withHeader(LINK, "<a>; rel=child; templated=true")));
+                        .withHeader(LINK, "<a{?x}>; rel=child; templated=true")));
 
         endpoint.get();
 
-        assertThat(endpoint.linkTemplate("child").getTemplate(), is(equalTo("a")));
+        assertThat(endpoint.linkTemplate("child").getTemplate(), is(equalTo("a{?x}")));
+    }
+
+    @Test
+    public void testLinkTemplateResolve() throws Exception {
+        stubFor(get(urlEqualTo("/endpoint"))
+                .willReturn(aResponse()
+                        .withStatus(SC_NO_CONTENT)
+                        .withHeader(LINK, "<a{?x}>; rel=child; templated=true")));
+
+        endpoint.get();
+
+        assertThat(endpoint.linkTemplate("child", "x", 1),
+                is(equalTo(endpoint.getUri().resolve("a?x=1"))));
+    }
+
+    @Test
+    public void testLinkTemplateResolveAbsolute() throws Exception {
+        stubFor(get(urlEqualTo("/endpoint"))
+                .willReturn(aResponse()
+                        .withStatus(SC_NO_CONTENT)
+                        .withHeader(LINK, "<http://localhost/b{?x}>; rel=child; templated=true")));
+
+        endpoint.get();
+
+        assertThat(endpoint.linkTemplate("child", "x", 1),
+                is(equalTo(URI.create("http://localhost/b?x=1"))));
     }
 
     @Test(expected = RuntimeException.class)
