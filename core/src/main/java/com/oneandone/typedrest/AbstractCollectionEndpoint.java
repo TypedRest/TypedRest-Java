@@ -76,7 +76,7 @@ public abstract class AbstractCollectionEndpoint<TEntity, TElementEndpoint exten
 
         return get((childTemplateRel == null)
                 ? uri.resolve(key)
-                : linkTemplateExpanded(childTemplateRel, "id", key));
+                : getUri().resolve(linkTemplate(childTemplateRel).set("id", key).expand()));
     }
 
     @Override

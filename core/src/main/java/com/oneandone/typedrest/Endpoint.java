@@ -69,20 +69,4 @@ public interface Endpoint {
      * type could be found.
      */
     UriTemplate linkTemplate(String rel);
-
-    /**
-     * Helper method that retrieves a link template with a specific relation
-     * type and expands it using a single variable.
-     *
-     * @param rel The relation type of the template to look for.
-     * @param variableName The name of the variable to insert.
-     * @param value The value to insert for the variable.
-     * @return The href of the resolved template.
-     * @throws RuntimeException No link template with the specified relation
-     * type could be found.
-     */
-    default URI linkTemplateExpanded(String rel, String variableName, Object value) {
-        UriTemplate template = linkTemplate(rel);
-        return getUri().resolve(template.set(variableName, value).expand());
-    }
 }
