@@ -5,7 +5,6 @@ import org.apache.http.entity.ContentType;
 import java.io.*;
 import java.net.URI;
 import java.util.*;
-import lombok.*;
 
 /**
  * Base class for building REST endpoints that represents a collection of
@@ -30,6 +29,8 @@ public abstract class AbstractBulkCollectionEndpoint<TEntity, TElementEndpoint e
      */
     protected AbstractBulkCollectionEndpoint(Endpoint parent, URI relativeUri, Class<TEntity> entityType) {
         super(parent, relativeUri, entityType);
+
+        addDefaultLink("bulk", "bulk");
     }
 
     /**
@@ -43,6 +44,8 @@ public abstract class AbstractBulkCollectionEndpoint<TEntity, TElementEndpoint e
      */
     protected AbstractBulkCollectionEndpoint(Endpoint parent, String relativeUri, Class<TEntity> entityType) {
         super(parent, relativeUri, entityType);
+
+        addDefaultLink("bulk", "bulk");
     }
 
     @Override
@@ -61,14 +64,6 @@ public abstract class AbstractBulkCollectionEndpoint<TEntity, TElementEndpoint e
         executeAndHandle(Request.Put(uri).bodyString(jsonSend, ContentType.APPLICATION_JSON));
     }
 
-    /**
-     * A relative URI that gets appended to {@link #getUri()} for
-     * {@link #create(java.lang.Iterable)} calls.
-     */
-    @Getter
-    @Setter
-    private URI bulkCreateSuffix;
-
     @Override
     public void create(Iterable<TEntity> entities)
             throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException {
@@ -76,8 +71,7 @@ public abstract class AbstractBulkCollectionEndpoint<TEntity, TElementEndpoint e
             throw new IllegalArgumentException("entities must not be null.");
         }
 
-        URI bulkUri = (bulkCreateSuffix == null) ? uri : uri.resolve(bulkCreateSuffix);
         String jsonSend = json.writeValueAsString(entities);
-        executeAndHandle(Request.Post(bulkUri).bodyString(jsonSend, ContentType.APPLICATION_JSON));
+        executeAndHandle(Request.Post(link("bulk")).bodyString(jsonSend, ContentType.APPLICATION_JSON));
     }
 }

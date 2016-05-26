@@ -6,18 +6,16 @@ import static org.apache.http.HttpHeaders.*;
 import static org.apache.http.HttpStatus.*;
 import org.junit.*;
 import static com.oneandone.typedrest.AbstractEndpointTest.JSON_MIME;
-import java.net.URI;
 
 public class BulkCollectionEndpointTest extends AbstractEndpointTest {
 
-    private BulkCollectionEndpointImpl<MockEntity> endpoint;
+    private BulkCollectionEndpoint<MockEntity> endpoint;
 
     @Before
     @Override
     public void before() {
         super.before();
         endpoint = new BulkCollectionEndpointImpl<>(entryEndpoint, "endpoint", MockEntity.class);
-        endpoint.setBulkCreateSuffix(URI.create("my-bulk"));
     }
 
     @Test
@@ -37,7 +35,7 @@ public class BulkCollectionEndpointTest extends AbstractEndpointTest {
     @Test
     @Ignore("Works in isolation but fails when executed as part of test suite")
     public void testCreate() throws Exception {
-        stubFor(post(urlEqualTo("/endpoint/my-bulk"))
+        stubFor(post(urlEqualTo("/endpoint/bulk"))
                 .withRequestBody(equalToJson("[{\"id\":5,\"name\":\"test1\"},{\"id\":6,\"name\":\"test2\"}]"))
                 .willReturn(aResponse()
                         .withStatus(SC_ACCEPTED)));
