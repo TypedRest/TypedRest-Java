@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.databind.node.*;
+import static com.oneandone.typedrest.HeaderUtils.getLinkHeaders;
 import java.io.*;
 import java.net.*;
 import java.util.*;
@@ -307,21 +308,13 @@ public abstract class AbstractEndpoint
      * @param linkTemplates A dictionary to add found link templates to.
      */
     protected void handleHeaderLinks(HttpResponse response, Map<String, Map<URI, String>> links, Map<String, String> linkTemplates) {
-        for (Header header : response.getHeaders("Link")) {
-            for (HeaderElement element : header.getElements()) {
-                String href = element.getName().substring(1, element.getName().length() - 1);
-
-                NameValuePair relParameter = element.getParameterByName("rel");
-                if (relParameter != null) {
-                    String rel = relParameter.getValue();
-                    NameValuePair templatedParameter = element.getParameterByName("templated");
-                    if (templatedParameter != null && templatedParameter.getValue().equals("true")) {
-                        linkTemplates.put(rel, href);
-                    } else {
-                        NameValuePair titleParameter = element.getParameterByName("title");
-                        String title = (titleParameter == null) ? null : titleParameter.getValue();
-                        getOrAdd(links, rel).put(uri.resolve(href), title);
-                    }
+        for (LinkHeader header : getLinkHeaders(response)) {
+            if (header.getRel() != null) {
+                if (header.isTemplated()) {
+                    linkTemplates.put(header.getRel(), header.getHref());
+                } else {
+                    getOrAdd(links, header.getRel())
+                            .put(uri.resolve(header.getHref()), header.getTitle());
                 }
             }
         }
