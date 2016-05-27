@@ -32,7 +32,6 @@ public interface GenericCollectionEndpoint<TEntity, TElementEndpoint extends Ele
      *
      * @param relativeUri The URI of the child endpoint relative to the this
      * endpoint.
-     *
      * @return An {@link ElementEndpoint} for a specific element of this
      * collection.
      */
@@ -42,8 +41,10 @@ public interface GenericCollectionEndpoint<TEntity, TElementEndpoint extends Ele
      * Returns a {@link ElementEndpoint} for a specific child element of this
      * collection. May perform network traffic to look up an URI template.
      *
-     * @param key The key identifying the entity in the collection.
+     * Uses a link template with the relation type <code>child</code> to
+     * determine the URIs of child elements. Defaults to <code>{id}</code>.
      *
+     * @param key The key identifying the entity in the collection.
      * @return An {@link ElementEndpoint} for a specific element of this
      * collection.
      */
@@ -52,6 +53,9 @@ public interface GenericCollectionEndpoint<TEntity, TElementEndpoint extends Ele
     /**
      * Returns a {@link ElementEndpoint} for a specific child element of this
      * collection. May perform network traffic to look up an URI template.
+     *
+     * Uses a link template with the relation type <code>child</code> to
+     * determine the URIs of child elements. Defaults to <code>{id}</code>.
      *
      * @param entity A previously fetched instance of the entity to retrieve a
      * new state for.

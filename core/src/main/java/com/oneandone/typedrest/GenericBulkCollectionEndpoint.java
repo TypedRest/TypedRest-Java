@@ -51,6 +51,9 @@ public interface GenericBulkCollectionEndpoint<TEntity, TElementEndpoint extends
     /**
      * Creates multiple new <code>TEntity</code>s.
      *
+     * Uses a link with the relation type <code>bulk</code> to determine the URI
+     * to POST to. Defaults to the relative URI <c>bulk</c>.
+     *
      * @param entities The new <code>TEntity</code>s.
      *
      * @throws IOException Network communication failed.
