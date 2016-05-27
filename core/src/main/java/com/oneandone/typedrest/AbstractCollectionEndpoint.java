@@ -44,7 +44,7 @@ public abstract class AbstractCollectionEndpoint<TEntity, TElementEndpoint exten
         this.entityType = entityType;
         this.keyProperty = getPropertiesWithAnnotation(entityType, Id.class).stream().findFirst();
 
-        addDefaultLinkTemplate("{id}", "child");
+        setDefaultLinkTemplate("child", "{id}");
     }
 
     /**

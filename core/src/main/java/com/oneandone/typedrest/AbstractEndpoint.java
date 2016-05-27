@@ -91,54 +91,55 @@ public abstract class AbstractEndpoint
     private final Map<String, Map<URI, String>> defaultLinks = new HashMap<>();
 
     /**
-     * Adds a link to the list of links provided by the server.
+     * Registers one or more default links for a specific relation type. These
+     * links are used when no matching link has been provided by the server
+     * (yet).
      *
      * This method is not thread-safe! Call this before performing any requests.
      *
-     * @param href The href of the link relative to this endpoint's URI.
-     * @param rel The relation type of the link to add.
-     * @param title The title of the link.
+     * @param rel The relation type of the links to add.
+     * @param hrefs The hrefs of links relative to this endpoint's URI. Use
+     * <code>null</code> or an empty list to remove all previous entries for the
+     * relation type.
      *
      * @see Endpoint#getLinks(java.lang.String)
      * @see Endpoint#getLinksWithTitles(java.lang.String)
      * @see Endpoint#link(java.lang.String)
      */
-    public final void addDefaultLink(String href, String rel, String title) {
-        getOrAdd(defaultLinks, rel).put(uri.resolve(href), title);
-    }
-
-    /**
-     * Adds a link to the list of links provided by the server.
-     *
-     * This method is not thread-safe! Call this before performing any requests.
-     *
-     * @param href The href of the link relative to this endpoint's URI.
-     * @param rel The relation type of the link to add.
-     *
-     * @see Endpoint#getLinks(java.lang.String)
-     * @see Endpoint#getLinksWithTitles(java.lang.String)
-     * @see Endpoint#link(java.lang.String)
-     */
-    public final void addDefaultLink(String href, String rel) {
-        addDefaultLink(href, rel, null);
+    public final void setDefaultLink(String rel, String... hrefs) {
+        if (hrefs == null || hrefs.length == 0) {
+            defaultLinks.remove(rel);
+        } else {
+            Map<URI, String> linksForRel = new HashMap<>();
+            for (String href : hrefs) {
+                linksForRel.put(uri.resolve(href), null);
+            }
+            defaultLinks.put(rel, linksForRel);
+        }
     }
 
     private final Map<String, String> defaultLinkTemplates = new HashMap<>();
 
     /**
-     * Adds a link template to the list of link templates provided by the
-     * server.
+     * Registers a default link template for a specific relation type. This
+     * template is used when no matching template has been provided by the
+     * server (yet).
      *
      * This method is not thread-safe! Call this before performing any requests.
      *
-     * @param href The href of the link template relative to this endpoint's
-     * URI.
      * @param rel The relation type of the link template to add.
+     * @param href The href of the link template relative to this endpoint's
+     * URI. Use <code>null</code> to remove any previous entry for the relation
+     * type.
      *
      * @see Endpoint#linkTemplate(java.lang.String)
      */
-    public final void addDefaultLinkTemplate(String href, String rel) {
-        defaultLinkTemplates.put(rel, href);
+    public final void setDefaultLinkTemplate(String rel, String href) {
+        if (href == null) {
+            defaultLinkTemplates.remove(rel);
+        } else {
+            defaultLinkTemplates.put(rel, href);
+        }
     }
 
     /**

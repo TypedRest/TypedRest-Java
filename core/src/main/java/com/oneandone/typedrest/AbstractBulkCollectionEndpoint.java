@@ -30,7 +30,7 @@ public abstract class AbstractBulkCollectionEndpoint<TEntity, TElementEndpoint e
     protected AbstractBulkCollectionEndpoint(Endpoint parent, URI relativeUri, Class<TEntity> entityType) {
         super(parent, relativeUri, entityType);
 
-        addDefaultLink("bulk", "bulk");
+        setDefaultLink("bulk", "bulk");
     }
 
     /**
@@ -45,7 +45,7 @@ public abstract class AbstractBulkCollectionEndpoint<TEntity, TElementEndpoint e
     protected AbstractBulkCollectionEndpoint(Endpoint parent, String relativeUri, Class<TEntity> entityType) {
         super(parent, relativeUri, entityType);
 
-        addDefaultLink("bulk", "bulk");
+        setDefaultLink("bulk", "bulk");
     }
 
     @Override
