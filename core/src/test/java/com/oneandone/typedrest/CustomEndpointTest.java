@@ -173,6 +173,20 @@ public class CustomEndpointTest extends AbstractEndpointTest {
     }
 
     @Test
+    @Ignore("Full link escaping not implemented yet")
+    public void testLinkTemplateEscaping() throws Exception {
+        stubFor(get(urlEqualTo("/endpoint"))
+                .willReturn(aResponse()
+                        .withStatus(SC_NO_CONTENT)
+                        .withHeader(LINK, "<http://localhost/b{?x,y}>; rel=search; templated=true")));
+
+        endpoint.get();
+
+        assertThat(endpoint.linkTemplate("search").getTemplate(),
+                is(equalTo("http://localhost/b{?x,y}")));
+    }
+
+    @Test
     public void testLinkTemplateResolve() throws Exception {
         stubFor(get(urlEqualTo("/endpoint"))
                 .willReturn(aResponse()
