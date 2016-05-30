@@ -1,6 +1,8 @@
 package com.oneandone.typedrest;
 
 import java.net.*;
+import lombok.SneakyThrows;
+import org.apache.http.client.utils.URIBuilder;
 
 /**
  * Provides utility methods for {@link URI}.
@@ -16,10 +18,12 @@ public final class URIUtils {
      * @param uri The original URI.
      * @return The URI with appended slash.
      */
+    @SneakyThrows
     public static URI ensureTrailingSlash(URI uri) {
-        String asciiString = uri.toASCIIString();
-        return asciiString.endsWith("/")
-                ? uri
-                : URI.create(asciiString + "/");
+        URIBuilder builder = new URIBuilder(uri);
+        if (!builder.getPath().endsWith("/")) {
+            builder.setPath(builder.getPath() + "/");
+        }
+        return builder.build();
     }
 }
