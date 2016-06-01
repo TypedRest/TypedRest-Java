@@ -2,7 +2,7 @@ package com.oneandone.typedrest;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
 import static java.util.Arrays.asList;
-import java.util.Collection;
+import java.util.List;
 import static org.apache.http.HttpHeaders.*;
 import static org.apache.http.HttpStatus.*;
 import static org.hamcrest.CoreMatchers.*;
@@ -31,7 +31,7 @@ public class PagedCollectionEndpointTest extends AbstractEndpointTest {
                         .withHeader(CONTENT_TYPE, JSON_MIME)
                         .withBody("[{\"id\":5,\"name\":\"test1\"},{\"id\":6,\"name\":\"test2\"}]")));
 
-        Collection<MockEntity> expected = asList(
+        List<MockEntity> expected = asList(
                 new MockEntity(5, "test1"),
                 new MockEntity(6, "test2"));
         assertThat(endpoint.readAll(), is(equalTo(expected)));
@@ -50,7 +50,7 @@ public class PagedCollectionEndpointTest extends AbstractEndpointTest {
 
         PartialResponse<MockEntity> response = endpoint.readRange(1l, null);
 
-        Collection<MockEntity> expected = asList(new MockEntity(6, "test2"));
+        List<MockEntity> expected = asList(new MockEntity(6, "test2"));
         assertThat(response.getElements(), is(equalTo(expected)));
 
         assertThat(response.getFrom(), is(equalTo(1l)));
@@ -71,7 +71,7 @@ public class PagedCollectionEndpointTest extends AbstractEndpointTest {
 
         PartialResponse<MockEntity> response = endpoint.readRange(0l, 1l);
 
-        Collection<MockEntity> expected = asList(
+        List<MockEntity> expected = asList(
                 new MockEntity(5, "test1"),
                 new MockEntity(6, "test2"));
         assertThat(response.getElements(), is(equalTo(expected)));
@@ -94,7 +94,7 @@ public class PagedCollectionEndpointTest extends AbstractEndpointTest {
 
         PartialResponse<MockEntity> response = endpoint.readRange(null, 1l);
 
-        Collection<MockEntity> expected = asList(new MockEntity(6, "test2"));
+        List<MockEntity> expected = asList(new MockEntity(6, "test2"));
         assertThat(response.getElements(), is(equalTo(expected)));
 
         assertThat(response.getFrom(), is(equalTo(2l)));

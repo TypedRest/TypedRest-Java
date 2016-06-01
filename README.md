@@ -63,7 +63,7 @@ class SampleEntryEndpoint extends EntryEndpoint {
 You can then perform CRUD operations like this:
 ```java
 SampleEntryEndpoint server = new SampleEntryEndpoint(URI.create("http://myservice/api/"));
-Iterable<PackageEntity> packages = server.packages.readAll();
+List<PackageEntity> packages = server.packages.readAll();
 ElementEndpoint<PackageEntity> element = server.packages.create(new PackageEntity(...));
 PackageEntity pack = server.packages.get(1).read();
 server.Packages.get(1).update(pack);

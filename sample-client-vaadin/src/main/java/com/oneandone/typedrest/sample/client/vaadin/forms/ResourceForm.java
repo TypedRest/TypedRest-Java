@@ -1,5 +1,6 @@
 package com.oneandone.typedrest.sample.client.vaadin.forms;
 
+import com.oneandone.typedrest.CollectionEndpoint;
 import com.oneandone.typedrest.CollectionEndpointImpl;
 import com.oneandone.typedrest.Endpoint;
 import com.oneandone.typedrest.sample.client.ResourceCollectionEndpoint;
@@ -10,7 +11,7 @@ import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.ui.*;
 import java.beans.PropertyDescriptor;
 import java.io.IOException;
-import java.util.Collection;
+import java.util.List;
 
 public class ResourceForm
         extends AutoEntityForm<Resource> {
@@ -51,10 +52,11 @@ public class ResourceForm
         try {
             targetCombobox.setItems(new CollectionEndpointImpl<>(endpoint, endpoint.link("targets"), Target.class).readAll());
 
+            CollectionEndpoint<String> people = new CollectionEndpointImpl<>(null, "people", String.class);
             ResourceCollectionEndpoint resourcesEndpoint = (endpoint instanceof ResourceCollectionEndpoint)
                     ? (ResourceCollectionEndpoint) endpoint
                     : new ResourceCollectionEndpoint(endpoint);
-            Collection<Resource> resources = resourcesEndpoint.readAll();
+            List<Resource> resources = resourcesEndpoint.readAll();
             resources.remove(entity); //Prevent self-references
             dependencySelector.setContainerDataSource(new BeanItemContainer<>(Resource.class, resources));
             fieldGroup.bind(dependencySelector, "dependencies");

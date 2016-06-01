@@ -3,7 +3,7 @@ package com.oneandone.typedrest;
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
 import java.net.URI;
 import static java.util.Arrays.asList;
-import java.util.Collection;
+import java.util.List;
 import static org.apache.http.HttpHeaders.*;
 import static org.apache.http.HttpStatus.*;
 import static org.hamcrest.CoreMatchers.*;
@@ -31,7 +31,7 @@ public class CollectionEndpointTest extends AbstractEndpointTest {
                         .withHeader(CONTENT_TYPE, JSON_MIME)
                         .withBody("[{\"id\":5,\"name\":\"test1\"},{\"id\":6,\"name\":\"test2\"}]")));
 
-        Collection<MockEntity> expected = asList(
+        List<MockEntity> expected = asList(
                 new MockEntity(5, "test1"),
                 new MockEntity(6, "test2"));
         assertThat(endpoint.readAll(), is(equalTo(expected)));

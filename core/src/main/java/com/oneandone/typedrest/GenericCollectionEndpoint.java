@@ -2,7 +2,7 @@ package com.oneandone.typedrest;
 
 import java.io.*;
 import java.net.URI;
-import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 import org.apache.http.*;
 
@@ -77,7 +77,7 @@ public interface GenericCollectionEndpoint<TEntity, TElementEndpoint extends Ele
      * @throws IllegalStateException {@link HttpStatus#SC_CONFLICT}
      * @throws RuntimeException Other non-success status code.
      */
-    Collection<TEntity> readAll()
+    List<TEntity> readAll()
             throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, IllegalStateException;
 
     /**

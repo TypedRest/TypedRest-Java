@@ -95,7 +95,7 @@ public abstract class AbstractCollectionEndpoint<TEntity, TElementEndpoint exten
     }
 
     @Override
-    public Collection<TEntity> readAll()
+    public List<TEntity> readAll()
             throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException {
         HttpResponse response = executeAndHandle(Request.Get(uri));
 
