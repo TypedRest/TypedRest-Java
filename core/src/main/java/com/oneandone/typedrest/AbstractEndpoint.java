@@ -10,9 +10,8 @@ import java.io.*;
 import java.net.*;
 import java.util.*;
 import static java.util.Arrays.stream;
-import static java.util.Collections.unmodifiableMap;
-import static java.util.Collections.unmodifiableSet;
-import static java.util.stream.Collectors.toSet;
+import static java.util.Collections.*;
+import static java.util.stream.Collectors.*;
 import lombok.*;
 import org.apache.http.*;
 import static org.apache.http.HttpHeaders.*;
@@ -89,12 +88,10 @@ public abstract class AbstractEndpoint
         this(parent, URI.create(relativeUri));
     }
 
-    private final Map<String, Map<URI, String>> defaultLinks = new HashMap<>();
-
     /**
      * Registers one or more default links for a specific relation type. These
-     * links are used when no matching link has been provided by the server
-     * (yet).
+     * links are used when no links with this relation type are provided by the
+     * server.
      *
      * This method is not thread-safe! Call this before performing any requests.
      *
@@ -111,20 +108,15 @@ public abstract class AbstractEndpoint
         if (hrefs == null || hrefs.length == 0) {
             defaultLinks.remove(rel);
         } else {
-            Map<URI, String> linksForRel = new HashMap<>();
-            for (String href : hrefs) {
-                linksForRel.put(uri.resolve(href), null);
-            }
-            defaultLinks.put(rel, linksForRel);
+            defaultLinks.put(rel,
+                    stream(hrefs).map(uri::resolve).collect(toSet()));
         }
     }
 
-    private final Map<String, String> defaultLinkTemplates = new HashMap<>();
-
     /**
      * Registers a default link template for a specific relation type. This
-     * template is used when no matching template has been provided by the
-     * server (yet).
+     * template is used when no template with this relation type is provided by
+     * the server.
      *
      * This method is not thread-safe! Call this before performing any requests.
      *
@@ -278,8 +270,8 @@ public abstract class AbstractEndpoint
      */
     @SuppressWarnings("LocalVariableHidesMemberVariable")
     private void handleLinks(HttpResponse response) {
-        Map<String, Map<URI, String>> links = new HashMap<>(defaultLinks);
-        Map<String, String> linkTemplates = new HashMap<>(defaultLinkTemplates);
+        Map<String, Map<URI, String>> links = new HashMap<>();
+        Map<String, String> linkTemplates = new HashMap<>();
 
         handleHeaderLinks(response, links, linkTemplates);
 
@@ -403,17 +395,43 @@ public abstract class AbstractEndpoint
     }
 
     // NOTE: Always replace entire dictionary rather than modifying it to ensure thread-safety.
-    private Map<String, Map<URI, String>> links;
+    private Map<String, Map<URI, String>> links = unmodifiableMap(new HashMap<>());
 
-    @Override
-    public Map<URI, String> getLinksWithTitles(String rel) {
-        Map<URI, String> linksForRel = (links == null ? defaultLinks : links).get(rel);
-        return (linksForRel == null) ? new HashMap<>() : unmodifiableMap(linksForRel);
-    }
+    // NOTE: Only modify during initial setup
+    private final Map<String, Set<URI>> defaultLinks = new HashMap<>();
 
     @Override
     public Set<URI> getLinks(String rel) {
-        return getLinksWithTitles(rel).keySet();
+        Map<URI, String> linksForRel = links.get(rel);
+        if (linksForRel != null) {
+            return linksForRel.keySet();
+        }
+
+        Set<URI> defaulLinksForRel = defaultLinks.get(rel);
+        if (defaulLinksForRel != null) {
+            return defaulLinksForRel;
+        }
+
+        return new HashSet<>();
+    }
+
+    @Override
+    public Map<URI, String> getLinksWithTitles(String rel) {
+        Map<URI, String> linksForRel = links.get(rel);
+        if (linksForRel != null) {
+            return linksForRel;
+        }
+
+        Set<URI> defaulLinksForRel = defaultLinks.get(rel);
+        if (defaulLinksForRel != null) {
+            Map<URI, String> result = new HashMap<>();
+            for (URI link : defaulLinksForRel) {
+                result.put(link, null);
+            }
+            return result;
+        }
+
+        return new HashMap<>();
     }
 
     @Override
@@ -439,9 +457,15 @@ public abstract class AbstractEndpoint
     // NOTE: Always replace entire dictionary rather than modifying it to ensure thread-safety.
     private Map<String, String> linkTemplates = unmodifiableMap(new HashMap<>());
 
+    // NOTE: Only modify during initial setup
+    private final Map<String, String> defaultLinkTemplates = new HashMap<>();
+
     @Override
     public UriTemplate linkTemplate(String rel) {
-        String template = (linkTemplates == null ? defaultLinkTemplates : linkTemplates).get(rel);
+        String template = linkTemplates.get(rel);
+        if (template == null) {
+            template = defaultLinkTemplates.get(rel);
+        }
         if (template == null) {
             // Lazy lookup
             try {
