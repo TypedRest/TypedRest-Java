@@ -14,7 +14,7 @@
     <description>Build Vaadin GUIs using a TypedRest client</description>
 
     <properties>
-        <vaadin.version>7.6.1</vaadin.version>
+        <vaadin.version>7.6.6</vaadin.version>
     </properties>
 
     <dependencies>
