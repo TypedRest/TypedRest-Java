@@ -21,7 +21,8 @@ public class BlobView extends AbstractEndpointView<BlobEndpoint> {
         try {
             return endpoint.download();
         } catch (IOException | IllegalArgumentException | IllegalAccessException | IllegalStateException ex) {
-            throw new RuntimeException(ex);
+            onError(ex);
+            return null;
         }
     }, "")) {
         // Get downloadFileName on-demand instead of ahead-of-time
