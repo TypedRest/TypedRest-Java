@@ -15,9 +15,6 @@
         <module>annotations</module>
         <module>core</module>
         <module>vaadin</module>
-        <module>sample-model</module>
-        <module>sample-client</module>
-        <module>sample-client-vaadin</module>
         <module>archetype</module>
     </modules>
 
@@ -27,7 +24,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-deploy-plugin</artifactId>
-                <version>2.4</version>
+                <version>2.8.2</version>
                 <configuration>
                     <skip>true</skip>
                 </configuration>
