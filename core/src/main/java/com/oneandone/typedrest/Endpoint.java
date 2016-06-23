@@ -1,6 +1,7 @@
 package com.oneandone.typedrest;
 
 import com.damnhandy.uri.template.UriTemplate;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import java.net.*;
 import java.util.Map;
 import java.util.Set;
@@ -12,18 +13,25 @@ import org.apache.http.client.fluent.*;
 public interface Endpoint {
 
     /**
-     * The REST executor used to communicate with the remote resource.
-     *
-     * @return The REST executor used to communicate with the remote resource.
-     */
-    Executor getRest();
-
-    /**
      * The HTTP URI of the remote resource.
      *
      * @return The HTTP URI of the remote resource.
      */
     URI getUri();
+
+    /**
+     * The REST executor used to communicate with the remote resource.
+     *
+     * @return The REST executor used to communicate with the remote resource.
+     */
+    Executor getExecutor();
+
+    /**
+     * Controls the serialization of entities sent to and received from the server.
+     *
+     * @return Controls the serialization of entities sent to and received from the server.
+     */
+    ObjectMapper getSerializer();
 
     /**
      * Retrieves all links with a specific relation type cached from the last

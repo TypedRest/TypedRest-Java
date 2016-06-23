@@ -50,6 +50,6 @@ public class SupplierEndpointImpl<TResult>
     public TResult trigger()
             throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException {
         HttpResponse response = executeAndHandle(Request.Post(uri));
-        return json.readValue(EntityUtils.toString(response.getEntity()), resultType);
+        return serializer.readValue(EntityUtils.toString(response.getEntity()), resultType);
     }
 }

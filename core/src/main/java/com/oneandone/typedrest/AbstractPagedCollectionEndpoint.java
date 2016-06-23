@@ -61,8 +61,8 @@ public abstract class AbstractPagedCollectionEndpoint<TEntity, TElementEndpoint 
 
         HttpResponse response = executeAndHandle(Request.Get(uri).addHeader(RANGE, range));
 
-        JavaType collectionType = json.getTypeFactory().constructCollectionType(List.class, entityType);
-        List<TEntity> elements = json.readValue(EntityUtils.toString(response.getEntity()), collectionType);
+        JavaType collectionType = serializer.getTypeFactory().constructCollectionType(List.class, entityType);
+        List<TEntity> elements = serializer.readValue(EntityUtils.toString(response.getEntity()), collectionType);
 
         Header contentRange = response.getFirstHeader(CONTENT_RANGE);
         if (contentRange == null) {

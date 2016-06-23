@@ -60,7 +60,7 @@ public abstract class AbstractBulkCollectionEndpoint<TEntity, TElementEndpoint e
             throw new IllegalArgumentException("entities must not be null.");
         }
 
-        String jsonSend = json.writeValueAsString(entities);
+        String jsonSend = serializer.writeValueAsString(entities);
         executeAndHandle(Request.Put(uri).bodyString(jsonSend, ContentType.APPLICATION_JSON));
     }
 
@@ -71,7 +71,7 @@ public abstract class AbstractBulkCollectionEndpoint<TEntity, TElementEndpoint e
             throw new IllegalArgumentException("entities must not be null.");
         }
 
-        String jsonSend = json.writeValueAsString(entities);
+        String jsonSend = serializer.writeValueAsString(entities);
         executeAndHandle(Request.Post(link("bulk")).bodyString(jsonSend, ContentType.APPLICATION_JSON));
     }
 }

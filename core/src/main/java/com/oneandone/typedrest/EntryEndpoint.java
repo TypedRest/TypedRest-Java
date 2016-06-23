@@ -1,11 +1,12 @@
 package com.oneandone.typedrest;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import static com.oneandone.typedrest.URIUtils.ensureTrailingSlash;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.*;
 import org.apache.http.HttpStatus;
-import org.apache.http.auth.Credentials;
 import org.apache.http.client.fluent.*;
 
 /**
@@ -22,7 +23,7 @@ public class EntryEndpoint
      * will be appended automatically.
      */
     public EntryEndpoint(URI uri) {
-        super(Executor.newInstance(), ensureTrailingSlash(uri));
+        this(uri, defaultSerializer());
     }
 
     /**
@@ -30,11 +31,11 @@ public class EntryEndpoint
      *
      * @param uri The base URI of the REST interface. Missing trailing slash
      * will be appended automatically.
-     * @param credentials The credentials used to authenticate against the REST
-     * interface.
+     * @param serializer Controls the serialization of entities sent to and
+     * received from the server.
      */
-    public EntryEndpoint(URI uri, Credentials credentials) {
-        super(Executor.newInstance().authPreemptive(uri.getHost()).auth(credentials), ensureTrailingSlash(uri));
+    public EntryEndpoint(URI uri, ObjectMapper serializer) {
+        super(ensureTrailingSlash(uri), Executor.newInstance(), serializer);
     }
 
     /**
@@ -48,7 +49,29 @@ public class EntryEndpoint
      * interface.
      */
     public EntryEndpoint(URI uri, String username, String password) {
-        super(Executor.newInstance().authPreemptive(uri.getHost()).auth(username, password), ensureTrailingSlash(uri));
+        this(uri, username, password, defaultSerializer());
+    }
+
+    /**
+     * Creates a new REST interface.
+     *
+     * @param uri The base URI of the REST interface. Missing trailing slash
+     * will be appended automatically.
+     * @param username The username used to authenticate against the REST
+     * interface.
+     * @param password The password used to authenticate against the REST
+     * interface.
+     * @param serializer Controls the serialization of entities sent to and
+     * received from the server.
+     */
+    public EntryEndpoint(URI uri, String username, String password, ObjectMapper serializer) {
+        super(ensureTrailingSlash(uri), Executor.newInstance().authPreemptive(uri.getHost()).auth(username, password), serializer);
+    }
+
+    private static ObjectMapper defaultSerializer() {
+        return new ObjectMapper()
+                .setSerializationInclusion(JsonInclude.Include.NON_NULL)
+                .findAndRegisterModules();
     }
 
     /**

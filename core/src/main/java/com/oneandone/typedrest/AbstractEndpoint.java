@@ -1,7 +1,6 @@
 package com.oneandone.typedrest;
 
 import com.damnhandy.uri.template.UriTemplate;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.databind.node.*;
@@ -9,7 +8,6 @@ import static com.oneandone.typedrest.HeaderUtils.getLinkHeaders;
 import java.io.*;
 import java.net.*;
 import java.util.*;
-import static java.util.Arrays.stream;
 import static java.util.Collections.*;
 import static java.util.stream.Collectors.*;
 import lombok.*;
@@ -19,6 +17,7 @@ import org.apache.http.client.fluent.*;
 import org.apache.http.entity.ContentType;
 import org.apache.http.message.BasicHeader;
 import org.apache.http.util.*;
+import static java.util.Arrays.stream;
 
 /**
  * Base class for building REST endpoints, i.e. remote HTTP resources.
@@ -30,34 +29,39 @@ public abstract class AbstractEndpoint
     protected final URI uri;
 
     @Getter
-    protected final Executor rest;
+    protected final Executor executor;
+
+    @Getter
+    protected final ObjectMapper serializer;
 
     /**
      * A set of default HTTP headers to be added to each request.
      */
     protected final Collection<Header> defaultHeaders = new LinkedList<>();
 
-    protected final ObjectMapper json = new ObjectMapper()
-            .setSerializationInclusion(JsonInclude.Include.NON_NULL)
-            .findAndRegisterModules();
-
     /**
      * Creates a new REST endpoint with an absolute URI.
      *
-     * @param rest The REST executor used to communicate with the remote
-     * element.
      * @param uri The HTTP URI of the remote element.
+     * @param executor The REST executor used to communicate with the remote
+     * element.
+     * @param serializer Controls the serialization of entities sent to and
+     * received from the server.
      */
-    protected AbstractEndpoint(Executor rest, URI uri) {
-        if (rest == null) {
-            throw new IllegalArgumentException("rest must not be null.");
-        }
+    protected AbstractEndpoint(URI uri, Executor executor, ObjectMapper serializer) {
         if (uri == null) {
             throw new IllegalArgumentException("uri must not be null.");
         }
+        if (executor == null) {
+            throw new IllegalArgumentException("executor must not be null.");
+        }
+        if (serializer == null) {
+            throw new IllegalArgumentException("serializer must not be null.");
+        }
 
-        this.rest = rest;
         this.uri = uri;
+        this.executor = executor;
+        this.serializer = serializer;
 
         defaultHeaders.add(new BasicHeader(ACCEPT, ContentType.APPLICATION_JSON.getMimeType()));
     }
@@ -70,7 +74,7 @@ public abstract class AbstractEndpoint
      * <code>parent</code>'s.
      */
     protected AbstractEndpoint(Endpoint parent, URI relativeUri) {
-        this(parent.getRest(), parent.getUri().resolve(relativeUri));
+        this(parent.getUri().resolve(relativeUri), parent.getExecutor(), parent.getSerializer());
 
         if (parent instanceof AbstractEndpoint) {
             defaultHeaders.addAll(((AbstractEndpoint) parent).defaultHeaders);
@@ -172,7 +176,7 @@ public abstract class AbstractEndpoint
     protected HttpResponse execute(Request request)
             throws IOException {
         defaultHeaders.forEach(request::addHeader);
-        return rest.execute(request).returnResponse();
+        return executor.execute(request).returnResponse();
     }
 
     /**
@@ -235,7 +239,7 @@ public abstract class AbstractEndpoint
             Header contentType = entity.getContentType();
             if ((contentType != null) && contentType.getValue().startsWith("application/json")) {
                 try {
-                    JsonNode messageNode = json.readTree(body).get("message");
+                    JsonNode messageNode = serializer.readTree(body).get("message");
                     if (messageNode != null) {
                         message = messageNode.asText();
                     }
@@ -280,7 +284,7 @@ public abstract class AbstractEndpoint
             Header contentType = entity.getContentType();
             if ((contentType != null) && contentType.getValue().startsWith("application/json")) {
                 try {
-                    handleBodyLinks(json.readTree(entity.getContent()), links, linkTemplates);
+                    handleBodyLinks(serializer.readTree(entity.getContent()), links, linkTemplates);
                 } catch (IOException ex) {
                     throw new RuntimeException();
                     // Body error handling is done elsewhere

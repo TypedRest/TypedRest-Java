@@ -74,7 +74,7 @@ public class ElementEndpointImpl<TEntity>
         handleResponse(response, request);
         Header etagHeader = response.getLastHeader(HttpHeaders.ETAG);
         etag = (etagHeader == null) ? null : etagHeader.getValue();
-        return cachedResponse = json.readValue(EntityUtils.toString(response.getEntity()), entityType);
+        return cachedResponse = serializer.readValue(EntityUtils.toString(response.getEntity()), entityType);
     }
 
     @Override
@@ -104,7 +104,7 @@ public class ElementEndpointImpl<TEntity>
             throw new IllegalArgumentException("entity must not be null.");
         }
 
-        String jsonSend = json.writeValueAsString(entity);
+        String jsonSend = serializer.writeValueAsString(entity);
         Request request = Request.Put(uri).bodyString(jsonSend, ContentType.APPLICATION_JSON);
         if (etag != null) {
             request.addHeader(HttpHeaders.IF_MATCH, etag);
@@ -113,7 +113,7 @@ public class ElementEndpointImpl<TEntity>
 
         return (response.getEntity() == null)
                 ? null
-                : json.readValue(EntityUtils.toString(response.getEntity()), entityType);
+                : serializer.readValue(EntityUtils.toString(response.getEntity()), entityType);
     }
 
     @Override

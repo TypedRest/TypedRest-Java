@@ -52,7 +52,7 @@ public class ConsumerEndpointImpl<TEntity>
             throw new IllegalArgumentException("entity must not be null.");
         }
 
-        String jsonSend = json.writeValueAsString(entity);
+        String jsonSend = serializer.writeValueAsString(entity);
         executeAndHandle(Request.Put(uri).bodyString(jsonSend, ContentType.APPLICATION_JSON));
     }
 }
