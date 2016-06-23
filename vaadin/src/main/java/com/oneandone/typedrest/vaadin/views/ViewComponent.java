@@ -1,5 +1,7 @@
 package com.oneandone.typedrest.vaadin.views;
 
+import com.vaadin.navigator.View;
+import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.Window;
 
@@ -7,7 +9,7 @@ import com.vaadin.ui.Window;
  * Base class for building view components that be wrapped in {@link Window}s.
  */
 public abstract class ViewComponent
-        extends CustomComponent {
+        extends CustomComponent implements View {
 
     protected Window containingWindow;
 
@@ -64,5 +66,9 @@ public abstract class ViewComponent
         if (containingWindow != null) {
             containingWindow.setCaption(caption);
         }
+    }
+
+    @Override
+    public void enter(ViewChangeListener.ViewChangeEvent event) {
     }
 }
