@@ -1,4 +1,4 @@
-package ${package}.client.vaadin.views;
+package ${package}.client.vaadin;
 
 import ${package}.client.*;
 import com.oneandone.typedrest.vaadin.views.*;
