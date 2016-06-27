@@ -51,7 +51,14 @@ public class AutoEntityForm<TEntity>
      * @return The newly created component.
      */
     protected Component buildAndBind(PropertyDescriptor property) {
-        return fieldGroup.buildAndBind(property.getName());
+        if (BeanUtils.getAnnotation(entityType, property, MultiLine.class).isPresent()) {
+            TextArea textArea = new TextArea();
+            textArea.setSizeFull();
+            fieldGroup.bind(textArea, property.getName());
+            return textArea;
+        } else {
+            return fieldGroup.buildAndBind(property.getName());
+        }
     }
 
     /**

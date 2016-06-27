@@ -25,11 +25,9 @@ public class EntityPicker<T> extends CustomComponent {
     /**
      * Creates a new entity picker.
      *
-     * @param caption A caption for the control
      * @param entityType The type of entities the picker offers.
      */
-    public EntityPicker(String caption, Class<T> entityType) {
-        this.setCaption(caption);
+    public EntityPicker(Class<T> entityType) {
         this.entityType = entityType;
 
         filterField.addTextChangeListener(event -> {
