@@ -2,6 +2,7 @@ package com.oneandone.typedrest.vaadin.forms;
 
 import static com.oneandone.typedrest.BeanUtils.*;
 import com.oneandone.typedrest.*;
+import static com.vaadin.shared.util.SharedUtil.propertyIdToHumanFriendly;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
 import java.beans.*;
@@ -28,7 +29,12 @@ public class AutoEntityForm<TEntity>
 
         for (PropertyDescriptor property : getPropertiesWithoutAnnotation(entityType, EditorHidden.class)) {
             if (property.getWriteMethod() != null) {
-                layout.addComponent(buildAndBind(property));
+                Component component = buildAndBind(property);
+                if (component.getCaption() == null) {
+                    component.setCaption(propertyIdToHumanFriendly(property.getName()));
+                }
+                layout.addComponent(component);
+
                 getAnnotation(entityType, property, Description.class)
                         .ifPresent(x -> layout.addComponent(buildDescriptionComponent(property, x.value())));
             }
