@@ -4,7 +4,7 @@
 
     <groupId>com.oneandone</groupId>
     <artifactId>typedrest</artifactId>
-    <version>0.22</version>
+    <version>0.23-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <name>TypedRest</name>
