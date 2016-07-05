@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.net.*;
 import rx.*;
 import rx.schedulers.Schedulers;
-import static rx.util.async.Async.runAsync;
 import rx.util.async.StoppableObservable;
 import static rx.util.async.Async.runAsync;
 

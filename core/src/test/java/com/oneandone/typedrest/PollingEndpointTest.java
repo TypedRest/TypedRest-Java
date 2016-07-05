@@ -20,7 +20,8 @@ public class PollingEndpointTest extends AbstractEndpointTest {
     @Override
     public void before() {
         super.before();
-        endpoint = new PollingEndpointImpl<>(entryEndpoint, "endpoint", MockEntity.class);
+        endpoint = new PollingEndpointImpl<>(entryEndpoint, "endpoint", MockEntity.class,
+                x -> x.getId() == 3);
     }
 
     @Test
@@ -47,8 +48,7 @@ public class PollingEndpointTest extends AbstractEndpointTest {
                         .withBody("{\"id\":3,\"name\":\"test\"}")));
 
         TestScheduler scheduler = Schedulers.test();
-        Observable<MockEntity> observable = endpoint.getObservable(
-                0, x -> x.getId() == 3, scheduler);
+        Observable<MockEntity> observable = endpoint.getObservable(0, scheduler);
 
         TestSubscriber<MockEntity> subscriber = new TestSubscriber<>();
         observable.subscribe(subscriber);

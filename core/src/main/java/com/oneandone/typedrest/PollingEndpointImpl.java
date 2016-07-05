@@ -19,6 +19,8 @@ public class PollingEndpointImpl<TEntity>
         extends ElementEndpointImpl<TEntity>
         implements PollingEndpoint<TEntity> {
 
+    private final Predicate<TEntity> endCondition;
+
     /**
      * Creates a new polling endpoint.
      *
@@ -29,6 +31,22 @@ public class PollingEndpointImpl<TEntity>
      */
     public PollingEndpointImpl(Endpoint parent, URI relativeUri, Class<TEntity> entityType) {
         super(parent, relativeUri, entityType);
+        endCondition = null;
+    }
+
+    /**
+     * Creates a new polling endpoint.
+     *
+     * @param parent The parent endpoint containing this one.
+     * @param relativeUri The URI of this endpoint relative to the
+     * <code>parent</code>'s.
+     * @param entityType The type of entity the endpoint represents.
+     * @param endCondition A check to determine whether the entity has reached
+     * its final state an no further polling is required.
+     */
+    public PollingEndpointImpl(Endpoint parent, URI relativeUri, Class<TEntity> entityType, Predicate<TEntity> endCondition) {
+        super(parent, relativeUri, entityType);
+        this.endCondition = endCondition;
     }
 
     /**
@@ -41,11 +59,27 @@ public class PollingEndpointImpl<TEntity>
      */
     public PollingEndpointImpl(Endpoint parent, String relativeUri, Class<TEntity> entityType) {
         super(parent, relativeUri, entityType);
+        endCondition = null;
+    }
+
+    /**
+     * Creates a new polling endpoint.
+     *
+     * @param parent The parent endpoint containing this one.
+     * @param relativeUri The URI of this endpoint relative to the
+     * <code>parent</code>'s.
+     * @param entityType The type of entity the endpoint represents.
+     * @param endCondition A check to determine whether the entity has reached
+     * its final state an no further polling is required.
+     */
+    public PollingEndpointImpl(Endpoint parent, String relativeUri, Class<TEntity> entityType, Predicate<TEntity> endCondition) {
+        super(parent, relativeUri, entityType);
+        this.endCondition = endCondition;
     }
 
     @Override
-    public StoppableObservable<TEntity> getObservable(Integer pollingInterval, Predicate<TEntity> endCondition) {
-        return getObservable(pollingInterval, endCondition, Schedulers.newThread());
+    public StoppableObservable<TEntity> getObservable(Integer pollingInterval) {
+        return getObservable(pollingInterval, Schedulers.newThread());
     }
 
     /**
@@ -59,7 +93,7 @@ public class PollingEndpointImpl<TEntity>
      * @param scheduler The scheduler used to run the background thread.
      * @return An observable stream of element states.
      */
-    StoppableObservable<TEntity> getObservable(Integer pollingInterval, Predicate<TEntity> endCondition, Scheduler scheduler) {
+    StoppableObservable<TEntity> getObservable(Integer pollingInterval, Scheduler scheduler) {
         return runAsync(scheduler, (rx.Observer<? super TEntity> observer, Subscription subscription) -> {
             TEntity previousEntity;
             try {
