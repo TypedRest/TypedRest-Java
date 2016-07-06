@@ -14,12 +14,12 @@ import org.apache.http.entity.ContentType;
 public class BlobEndpointImpl
         extends AbstractEndpoint implements BlobEndpoint {
 
-    public BlobEndpointImpl(Endpoint parent, URI relativeUri) {
-        super(parent, relativeUri);
+    public BlobEndpointImpl(Endpoint referrer, URI relativeUri) {
+        super(referrer, relativeUri);
     }
 
-    public BlobEndpointImpl(Endpoint parent, String relativeUri) {
-        super(parent, relativeUri);
+    public BlobEndpointImpl(Endpoint referrer, String relativeUri) {
+        super(referrer, relativeUri);
     }
 
     @Override

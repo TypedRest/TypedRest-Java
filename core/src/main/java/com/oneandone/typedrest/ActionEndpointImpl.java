@@ -14,24 +14,24 @@ public class ActionEndpointImpl
     /**
      * Creates a new action endpoint with a relative URI.
      *
-     * @param parent The parent endpoint containing this one.
+     * @param referrer The endpoint used to navigate to this one.
      * @param relativeUri The URI of this endpoint relative to the
-     * <code>parent</code>'s.
+     * <code>referrer</code>'s.
      */
-    public ActionEndpointImpl(Endpoint parent, URI relativeUri) {
-        super(parent, relativeUri);
+    public ActionEndpointImpl(Endpoint referrer, URI relativeUri) {
+        super(referrer, relativeUri);
     }
 
     /**
      * Creates a new action endpoint with a relative URI.
      *
-     * @param parent The parent endpoint containing this one.
+     * @param referrer The endpoint used to navigate to this one.
      * @param relativeUri The URI of this endpoint relative to the
-     * <code>parent</code>'s. Prefix <code>./</code> to append a trailing slash
-     * to the parent URI if missing.
+     * <code>referrer</code>'s. Prefix <code>./</code> to append a trailing
+     * slash to the <c>referrer</c> URI if missing.
      */
-    public ActionEndpointImpl(Endpoint parent, String relativeUri) {
-        super(parent, relativeUri);
+    public ActionEndpointImpl(Endpoint referrer, String relativeUri) {
+        super(referrer, relativeUri);
     }
 
     @Override

@@ -22,27 +22,27 @@ public class ConsumerEndpointImpl<TEntity>
     /**
      * Creates a new action endpoint with a relative URI.
      *
-     * @param parent The parent endpoint containing this one.
+     * @param referrer The endpoint used to navigate to this one.
      * @param relativeUri The URI of this endpoint relative to the
-     * <code>parent</code>'s.
+     * <code>referrer</code>'s.
      * @param entityType The type of entity the endpoint takes as input.
      */
-    public ConsumerEndpointImpl(Endpoint parent, URI relativeUri, Class<TEntity> entityType) {
-        super(parent, relativeUri);
+    public ConsumerEndpointImpl(Endpoint referrer, URI relativeUri, Class<TEntity> entityType) {
+        super(referrer, relativeUri);
         this.entityType = entityType;
     }
 
     /**
      * Creates a new action endpoint with a relative URI.
      *
-     * @param parent The parent endpoint containing this one.
+     * @param referrer The endpoint used to navigate to this one.
      * @param relativeUri The URI of this endpoint relative to the
-     * <code>parent</code>'s. Prefix <code>./</code> to append a trailing slash
-     * to the parent URI if missing.
+     * <code>referrer</code>'s. Prefix <code>./</code> to append a trailing
+     * slash to the <c>referrer</c> URI if missing.
      * @param entityType The type of entity the endpoint takes as input.
      */
-    public ConsumerEndpointImpl(Endpoint parent, String relativeUri, Class<TEntity> entityType) {
-        super(parent, relativeUri);
+    public ConsumerEndpointImpl(Endpoint referrer, String relativeUri, Class<TEntity> entityType) {
+        super(referrer, relativeUri);
         this.entityType = entityType;
     }
 

@@ -257,7 +257,7 @@ public class CustomEndpointTest extends AbstractEndpointTest {
     }
 
     @Test
-    public void testEnsureTrailingSlashOnParentUri() {
+    public void testEnsureTrailingSlashOnReferrerUri() {
         assertThat(new ActionEndpointImpl(endpoint, "subresource").getUri(), equalTo(
                 URI.create("http://localhost:8089/subresource")));
         assertThat(new ActionEndpointImpl(endpoint, "./subresource").getUri(), equalTo(
@@ -279,8 +279,8 @@ public class CustomEndpointTest extends AbstractEndpointTest {
 
     private class CustomEndpoint extends AbstractEndpoint {
 
-        public CustomEndpoint(Endpoint parent, String relativeUri) {
-            super(parent, relativeUri);
+        public CustomEndpoint(Endpoint referrer, String relativeUri) {
+            super(referrer, relativeUri);
 
             defaultHeaders.add(new BasicHeader("X-Mock", "mock"));
         }

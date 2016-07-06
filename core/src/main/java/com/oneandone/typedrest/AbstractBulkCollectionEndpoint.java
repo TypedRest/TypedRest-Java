@@ -21,14 +21,14 @@ public abstract class AbstractBulkCollectionEndpoint<TEntity, TElementEndpoint e
     /**
      * Creates a new bulk collection endpoint.
      *
-     * @param parent The parent endpoint containing this one.
+     * @param referrer The endpoint used to navigate to this one.
      * @param relativeUri The URI of this endpoint relative to the
-     * <code>parent</code>'s. Missing trailing slash will be appended
+     * <code>referrer</code>'s. Missing trailing slash will be appended
      * automatically.
      * @param entityType The type of entity the endpoint represents.
      */
-    protected AbstractBulkCollectionEndpoint(Endpoint parent, URI relativeUri, Class<TEntity> entityType) {
-        super(parent, relativeUri, entityType);
+    protected AbstractBulkCollectionEndpoint(Endpoint referrer, URI relativeUri, Class<TEntity> entityType) {
+        super(referrer, relativeUri, entityType);
 
         setDefaultLink("bulk", "bulk");
     }
@@ -36,15 +36,15 @@ public abstract class AbstractBulkCollectionEndpoint<TEntity, TElementEndpoint e
     /**
      * Creates a new bulk collection endpoint.
      *
-     * @param parent The parent endpoint containing this one.
+     * @param referrer The endpoint used to navigate to this one.
      * @param relativeUri The URI of this endpoint relative to the
-     * <code>parent</code>'s. Missing trailing slash will be appended
+     * <code>referrer</code>'s. Missing trailing slash will be appended
      * automatically. Prefix <code>./</code> to append a trailing slash to the
      * parent URI if missing.
      * @param entityType The type of entity the endpoint represents.
      */
-    protected AbstractBulkCollectionEndpoint(Endpoint parent, String relativeUri, Class<TEntity> entityType) {
-        super(parent, relativeUri, entityType);
+    protected AbstractBulkCollectionEndpoint(Endpoint referrer, String relativeUri, Class<TEntity> entityType) {
+        super(referrer, relativeUri, entityType);
 
         setDefaultLink("bulk", "bulk");
     }

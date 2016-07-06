@@ -70,33 +70,33 @@ public abstract class AbstractEndpoint
     /**
      * Creates a new REST endpoint with a relative URI.
      *
-     * @param parent The parent endpoint containing this one.
+     * @param referrer The parent endpoint containing this one.
      * @param relativeUri The URI of this endpoint relative to the
-     * <code>parent</code>'s.
+     * <code>referrer</code>'s.
      */
-    protected AbstractEndpoint(Endpoint parent, URI relativeUri) {
-        this(parent.getUri().resolve(relativeUri), parent.getExecutor(), parent.getSerializer());
+    protected AbstractEndpoint(Endpoint referrer, URI relativeUri) {
+        this(referrer.getUri().resolve(relativeUri), referrer.getExecutor(), referrer.getSerializer());
 
-        if (parent instanceof AbstractEndpoint) {
-            defaultHeaders.addAll(((AbstractEndpoint) parent).defaultHeaders);
+        if (referrer instanceof AbstractEndpoint) {
+            defaultHeaders.addAll(((AbstractEndpoint) referrer).defaultHeaders);
         }
     }
 
     /**
      * Creates a new REST endpoint with a relative URI.
      *
-     * @param parent The parent endpoint containing this one.
+     * @param referrer The parent endpoint containing this one.
      * @param relativeUri The URI of this endpoint relative to the
-     * <code>parent</code>'s. Prefix <code>./</code> to append a trailing slash
-     * to the parent URI if missing. Prefix <code>./</code> to append a trailing
-     * slash to the parent URI if missing.
+     * <code>referrer</code>'s. Prefix <code>./</code> to append a trailing
+     * slash to the <c>referrer</c> URI if missing. Prefix <code>./</code> to
+     * append a trailing slash to the <c>referrer</c> URI if missing.
      */
-    protected AbstractEndpoint(Endpoint parent, String relativeUri) {
-        this((relativeUri.startsWith("./") ? ensureTrailingSlash(parent.getUri()) : parent.getUri())
-                .resolve(relativeUri), parent.getExecutor(), parent.getSerializer());
+    protected AbstractEndpoint(Endpoint referrer, String relativeUri) {
+        this((relativeUri.startsWith("./") ? ensureTrailingSlash(referrer.getUri()) : referrer.getUri())
+                .resolve(relativeUri), referrer.getExecutor(), referrer.getSerializer());
 
-        if (parent instanceof AbstractEndpoint) {
-            defaultHeaders.addAll(((AbstractEndpoint) parent).defaultHeaders);
+        if (referrer instanceof AbstractEndpoint) {
+            defaultHeaders.addAll(((AbstractEndpoint) referrer).defaultHeaders);
         }
     }
 

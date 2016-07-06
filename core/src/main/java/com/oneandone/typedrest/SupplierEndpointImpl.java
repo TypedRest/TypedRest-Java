@@ -23,27 +23,27 @@ public class SupplierEndpointImpl<TResult>
     /**
      * Creates a new function endpoint with a relative URI.
      *
-     * @param parent The parent endpoint containing this one.
+     * @param referrer The endpoint used to navigate to this one.
      * @param relativeUri The URI of this endpoint relative to the
-     * <code>parent</code>'s.
+     * <code>referrer</code>'s.
      * @param resultType The type of entity the endpoint returns as output.
      */
-    public SupplierEndpointImpl(Endpoint parent, URI relativeUri, Class<TResult> resultType) {
-        super(parent, relativeUri);
+    public SupplierEndpointImpl(Endpoint referrer, URI relativeUri, Class<TResult> resultType) {
+        super(referrer, relativeUri);
         this.resultType = resultType;
     }
 
     /**
      * Creates a new function endpoint with a relative URI.
      *
-     * @param parent The parent endpoint containing this one.
+     * @param referrer The endpoint used to navigate to this one.
      * @param relativeUri The URI of this endpoint relative to the
-     * <code>parent</code>'s. Prefix <code>./</code> to append a trailing slash
-     * to the parent URI if missing.
+     * <code>referrer</code>'s. Prefix <code>./</code> to append a trailing
+     * slash to the <c>referrer</c> URI if missing.
      * @param resultType The type of entity the endpoint returns as output.
      */
-    public SupplierEndpointImpl(Endpoint parent, String relativeUri, Class<TResult> resultType) {
-        super(parent, relativeUri);
+    public SupplierEndpointImpl(Endpoint referrer, String relativeUri, Class<TResult> resultType) {
+        super(referrer, relativeUri);
         this.resultType = resultType;
     }
 

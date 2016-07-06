@@ -33,14 +33,14 @@ public abstract class AbstractCollectionEndpoint<TEntity, TElementEndpoint exten
     /**
      * Creates a new paged collection endpoint.
      *
-     * @param parent The parent endpoint containing this one.
+     * @param referrer The endpoint used to navigate to this one.
      * @param relativeUri The URI of this endpoint relative to the
-     * <code>parent</code>'s. Missing trailing slash will be appended
+     * <code>referrer</code>'s. Missing trailing slash will be appended
      * automatically.
      * @param entityType The type of entity the endpoint represents.
      */
-    protected AbstractCollectionEndpoint(Endpoint parent, URI relativeUri, Class<TEntity> entityType) {
-        super(parent, ensureTrailingSlash(relativeUri));
+    protected AbstractCollectionEndpoint(Endpoint referrer, URI relativeUri, Class<TEntity> entityType) {
+        super(referrer, ensureTrailingSlash(relativeUri));
         this.entityType = entityType;
         this.keyProperty = getPropertiesWithAnnotation(entityType, Id.class).stream().findFirst();
 
@@ -50,15 +50,15 @@ public abstract class AbstractCollectionEndpoint<TEntity, TElementEndpoint exten
     /**
      * Creates a new paged collection endpoint.
      *
-     * @param parent The parent endpoint containing this one.
+     * @param referrer The endpoint used to navigate to this one.
      * @param relativeUri The URI of this endpoint relative to the
-     * <code>parent</code>'s. Missing trailing slash will be appended
+     * <code>referrer</code>'s. Missing trailing slash will be appended
      * automatically. Prefix <code>./</code> to append a trailing slash to the
      * parent URI if missing.
      * @param entityType The type of entity the endpoint represents.
      */
-    protected AbstractCollectionEndpoint(Endpoint parent, String relativeUri, Class<TEntity> entityType) {
-        super(parent, relativeUri.endsWith("/") ? relativeUri : relativeUri + "/");
+    protected AbstractCollectionEndpoint(Endpoint referrer, String relativeUri, Class<TEntity> entityType) {
+        super(referrer, relativeUri.endsWith("/") ? relativeUri : relativeUri + "/");
         this.entityType = entityType;
         this.keyProperty = getPropertiesWithAnnotation(entityType, Id.class).stream().findFirst();
 

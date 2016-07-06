@@ -13,12 +13,12 @@ public abstract class AbstractTriggerEndpoint
         extends AbstractEndpoint
         implements TriggerEndpoint {
 
-    protected AbstractTriggerEndpoint(Endpoint parent, URI relativeUri) {
-        super(parent, relativeUri);
+    protected AbstractTriggerEndpoint(Endpoint referrer, URI relativeUri) {
+        super(referrer, relativeUri);
     }
 
-    protected AbstractTriggerEndpoint(Endpoint parent, String relativeUri) {
-        super(parent, relativeUri);
+    protected AbstractTriggerEndpoint(Endpoint referrer, String relativeUri) {
+        super(referrer, relativeUri);
     }
 
     @Override

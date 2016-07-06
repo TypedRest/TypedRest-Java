@@ -24,27 +24,27 @@ public class ElementEndpointImpl<TEntity>
     /**
      * Creates a new element endpoint.
      *
-     * @param parent The parent endpoint containing this one.
+     * @param referrer The endpoint used to navigate to this one.
      * @param relativeUri The URI of this endpoint relative to the
-     * <code>parent</code>'s.
+     * <code>referrer</code>'s.
      * @param entityType The type of entity the endpoint represents.
      */
-    public ElementEndpointImpl(Endpoint parent, URI relativeUri, Class<TEntity> entityType) {
-        super(parent, relativeUri);
+    public ElementEndpointImpl(Endpoint referrer, URI relativeUri, Class<TEntity> entityType) {
+        super(referrer, relativeUri);
         this.entityType = entityType;
     }
 
     /**
      * Creates a new element endpoint.
      *
-     * @param parent The parent endpoint containing this one.
+     * @param referrer The endpoint used to navigate to this one.
      * @param relativeUri The URI of this endpoint relative to the
-     * <code>parent</code>'s. Prefix <code>./</code> to append a trailing slash
-     * to the parent URI if missing.
+     * <code>referrer</code>'s. Prefix <code>./</code> to append a trailing
+     * slash to the <c>referrer</c> URI if missing.
      * @param entityType The type of entity the endpoint represents.
      */
-    public ElementEndpointImpl(Endpoint parent, String relativeUri, Class<TEntity> entityType) {
-        super(parent, relativeUri);
+    public ElementEndpointImpl(Endpoint referrer, String relativeUri, Class<TEntity> entityType) {
+        super(referrer, relativeUri);
         this.entityType = entityType;
     }
 
