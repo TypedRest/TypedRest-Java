@@ -38,6 +38,7 @@
 
     <properties>
         <typedrest.version>0.23-SNAPSHOT</typedrest.version>
+        <jackson.version>2.7.5</jackson.version>
     </properties>
 
     <profiles>
