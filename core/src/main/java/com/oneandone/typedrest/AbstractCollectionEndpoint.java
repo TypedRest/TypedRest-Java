@@ -42,7 +42,7 @@ public abstract class AbstractCollectionEndpoint<TEntity, TElementEndpoint exten
     protected AbstractCollectionEndpoint(Endpoint referrer, URI relativeUri, Class<TEntity> entityType) {
         super(referrer, ensureTrailingSlash(relativeUri));
         this.entityType = entityType;
-        this.keyProperty = getPropertiesWithAnnotation(entityType, Id.class).stream().findFirst();
+        this.idProperty = getPropertiesWithAnnotation(entityType, Id.class).stream().findFirst();
 
         setDefaultLinkTemplate("child", "{id}");
     }
@@ -60,37 +60,37 @@ public abstract class AbstractCollectionEndpoint<TEntity, TElementEndpoint exten
     protected AbstractCollectionEndpoint(Endpoint referrer, String relativeUri, Class<TEntity> entityType) {
         super(referrer, relativeUri.endsWith("/") ? relativeUri : relativeUri + "/");
         this.entityType = entityType;
-        this.keyProperty = getPropertiesWithAnnotation(entityType, Id.class).stream().findFirst();
+        this.idProperty = getPropertiesWithAnnotation(entityType, Id.class).stream().findFirst();
 
         setDefaultLinkTemplate("child", "{id}");
     }
 
     @Override
-    public TElementEndpoint get(String key) {
-        if (key == null) {
-            throw new IllegalArgumentException("key");
+    public TElementEndpoint get(String id) {
+        if (id == null) {
+            throw new IllegalArgumentException("id");
         }
 
-        return get(linkTemplate("child", "id", key));
+        return get(linkTemplate("child", "id", id));
     }
 
     @Override
     public TElementEndpoint get(TEntity entity) {
-        return get(getCollectionKey(entity));
+        return get(getCollectionId(entity));
     }
 
-    private final Optional<PropertyDescriptor> keyProperty;
+    private final Optional<PropertyDescriptor> idProperty;
 
     /**
-     * Maps a <code>TEntity</code> to a key usable by
+     * Maps a <code>TEntity</code> to an ID usable by
      * {@link GenericCollectionEndpoint#get(java.net.URI)}.
      *
-     * @param entity The entity to get the key for.
-     * @return The key.
+     * @param entity The entity to get the ID for.
+     * @return The ID.
      */
-    protected String getCollectionKey(TEntity entity) {
+    protected String getCollectionId(TEntity entity) {
         try {
-            return keyProperty
+            return idProperty
                     .orElseThrow(() -> new IllegalStateException(entityType.getSimpleName() + " has no property marked with @Id annotation."))
                     .getReadMethod().invoke(entity).toString();
         } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {

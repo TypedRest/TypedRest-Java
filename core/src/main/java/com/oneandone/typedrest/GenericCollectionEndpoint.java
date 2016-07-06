@@ -44,11 +44,11 @@ public interface GenericCollectionEndpoint<TEntity, TElementEndpoint extends Ele
      * Uses a link template with the relation type <code>child</code> to
      * determine the URIs of child elements. Defaults to <code>{id}</code>.
      *
-     * @param key The key identifying the entity in the collection.
+     * @param id The ID identifying the entity in the collection.
      * @return An {@link ElementEndpoint} for a specific element of this
      * collection.
      */
-    TElementEndpoint get(String key);
+    TElementEndpoint get(String id);
 
     /**
      * Returns a {@link ElementEndpoint} for a specific child element of this
@@ -117,7 +117,7 @@ public interface GenericCollectionEndpoint<TEntity, TElementEndpoint extends Ele
      * This is a convenience method equivalent to combining
      * {@link #get(java.lang.String)} with {@link ElementEndpoint#exists()}.
      *
-     * @param key The key identifying the entity in the collection.
+     * @param id The ID identifying the entity in the collection.
      * @return <code>true</code> if the collection contains the entity,
      * <code>false</code> if it does not.
      *
@@ -126,9 +126,9 @@ public interface GenericCollectionEndpoint<TEntity, TElementEndpoint extends Ele
      * {@link HttpStatus#SC_FORBIDDEN}
      * @throws RuntimeException Other non-success status code.
      */
-    default boolean contains(String key)
+    default boolean contains(String id)
             throws IOException, IllegalAccessException {
-        return get(key).exists();
+        return get(id).exists();
     }
 
     /**
@@ -184,7 +184,7 @@ public interface GenericCollectionEndpoint<TEntity, TElementEndpoint extends Ele
      * This is a convenience method equivalent to combining
      * {@link #get(java.lang.String)} with {@link ElementEndpoint#delete()}.
      *
-     * @param key The key identifying the entity in the collection.
+     * @param id The ID identifying the entity in the collection.
      * @throws IOException Network communication failed.
      * @throws IllegalArgumentException {@link HttpStatus#SC_BAD_REQUEST}
      * @throws IllegalAccessException {@link HttpStatus#SC_UNAUTHORIZED} or
@@ -194,9 +194,9 @@ public interface GenericCollectionEndpoint<TEntity, TElementEndpoint extends Ele
      * @throws IllegalStateException {@link HttpStatus#SC_CONFLICT}
      * @throws RuntimeException Other non-success status code.
      */
-    default void delete(String key)
+    default void delete(String id)
             throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, IllegalStateException {
-        get(key).delete();
+        get(id).delete();
     }
 
     /**
