@@ -5,6 +5,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.databind.node.*;
 import static com.oneandone.typedrest.HeaderUtils.getLinkHeaders;
+import static com.oneandone.typedrest.URIUtils.ensureTrailingSlash;
 import java.io.*;
 import java.net.*;
 import java.util.*;
@@ -86,10 +87,17 @@ public abstract class AbstractEndpoint
      *
      * @param parent The parent endpoint containing this one.
      * @param relativeUri The URI of this endpoint relative to the
-     * <code>parent</code>'s.
+     * <code>parent</code>'s. Prefix <code>./</code> to append a trailing slash
+     * to the parent URI if missing. Prefix <code>./</code> to append a trailing
+     * slash to the parent URI if missing.
      */
     protected AbstractEndpoint(Endpoint parent, String relativeUri) {
-        this(parent, URI.create(relativeUri));
+        this((relativeUri.startsWith("./") ? ensureTrailingSlash(parent.getUri()) : parent.getUri())
+                .resolve(relativeUri), parent.getExecutor(), parent.getSerializer());
+
+        if (parent instanceof AbstractEndpoint) {
+            defaultHeaders.addAll(((AbstractEndpoint) parent).defaultHeaders);
+        }
     }
 
     /**

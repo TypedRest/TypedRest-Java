@@ -54,7 +54,8 @@ public class PollingEndpointImpl<TEntity>
      *
      * @param parent The parent endpoint containing this one.
      * @param relativeUri The URI of this endpoint relative to the
-     * <code>parent</code>'s.
+     * <code>parent</code>'s. Prefix <code>./</code> to append a trailing slash
+     * to the parent URI if missing.
      * @param entityType The type of entity the endpoint represents.
      */
     public PollingEndpointImpl(Endpoint parent, String relativeUri, Class<TEntity> entityType) {
@@ -67,7 +68,8 @@ public class PollingEndpointImpl<TEntity>
      *
      * @param parent The parent endpoint containing this one.
      * @param relativeUri The URI of this endpoint relative to the
-     * <code>parent</code>'s.
+     * <code>parent</code>'s. Prefix <code>./</code> to append a trailing slash
+     * to the parent URI if missing.
      * @param entityType The type of entity the endpoint represents.
      * @param endCondition A check to determine whether the entity has reached
      * its final state an no further polling is required.

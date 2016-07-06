@@ -40,7 +40,8 @@ public abstract class AbstractPagedCollectionEndpoint<TEntity, TElementEndpoint 
      * @param parent The parent endpoint containing this one.
      * @param relativeUri The URI of this endpoint relative to the
      * <code>parent</code>'s. Missing trailing slash will be appended
-     * automatically.
+     * automatically. Prefix <code>./</code> to append a trailing slash to the
+     * parent URI if missing.
      * @param entityType The type of entity the endpoint represents.
      */
     protected AbstractPagedCollectionEndpoint(Endpoint parent, String relativeUri, Class<TEntity> entityType) {

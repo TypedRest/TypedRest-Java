@@ -150,7 +150,7 @@ public class CustomEndpointTest extends AbstractEndpointTest {
 
     @Test
     public void testSetDefaultLink() throws Exception {
-        endpoint.setDefaultLink("child", new String[] {"target1", "target2"});
+        endpoint.setDefaultLink("child", new String[]{"target1", "target2"});
 
         Map<URI, String> expected = new HashMap<>();
         expected.put(endpoint.getUri().resolve("target1"), null);
@@ -254,6 +254,14 @@ public class CustomEndpointTest extends AbstractEndpointTest {
         expected.put(endpoint.getUri().resolve("c"), null);
         assertThat(endpoint.getLinksWithTitles("collection").entrySet(), equalTo(
                 expected.entrySet()));
+    }
+
+    @Test
+    public void testEnsureTrailingSlashOnParentUri() {
+        assertThat(new ActionEndpointImpl(endpoint, "subresource").getUri(), equalTo(
+                URI.create("http://localhost:8089/subresource")));
+        assertThat(new ActionEndpointImpl(endpoint, "./subresource").getUri(), equalTo(
+                URI.create("http://localhost:8089/endpoint/subresource")));
     }
 
     @Rule

@@ -39,8 +39,9 @@ public class ElementEndpointImpl<TEntity>
      *
      * @param parent The parent endpoint containing this one.
      * @param relativeUri The URI of this endpoint relative to the
+     * <code>parent</code>'s. Prefix <code>./</code> to append a trailing slash
+     * to the parent URI if missing.
      * @param entityType The type of entity the endpoint represents.
-     * <code>parent</code>'s.
      */
     public ElementEndpointImpl(Endpoint parent, String relativeUri, Class<TEntity> entityType) {
         super(parent, relativeUri);
@@ -79,14 +80,10 @@ public class ElementEndpointImpl<TEntity>
 
     @Override
     public boolean exists()
-            throws IOException, IllegalAccessException
-    {
-        try
-        {
+            throws IOException, IllegalAccessException {
+        try {
             executeAndHandle(Request.Head(uri));
-        }
-        catch (FileNotFoundException ex)
-        {
+        } catch (FileNotFoundException ex) {
             return false;
         }
         return true;

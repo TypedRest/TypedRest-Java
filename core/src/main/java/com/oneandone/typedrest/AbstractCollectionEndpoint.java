@@ -53,12 +53,16 @@ public abstract class AbstractCollectionEndpoint<TEntity, TElementEndpoint exten
      * @param parent The parent endpoint containing this one.
      * @param relativeUri The URI of this endpoint relative to the
      * <code>parent</code>'s. Missing trailing slash will be appended
-     * automatically.
+     * automatically. Prefix <code>./</code> to append a trailing slash to the
+     * parent URI if missing.
      * @param entityType The type of entity the endpoint represents.
      */
     protected AbstractCollectionEndpoint(Endpoint parent, String relativeUri, Class<TEntity> entityType) {
-        // Use this instead of base to ensure trailing slash gets appended for REST collection URIs
-        this(parent, URI.create(relativeUri), entityType);
+        super(parent, relativeUri.endsWith("/") ? relativeUri : relativeUri + "/");
+        this.entityType = entityType;
+        this.keyProperty = getPropertiesWithAnnotation(entityType, Id.class).stream().findFirst();
+
+        setDefaultLinkTemplate("child", "{id}");
     }
 
     @Override

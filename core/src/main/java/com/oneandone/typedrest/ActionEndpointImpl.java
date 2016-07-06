@@ -27,7 +27,8 @@ public class ActionEndpointImpl
      *
      * @param parent The parent endpoint containing this one.
      * @param relativeUri The URI of this endpoint relative to the
-     * <code>parent</code>'s.
+     * <code>parent</code>'s. Prefix <code>./</code> to append a trailing slash
+     * to the parent URI if missing.
      */
     public ActionEndpointImpl(Endpoint parent, String relativeUri) {
         super(parent, relativeUri);
