@@ -1,7 +1,7 @@
 package com.oneandone.typedrest;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.*;
 import static com.oneandone.typedrest.URIUtils.ensureTrailingSlash;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -71,6 +71,7 @@ public class EntryEndpoint
     private static ObjectMapper defaultSerializer() {
         return new ObjectMapper()
                 .setSerializationInclusion(JsonInclude.Include.NON_NULL)
+                .configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES, true)
                 .findAndRegisterModules();
     }
 
