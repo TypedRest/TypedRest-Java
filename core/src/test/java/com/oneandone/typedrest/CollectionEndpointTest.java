@@ -38,6 +38,34 @@ public class CollectionEndpointTest extends AbstractEndpointTest {
     }
 
     @Test
+    public void testReadAllCache() throws Exception {
+        List<MockEntity> expected = asList(
+                new MockEntity(5, "test1"),
+                new MockEntity(6, "test2"));
+
+        stubFor(get(urlEqualTo("/endpoint/"))
+                .withHeader(ACCEPT, equalTo(JSON_MIME))
+                .willReturn(aResponse()
+                        .withStatus(SC_OK)
+                        .withHeader(CONTENT_TYPE, JSON_MIME)
+                        .withHeader(ETAG, "\"123abc\"")
+                        .withBody("[{\"id\":5,\"name\":\"test1\"},{\"id\":6,\"name\":\"test2\"}]")));
+        List<MockEntity> result1 = endpoint.readAll();
+        assertThat(result1, is(equalTo(expected)));
+
+        stubFor(get(urlEqualTo("/endpoint/"))
+                .withHeader(ACCEPT, equalTo(JSON_MIME))
+                .withHeader(IF_NONE_MATCH, equalTo("\"123abc\""))
+                .willReturn(aResponse()
+                        .withStatus(SC_NOT_MODIFIED)));
+        List<MockEntity> result2 = endpoint.readAll();
+        assertThat(result2, is(equalTo(expected)));
+
+        assertThat("Cache responses, not deserialized objects",
+                result2, is(not(sameInstance(result1))));
+    }
+
+    @Test
     @Ignore("Works in isolation but fails when executed as part of test suite")
     public void testCreate() throws Exception {
         URI location = URI.create("/endpoint/new");

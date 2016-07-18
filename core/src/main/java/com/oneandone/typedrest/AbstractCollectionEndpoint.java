@@ -25,7 +25,7 @@ import lombok.*;
  * provide for individual <code>TEntity</code>s.
  */
 public abstract class AbstractCollectionEndpoint<TEntity, TElementEndpoint extends ElementEndpoint<TEntity>>
-        extends AbstractEndpoint implements GenericCollectionEndpoint<TEntity, TElementEndpoint> {
+        extends AbstractETagEndpoint implements GenericCollectionEndpoint<TEntity, TElementEndpoint> {
 
     @Getter
     protected final Class<TEntity> entityType;
@@ -101,10 +101,10 @@ public abstract class AbstractCollectionEndpoint<TEntity, TElementEndpoint exten
     @Override
     public List<TEntity> readAll()
             throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException {
-        HttpResponse response = executeAndHandle(Request.Get(uri));
+        HttpEntity content = getContent();
 
         JavaType collectionType = serializer.getTypeFactory().constructCollectionType(List.class, entityType);
-        return serializer.readValue(EntityUtils.toString(response.getEntity()), collectionType);
+        return serializer.readValue(EntityUtils.toString(content), collectionType);
     }
 
     @Override

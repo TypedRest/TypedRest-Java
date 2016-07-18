@@ -6,6 +6,7 @@ import static org.apache.http.HttpHeaders.*;
 import static org.apache.http.HttpStatus.*;
 import org.junit.*;
 import static com.oneandone.typedrest.AbstractEndpointTest.JSON_MIME;
+import java.util.List;
 
 public class BulkCollectionEndpointTest extends AbstractEndpointTest {
 
@@ -30,6 +31,26 @@ public class BulkCollectionEndpointTest extends AbstractEndpointTest {
         endpoint.setAll(asList(
                 new MockEntity(5, "test1"),
                 new MockEntity(6, "test2")));
+    }
+
+    @Test
+    public void testSetAllETag() throws Exception {        
+        stubFor(get(urlEqualTo("/endpoint/"))
+                .withHeader(ACCEPT, equalTo(JSON_MIME))
+                .willReturn(aResponse()
+                        .withStatus(SC_OK)
+                        .withHeader(CONTENT_TYPE, JSON_MIME)
+                        .withHeader(ETAG, "\"123abc\"")
+                        .withBody("[{\"id\":5,\"name\":\"test1\"},{\"id\":6,\"name\":\"test2\"}]")));
+        List<MockEntity> result = endpoint.readAll();
+        
+        stubFor(put(urlEqualTo("/endpoint/"))
+                .withHeader(ACCEPT, equalTo(JSON_MIME))
+                .withHeader(IF_MATCH, matching("\"123abc\""))
+                .withRequestBody(equalToJson("[{\"id\":5,\"name\":\"test1\"},{\"id\":6,\"name\":\"test2\"}]"))
+                .willReturn(aResponse()
+                        .withStatus(SC_NO_CONTENT)));
+        endpoint.setAll(result);
     }
 
     @Test

@@ -5,6 +5,8 @@ import org.apache.http.entity.ContentType;
 import java.io.*;
 import java.net.URI;
 import java.util.*;
+import org.apache.http.HttpEntity;
+import org.apache.http.entity.StringEntity;
 
 /**
  * Base class for building REST endpoints that represents a collection of
@@ -61,8 +63,8 @@ public abstract class AbstractBulkCollectionEndpoint<TEntity, TElementEndpoint e
             throw new IllegalArgumentException("entities must not be null.");
         }
 
-        String jsonSend = serializer.writeValueAsString(entities);
-        executeAndHandle(Request.Put(uri).bodyString(jsonSend, ContentType.APPLICATION_JSON));
+        HttpEntity content = new StringEntity(serializer.writeValueAsString(entities), ContentType.APPLICATION_JSON);
+        putContent(content);
     }
 
     @Override
@@ -73,6 +75,7 @@ public abstract class AbstractBulkCollectionEndpoint<TEntity, TElementEndpoint e
         }
 
         String jsonSend = serializer.writeValueAsString(entities);
-        executeAndHandle(Request.Post(link("bulk")).bodyString(jsonSend, ContentType.APPLICATION_JSON));
+        Request request = Request.Post(link("bulk")).bodyString(jsonSend, ContentType.APPLICATION_JSON);
+        executeAndHandle(request);
     }
 }

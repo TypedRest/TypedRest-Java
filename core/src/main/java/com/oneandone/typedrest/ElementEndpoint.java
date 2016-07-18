@@ -104,7 +104,9 @@ public interface ElementEndpoint<TEntity>
      * {@link HttpStatus#SC_FORBIDDEN}
      * @throws FileNotFoundException {@link HttpStatus#SC_NOT_FOUND} or
      * {@link HttpStatus#SC_GONE}
-     * @throws IllegalStateException {@link HttpStatus#SC_CONFLICT}
+     * @throws IllegalStateException The entity has changed since it was last
+     * retrieved with {@link #read()}. Your delete call was rejected to prevent
+     * a lost update.
      * @throws RuntimeException Other non-success status code.
      */
     void delete()

@@ -42,7 +42,9 @@ public interface GenericBulkCollectionEndpoint<TEntity, TElementEndpoint extends
      * {@link HttpStatus#SC_FORBIDDEN}
      * @throws FileNotFoundException {@link HttpStatus#SC_NOT_FOUND} or
      * {@link HttpStatus#SC_GONE}
-     * @throws IllegalStateException {@link HttpStatus#SC_CONFLICT}
+     * @throws IllegalStateException The entities have changed since they were
+     * last retrieved with {@link #readAll()}. Your changes were rejected to
+     * prevent a lost update.
      * @throws RuntimeException Other non-success status code.
      */
     void setAll(Collection<TEntity> entities)

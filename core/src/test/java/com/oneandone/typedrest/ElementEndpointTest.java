@@ -26,19 +26,10 @@ public class ElementEndpointTest extends AbstractEndpointTest {
                 .willReturn(aResponse()
                         .withStatus(SC_OK)
                         .withHeader(CONTENT_TYPE, JSON_MIME)
-                        .withHeader(ETAG, "\"123abc\"")
                         .withBody("{\"id\":5,\"name\":\"test\"}")));
+
         assertThat(endpoint.read(),
                 is(equalTo(new MockEntity(5, "test"))));
-
-        stubFor(get(urlEqualTo("/endpoint"))
-                .withHeader(ACCEPT, equalTo(JSON_MIME))
-                .withHeader(IF_NONE_MATCH, equalTo("\"123abc\""))
-                .willReturn(aResponse()
-                        .withStatus(SC_NOT_MODIFIED)));
-        assertThat(endpoint.read(),
-                is(equalTo(new MockEntity(5, "test"))));
-
     }
 
     @Test
@@ -48,10 +39,21 @@ public class ElementEndpointTest extends AbstractEndpointTest {
                 .willReturn(aResponse()
                         .withStatus(SC_OK)
                         .withHeader(CONTENT_TYPE, JSON_MIME)
+                        .withHeader(ETAG, "\"123abc\"")
                         .withBody("{\"id\":5,\"name\":\"test\"}")));
+        MockEntity result1 = endpoint.read();
+        assertThat(result1, is(equalTo(new MockEntity(5, "test"))));
 
-        assertThat(endpoint.read(),
-                is(equalTo(new MockEntity(5, "test"))));
+        stubFor(get(urlEqualTo("/endpoint"))
+                .withHeader(ACCEPT, equalTo(JSON_MIME))
+                .withHeader(IF_NONE_MATCH, equalTo("\"123abc\""))
+                .willReturn(aResponse()
+                        .withStatus(SC_NOT_MODIFIED)));
+        MockEntity result2 = endpoint.read();
+        assertThat(result2, is(equalTo(new MockEntity(5, "test"))));
+
+        assertThat("Cache responses, not deserialized objects",
+                result2, is(not(sameInstance(result1))));
     }
 
     @Test
@@ -97,7 +99,7 @@ public class ElementEndpointTest extends AbstractEndpointTest {
     }
 
     @Test
-    public void testUpdateEtag() throws Exception {
+    public void testUpdateETag() throws Exception {
         stubFor(get(urlEqualTo("/endpoint"))
                 .withHeader(ACCEPT, equalTo(JSON_MIME))
                 .willReturn(aResponse()
@@ -108,8 +110,9 @@ public class ElementEndpointTest extends AbstractEndpointTest {
         MockEntity entity = endpoint.read();
 
         stubFor(put(urlEqualTo("/endpoint"))
-                .withRequestBody(equalToJson("{\"id\":5,\"name\":\"test\"}"))
+                .withHeader(ACCEPT, equalTo(JSON_MIME))
                 .withHeader(IF_MATCH, matching("\"123abc\""))
+                .withRequestBody(equalToJson("{\"id\":5,\"name\":\"test\"}"))
                 .willReturn(aResponse()
                         .withStatus(SC_NO_CONTENT)));
         endpoint.update(entity);
@@ -129,6 +132,25 @@ public class ElementEndpointTest extends AbstractEndpointTest {
     @Test
     public void testDelete() throws Exception {
         stubFor(delete(urlEqualTo("/endpoint"))
+                .willReturn(aResponse()
+                        .withStatus(SC_NO_CONTENT)));
+
+        endpoint.delete();
+    }
+
+    @Test
+    public void testDeleteETag() throws Exception {
+        stubFor(get(urlEqualTo("/endpoint"))
+                .withHeader(ACCEPT, equalTo(JSON_MIME))
+                .willReturn(aResponse()
+                        .withStatus(SC_OK)
+                        .withHeader(CONTENT_TYPE, JSON_MIME)
+                        .withHeader(ETAG, "\"123abc\"")
+                        .withBody("{\"id\":5,\"name\":\"test\"}")));
+        endpoint.read();
+
+        stubFor(delete(urlEqualTo("/endpoint"))
+                .withHeader(IF_MATCH, matching("\"123abc\""))
                 .willReturn(aResponse()
                         .withStatus(SC_NO_CONTENT)));
 
