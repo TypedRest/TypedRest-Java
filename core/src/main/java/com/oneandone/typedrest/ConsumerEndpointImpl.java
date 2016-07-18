@@ -38,7 +38,7 @@ public class ConsumerEndpointImpl<TEntity>
      * @param referrer The endpoint used to navigate to this one.
      * @param relativeUri The URI of this endpoint relative to the
      * <code>referrer</code>'s. Prefix <code>./</code> to append a trailing
-     * slash to the <c>referrer</c> URI if missing.
+     * slash to the <code>referrer</code> URI if missing.
      * @param entityType The type of entity the endpoint takes as input.
      */
     public ConsumerEndpointImpl(Endpoint referrer, String relativeUri, Class<TEntity> entityType) {

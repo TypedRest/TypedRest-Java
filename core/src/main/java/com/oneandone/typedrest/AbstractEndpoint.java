@@ -88,8 +88,8 @@ public abstract class AbstractEndpoint
      * @param referrer The parent endpoint containing this one.
      * @param relativeUri The URI of this endpoint relative to the
      * <code>referrer</code>'s. Prefix <code>./</code> to append a trailing
-     * slash to the <c>referrer</c> URI if missing. Prefix <code>./</code> to
-     * append a trailing slash to the <c>referrer</c> URI if missing.
+     * slash to the <code>referrer</code> URI if missing. Prefix <code>./</code> to
+     * append a trailing slash to the <code>referrer</code> URI if missing.
      */
     protected AbstractEndpoint(Endpoint referrer, String relativeUri) {
         this((relativeUri.startsWith("./") ? ensureTrailingSlash(referrer.getUri()) : referrer.getUri())

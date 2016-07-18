@@ -10,9 +10,9 @@ import java.io.IOException;
 import rx.util.async.StoppableObservable;
 
 /**
- * View component operating on a {@link PolllingEndpoint}.
+ * View component operating on a {@link PollingEndpoint}.
  *
- * @param <TEntity> The type of entity the {@link PolllingEndpoint} represents.
+ * @param <TEntity> The type of entity the {@link PollingEndpoint} represents.
  */
 public class PollingView<TEntity>
         extends AbstractElementView<TEntity, PollingEndpoint<TEntity>> {
