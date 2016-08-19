@@ -41,16 +41,26 @@ public abstract class AbstractEndpointView<TEndpoint extends Endpoint>
         setSizeFull();
     }
 
+    boolean eventBusRegistered;
+
     @Override
     public void attach() {
         super.attach();
         refresh();
-        eventBus.register(this);
+
+        if (!eventBusRegistered) {
+            eventBus.register(this);
+            eventBusRegistered = true;
+        }
     }
 
     @Override
     public void detach() {
-        eventBus.unregister(this);
+        if (eventBusRegistered) {
+            eventBus.unregister(this);
+            eventBusRegistered = false;
+        }
+
         super.detach();
     }
 
