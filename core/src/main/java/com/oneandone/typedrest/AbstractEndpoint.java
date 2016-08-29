@@ -63,8 +63,6 @@ public abstract class AbstractEndpoint
         this.uri = uri;
         this.executor = executor;
         this.serializer = serializer;
-
-        defaultHeaders.add(new BasicHeader(ACCEPT, ContentType.APPLICATION_JSON.getMimeType()));
     }
 
     /**

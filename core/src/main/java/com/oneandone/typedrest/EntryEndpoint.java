@@ -6,8 +6,11 @@ import static com.oneandone.typedrest.URIUtils.ensureTrailingSlash;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.*;
+import static org.apache.http.HttpHeaders.ACCEPT;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.fluent.*;
+import org.apache.http.entity.ContentType;
+import org.apache.http.message.BasicHeader;
 
 /**
  * Entry point to a REST interface. Derive from this class and add your own set
@@ -24,6 +27,7 @@ public class EntryEndpoint
      */
     public EntryEndpoint(URI uri) {
         this(uri, defaultSerializer());
+        defaultHeaders.add(new BasicHeader(ACCEPT, ContentType.APPLICATION_JSON.getMimeType()));
     }
 
     /**
@@ -50,6 +54,7 @@ public class EntryEndpoint
      */
     public EntryEndpoint(URI uri, String username, String password) {
         this(uri, username, password, defaultSerializer());
+        defaultHeaders.add(new BasicHeader(ACCEPT, ContentType.APPLICATION_JSON.getMimeType()));
     }
 
     /**
