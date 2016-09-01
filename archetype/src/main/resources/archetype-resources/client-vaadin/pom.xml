@@ -26,12 +26,5 @@
             <artifactId>typedrest-vaadin</artifactId>
             <version>${typedrest.version}</version>
         </dependency>
-
-        <!-- JSON -->
-        <dependency>
-            <groupId>com.fasterxml.jackson.datatype</groupId>
-            <artifactId>jackson-datatype-jsr310</artifactId>
-            <version>2.7.5</version>
-        </dependency>
     </dependencies>
 </project>

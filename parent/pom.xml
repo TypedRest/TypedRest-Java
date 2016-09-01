@@ -38,7 +38,9 @@
 
     <properties>
         <typedrest.version>0.24-SNAPSHOT</typedrest.version>
-        <jackson.version>2.8.1</jackson.version>
+
+        <!-- Warning: 2.8.x causes problems with missing methods for jsr310 -->
+        <jackson.version>2.7.7</jackson.version>
     </properties>
 
     <profiles>
