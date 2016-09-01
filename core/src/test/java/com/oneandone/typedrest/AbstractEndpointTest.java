@@ -11,12 +11,12 @@ public abstract class AbstractEndpointTest {
     protected static final String JSON_MIME = ContentType.APPLICATION_JSON.getMimeType();
     protected static final String LINK = "Link";
 
-    private static final int port = 8089;
+    private final int port = 8089;
 
     @Rule
     public WireMockRule wireMockRule = new WireMockRule(port);
 
-    protected static final URI serverUri = URI.create("http://localhost:" + port + "/");
+    protected final URI serverUri = URI.create("http://localhost:" + port + "/");
 
     @Before
     public void before() {

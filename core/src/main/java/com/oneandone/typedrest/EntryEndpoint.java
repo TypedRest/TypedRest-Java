@@ -6,10 +6,12 @@ import static com.oneandone.typedrest.URIUtils.ensureTrailingSlash;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.*;
-import static org.apache.http.HttpHeaders.ACCEPT;
+import java.util.Base64;
+import lombok.SneakyThrows;
+import static org.apache.http.HttpHeaders.*;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.fluent.*;
-import org.apache.http.entity.ContentType;
+import static org.apache.http.entity.ContentType.APPLICATION_JSON;
 import org.apache.http.message.BasicHeader;
 
 /**
@@ -27,7 +29,7 @@ public class EntryEndpoint
      */
     public EntryEndpoint(URI uri) {
         this(uri, defaultSerializer());
-        defaultHeaders.add(new BasicHeader(ACCEPT, ContentType.APPLICATION_JSON.getMimeType()));
+        setAcceptJsonHeader();
     }
 
     /**
@@ -54,7 +56,18 @@ public class EntryEndpoint
      */
     public EntryEndpoint(URI uri, String username, String password) {
         this(uri, username, password, defaultSerializer());
-        defaultHeaders.add(new BasicHeader(ACCEPT, ContentType.APPLICATION_JSON.getMimeType()));
+        setAcceptJsonHeader();
+    }
+
+    private static ObjectMapper defaultSerializer() {
+        return new ObjectMapper()
+                .setSerializationInclusion(JsonInclude.Include.NON_NULL)
+                .configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES, true)
+                .findAndRegisterModules();
+    }
+
+    private void setAcceptJsonHeader() {
+        defaultHeaders.add(new BasicHeader(ACCEPT, APPLICATION_JSON.getMimeType()));
     }
 
     /**
@@ -70,14 +83,14 @@ public class EntryEndpoint
      * received from the server.
      */
     public EntryEndpoint(URI uri, String username, String password, ObjectMapper serializer) {
-        super(ensureTrailingSlash(uri), Executor.newInstance().authPreemptive(uri.getHost()).auth(username, password), serializer);
+        super(ensureTrailingSlash(uri), Executor.newInstance(), serializer);
+        setBasicAuthHeader(username, password);
     }
 
-    private static ObjectMapper defaultSerializer() {
-        return new ObjectMapper()
-                .setSerializationInclusion(JsonInclude.Include.NON_NULL)
-                .configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES, true)
-                .findAndRegisterModules();
+    @SneakyThrows
+    private void setBasicAuthHeader(String username, String password) {
+        byte[] bytesEncoded = Base64.getEncoder().encode((username + ":" + password).getBytes("ISO-8859-1"));
+        defaultHeaders.add(new BasicHeader(AUTHORIZATION, "Basic " + new String(bytesEncoded)));
     }
 
     /**
