@@ -2,18 +2,11 @@ package com.oneandone.typedrest.vaadin.views;
 
 import com.google.gwt.thirdparty.guava.common.eventbus.EventBus;
 import com.oneandone.typedrest.*;
-import static com.oneandone.typedrest.ThrowableUtils.getFullMessage;
-import com.oneandone.typedrest.vaadin.NotificationErrorHandler;
 import com.oneandone.typedrest.vaadin.forms.AutoEntityLister;
 import com.oneandone.typedrest.vaadin.forms.EntityLister;
 import com.vaadin.annotations.Push;
-import com.vaadin.ui.Notification;
 import com.vaadin.ui.*;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import rx.*;
 import rx.util.async.StoppableObservable;
 
 /**
