@@ -81,8 +81,8 @@ public class CollectionEndpointTest extends AbstractEndpointTest {
     }
 
     @Test
-    public void testGetByRelativeUri() {
-        assertThat(endpoint.get(URI.create("1")).getUri(),
+    public void testBuildElementEndpoint() {
+        assertThat(endpoint.buildElementEndpoint(URI.create("1")).getUri(),
                 is(equalTo(endpoint.getUri().resolve("1"))));
     }
 

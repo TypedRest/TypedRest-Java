@@ -1,7 +1,6 @@
 package com.oneandone.typedrest;
 
 import java.io.*;
-import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 import org.apache.http.*;
@@ -25,17 +24,6 @@ public interface GenericCollectionEndpoint<TEntity, TElementEndpoint extends Ele
      * @return The class type.
      */
     Class<TEntity> getEntityType();
-
-    /**
-     * Returns a {@link ElementEndpoint} for a specific child element of this
-     * collection. Does not perform any network traffic yet.
-     *
-     * @param relativeUri The URI of the child endpoint relative to the this
-     * endpoint.
-     * @return An {@link ElementEndpoint} for a specific element of this
-     * collection.
-     */
-    TElementEndpoint get(URI relativeUri);
 
     /**
      * Returns a {@link ElementEndpoint} for a specific child element of this

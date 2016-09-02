@@ -65,13 +65,24 @@ public abstract class AbstractCollectionEndpoint<TEntity, TElementEndpoint exten
         setDefaultLinkTemplate("child", "{id}");
     }
 
+    /**
+     * Builds a {@link ElementEndpoint} for a specific child element of this
+     * collection. Does not perform any network traffic yet.
+     *
+     * @param relativeUri The URI of the child endpoint relative to the this
+     * endpoint.
+     * @return An {@link ElementEndpoint} for a specific element of this
+     * collection.
+     */
+    protected abstract TElementEndpoint buildElementEndpoint(URI relativeUri);
+
     @Override
     public TElementEndpoint get(String id) {
         if (id == null) {
             throw new IllegalArgumentException("id");
         }
 
-        return get(linkTemplate("child", "id", id));
+        return buildElementEndpoint(linkTemplate("child", "id", id));
     }
 
     @Override
@@ -123,7 +134,7 @@ public abstract class AbstractCollectionEndpoint<TEntity, TElementEndpoint exten
         HttpResponse response = executeAndHandle(Request.Post(uri).bodyString(jsonSend, ContentType.APPLICATION_JSON));
         Header locationHeader = response.getFirstHeader(LOCATION);
         return (response.getStatusLine().getStatusCode() == SC_CREATED || response.getStatusLine().getStatusCode() == SC_ACCEPTED) && (locationHeader != null)
-                ? get(URI.create(locationHeader.getValue()))
+                ? buildElementEndpoint(URI.create(locationHeader.getValue()))
                 : null;
     }
 }

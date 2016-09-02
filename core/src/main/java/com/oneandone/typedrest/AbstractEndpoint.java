@@ -268,6 +268,10 @@ public abstract class AbstractEndpoint
             case HttpStatus.SC_PRECONDITION_FAILED:
             case HttpStatus.SC_REQUESTED_RANGE_NOT_SATISFIABLE:
                 throw new IllegalStateException(message, inner);
+//            case HttpStatus.SC_REQUESTED_RANGE_NOT_SATISFIABLE:
+//                throw new VersionNotFoundException(message, inner);
+//            case HttpStatus.SC_REQUEST_TIMEOUT:
+//                throw new TimeoutException(message);
             default:
                 throw new RuntimeException(message, inner);
         }

@@ -40,7 +40,7 @@ public class BulkCollectionEndpointImpl<TEntity>
     }
 
     @Override
-    public ElementEndpoint<TEntity> get(URI relativeUri) {
+    protected ElementEndpoint<TEntity> buildElementEndpoint(URI relativeUri) {
         return new ElementEndpointImpl<>(this, relativeUri, entityType);
     }
 }
