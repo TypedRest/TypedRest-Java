@@ -13,7 +13,7 @@ import org.apache.http.*;
  * @param <TElementEndpoint> The specific type of {@link ElementEndpoint} to
  * provide for individual <code>TEntity</code>s.
  */
-public interface GenericPagedCollectionEndpoint<TEntity, TElementEndpoint extends ElementEndpoint<TEntity>>
+public interface GenericPagedCollectionEndpoint<TEntity, TElementEndpoint extends Endpoint>
         extends GenericCollectionEndpoint<TEntity, TElementEndpoint> {
 
     /**

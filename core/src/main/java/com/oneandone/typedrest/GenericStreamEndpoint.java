@@ -12,7 +12,7 @@ import rx.util.async.StoppableObservable;
  * @param <TElementEndpoint> The specific type of {@link ElementEndpoint} to
  * provide for individual <code>TEntity</code>s.
  */
-public interface GenericStreamEndpoint<TEntity, TElementEndpoint extends ElementEndpoint<TEntity>>
+public interface GenericStreamEndpoint<TEntity, TElementEndpoint extends Endpoint>
         extends GenericPagedCollectionEndpoint<TEntity, TElementEndpoint> {
 
     /**

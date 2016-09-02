@@ -18,7 +18,7 @@ import static org.apache.http.HttpHeaders.*;
  * @param <TElementEndpoint> The specific type of {@link ElementEndpoint} to
  * provide for individual <code>TEntity</code>s.
  */
-public abstract class AbstractPagedCollectionEndpoint<TEntity, TElementEndpoint extends ElementEndpoint<TEntity>>
+public abstract class AbstractPagedCollectionEndpoint<TEntity, TElementEndpoint extends Endpoint>
         extends AbstractCollectionEndpoint<TEntity, TElementEndpoint> implements GenericPagedCollectionEndpoint<TEntity, TElementEndpoint> {
 
     /**

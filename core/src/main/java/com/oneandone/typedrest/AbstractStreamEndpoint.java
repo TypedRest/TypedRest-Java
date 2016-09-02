@@ -15,7 +15,7 @@ import static rx.util.async.Async.runAsync;
  * @param <TElementEndpoint> The specific type of {@link ElementEndpoint} to
  * provide for individual <code>TEntity</code>s.
  */
-public abstract class AbstractStreamEndpoint<TEntity, TElementEndpoint extends ElementEndpoint<TEntity>>
+public abstract class AbstractStreamEndpoint<TEntity, TElementEndpoint extends Endpoint>
         extends AbstractPagedCollectionEndpoint<TEntity, TElementEndpoint> implements GenericStreamEndpoint<TEntity, TElementEndpoint> {
 
     /**

@@ -17,7 +17,7 @@ import org.apache.http.entity.StringEntity;
  * @param <TElementEndpoint> The specific type of {@link ElementEndpoint} to
  * provide for individual <code>TEntity</code>s.
  */
-public abstract class AbstractBulkCollectionEndpoint<TEntity, TElementEndpoint extends ElementEndpoint<TEntity>>
+public abstract class AbstractBulkCollectionEndpoint<TEntity, TElementEndpoint extends Endpoint>
         extends AbstractCollectionEndpoint<TEntity, TElementEndpoint> implements GenericBulkCollectionEndpoint<TEntity, TElementEndpoint> {
 
     /**

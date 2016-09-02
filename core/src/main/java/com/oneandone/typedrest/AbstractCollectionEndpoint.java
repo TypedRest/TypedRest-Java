@@ -24,7 +24,7 @@ import lombok.*;
  * @param <TElementEndpoint> The specific type of {@link ElementEndpoint} to
  * provide for individual <code>TEntity</code>s.
  */
-public abstract class AbstractCollectionEndpoint<TEntity, TElementEndpoint extends ElementEndpoint<TEntity>>
+public abstract class AbstractCollectionEndpoint<TEntity, TElementEndpoint extends Endpoint>
         extends AbstractETagEndpoint implements GenericCollectionEndpoint<TEntity, TElementEndpoint> {
 
     @Getter

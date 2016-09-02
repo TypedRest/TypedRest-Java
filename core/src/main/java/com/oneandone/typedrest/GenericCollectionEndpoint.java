@@ -15,7 +15,7 @@ import org.apache.http.*;
  * @param <TElementEndpoint> The specific type of {@link ElementEndpoint} to
  * provide for individual <code>TEntity</code>s.
  */
-public interface GenericCollectionEndpoint<TEntity, TElementEndpoint extends ElementEndpoint<TEntity>>
+public interface GenericCollectionEndpoint<TEntity, TElementEndpoint extends Endpoint>
         extends Endpoint {
 
     /**
@@ -98,113 +98,4 @@ public interface GenericCollectionEndpoint<TEntity, TElementEndpoint extends Ele
      */
     TElementEndpoint create(TEntity entity)
             throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, IllegalStateException;
-
-    /**
-     * Determines whether the collection contains a specific entity.
-     *
-     * This is a convenience method equivalent to combining
-     * {@link #get(java.lang.String)} with {@link ElementEndpoint#exists()}.
-     *
-     * @param id The ID identifying the entity in the collection.
-     * @return <code>true</code> if the collection contains the entity,
-     * <code>false</code> if it does not.
-     *
-     * @throws IOException Network communication failed.
-     * @throws IllegalAccessException {@link HttpStatus#SC_UNAUTHORIZED} or
-     * {@link HttpStatus#SC_FORBIDDEN}
-     * @throws RuntimeException Other non-success status code.
-     */
-    default boolean contains(String id)
-            throws IOException, IllegalAccessException {
-        return get(id).exists();
-    }
-
-    /**
-     * Determines whether the collection contains a specific entity.
-     *
-     * This is a convenience method equivalent to combining
-     * {@link #get(java.lang.Object)} with {@link ElementEndpoint#exists()}.
-     *
-     * @param element The element to be checked.
-     * @return <code>true</code> if the collection contains the entity,
-     * <code>false</code> if it does not.
-     *
-     * @throws IOException Network communication failed.
-     * @throws IllegalAccessException {@link HttpStatus#SC_UNAUTHORIZED} or
-     * {@link HttpStatus#SC_FORBIDDEN}
-     * @throws RuntimeException Other non-success status code.
-     */
-    default boolean contains(TEntity element)
-            throws IOException, IllegalAccessException {
-        return get(element).exists();
-    }
-
-    /**
-     * Updates an existing element in the collection.
-     *
-     * This is a convenience method equivalent to combining
-     * {@link #get(java.lang.Object)} with
-     * {@link ElementEndpoint#update(java.lang.Object)}.
-     *
-     * @param element The element to be updated.
-     * @return The <code>TEntity</code> as returned by the server, possibly with
-     * additional fields set. <code>null</code> if the server does not respond
-     * with a result entity.
-     * @throws IOException Network communication failed.
-     * @throws IllegalArgumentException {@link HttpStatus#SC_BAD_REQUEST}
-     * @throws IllegalAccessException {@link HttpStatus#SC_UNAUTHORIZED} or
-     * {@link HttpStatus#SC_FORBIDDEN}
-     * @throws FileNotFoundException {@link HttpStatus#SC_NOT_FOUND} or
-     * {@link HttpStatus#SC_GONE}
-     * @throws IllegalStateException The entity has changed since it was last
-     * retrieved with {@link ElementEndpoint#read()}. Your changes were rejected
-     * to prevent a lost update.
-     * @throws RuntimeException Other non-success status code.
-     */
-    default TEntity update(TEntity element)
-            throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, IllegalStateException {
-        return get(element).update(element);
-    }
-
-    /**
-     * Deletes an existing element from the collection.
-     *
-     * This is a convenience method equivalent to combining
-     * {@link #get(java.lang.String)} with {@link ElementEndpoint#delete()}.
-     *
-     * @param id The ID identifying the entity in the collection.
-     * @throws IOException Network communication failed.
-     * @throws IllegalArgumentException {@link HttpStatus#SC_BAD_REQUEST}
-     * @throws IllegalAccessException {@link HttpStatus#SC_UNAUTHORIZED} or
-     * {@link HttpStatus#SC_FORBIDDEN}
-     * @throws FileNotFoundException {@link HttpStatus#SC_NOT_FOUND} or
-     * {@link HttpStatus#SC_GONE}
-     * @throws IllegalStateException {@link HttpStatus#SC_CONFLICT}
-     * @throws RuntimeException Other non-success status code.
-     */
-    default void delete(String id)
-            throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, IllegalStateException {
-        get(id).delete();
-    }
-
-    /**
-     * Deletes an existing element from the collection.
-     *
-     * This is a convenience method equivalent to combining
-     * {@link #get(java.lang.Object)} with {@link ElementEndpoint#delete()}.
-     *
-     * @param element The element to be deletes.
-     * @throws IOException Network communication failed.
-     * @throws IllegalArgumentException {@link HttpStatus#SC_BAD_REQUEST}
-     * @throws IllegalAccessException {@link HttpStatus#SC_UNAUTHORIZED} or
-     * {@link HttpStatus#SC_FORBIDDEN}
-     * @throws FileNotFoundException {@link HttpStatus#SC_NOT_FOUND} or
-     * {@link HttpStatus#SC_GONE}
-     * @throws IllegalStateException {@link HttpStatus#SC_CONFLICT}
-     * @throws RuntimeException Other non-success status code.
-     */
-    default void delete(TEntity element)
-            throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, IllegalStateException {
-        get(element).delete();
-    }
 }

@@ -15,7 +15,7 @@ import org.apache.http.*;
  * @param <TElementEndpoint> The specific type of {@link ElementEndpoint} to
  * provide for individual <code>TEntity</code>s.
  */
-public interface GenericBulkCollectionEndpoint<TEntity, TElementEndpoint extends ElementEndpoint<TEntity>>
+public interface GenericBulkCollectionEndpoint<TEntity, TElementEndpoint extends Endpoint>
         extends GenericCollectionEndpoint<TEntity, TElementEndpoint> {
 
     /**
