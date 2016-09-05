@@ -32,10 +32,6 @@ public class UISubscriber<T> implements Observer<T> {
 
     @Override
     public void onCompleted() {
-        ui.access(() -> {
-            Notification.show("Done", "No more data available.", Notification.Type.TRAY_NOTIFICATION);
-            ui.push();
-        });
     }
 
     @Override

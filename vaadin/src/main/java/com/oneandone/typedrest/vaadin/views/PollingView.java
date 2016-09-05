@@ -7,6 +7,7 @@ import com.oneandone.typedrest.vaadin.forms.EntityForm;
 import com.vaadin.data.Validator;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import lombok.*;
 import rx.util.async.StoppableObservable;
 
 /**
@@ -53,46 +54,53 @@ public class PollingView<TEntity>
         throw new UnsupportedOperationException();
     }
 
-    private boolean streamingEnabled = true;
+    private boolean pollingEnabled = true;
 
-    public void setStreamingEnabled(boolean streamingEnabled) {
-        this.streamingEnabled = streamingEnabled;
+    public void setPollingEnabled(boolean streamingEnabled) {
+        this.pollingEnabled = streamingEnabled;
         if (isAttached()) {
             if (streamingEnabled) {
-                startStreaming();
+                startPolling();
             } else {
-                stopStreaming();
+                stopPolling();
             }
         }
     }
 
-    public boolean isStreamingEnabled() {
-        return streamingEnabled;
+    public boolean isPollingEnabled() {
+        return pollingEnabled;
     }
 
     @Override
     public void attach() {
         super.attach();
-        if (streamingEnabled) {
-            startStreaming();
+        if (pollingEnabled) {
+            startPolling();
         }
     }
 
     @Override
     public void detach() {
-        stopStreaming();
+        stopPolling();
         super.detach();
     }
 
+    /**
+     * The interval in milliseconds in which to send requests to the server.
+     */
+    @Getter
+    @Setter
+    private Integer pollingInterval = 4000;
+
     private StoppableObservable<TEntity> observable;
 
-    private void startStreaming() {
-        stopStreaming();
-        observable = endpoint.getObservable(2);
+    private void startPolling() {
+        stopPolling();
+        observable = endpoint.getObservable(pollingInterval);
         observable.subscribe(new UISubscriber<>(entityForm::setEntity));
     }
 
-    private void stopStreaming() {
+    private void stopPolling() {
         if (observable != null) {
             observable.unsubscribe();
             observable = null;

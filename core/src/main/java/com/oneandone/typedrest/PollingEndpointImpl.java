@@ -88,8 +88,8 @@ public class PollingEndpointImpl<TEntity>
      * Provides an observable stream of element states. Compares entities using
      * {@link Object#equals(java.lang.Object)} to detect changes.
      *
-     * @param pollingInterval The interval in seconds in which to send requests
-     * to the server.
+     * @param pollingInterval The interval in milliseconds in which to send
+     * requests to the server.
      * @param endCondition An optional predicate determining which entity state
      * ends the polling process.
      * @param scheduler The scheduler used to run the background thread.
@@ -108,7 +108,7 @@ public class PollingEndpointImpl<TEntity>
 
             while (endCondition == null || !endCondition.test(previousEntity)) {
                 try {
-                    sleep(0);
+                    sleep(pollingInterval);
                 } catch (InterruptedException ex) {
                 }
                 if (subscription.isUnsubscribed()) {
