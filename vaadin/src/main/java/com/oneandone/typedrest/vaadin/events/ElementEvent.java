@@ -1,6 +1,6 @@
 package com.oneandone.typedrest.vaadin.events;
 
-import com.google.gwt.thirdparty.guava.common.eventbus.EventBus;
+import com.google.common.eventbus.EventBus;
 import com.oneandone.typedrest.ElementEndpoint;
 
 /**

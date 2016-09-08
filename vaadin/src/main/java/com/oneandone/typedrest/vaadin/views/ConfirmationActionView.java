@@ -1,6 +1,6 @@
 package com.oneandone.typedrest.vaadin.views;
 
-import com.google.gwt.thirdparty.guava.common.eventbus.EventBus;
+import com.google.common.eventbus.EventBus;
 import com.vaadin.ui.UI;
 import org.vaadin.dialogs.ConfirmDialog;
 import com.oneandone.typedrest.ActionEndpoint;

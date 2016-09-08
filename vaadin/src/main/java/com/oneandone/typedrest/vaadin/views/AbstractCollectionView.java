@@ -1,7 +1,7 @@
 package com.oneandone.typedrest.vaadin.views;
 
-import com.google.gwt.thirdparty.guava.common.eventbus.EventBus;
-import com.google.gwt.thirdparty.guava.common.eventbus.Subscribe;
+import com.google.common.eventbus.EventBus;
+import com.google.common.eventbus.Subscribe;
 import com.oneandone.typedrest.*;
 import com.oneandone.typedrest.vaadin.events.ElementEvent;
 import com.oneandone.typedrest.vaadin.forms.AutoEntityLister;
