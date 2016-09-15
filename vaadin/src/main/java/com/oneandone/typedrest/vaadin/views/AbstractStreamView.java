@@ -7,6 +7,7 @@ import com.oneandone.typedrest.vaadin.forms.EntityLister;
 import com.vaadin.annotations.Push;
 import com.vaadin.ui.*;
 import java.util.concurrent.TimeUnit;
+import lombok.*;
 import rx.util.async.StoppableObservable;
 
 /**
@@ -70,6 +71,14 @@ public abstract class AbstractStreamView<TEntity, TEndpoint extends GenericStrea
         return streamingEnabled;
     }
 
+    /**
+     * The index of the first element to load from the stream. Use negative
+     * values to start counting from the end of the stream.
+     */
+    @Getter
+    @Setter
+    private int startIndex;
+
     @Override
     public void attach() {
         super.attach();
@@ -88,7 +97,16 @@ public abstract class AbstractStreamView<TEntity, TEndpoint extends GenericStrea
 
     private void startStreaming() {
         stopStreaming();
-        observable = endpoint.getObservable(lister.entityCount());
+
+        if (startIndex == 0) {
+            // Continue streaming from where we left off
+            observable = endpoint.getObservable(lister.entityCount());
+        } else {
+            // Always start fresh from the specified start index
+            lister.clearEntities();
+            observable = endpoint.getObservable(startIndex);
+        }
+
         observable
                 .buffer(1, TimeUnit.SECONDS).filter(x -> !x.isEmpty())
                 .subscribe(new UISubscriber<>(x -> {
