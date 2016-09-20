@@ -30,6 +30,7 @@ public class AutoEntityForm<TEntity>
         for (PropertyDescriptor property : getPropertiesWithoutAnnotation(entityType, EditorHidden.class)) {
             if (property.getWriteMethod() != null) {
                 Component component = buildAndBind(property);
+                component.setWidth(100, Unit.PERCENTAGE);
                 if (component.getCaption() == null) {
                     component.setCaption(propertyIdToHumanFriendly(property.getName()));
                 }
@@ -53,7 +54,6 @@ public class AutoEntityForm<TEntity>
     protected Component buildAndBind(PropertyDescriptor property) {
         if (BeanUtils.getAnnotation(entityType, property, MultiLine.class).isPresent()) {
             TextArea textArea = new TextArea();
-            textArea.setSizeFull();
             fieldGroup.bind(textArea, property.getName());
             return textArea;
         } else {
