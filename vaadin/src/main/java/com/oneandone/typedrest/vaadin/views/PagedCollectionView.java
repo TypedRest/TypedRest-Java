@@ -18,7 +18,7 @@ public class PagedCollectionView<TEntity>
      *
      * @param endpoint The REST endpoint this component operates on.
      * @param lister A component for listing entity instances.
-     * @param eventBus Used to send refresh notifications.
+     * @param eventBus Used to send event between components.
      */
     public PagedCollectionView(PagedCollectionEndpoint<TEntity> endpoint, EventBus eventBus, EntityLister<TEntity> lister) {
         super(endpoint, eventBus, lister);
@@ -28,7 +28,7 @@ public class PagedCollectionView<TEntity>
      * Creates a new REST paged collection component.
      *
      * @param endpoint The REST endpoint this component operates on.
-     * @param eventBus Used to send refresh notifications.
+     * @param eventBus Used to send event between components.
      */
     public PagedCollectionView(PagedCollectionEndpoint<TEntity> endpoint, EventBus eventBus) {
         super(endpoint, eventBus);

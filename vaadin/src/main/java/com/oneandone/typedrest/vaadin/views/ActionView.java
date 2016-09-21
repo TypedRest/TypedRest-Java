@@ -18,7 +18,7 @@ public class ActionView extends AbstractEndpointView<ActionEndpoint> {
      * Creates a new REST trigger endpoint component.
      *
      * @param endpoint The REST endpoint this component operates on.
-     * @param eventBus Used to send refresh notifications.
+     * @param eventBus Used to send event between components.
      * @param caption A caption for the triggerable action.
      */
     @SuppressWarnings("OverridableMethodCallInConstructor") // False positive due to lambda

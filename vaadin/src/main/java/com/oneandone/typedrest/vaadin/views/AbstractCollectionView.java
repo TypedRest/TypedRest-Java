@@ -36,7 +36,7 @@ public abstract class AbstractCollectionView<TEntity, TEndpoint extends GenericC
      * Creates a new REST collection component.
      *
      * @param endpoint The REST endpoint this component operates on.
-     * @param eventBus Used to send refresh notifications.
+     * @param eventBus Used to send event between components.
      * @param lister A component for listing entity instances.
      */
     @SuppressWarnings("OverridableMethodCallInConstructor") // False positive due to lambda
@@ -66,7 +66,7 @@ public abstract class AbstractCollectionView<TEntity, TEndpoint extends GenericC
      * Creates a new REST collection component.
      *
      * @param endpoint The REST endpoint this component operates on.
-     * @param eventBus Used to send refresh notifications.
+     * @param eventBus Used to send event between components.
      */
     protected AbstractCollectionView(TEndpoint endpoint, EventBus eventBus) {
         this(endpoint, eventBus, new AutoEntityLister<>(endpoint.getEntityType()));

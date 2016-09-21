@@ -34,7 +34,7 @@ public abstract class AbstractPagedCollectionView<TEntity, TEndpoint extends Gen
      * Creates a new REST paged collection component.
      *
      * @param endpoint The REST endpoint this component operates on.
-     * @param eventBus Used to send refresh notifications.
+     * @param eventBus Used to send event between components.
      * @param lister A component for listing entity instances.
      */
     protected AbstractPagedCollectionView(TEndpoint endpoint, EventBus eventBus, EntityLister<TEntity> lister) {
@@ -78,7 +78,7 @@ public abstract class AbstractPagedCollectionView<TEntity, TEndpoint extends Gen
      * Creates a new REST paged collection component.
      *
      * @param endpoint The REST endpoint this component operates on.
-     * @param eventBus Used to send refresh notifications.
+     * @param eventBus Used to send event between components.
      */
     protected AbstractPagedCollectionView(TEndpoint endpoint, EventBus eventBus) {
         this(endpoint, eventBus, new AutoEntityLister<>(endpoint.getEntityType()));

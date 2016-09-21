@@ -42,7 +42,7 @@ public class BlobView extends AbstractEndpointView<BlobEndpoint> {
      * Creates a new REST blob component.
      *
      * @param endpoint The REST endpoint this component operates on.
-     * @param eventBus Used to send refresh notifications.
+     * @param eventBus Used to send event between components.
      * @param caption A caption for the blob.
      */
     @SuppressWarnings("OverridableMethodCallInConstructor") // False positive due to lambda

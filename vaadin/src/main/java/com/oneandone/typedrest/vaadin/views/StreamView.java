@@ -16,7 +16,7 @@ public class StreamView<TEntity>
      * Creates a new REST stream component.
      *
      * @param endpoint The REST endpoint this component operates on.
-     * @param eventBus Used to send refresh notifications.
+     * @param eventBus Used to send event between components.
      * @param lister A component for listing entity instances.
      */
     public StreamView(StreamEndpoint<TEntity> endpoint, EventBus eventBus, EntityLister<TEntity> lister) {
@@ -27,7 +27,7 @@ public class StreamView<TEntity>
      * Creates a new REST stream component.
      *
      * @param endpoint The REST endpoint this component operates on.
-     * @param eventBus Used to send refresh notifications.
+     * @param eventBus Used to send event between components.
      */
     public StreamView(StreamEndpoint<TEntity> endpoint, EventBus eventBus) {
         super(endpoint, eventBus);

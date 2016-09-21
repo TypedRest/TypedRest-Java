@@ -30,7 +30,7 @@ public abstract class AbstractStreamView<TEntity, TEndpoint extends GenericStrea
      * Creates a new REST stream component.
      *
      * @param endpoint The REST endpoint this component operates on.
-     * @param eventBus Used to send refresh notifications.
+     * @param eventBus Used to send event between components.
      * @param lister A component for listing entity instances.
      */
     protected AbstractStreamView(TEndpoint endpoint, EventBus eventBus, EntityLister<TEntity> lister) {
@@ -43,7 +43,7 @@ public abstract class AbstractStreamView<TEntity, TEndpoint extends GenericStrea
      * Creates a new REST stream component.
      *
      * @param endpoint The REST endpoint this component operates on.
-     * @param eventBus Used to send refresh notifications.
+     * @param eventBus Used to send event between components.
      */
     protected AbstractStreamView(TEndpoint endpoint, EventBus eventBus) {
         this(endpoint, eventBus, new AutoEntityLister<>(endpoint.getEntityType()));

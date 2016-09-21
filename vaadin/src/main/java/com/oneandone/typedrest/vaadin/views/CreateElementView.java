@@ -28,7 +28,7 @@ public class CreateElementView<TEntity, TElementEndpoint extends ElementEndpoint
      * Creates a new REST element creation component.
      *
      * @param endpoint The REST endpoint this component operates on.
-     * @param eventBus Used to send refresh notifications.
+     * @param eventBus Used to send event between components.
      * @param entityForm A component for viewing/modifying entity instances.
      */
     @SneakyThrows
@@ -43,7 +43,7 @@ public class CreateElementView<TEntity, TElementEndpoint extends ElementEndpoint
      * Creates a new REST element creation component.
      *
      * @param endpoint The REST endpoint this component operates on.
-     * @param eventBus Used to send refresh notifications.
+     * @param eventBus Used to send event between components.
      */
     public CreateElementView(GenericCollectionEndpoint<TEntity, TElementEndpoint> endpoint, EventBus eventBus) {
         this(endpoint, eventBus, new AutoEntityForm<>(endpoint.getEntityType()));

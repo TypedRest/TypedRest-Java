@@ -31,7 +31,7 @@ public abstract class AbstractElementView<TEntity, TEndpoint extends Endpoint>
      * Creates a new REST element component.
      *
      * @param endpoint The REST endpoint this component operates on.
-     * @param eventBus Used to send refresh notifications.
+     * @param eventBus Used to send event between components.
      * @param entityForm A component for viewing/modifying entity instances.
      */
     protected AbstractElementView(TEndpoint endpoint, EventBus eventBus, EntityForm<TEntity> entityForm) {

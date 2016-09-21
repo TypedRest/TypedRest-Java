@@ -17,7 +17,7 @@ public class CollectionView<TEntity>
      * Creates a new REST collection component.
      *
      * @param endpoint The REST endpoint this component operates on.
-     * @param eventBus Used to send refresh notifications.
+     * @param eventBus Used to send event between components.
      * @param lister A component for listing entity instances.
      */
     public CollectionView(CollectionEndpoint<TEntity> endpoint, EventBus eventBus, EntityLister<TEntity> lister) {
@@ -28,7 +28,7 @@ public class CollectionView<TEntity>
      * Creates a new REST collection component.
      *
      * @param endpoint The REST endpoint this component operates on.
-     * @param eventBus Used to send refresh notifications.
+     * @param eventBus Used to send event between components.
      */
     public CollectionView(CollectionEndpoint<TEntity> endpoint, EventBus eventBus) {
         super(endpoint, eventBus);

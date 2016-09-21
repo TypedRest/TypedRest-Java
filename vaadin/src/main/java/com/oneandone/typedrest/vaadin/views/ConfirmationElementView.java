@@ -19,7 +19,7 @@ public class ConfirmationElementView<TEntity> extends ElementView<TEntity> {
      * Creates a new REST element component.
      *
      * @param endpoint The REST endpoint this component operates on.
-     * @param eventBus Used to send refresh notifications.
+     * @param eventBus Used to send event between components.
      * @param entityForm A component for viewing/modifying entity instances.
      * @param question A question to show the user asking whether to actually
      * save the changes.
@@ -33,7 +33,7 @@ public class ConfirmationElementView<TEntity> extends ElementView<TEntity> {
      * Creates a new REST element component.
      *
      * @param endpoint The REST endpoint this component operates on.
-     * @param eventBus Used to send refresh notifications.
+     * @param eventBus Used to send event between components.
      * @param question A question to show the user asking whether to actually
      * save the changes.
      */

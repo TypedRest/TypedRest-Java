@@ -27,7 +27,7 @@ public class ElementView<TEntity>
      * Creates a new REST element component.
      *
      * @param endpoint The REST endpoint this component operates on.
-     * @param eventBus Used to send refresh notifications.
+     * @param eventBus Used to send event between components.
      * @param entityForm A component for viewing/modifying entity instances.
      */
     public ElementView(ElementEndpoint<TEntity> endpoint, EventBus eventBus, EntityForm<TEntity> entityForm) {
@@ -41,7 +41,7 @@ public class ElementView<TEntity>
      * Creates a new REST element component.
      *
      * @param endpoint The REST endpoint this component operates on.
-     * @param eventBus Used to send refresh notifications.
+     * @param eventBus Used to send event between components.
      */
     public ElementView(ElementEndpoint<TEntity> endpoint, EventBus eventBus) {
         this(endpoint, eventBus, new AutoEntityForm<>(endpoint.getEntityType()));

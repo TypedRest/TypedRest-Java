@@ -24,44 +24,21 @@ public abstract class AbstractEndpointView<TEndpoint extends Endpoint>
     protected final TEndpoint endpoint;
 
     /**
-     * Used to send refresh notifications.
-     */
-    protected final EventBus eventBus;
-
-    /**
      * Creates a new REST endpoint component.
      *
      * @param endpoint The REST endpoint this component operates on.
-     * @param eventBus Used to send refresh notifications.
+     * @param eventBus Used to send event between components.
      */
     protected AbstractEndpointView(TEndpoint endpoint, EventBus eventBus) {
+        super(eventBus);
         this.endpoint = endpoint;
-        this.eventBus = eventBus;
-
         setSizeFull();
     }
-
-    boolean eventBusRegistered;
 
     @Override
     public void attach() {
         super.attach();
         refresh();
-
-        if (!eventBusRegistered) {
-            eventBus.register(this);
-            eventBusRegistered = true;
-        }
-    }
-
-    @Override
-    public void detach() {
-        if (eventBusRegistered) {
-            eventBus.unregister(this);
-            eventBusRegistered = false;
-        }
-
-        super.detach();
     }
 
     /**
