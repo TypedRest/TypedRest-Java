@@ -27,7 +27,7 @@ public class AutoEntityLister<TEntity>
 
         grid.setContainerDataSource(container);
         grid.addItemClickListener(x -> onClick((TEntity) x.getItemId()));
-        grid.setWidth(100, Unit.PERCENTAGE);
+        grid.setSizeFull();
 
         HeaderRow filterRow = grid.appendHeaderRow();
         for (Object pid : grid.getContainerDataSource().getContainerPropertyIds()) {

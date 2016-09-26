@@ -45,6 +45,7 @@ public abstract class AbstractCollectionView<TEntity, TEndpoint extends GenericC
         setCaption(endpoint.getEntityType().getSimpleName() + "s");
 
         this.lister = lister;
+        lister.setSizeFull();
         lister.addEntityClickListener(x -> {
             if (openElementEnabled) {
                 onOpenElement(x);
@@ -52,13 +53,14 @@ public abstract class AbstractCollectionView<TEntity, TEndpoint extends GenericC
         });
 
         createButton.addStyleName(ValoTheme.BUTTON_FRIENDLY);
-        buttonsLayout.setMargin(true);
         buttonsLayout.setSpacing(true);
 
         masterLayout = new VerticalLayout(lister, buttonsLayout);
+        masterLayout.setExpandRatio(lister, 1);
         masterLayout.setComponentAlignment(buttonsLayout, Alignment.MIDDLE_RIGHT);
         masterLayout.setMargin(true);
         masterLayout.setSpacing(true);
+        masterLayout.setSizeFull();
         setCompositionRoot(masterLayout);
     }
 

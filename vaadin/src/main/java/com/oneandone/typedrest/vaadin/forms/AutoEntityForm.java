@@ -15,6 +15,8 @@ import java.beans.*;
 public class AutoEntityForm<TEntity>
         extends AbstractEntityForm<TEntity> {
 
+    protected FormLayout masterLayout = new FormLayout();
+
     /**
      * Creates a new entity form.
      *
@@ -23,10 +25,6 @@ public class AutoEntityForm<TEntity>
     public AutoEntityForm(Class<TEntity> entityType) {
         super(entityType);
 
-        FormLayout layout = new FormLayout();
-        layout.setMargin(true);
-        layout.setSpacing(true);
-
         for (PropertyDescriptor property : getPropertiesWithoutAnnotation(entityType, EditorHidden.class)) {
             if (property.getWriteMethod() != null) {
                 Component component = buildAndBind(property);
@@ -34,14 +32,14 @@ public class AutoEntityForm<TEntity>
                 if (component.getCaption() == null) {
                     component.setCaption(propertyIdToHumanFriendly(property.getName()));
                 }
-                layout.addComponent(component);
+                masterLayout.addComponent(component);
 
                 getAnnotation(entityType, property, Description.class)
-                        .ifPresent(x -> layout.addComponent(buildDescriptionComponent(property, x.value())));
+                        .ifPresent(x -> masterLayout.addComponent(buildDescriptionComponent(property, x.value())));
             }
         }
 
-        setCompositionRoot(layout);
+        setCompositionRoot(masterLayout);
     }
 
     /**

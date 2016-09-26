@@ -88,7 +88,7 @@ public class ElementView<TEntity>
     /**
      * Deletes the element.
      */
-    public void delete() {
+    protected void delete() {
         String question = "Are you sure you want to delete " + getCaption() + "?";
         ConfirmDialog.show(getUI(), question, (ConfirmDialog cd) -> {
             if (cd.isConfirmed()) {

@@ -23,7 +23,7 @@ public abstract class AbstractElementView<TEntity, TEndpoint extends Endpoint>
     protected final EntityForm<TEntity> entityForm;
 
     protected final Button saveButton = new Button("Save", x -> save());
-    protected final HorizontalLayout buttonsLayout = new HorizontalLayout(saveButton);
+    protected final HorizontalLayout buttonsLayout = new HorizontalLayout();
 
     protected final VerticalLayout masterLayout;
 
@@ -40,16 +40,16 @@ public abstract class AbstractElementView<TEntity, TEndpoint extends Endpoint>
         this.entityForm = entityForm;
 
         saveButton.addStyleName(ValoTheme.BUTTON_FRIENDLY);
-        buttonsLayout.setMargin(true);
+        buttonsLayout.addComponent(saveButton);
         buttonsLayout.setSpacing(true);
 
         masterLayout = new VerticalLayout(entityForm, buttonsLayout);
         masterLayout.setComponentAlignment(buttonsLayout, Alignment.MIDDLE_RIGHT);
         masterLayout.setMargin(true);
         masterLayout.setSpacing(true);
+        setCompositionRoot(masterLayout);
 
         setHeight(masterLayout.getHeight() * 1.2f, masterLayout.getHeightUnits());
-        setCompositionRoot(masterLayout);
     }
 
     /**
@@ -64,10 +64,10 @@ public abstract class AbstractElementView<TEntity, TEndpoint extends Endpoint>
         } catch (IllegalStateException ex) {
             // This usually inidicates a "lost update"
             ConfirmDialog.show(getUI(), ex.getLocalizedMessage() + "\nDo you want to refresh this page loosing any changes you have made?", (ConfirmDialog cd) -> {
-            if (cd.isConfirmed()) {
-                refresh();
-            }
-        });
+                if (cd.isConfirmed()) {
+                    refresh();
+                }
+            });
         }
     }
 
@@ -81,8 +81,8 @@ public abstract class AbstractElementView<TEntity, TEndpoint extends Endpoint>
      * @throws FileNotFoundException {@link HttpStatus#SC_NOT_FOUND} or
      * {@link HttpStatus#SC_GONE}
      * @throws IllegalStateException The entity has changed since it was last
-     * retrieved with {@link #onLoad()}. Your changes were rejected to
-     * prevent a lost update.
+     * retrieved with {@link #onLoad()}. Your changes were rejected to prevent a
+     * lost update.
      * @throws Validator.InvalidValueException The user input is invalid.
      * @throws RuntimeException Other non-success status code.
      */
