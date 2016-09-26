@@ -3,21 +3,27 @@ package com.oneandone.typedrest.vaadin.views;
 import com.google.common.eventbus.EventBus;
 import java.io.*;
 import com.oneandone.typedrest.*;
-import com.oneandone.typedrest.vaadin.events.BlobUploadEvent;
 import com.vaadin.server.*;
 import com.vaadin.ui.*;
+import com.vaadin.ui.themes.ValoTheme;
 import lombok.*;
 import org.apache.http.entity.ContentType;
 
 /**
- * View component operating on a {@link BlobEndpoint}.
+ * View component providing file upload and download for a {@link BlobEndpoint}.
  */
-public class BlobView extends AbstractEndpointView<BlobEndpoint> {
+public class BlobView extends AbstractBlobView {
 
-    private static final String TYPED_REST_BLOB = "typed-rest-blob";
     protected final String TMP_DIR = System.getProperty("java.io.tmpdir");
 
-    private final Button downloadButton = new Button("Download");
+    /**
+     * The file name reported to the browser when downloading the blob content.
+     */
+    @Getter
+    @Setter
+    private String downloadFileName = "blob";
+
+    protected final Button downloadButton = new Button("Download");
     private final FileDownloader fileDownloader = new FileDownloader(new StreamResource(() -> {
         try {
             return endpoint.download();
@@ -35,21 +41,21 @@ public class BlobView extends AbstractEndpointView<BlobEndpoint> {
         }
     };
 
-    private final Upload uploadButton;
+    protected final Upload uploadButton;
     private File uploadTarget;
     private ContentType uploadContentType;
+
+    protected final HorizontalLayout masterLayout;
 
     /**
      * Creates a new REST blob component.
      *
      * @param endpoint The REST endpoint this component operates on.
      * @param eventBus Used to send event between components.
-     * @param caption A caption for the blob.
      */
     @SuppressWarnings("OverridableMethodCallInConstructor") // False positive due to lambda
-    public BlobView(BlobEndpoint endpoint, EventBus eventBus, String caption) {
+    public BlobView(BlobEndpoint endpoint, EventBus eventBus) {
         super(endpoint, eventBus);
-        setCaption(caption);
 
         fileDownloader.extend(downloadButton);
 
@@ -60,33 +66,24 @@ public class BlobView extends AbstractEndpointView<BlobEndpoint> {
                     uploadTarget.delete();
                 }
 
-                uploadTarget = File.createTempFile(TYPED_REST_BLOB, "upload", new File(TMP_DIR));
+                uploadTarget = File.createTempFile("typed-rest-blob", "upload", new File(TMP_DIR));
                 return new FileOutputStream(uploadTarget);
             } catch (IOException ex) {
                 onError(ex);
                 return null;
             }
         });
-        uploadButton.addSucceededListener(x -> uploadFrom());
+        uploadButton.addSucceededListener(x -> upload());
 
-        HorizontalLayout masterLayout = new HorizontalLayout(uploadButton, downloadButton);
+        downloadButton.addStyleName(ValoTheme.BUTTON_FRIENDLY);
+
+        masterLayout = new HorizontalLayout(uploadButton, downloadButton, deleteButton);
         masterLayout.setComponentAlignment(uploadButton, Alignment.MIDDLE_LEFT);
         masterLayout.setComponentAlignment(downloadButton, Alignment.BOTTOM_RIGHT);
+        masterLayout.setComponentAlignment(deleteButton, Alignment.BOTTOM_RIGHT);
         masterLayout.setMargin(true);
         masterLayout.setSpacing(true);
         setCompositionRoot(masterLayout);
-    }
-
-    @Override
-    protected void onLoad() {
-        try {
-            endpoint.probe();
-        } catch (IOException | IllegalAccessException | RuntimeException ex) {
-            // HTTP OPTIONS server-side implementation is optional
-        }
-
-        endpoint.isDownloadAllowed().ifPresent(this::setDownloadEnabled);
-        endpoint.isUploadAllowed().ifPresent(this::setUploadEnabled);
     }
 
     @Override
@@ -97,48 +94,19 @@ public class BlobView extends AbstractEndpointView<BlobEndpoint> {
         }
     }
 
-    /**
-     * The file name reported to the browser when downloading the blob content.
-     */
-    @Getter
-    @Setter
-    private String downloadFileName = "blob";
-
-    /**
-     * Controls whether a download button is shown.
-     *
-     * @param val Turns the feature on or off.
-     */
+    @Override
     public void setDownloadEnabled(boolean val) {
         downloadButton.setVisible(val);
     }
 
-    /**
-     * Controls whether an upload button is shown.
-     *
-     * @param val Turns the feature on or off.
-     */
+    @Override
     public void setUploadEnabled(boolean val) {
         uploadButton.setVisible(val);
     }
 
-    /**
-     * Called after upload to local instance succeeded.
-     */
-    protected void uploadFrom() {
-        try {
-            endpoint.upload(uploadTarget, uploadContentType);
-            eventBus.post(new BlobUploadEvent(endpoint));
-            onUploadSuccess();
-        } catch (IOException | IllegalArgumentException | IllegalAccessException | IllegalStateException ex) {
-            onError(ex);
+    @Override
+    protected void onUpload()
+            throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, IllegalStateException {
+        endpoint.upload(uploadTarget, uploadContentType);
         }
-    }
-
-    /**
-     * Called directly after uploaded to {@link BlobEndpoint} succeeded.
-     */
-    protected void onUploadSuccess() {
-        Notification.show("Success", String.format("File '%s' has successfully been uploaded", uploadTarget.getName()), Notification.Type.TRAY_NOTIFICATION);
-    }
 }
