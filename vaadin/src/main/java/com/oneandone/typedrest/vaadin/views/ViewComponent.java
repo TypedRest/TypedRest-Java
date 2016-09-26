@@ -66,24 +66,13 @@ public abstract class ViewComponent
      * @return The newly created window.
      */
     private Window asWindow() {
-        if (isContained()) {
-            throw new IllegalStateException("Component can only be wrapped in a window once.");
+        if (containingWindow == null) {
+            containingWindow = new Window(getCaption(), this);
+            containingWindow.setWidth(80, Unit.PERCENTAGE);
+            containingWindow.setHeight(80, Unit.PERCENTAGE);
+            containingWindow.center();
         }
-        containingWindow = new Window(getCaption(), this);
-        containingWindow.setWidth(80, Unit.PERCENTAGE);
-        containingWindow.setHeight(80, Unit.PERCENTAGE);
-        containingWindow.center();
         return containingWindow;
-    }
-
-    /**
-     * Indicates whether this control has been wrapped in a container.
-     *
-     * @return <code>true</code> if this control has been wrapped in a
-     * container.
-     */
-    public boolean isContained() {
-        return containingWindow != null;
     }
 
     /**
