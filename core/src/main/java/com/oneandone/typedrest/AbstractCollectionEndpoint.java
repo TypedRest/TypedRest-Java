@@ -94,7 +94,7 @@ public abstract class AbstractCollectionEndpoint<TEntity, TElementEndpoint exten
 
     /**
      * Maps a <code>TEntity</code> to an ID usable by
-     * {@link GenericCollectionEndpoint#get(java.net.URI)}.
+     * {@link GenericCollectionEndpoint#get(java.lang.String)}.
      *
      * @param entity The entity to get the ID for.
      * @return The ID.
