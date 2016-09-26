@@ -39,12 +39,32 @@ public class BlobEndpointImpl
     }
 
     @Override
-    public void uploadFrom(File file, String mimeType) throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException {
-        executeAndHandle(Request.Put(uri).bodyFile(file, ContentType.create(mimeType)));
+    public Optional<Boolean> isUploadAllowed() {
+        return isVerbAllowed("PUT");
     }
 
     @Override
-    public Optional<Boolean> isUploadAllowed() {
-        return isVerbAllowed("PUT");
+    public void upload(InputStream stream, ContentType contentType) throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException {
+        executeAndHandle(Request.Put(uri).bodyStream(stream, contentType));
+    }
+
+    @Override
+    public void upload(byte[] data, ContentType contentType) throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException {
+        executeAndHandle(Request.Put(uri).bodyByteArray(data, contentType));
+    }
+
+    @Override
+    public void upload(File file, ContentType contentType) throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException {
+        executeAndHandle(Request.Put(uri).bodyFile(file, contentType));
+    }
+
+    @Override
+    public Optional<Boolean> isDeleteAllowed() {
+        return isVerbAllowed("DELETE");
+    }
+
+    @Override
+    public void delete() throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException {
+        executeAndHandle(Request.Delete(uri));
     }
 }

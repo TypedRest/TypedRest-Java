@@ -3,6 +3,7 @@ package com.oneandone.typedrest;
 import java.io.*;
 import java.util.Optional;
 import org.apache.http.*;
+import org.apache.http.entity.ContentType;
 
 /**
  * REST endpoint that represents a single binary blob that can downloaded and
@@ -27,8 +28,8 @@ public interface BlobEndpoint extends Endpoint {
             throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, IllegalStateException;
 
     /**
-     * Shows whether the server has indicated that
-     * {@link #download()} is currently allowed.
+     * Shows whether the server has indicated that {@link #download()} is
+     * currently allowed.
      *
      * Uses cached data from last response.
      *
@@ -57,7 +58,8 @@ public interface BlobEndpoint extends Endpoint {
 
     /**
      * Shows whether the server has indicated that
-     * {@link #uploadFrom(java.io.File, java.lang.String)} is currently allowed.
+     * {@link #upload(java.io.InputStream, java.lang.String)} is currently
+     * allowed.
      *
      * Uses cached data from last response.
      *
@@ -68,10 +70,10 @@ public interface BlobEndpoint extends Endpoint {
     Optional<Boolean> isUploadAllowed();
 
     /**
-     * Uploads a local file as the blob's content.
+     * Uploads new content for the blob.
      *
-     * @param file The local file to read the data from.
-     * @param mimeType The MIME type of the file to upload.
+     * @param stream A stream with the blob's new content.
+     * @param contentType The MIME type of the file to upload.
      *
      * @throws IOException Network communication failed.
      * @throws IllegalArgumentException {@link HttpStatus#SC_BAD_REQUEST}
@@ -82,6 +84,70 @@ public interface BlobEndpoint extends Endpoint {
      * @throws IllegalStateException {@link HttpStatus#SC_CONFLICT}
      * @throws RuntimeException Other non-success status code.
      */
-    void uploadFrom(File file, String mimeType)
+    void upload(InputStream stream, ContentType contentType)
+            throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException;
+
+    /**
+     * Uploads a byte array as the blob's content.
+     *
+     * @param data The byte array holding the data to upload.
+     * @param contentType The MIME type of the file to upload.
+     *
+     * @throws IOException Network communication failed.
+     * @throws IllegalArgumentException {@link HttpStatus#SC_BAD_REQUEST}
+     * @throws IllegalAccessException {@link HttpStatus#SC_UNAUTHORIZED} or
+     * {@link HttpStatus#SC_FORBIDDEN}
+     * @throws FileNotFoundException {@link HttpStatus#SC_NOT_FOUND} or
+     * {@link HttpStatus#SC_GONE}
+     * @throws IllegalStateException {@link HttpStatus#SC_CONFLICT}
+     * @throws RuntimeException Other non-success status code.
+     */
+    void upload(byte[] data, ContentType contentType)
+            throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException;
+
+    /**
+     * Uploads a local file as the blob's content.
+     *
+     * @param file The local file to read the data from.
+     * @param contentType The MIME type of the file to upload.
+     *
+     * @throws IOException Network communication failed.
+     * @throws IllegalArgumentException {@link HttpStatus#SC_BAD_REQUEST}
+     * @throws IllegalAccessException {@link HttpStatus#SC_UNAUTHORIZED} or
+     * {@link HttpStatus#SC_FORBIDDEN}
+     * @throws FileNotFoundException {@link HttpStatus#SC_NOT_FOUND} or
+     * {@link HttpStatus#SC_GONE}
+     * @throws IllegalStateException {@link HttpStatus#SC_CONFLICT}
+     * @throws RuntimeException Other non-success status code.
+     */
+    void upload(File file, ContentType contentType)
             throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, IllegalStateException;
+
+    /**
+     * Shows whether the server has indicated that {@link #delete()} is currently
+     * allowed.
+     *
+     * Uses cached data from last response.
+     *
+     * @return An indicator whether the verb is allowed. If no request has been
+     * sent yet or the server did not specify allowed verbs
+     * {@link Optional#empty()} is returned.
+     */
+    Optional<Boolean> isDeleteAllowed();
+
+    /**
+     * Deletes the blob from the server.
+     *
+     * @throws IOException Network communication failed.
+     * @throws IllegalArgumentException {@link HttpStatus#SC_BAD_REQUEST}
+     * @throws IllegalAccessException {@link HttpStatus#SC_UNAUTHORIZED} or
+     * {@link HttpStatus#SC_FORBIDDEN}
+     * @throws FileNotFoundException {@link HttpStatus#SC_NOT_FOUND} or
+     * {@link HttpStatus#SC_GONE}
+     * @throws IllegalStateException {@link HttpStatus#SC_CONFLICT}
+     * @throws RuntimeException Other non-success status code.
+     */
+    void delete()
+            throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException;
+
 }

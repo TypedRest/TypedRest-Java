@@ -7,6 +7,7 @@ import java.io.InputStream;
 import org.apache.http.*;
 import static org.apache.http.HttpHeaders.*;
 import static org.apache.http.HttpStatus.*;
+import org.apache.http.entity.ContentType;
 import org.junit.*;
 import static org.junit.Assert.*;
 import static org.hamcrest.CoreMatchers.is;
@@ -59,6 +60,6 @@ public class BlobEndpointTest extends AbstractEndpointTest {
                         .withStatus(SC_NO_CONTENT)));
 
         File file = File.createTempFile("unit-test", ".tmp");
-        endpoint.uploadFrom(file, "mock/type");
+        endpoint.upload(file, ContentType.create("mock/type"));
     }
 }

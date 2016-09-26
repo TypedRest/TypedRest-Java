@@ -7,6 +7,7 @@ import com.oneandone.typedrest.vaadin.events.BlobUploadEvent;
 import com.vaadin.server.*;
 import com.vaadin.ui.*;
 import lombok.*;
+import org.apache.http.entity.ContentType;
 
 /**
  * View component operating on a {@link BlobEndpoint}.
@@ -36,7 +37,7 @@ public class BlobView extends AbstractEndpointView<BlobEndpoint> {
 
     private final Upload uploadButton;
     private File uploadTarget;
-    private String uploadMimeType;
+    private ContentType uploadContentType;
 
     /**
      * Creates a new REST blob component.
@@ -54,7 +55,7 @@ public class BlobView extends AbstractEndpointView<BlobEndpoint> {
 
         uploadButton = new Upload("", (fileName, mimeType) -> {
             try {
-                uploadMimeType = mimeType;
+                uploadContentType = ContentType.create(mimeType);
                 if (uploadTarget != null) {
                     uploadTarget.delete();
                 }
@@ -126,7 +127,7 @@ public class BlobView extends AbstractEndpointView<BlobEndpoint> {
      */
     protected void uploadFrom() {
         try {
-            endpoint.uploadFrom(uploadTarget, uploadMimeType);
+            endpoint.upload(uploadTarget, uploadContentType);
             eventBus.post(new BlobUploadEvent(endpoint));
             onUploadSuccess();
         } catch (IOException | IllegalArgumentException | IllegalAccessException | IllegalStateException ex) {
