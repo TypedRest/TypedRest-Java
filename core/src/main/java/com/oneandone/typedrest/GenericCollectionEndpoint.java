@@ -27,10 +27,7 @@ public interface GenericCollectionEndpoint<TEntity, TElementEndpoint extends End
 
     /**
      * Returns a {@link ElementEndpoint} for a specific child element of this
-     * collection. May perform network traffic to look up an URI template.
-     *
-     * Uses a link template with the relation type <code>child</code> to
-     * determine the URIs of child elements. Defaults to <code>{id}</code>.
+     * collection.
      *
      * @param id The ID identifying the entity in the collection.
      * @return An {@link ElementEndpoint} for a specific element of this
@@ -40,13 +37,9 @@ public interface GenericCollectionEndpoint<TEntity, TElementEndpoint extends End
 
     /**
      * Returns a {@link ElementEndpoint} for a specific child element of this
-     * collection. May perform network traffic to look up an URI template.
+     * collection.
      *
-     * Uses a link template with the relation type <code>child</code> to
-     * determine the URIs of child elements. Defaults to <code>{id}</code>.
-     *
-     * @param entity A previously fetched instance of the entity to retrieve a
-     * new state for.
+     * @param entity An existing entity to extract the ID from.
      * @return An {@link ElementEndpoint} for a specific element of this
      * collection.
      */

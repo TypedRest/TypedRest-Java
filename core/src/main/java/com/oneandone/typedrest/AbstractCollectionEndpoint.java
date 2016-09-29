@@ -87,27 +87,17 @@ public abstract class AbstractCollectionEndpoint<TEntity, TElementEndpoint exten
 
     @Override
     public TElementEndpoint get(TEntity entity) {
-        return get(getCollectionId(entity));
-    }
-
-    private final Optional<PropertyDescriptor> idProperty;
-
-    /**
-     * Maps a <code>TEntity</code> to an ID usable by
-     * {@link GenericCollectionEndpoint#get(java.lang.String)}.
-     *
-     * @param entity The entity to get the ID for.
-     * @return The ID.
-     */
-    protected String getCollectionId(TEntity entity) {
         try {
-            return idProperty
+            String id = idProperty
                     .orElseThrow(() -> new IllegalStateException(entityType.getSimpleName() + " has no property marked with @Id annotation."))
                     .getReadMethod().invoke(entity).toString();
+            return get(id);
         } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
             throw new IllegalStateException(ex);
         }
     }
+
+    private final Optional<PropertyDescriptor> idProperty;
 
     @Override
     public List<TEntity> readAll()
