@@ -49,12 +49,17 @@ public class EntityPicker<T> extends CustomComponent {
                 }
             });
         });
+        filterField.setInputPrompt("Search");
+        filterField.setWidth(50, Unit.PERCENTAGE);
 
         twinColSelect.setLeftColumnCaption("Available");
+        twinColSelect.setSizeFull();
         twinColSelect.setRightColumnCaption("Selected");
         twinColSelect.setNullSelectionAllowed(true);
 
-        setCompositionRoot(new VerticalLayout(filterField, twinColSelect));
+        VerticalLayout layout = new VerticalLayout(filterField, twinColSelect);
+        layout.setSizeFull();
+        setCompositionRoot(layout);
     }
 
     /**
