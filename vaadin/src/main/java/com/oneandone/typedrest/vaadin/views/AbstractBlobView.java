@@ -114,7 +114,7 @@ public abstract class AbstractBlobView extends AbstractEndpointView<BlobEndpoint
                     } catch (RuntimeException ex) {
                         // Must explicitly send unhandled exceptions to error handler.
                         // Would otherwise get swallowed silently within callback handler.
-                        UI.getCurrent().getErrorHandler().error(new com.vaadin.server.ErrorEvent(ex));
+                        getUI().getErrorHandler().error(new com.vaadin.server.ErrorEvent(ex));
                     }
                 }
             }

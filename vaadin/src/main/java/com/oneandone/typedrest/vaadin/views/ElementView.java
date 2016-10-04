@@ -100,7 +100,7 @@ public class ElementView<TEntity>
                 } catch (RuntimeException ex) {
                     // Must explicitly send unhandled exceptions to error handler.
                     // Would otherwise get swallowed silently within callback handler.
-                    UI.getCurrent().getErrorHandler().error(new com.vaadin.server.ErrorEvent(ex));
+                    getUI().getErrorHandler().error(new com.vaadin.server.ErrorEvent(ex));
                 }
             }
         });
