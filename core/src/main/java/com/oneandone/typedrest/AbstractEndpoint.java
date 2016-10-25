@@ -13,10 +13,7 @@ import static java.util.Collections.*;
 import static java.util.stream.Collectors.*;
 import lombok.*;
 import org.apache.http.*;
-import static org.apache.http.HttpHeaders.*;
 import org.apache.http.client.fluent.*;
-import org.apache.http.entity.ContentType;
-import org.apache.http.message.BasicHeader;
 import org.apache.http.util.*;
 import static java.util.Arrays.stream;
 
