@@ -21,7 +21,11 @@ import org.vaadin.dialogs.ConfirmDialog;
 public class ElementView<TEntity>
         extends AbstractElementView<TEntity, ElementEndpoint<TEntity>> {
 
-    protected final Button deleteButton = new Button("Delete", x -> delete());
+    protected final Button deleteButton = new Button("Delete", x -> delete()) {
+        {
+            addStyleName(ValoTheme.BUTTON_DANGER);
+        }
+    };
 
     /**
      * Creates a new REST element component.
@@ -33,7 +37,6 @@ public class ElementView<TEntity>
     public ElementView(ElementEndpoint<TEntity> endpoint, EventBus eventBus, EntityForm<TEntity> entityForm) {
         super(endpoint, eventBus, entityForm);
 
-        deleteButton.addStyleName(ValoTheme.BUTTON_DANGER);
         buttonsLayout.addComponent(deleteButton);
     }
 

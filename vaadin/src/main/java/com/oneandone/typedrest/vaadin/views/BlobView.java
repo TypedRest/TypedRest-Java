@@ -23,7 +23,11 @@ public class BlobView extends AbstractBlobView {
     @Setter
     private String downloadFileName = "blob";
 
-    protected final Button downloadButton = new Button("Download");
+    protected final Button downloadButton = new Button("Download") {
+        {
+            addStyleName(ValoTheme.BUTTON_PRIMARY);
+        }
+    };
     private final FileDownloader fileDownloader = new FileDownloader(new StreamResource(() -> {
         try {
             return endpoint.download();
@@ -72,10 +76,12 @@ public class BlobView extends AbstractBlobView {
                 onError(ex);
                 return null;
             }
-        });
-        uploadButton.addSucceededListener(x -> upload());
-
-        downloadButton.addStyleName(ValoTheme.BUTTON_FRIENDLY);
+        }) {
+            {
+                addStyleName(ValoTheme.BUTTON_FRIENDLY);
+                addSucceededListener(x -> upload());
+            }
+        };
 
         masterLayout = new HorizontalLayout(uploadButton, downloadButton, deleteButton);
         masterLayout.setComponentAlignment(uploadButton, Alignment.MIDDLE_LEFT);
@@ -108,5 +114,5 @@ public class BlobView extends AbstractBlobView {
     protected void onUpload()
             throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, IllegalStateException {
         endpoint.upload(uploadTarget, uploadContentType);
-        }
+    }
 }

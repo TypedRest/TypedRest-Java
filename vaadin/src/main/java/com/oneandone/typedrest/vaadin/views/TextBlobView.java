@@ -5,7 +5,6 @@ import com.google.common.eventbus.EventBus;
 import com.google.common.io.CharStreams;
 import java.io.*;
 import com.oneandone.typedrest.*;
-import com.vaadin.data.Validator;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
 import java.nio.charset.Charset;
@@ -19,8 +18,16 @@ public class TextBlobView extends AbstractBlobView {
 
     private final TextArea textArea = new TextArea();
 
-    protected final Button saveButton = new Button("Save", x -> upload());
-    protected final HorizontalLayout buttonsLayout = new HorizontalLayout(saveButton, deleteButton);
+    protected final Button saveButton = new Button("Save", x -> upload()) {
+        {
+            addStyleName(ValoTheme.BUTTON_FRIENDLY);
+        }
+    };
+    protected final HorizontalLayout buttonsLayout = new HorizontalLayout(saveButton, deleteButton) {
+        {
+            setSpacing(true);
+        }
+    };
 
     protected final VerticalLayout masterLayout = new VerticalLayout(textArea, buttonsLayout);
 
@@ -34,9 +41,6 @@ public class TextBlobView extends AbstractBlobView {
         super(endpoint, eventBus);
 
         textArea.setSizeFull();
-
-        saveButton.addStyleName(ValoTheme.BUTTON_FRIENDLY);
-        buttonsLayout.setSpacing(true);
 
         masterLayout.setExpandRatio(textArea, 1);
         masterLayout.setComponentAlignment(buttonsLayout, Alignment.MIDDLE_RIGHT);

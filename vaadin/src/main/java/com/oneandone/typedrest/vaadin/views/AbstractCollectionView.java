@@ -26,9 +26,17 @@ public abstract class AbstractCollectionView<TEntity, TEndpoint extends GenericC
 
     protected final EntityLister<TEntity> lister;
 
-    private final Button createButton = new Button("Create", x -> create());
+    private final Button createButton = new Button("Create", x -> create()) {
+        {
+            addStyleName(ValoTheme.BUTTON_FRIENDLY);
+        }
+    };
     protected final Button refreshButton = new Button("Refresh", x -> refresh());
-    protected final HorizontalLayout buttonsLayout = new HorizontalLayout(createButton, refreshButton);
+    protected final HorizontalLayout buttonsLayout = new HorizontalLayout(createButton, refreshButton) {
+        {
+            setSpacing(true);
+        }
+    };
 
     protected final VerticalLayout masterLayout;
 
@@ -51,9 +59,6 @@ public abstract class AbstractCollectionView<TEntity, TEndpoint extends GenericC
                 onOpenElement(x);
             }
         });
-
-        createButton.addStyleName(ValoTheme.BUTTON_FRIENDLY);
-        buttonsLayout.setSpacing(true);
 
         masterLayout = new VerticalLayout(lister, buttonsLayout);
         masterLayout.setExpandRatio(lister, 1);

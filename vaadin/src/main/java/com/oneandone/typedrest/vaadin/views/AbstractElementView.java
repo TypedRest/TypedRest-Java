@@ -22,8 +22,16 @@ public abstract class AbstractElementView<TEntity, TEndpoint extends Endpoint>
 
     protected final EntityForm<TEntity> entityForm;
 
-    protected final Button saveButton = new Button("Save", x -> save());
-    protected final HorizontalLayout buttonsLayout = new HorizontalLayout();
+    protected final Button saveButton = new Button("Save", x -> save()) {
+        {
+            addStyleName(ValoTheme.BUTTON_FRIENDLY);
+        }
+    };
+    protected final HorizontalLayout buttonsLayout = new HorizontalLayout(saveButton) {
+        {
+            setSpacing(true);
+        }
+    };
 
     protected final VerticalLayout masterLayout;
 
@@ -38,10 +46,6 @@ public abstract class AbstractElementView<TEntity, TEndpoint extends Endpoint>
         super(endpoint, eventBus);
 
         this.entityForm = entityForm;
-
-        saveButton.addStyleName(ValoTheme.BUTTON_FRIENDLY);
-        buttonsLayout.addComponent(saveButton);
-        buttonsLayout.setSpacing(true);
 
         masterLayout = new VerticalLayout(entityForm, buttonsLayout);
         masterLayout.setComponentAlignment(buttonsLayout, Alignment.MIDDLE_RIGHT);

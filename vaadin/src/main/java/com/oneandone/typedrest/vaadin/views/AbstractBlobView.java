@@ -15,12 +15,14 @@ import org.vaadin.dialogs.ConfirmDialog;
  */
 public abstract class AbstractBlobView extends AbstractEndpointView<BlobEndpoint> {
 
-    protected final Button deleteButton = new Button("Delete", x -> delete());
+    protected final Button deleteButton = new Button("Delete", x -> delete()) {
+        {
+            addStyleName(ValoTheme.BUTTON_DANGER);
+        }
+    };
 
     protected AbstractBlobView(BlobEndpoint endpoint, EventBus eventBus) {
         super(endpoint, eventBus);
-
-        deleteButton.addStyleName(ValoTheme.BUTTON_DANGER);
     }
 
     @Override
