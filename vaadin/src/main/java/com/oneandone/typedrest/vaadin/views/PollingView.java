@@ -85,18 +85,11 @@ public class PollingView<TEntity>
         super.detach();
     }
 
-    /**
-     * The interval in milliseconds in which to send requests to the server.
-     */
-    @Getter
-    @Setter
-    private Integer pollingInterval = 4000;
-
     private StoppableObservable<TEntity> observable;
 
     private void startPolling() {
         stopPolling();
-        observable = endpoint.getObservable(pollingInterval);
+        observable = endpoint.getObservable();
         observable.subscribe(new UISubscriber<>(entityForm::setEntity));
     }
 

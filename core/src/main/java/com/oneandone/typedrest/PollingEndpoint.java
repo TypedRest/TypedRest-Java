@@ -11,12 +11,28 @@ public interface PollingEndpoint<TEntity>
         extends ElementEndpoint<TEntity> {
 
     /**
+     * Gets the interval in which to send requests to the server.
+     *
+     * The server can modify this value using the "Retry-After" header.
+     *
+     * @return An interval in seconds.
+     */
+    int getPollingInterval();
+
+    /**
+     * Sets the interval in which to send requests to the server.
+     *
+     * The server can modify this value using the "Retry-After" header.
+     *
+     * @param interval An interval in seconds.
+     */
+    void setPollingInterval(int interval);
+
+    /**
      * Provides an observable stream of element states. Compares entities using
      * {@link Object#equals(java.lang.Object)} to detect changes.
      *
-     * @param pollingInterval The interval in milliseconds in which to send
-     * requests to the server.
      * @return An observable stream of element states.
      */
-    StoppableObservable<TEntity> getObservable(Integer pollingInterval);
+    StoppableObservable<TEntity> getObservable();
 }

@@ -11,6 +11,9 @@ import rx.observers.TestSubscriber;
 import rx.schedulers.Schedulers;
 import rx.schedulers.TestScheduler;
 import static com.oneandone.typedrest.AbstractEndpointTest.JSON_MIME;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 public class PollingEndpointTest extends AbstractEndpointTest {
 
@@ -22,6 +25,7 @@ public class PollingEndpointTest extends AbstractEndpointTest {
         super.before();
         endpoint = new PollingEndpointImpl<>(entryEndpoint, "endpoint", MockEntity.class,
                 x -> x.getId() == 3);
+        endpoint.setPollingInterval(0);
     }
 
     @Test
@@ -45,10 +49,11 @@ public class PollingEndpointTest extends AbstractEndpointTest {
                 .willReturn(aResponse()
                         .withStatus(SC_OK)
                         .withHeader(CONTENT_TYPE, JSON_MIME)
+                        .withHeader(RETRY_AFTER, "42")
                         .withBody("{\"id\":3,\"name\":\"test\"}")));
 
         TestScheduler scheduler = Schedulers.test();
-        Observable<MockEntity> observable = endpoint.getObservable(0, scheduler);
+        Observable<MockEntity> observable = endpoint.getObservable(scheduler);
 
         TestSubscriber<MockEntity> subscriber = new TestSubscriber<>();
         observable.subscribe(subscriber);
@@ -60,5 +65,7 @@ public class PollingEndpointTest extends AbstractEndpointTest {
                 new MockEntity(3, "test")));
         subscriber.assertNoErrors();
         subscriber.assertCompleted();
+
+        assertThat(endpoint.getPollingInterval(), is(equalTo(42)));
     }
 }

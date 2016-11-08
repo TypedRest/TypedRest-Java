@@ -1,9 +1,15 @@
 package com.oneandone.typedrest;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import static java.lang.Thread.sleep;
 import java.net.URI;
 import java.util.function.Predicate;
+import lombok.*;
+import org.apache.http.Header;
+import static org.apache.http.HttpHeaders.RETRY_AFTER;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.fluent.Request;
 import rx.Scheduler;
 import rx.Subscription;
 import rx.schedulers.Schedulers;
@@ -80,9 +86,26 @@ public class PollingEndpointImpl<TEntity>
     }
 
     @Override
-    public StoppableObservable<TEntity> getObservable(Integer pollingInterval) {
-        return getObservable(pollingInterval, Schedulers.newThread());
+    public StoppableObservable<TEntity> getObservable() {
+        return getObservable(Schedulers.newThread());
     }
+
+    @Override
+    protected void handleResponse(HttpResponse response, Request request)
+            throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, IllegalStateException {
+        Header retryAfterHeader = response.getFirstHeader(RETRY_AFTER);
+        if (retryAfterHeader != null) {
+            try {
+                pollingInterval = Integer.parseInt(retryAfterHeader.getValue());
+            } catch (NumberFormatException ex) {
+            }
+        }
+        super.handleResponse(response, request);
+    }
+
+    @Getter
+    @Setter
+    private int pollingInterval = 3;
 
     /**
      * Provides an observable stream of element states. Compares entities using
@@ -95,7 +118,7 @@ public class PollingEndpointImpl<TEntity>
      * @param scheduler The scheduler used to run the background thread.
      * @return An observable stream of element states.
      */
-    StoppableObservable<TEntity> getObservable(Integer pollingInterval, Scheduler scheduler) {
+    StoppableObservable<TEntity> getObservable(Scheduler scheduler) {
         return runAsync(scheduler, (rx.Observer<? super TEntity> observer, Subscription subscription) -> {
             TEntity previousEntity;
             try {
