@@ -30,7 +30,7 @@ public class PollingView<TEntity>
 
         saveButton.setVisible(false);
         setReadOnly(true);
-        entityForm.setReadOnly(false);
+        entityForm.setReadOnly(true);
     }
 
     /**

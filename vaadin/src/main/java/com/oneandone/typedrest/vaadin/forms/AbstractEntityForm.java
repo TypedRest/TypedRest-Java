@@ -44,9 +44,15 @@ public abstract class AbstractEntityForm<TEntity>
 
     @Override
     public void setEntity(TEntity entity) {
+        // Temporarily remove read-only flag to allow entity replacement
+        boolean wasReadOnly = fieldGroup.isReadOnly();
+        fieldGroup.setReadOnly(false);
+
         fieldGroup.setItemDataSource(new BeanItem<>(entity, entityType));
         applyAnnotations(Required.class, new NullValidator("Must be set!", false));
         applyAnnotations(NotEmpty.class, new StringLengthValidator("Must not be empty!", 1, -1, false));
+
+        fieldGroup.setReadOnly(wasReadOnly);
     }
 
     private void applyAnnotations(Class<? extends Annotation> annotationType, Validator validator) {
