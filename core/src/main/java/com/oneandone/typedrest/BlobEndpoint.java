@@ -58,8 +58,8 @@ public interface BlobEndpoint extends Endpoint {
 
     /**
      * Shows whether the server has indicated that
-     * {@link #upload(java.io.InputStream, java.lang.String)} is currently
-     * allowed.
+     * {@link #upload(java.io.InputStream, org.apache.http.entity.ContentType)}
+     * is currently allowed.
      *
      * Uses cached data from last response.
      *
@@ -124,8 +124,8 @@ public interface BlobEndpoint extends Endpoint {
             throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, IllegalStateException;
 
     /**
-     * Shows whether the server has indicated that {@link #delete()} is currently
-     * allowed.
+     * Shows whether the server has indicated that {@link #delete()} is
+     * currently allowed.
      *
      * Uses cached data from last response.
      *
