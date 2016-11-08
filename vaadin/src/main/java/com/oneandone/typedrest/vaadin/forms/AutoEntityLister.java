@@ -1,8 +1,7 @@
 package com.oneandone.typedrest.vaadin.forms;
 
-import com.vaadin.data.util.filter.*;
 import com.vaadin.ui.*;
-import com.vaadin.ui.Grid.*;
+import static com.oneandone.typedrest.vaadin.GridUtils.addFilterRow;
 
 /**
  * An entity lister that uses auto-generated {@link Grid}s.
@@ -28,22 +27,7 @@ public class AutoEntityLister<TEntity>
         grid.setContainerDataSource(container);
         grid.addItemClickListener(x -> onClick((TEntity) x.getItemId()));
         grid.setSizeFull();
-
-        HeaderRow filterRow = grid.appendHeaderRow();
-        for (Object pid : grid.getContainerDataSource().getContainerPropertyIds()) {
-            HeaderCell cell = filterRow.getCell(pid);
-
-            TextField filterField = new TextField();
-            filterField.setWidth(100, Unit.PERCENTAGE);
-
-            filterField.addTextChangeListener(change -> {
-                container.removeContainerFilters(pid);
-                if (!change.getText().isEmpty()) {
-                    container.addContainerFilter(new SimpleStringFilter(pid, change.getText(), true, false));
-                }
-            });
-            cell.setComponent(filterField);
-        }
+        addFilterRow(grid);
 
         setCompositionRoot(grid);
     }
