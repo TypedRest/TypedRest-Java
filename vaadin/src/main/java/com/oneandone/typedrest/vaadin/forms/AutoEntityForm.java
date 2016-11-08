@@ -2,6 +2,7 @@ package com.oneandone.typedrest.vaadin.forms;
 
 import static com.oneandone.typedrest.BeanUtils.*;
 import com.oneandone.typedrest.*;
+import com.vaadin.shared.ui.datefield.Resolution;
 import static com.vaadin.shared.util.SharedUtil.propertyIdToHumanFriendly;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
@@ -31,6 +32,9 @@ public class AutoEntityForm<TEntity>
                 component.setWidth(100, Unit.PERCENTAGE);
                 if (component.getCaption() == null) {
                     component.setCaption(propertyIdToHumanFriendly(property.getName()));
+                }
+                if (component instanceof DateField) {
+                    ((DateField) component).setResolution(Resolution.SECOND);
                 }
                 masterLayout.addComponent(component);
 
