@@ -56,7 +56,7 @@ public class BulkCollectionEndpointTest extends AbstractEndpointTest {
     @Test
     @Ignore("Works in isolation but fails when executed as part of test suite")
     public void testCreate() throws Exception {
-        stubFor(post(urlEqualTo("/endpoint/bulk"))
+        stubFor(patch(urlEqualTo("/endpoint/"))
                 .withRequestBody(equalToJson("[{\"id\":5,\"name\":\"test1\"},{\"id\":6,\"name\":\"test2\"}]"))
                 .willReturn(aResponse()
                         .withStatus(SC_ACCEPTED)));

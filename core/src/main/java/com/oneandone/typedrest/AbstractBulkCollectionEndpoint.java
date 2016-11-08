@@ -31,8 +31,6 @@ public abstract class AbstractBulkCollectionEndpoint<TEntity, TElementEndpoint e
      */
     protected AbstractBulkCollectionEndpoint(Endpoint referrer, URI relativeUri, Class<TEntity> entityType) {
         super(referrer, relativeUri, entityType);
-
-        setDefaultLink("bulk", "bulk");
     }
 
     /**
@@ -47,8 +45,6 @@ public abstract class AbstractBulkCollectionEndpoint<TEntity, TElementEndpoint e
      */
     protected AbstractBulkCollectionEndpoint(Endpoint referrer, String relativeUri, Class<TEntity> entityType) {
         super(referrer, relativeUri, entityType);
-
-        setDefaultLink("bulk", "bulk");
     }
 
     @Override
@@ -75,7 +71,7 @@ public abstract class AbstractBulkCollectionEndpoint<TEntity, TElementEndpoint e
         }
 
         String jsonSend = serializer.writeValueAsString(entities);
-        Request request = Request.Post(link("bulk")).bodyString(jsonSend, ContentType.APPLICATION_JSON);
+        Request request = Request.Patch(uri).bodyString(jsonSend, ContentType.APPLICATION_JSON);
         executeAndHandle(request);
     }
 }
