@@ -256,19 +256,23 @@ public abstract class AbstractEndpoint
             case HttpStatus.SC_BAD_REQUEST:
                 throw new IllegalArgumentException(message, inner);
             case HttpStatus.SC_UNAUTHORIZED:
+                //throw new InvalidCredentialException(message);
+                throw new IllegalAccessException(message);
             case HttpStatus.SC_FORBIDDEN:
                 throw new IllegalAccessException(message);
             case HttpStatus.SC_NOT_FOUND:
             case HttpStatus.SC_GONE:
                 throw new FileNotFoundException(message);
             case HttpStatus.SC_CONFLICT:
-            case HttpStatus.SC_PRECONDITION_FAILED:
-            case HttpStatus.SC_REQUESTED_RANGE_NOT_SATISFIABLE:
                 throw new IllegalStateException(message, inner);
-//            case HttpStatus.SC_REQUESTED_RANGE_NOT_SATISFIABLE:
-//                throw new VersionNotFoundException(message, inner);
-//            case HttpStatus.SC_REQUEST_TIMEOUT:
-//                throw new TimeoutException(message);
+            case HttpStatus.SC_PRECONDITION_FAILED:
+                //throw new VersionNotFoundException(message, inner);
+                throw new IllegalStateException(message, inner);
+            case HttpStatus.SC_REQUESTED_RANGE_NOT_SATISFIABLE:
+                //throw new IndexOutOfBoundsException(message);
+                throw new IllegalStateException(message, inner);
+            case HttpStatus.SC_REQUEST_TIMEOUT:
+                //throw new TimeoutException(message);
             default:
                 throw new RuntimeException(message, inner);
         }
