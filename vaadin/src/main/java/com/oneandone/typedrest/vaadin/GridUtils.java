@@ -5,6 +5,7 @@ import com.vaadin.data.util.filter.SimpleStringFilter;
 import com.vaadin.server.Sizeable;
 import com.vaadin.ui.Grid;
 import com.vaadin.ui.TextField;
+import com.vaadin.ui.themes.ValoTheme;
 
 /**
  * Utility methods for Vaadin {@link Grid}s.
@@ -28,8 +29,9 @@ public final class GridUtils {
         Container.Indexed container = grid.getContainerDataSource();
         container.getContainerPropertyIds().forEach(pid -> {
             TextField filterField = new TextField();
-            filterField.setWidth(100, Sizeable.Unit.PERCENTAGE);
             filterField.setInputPrompt("Filter");
+            filterField.addStyleName(ValoTheme.TEXTFIELD_SMALL);
+            filterField.setWidth(100, Sizeable.Unit.PERCENTAGE);
             filterField.addTextChangeListener(event -> {
                 ((Container.SimpleFilterable) container).removeContainerFilters(pid);
                 if (!event.getText().isEmpty()) {

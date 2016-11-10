@@ -4,6 +4,7 @@ import com.vaadin.data.Container.Filter;
 import com.vaadin.data.Item;
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.ui.*;
+import com.vaadin.ui.themes.ValoTheme;
 import java.util.Collection;
 import java.util.Set;
 
@@ -52,7 +53,8 @@ public class EntityPicker<T> extends CustomField<Set<T>> {
                 }
             });
         });
-        filterField.setInputPrompt("Search");
+        filterField.setInputPrompt("Filter");
+        filterField.addStyleName(ValoTheme.TEXTFIELD_SMALL);
         filterField.setWidth(50, Unit.PERCENTAGE);
 
         twinColSelect.setLeftColumnCaption("Available");
