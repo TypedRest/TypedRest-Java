@@ -11,7 +11,7 @@
 
     <groupId>com.oneandone</groupId>
     <artifactId>typedrest-parent</artifactId>
-    <version>0.28</version>
+    <version>0.28.1</version>
     <packaging>pom</packaging>
 
     <name>TypedRest Parent</name>
@@ -37,7 +37,7 @@
     </developers>
 
     <properties>
-        <typedrest.version>0.28</typedrest.version>
+        <typedrest.version>0.28.1</typedrest.version>
 
         <!-- Warning: 2.8.x causes problems with missing methods for jsr310 -->
         <jackson.version>2.7.7</jackson.version>

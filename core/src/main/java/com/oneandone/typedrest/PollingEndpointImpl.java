@@ -131,7 +131,7 @@ public class PollingEndpointImpl<TEntity>
 
             while (endCondition == null || !endCondition.test(previousEntity)) {
                 try {
-                    sleep(pollingInterval);
+                    sleep(pollingInterval * 1000);
                 } catch (InterruptedException ex) {
                 }
                 if (subscription.isUnsubscribed()) {
