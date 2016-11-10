@@ -27,7 +27,26 @@ public abstract class AbstractEntityForm<TEntity>
      */
     protected AbstractEntityForm(Class<TEntity> entityType) {
         this.entityType = entityType;
-        this.fieldGroup = new BeanFieldGroup<>(entityType);
+
+        fieldGroup = new BeanFieldGroup<>(entityType);
+        fieldGroup.setFieldFactory(new FieldGroupFieldFactory() {
+            @Override
+            public <T extends Field> T createField(Class<?> dataType, Class<T> fieldType) {
+                return (fieldType.equals(Field.class))
+                        ? (T) buildField(dataType)
+                        : DefaultFieldGroupFieldFactory.get().createField(dataType, fieldType);
+            }
+        });
+    }
+
+    /**
+     * Builds a field based on the data type to be edited.
+     *
+     * @param dataType The type to be edited using the field.
+     * @return A field that is capable of editing the given type of data.
+     */
+    protected Field buildField(Class<?> dataType) {
+        return DefaultFieldGroupFieldFactory.get().createField(dataType, Field.class);
     }
 
     @Override
@@ -36,7 +55,6 @@ public abstract class AbstractEntityForm<TEntity>
         try {
             fieldGroup.commit();
         } catch (FieldGroup.CommitException ex) {
-            // replace exception for nicer message
             throw new Validator.InvalidValueException("Invalid input!");
         }
         return fieldGroup.getItemDataSource().getBean();
@@ -56,13 +74,12 @@ public abstract class AbstractEntityForm<TEntity>
     }
 
     private void applyAnnotations(Class<? extends Annotation> annotationType, Validator validator) {
-        getPropertiesWithAnnotation(entityType, annotationType)
-                .forEach(property -> {
-                    Field<?> field = fieldGroup.getField(property.getName());
-                    if (field != null) {
-                        field.addValidator(validator);
-                    }
-                });
+        getPropertiesWithAnnotation(entityType, annotationType).forEach(property -> {
+            Field<?> field = fieldGroup.getField(property.getName());
+            if (field != null) {
+                field.addValidator(validator);
+            }
+        });
     }
 
     @Override

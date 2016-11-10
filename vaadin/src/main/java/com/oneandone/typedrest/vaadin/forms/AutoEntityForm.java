@@ -16,8 +16,6 @@ import java.beans.*;
 public class AutoEntityForm<TEntity>
         extends AbstractEntityForm<TEntity> {
 
-    protected FormLayout masterLayout = new FormLayout();
-
     /**
      * Creates a new entity form.
      *
@@ -25,25 +23,39 @@ public class AutoEntityForm<TEntity>
      */
     public AutoEntityForm(Class<TEntity> entityType) {
         super(entityType);
+        setCompositionRoot(buildAndBind(entityType));
+    }
 
-        for (PropertyDescriptor property : getPropertiesWithoutAnnotation(entityType, EditorHidden.class)) {
-            if (property.getWriteMethod() != null) {
-                Component component = buildAndBind(property);
-                component.setWidth(100, Unit.PERCENTAGE);
-                if (component.getCaption() == null) {
-                    component.setCaption(propertyIdToHumanFriendly(property.getName()));
-                }
-                if (component instanceof DateField) {
-                    ((DateField) component).setResolution(Resolution.SECOND);
-                }
-                masterLayout.addComponent(component);
+    /**
+     * Builds a form layout with fields for all properties exposed by the
+     * entity.
+     *
+     * @param entityType The type of entity to build a form for.
+     * @return The form layout.
+     */
+    protected Component buildAndBind(Class<TEntity> entityType) {
+        FormLayout layout = new FormLayout();
 
-                getAnnotation(entityType, property, Description.class)
-                        .ifPresent(x -> masterLayout.addComponent(buildDescriptionComponent(property, x.value())));
+        getPropertiesWithoutAnnotation(entityType, EditorHidden.class).forEach((property) -> {
+            if (property.getWriteMethod() == null) {
+                return;
             }
-        }
 
-        setCompositionRoot(masterLayout);
+            Component component = buildAndBind(property);
+            component.setWidth(100, Unit.PERCENTAGE);
+            if (component.getCaption() == null) {
+                component.setCaption(propertyIdToHumanFriendly(property.getName()));
+            }
+            if (component instanceof DateField) {
+                ((DateField) component).setResolution(Resolution.SECOND);
+            }
+            layout.addComponent(component);
+
+            getAnnotation(entityType, property, Description.class)
+                    .ifPresent(x -> layout.addComponent(buildDescriptionComponent(property, x.value())));
+        });
+
+        return layout;
     }
 
     /**
