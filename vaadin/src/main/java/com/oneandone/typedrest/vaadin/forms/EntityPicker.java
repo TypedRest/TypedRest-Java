@@ -5,6 +5,7 @@ import com.vaadin.data.Item;
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.ui.*;
 import java.util.Collection;
+import java.util.Set;
 
 /**
  * UI component for picking a subset of entities from a set of candidates.
@@ -14,22 +15,24 @@ import java.util.Collection;
  *
  * @param <T> The type of entities the picker offers.
  */
-public class EntityPicker<T> extends CustomComponent {
+public class EntityPicker<T> extends CustomField<Set<T>> {
 
+    private final Class<T> entityType;
     private final TextField filterField = new TextField();
     private final TwinColSelect twinColSelect = new TwinColSelect();
-    private final Class<T> entityType;
-
     private BeanItemContainer<T> container;
 
     /**
      * Creates a new entity picker.
      *
-     * @param entityType The type of entities the picker offers.
+     * @param type The type of entities the picker offers.
      */
-    public EntityPicker(Class<T> entityType) {
-        this.entityType = entityType;
+    public EntityPicker(Class<T> type) {
+        this.entityType = type;
+    }
 
+    @Override
+    protected Component initContent() {
         filterField.addTextChangeListener(event -> {
             if (container == null) {
                 return;
@@ -59,7 +62,23 @@ public class EntityPicker<T> extends CustomComponent {
 
         VerticalLayout layout = new VerticalLayout(filterField, twinColSelect);
         layout.setSizeFull();
-        setCompositionRoot(layout);
+        return layout;
+    }
+
+    @Override
+    public Class<? extends Set<T>> getType() {
+        return (Class<Set<T>>) ((Class) Set.class);
+    }
+
+    @Override
+    protected void setInternalValue(Set<T> newValue) {
+        twinColSelect.setValue(newValue);
+        super.setInternalValue(newValue);
+    }
+
+    @Override
+    protected Set<T> getInternalValue() {
+        return (Set<T>) twinColSelect.getValue();
     }
 
     /**
@@ -70,14 +89,5 @@ public class EntityPicker<T> extends CustomComponent {
     public void setCandidates(Collection<T> candidates) {
         twinColSelect.setContainerDataSource(
                 container = new BeanItemContainer<>(entityType, candidates));
-    }
-
-    /**
-     * Exposes the {@link TwinColSelect} for data binding.
-     *
-     * @return The {@link TwinColSelect}.
-     */
-    public Field getField() {
-        return twinColSelect;
     }
 }
