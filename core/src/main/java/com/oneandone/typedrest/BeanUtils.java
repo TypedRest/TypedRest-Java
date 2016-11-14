@@ -48,12 +48,12 @@ public final class BeanUtils {
      */
     public static <TAnnotation extends Annotation> List<PropertyDescriptor> getPropertiesWithAnnotation(Class<?> beanType, Class<TAnnotation> annotationType) {
         LinkedList<PropertyDescriptor> result = new LinkedList<>();
-        for (PropertyDescriptor property : getProperties(beanType)) {
+        getProperties(beanType).forEach(property -> {
             if (property.getReadMethod() != null && property.getReadMethod().getAnnotation(annotationType) != null
                     || isFieldAnnotated(beanType, property.getName(), annotationType)) {
                 result.add(property);
             }
-        }
+        });
         return result;
     }
 
@@ -68,12 +68,12 @@ public final class BeanUtils {
      */
     public static <TAnnotation extends Annotation> List<PropertyDescriptor> getPropertiesWithoutAnnotation(Class<?> beanType, Class<TAnnotation> annotationType) {
         LinkedList<PropertyDescriptor> result = new LinkedList<>();
-        for (PropertyDescriptor property : getProperties(beanType)) {
+        getProperties(beanType).forEach(property -> {
             if ((property.getReadMethod() == null || property.getReadMethod().getAnnotation(annotationType) == null)
                     && !isFieldAnnotated(beanType, property.getName(), annotationType)) {
                 result.add(property);
             }
-        }
+        });
         return result;
     }
 

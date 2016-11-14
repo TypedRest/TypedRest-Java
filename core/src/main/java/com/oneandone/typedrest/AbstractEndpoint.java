@@ -83,8 +83,8 @@ public abstract class AbstractEndpoint
      * @param referrer The parent endpoint containing this one.
      * @param relativeUri The URI of this endpoint relative to the
      * <code>referrer</code>'s. Prefix <code>./</code> to append a trailing
-     * slash to the <code>referrer</code> URI if missing. Prefix <code>./</code> to
-     * append a trailing slash to the <code>referrer</code> URI if missing.
+     * slash to the <code>referrer</code> URI if missing. Prefix <code>./</code>
+     * to append a trailing slash to the <code>referrer</code> URI if missing.
      */
     protected AbstractEndpoint(Endpoint referrer, String relativeUri) {
         this((relativeUri.startsWith("./") ? ensureTrailingSlash(referrer.getUri()) : referrer.getUri())
@@ -315,16 +315,17 @@ public abstract class AbstractEndpoint
      * @param linkTemplates A dictionary to add found link templates to.
      */
     protected void handleHeaderLinks(HttpResponse response, Map<String, Map<URI, String>> links, Map<String, String> linkTemplates) {
-        for (LinkHeader header : getLinkHeaders(response)) {
-            if (header.getRel() != null) {
-                if (header.isTemplated()) {
-                    linkTemplates.put(header.getRel(), header.getHref());
-                } else {
-                    getOrAdd(links, header.getRel())
-                            .put(uri.resolve(header.getHref()), header.getTitle());
-                }
+        getLinkHeaders(response).forEach(header -> {
+            if (header.getRel() == null) {
+                return;
             }
-        }
+            if (header.isTemplated()) {
+                linkTemplates.put(header.getRel(), header.getHref());
+            } else {
+                getOrAdd(links, header.getRel())
+                        .put(uri.resolve(header.getHref()), header.getTitle());
+            }
+        });
     }
 
     /**
@@ -353,11 +354,11 @@ public abstract class AbstractEndpoint
 
             switch (x.getValue().getNodeType()) {
                 case ARRAY:
-                    for (JsonNode subobj : x.getValue()) {
+                    x.getValue().forEach(subobj -> {
                         if (subobj.getNodeType() == JsonNodeType.OBJECT) {
                             parseLinkObject(rel, (ObjectNode) subobj, linksForRel, linkTemplates);
                         }
-                    }
+                    });
                     break;
                 case OBJECT:
                     parseLinkObject(rel, (ObjectNode) x.getValue(), linksForRel, linkTemplates);
@@ -440,9 +441,7 @@ public abstract class AbstractEndpoint
         Set<URI> defaulLinksForRel = defaultLinks.get(rel);
         if (defaulLinksForRel != null) {
             Map<URI, String> result = new HashMap<>();
-            for (URI link : defaulLinksForRel) {
-                result.put(link, null);
-            }
+            defaulLinksForRel.forEach(link -> result.put(link, null));
             return result;
         }
 
