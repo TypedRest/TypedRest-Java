@@ -5,7 +5,10 @@ package com.oneandone.typedrest;
  * {@link ElementEndpoint}s with bulk create and replace support.
  *
  * @param <TEntity> The type of entity the endpoint represents.
+ * 
+ * @deprecated Use {@link CollectionEndpoint} instead.
  */
+@Deprecated
 public interface BulkCollectionEndpoint<TEntity>
         extends GenericBulkCollectionEndpoint<TEntity, ElementEndpoint<TEntity>>, CollectionEndpoint<TEntity> {
 }

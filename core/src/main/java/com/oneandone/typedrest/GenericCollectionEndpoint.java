@@ -1,6 +1,7 @@
 package com.oneandone.typedrest;
 
 import java.io.*;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import org.apache.http.*;
@@ -91,4 +92,65 @@ public interface GenericCollectionEndpoint<TEntity, TElementEndpoint extends End
      */
     TElementEndpoint create(TEntity entity)
             throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, IllegalStateException;
+
+    /**
+     * Shows whether the server has indicated that
+     * {@link #createAll(java.lang.Iterable)} is currently allowed.
+     *
+     * Uses cached data from last response.
+     *
+     * @return An indicator whether the method is allowed. If no request has
+     * been sent yet or the server did not specify allowed methods
+     * {@link Optional#empty()} is returned.
+     */
+    Optional<Boolean> isCreateAllAllowed();
+
+    /**
+     * Creates multiple new <code>TEntity</code>s.
+     *
+     * @param entities The new <code>TEntity</code>s.
+     *
+     * @throws IOException Network communication failed.
+     * @throws IllegalArgumentException {@link HttpStatus#SC_BAD_REQUEST}
+     * @throws IllegalAccessException {@link HttpStatus#SC_UNAUTHORIZED} or
+     * {@link HttpStatus#SC_FORBIDDEN}
+     * @throws FileNotFoundException {@link HttpStatus#SC_NOT_FOUND} or
+     * {@link HttpStatus#SC_GONE}
+     * @throws IllegalStateException {@link HttpStatus#SC_CONFLICT}
+     * @throws RuntimeException Other non-success status code.
+     */
+    void createAll(Iterable<TEntity> entities)
+            throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, IllegalStateException;
+
+    /**
+     * Shows whether the server has indicated that
+     * {@link #setAll(java.util.Collection)} is currently allowed.
+     *
+     * Uses cached data from last response.
+     *
+     * @return An indicator whether the method is allowed. If no request has
+     * been sent yet or the server did not specify allowed methods
+     * {@link Optional#empty()} is returned.
+     */
+    Optional<Boolean> isSetAllAllowed();
+
+    /**
+     * Replaces the entire content of the collection with new
+     * <code>TEntity</code>s.
+     *
+     * @param entities >The new set of <code>TEntity</code>s the collection
+     * shall contain.
+     * @throws IOException Network communication failed.
+     * @throws IllegalArgumentException {@link HttpStatus#SC_BAD_REQUEST}
+     * @throws IllegalAccessException {@link HttpStatus#SC_UNAUTHORIZED} or
+     * {@link HttpStatus#SC_FORBIDDEN}
+     * @throws FileNotFoundException {@link HttpStatus#SC_NOT_FOUND} or
+     * {@link HttpStatus#SC_GONE}
+     * @throws IllegalStateException The entities have changed since they were
+     * last retrieved with {@link #readAll()}. Your changes were rejected to
+     * prevent a lost update.
+     * @throws RuntimeException Other non-success status code.
+     */
+    void setAll(Collection<TEntity> entities)
+            throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException;
 }

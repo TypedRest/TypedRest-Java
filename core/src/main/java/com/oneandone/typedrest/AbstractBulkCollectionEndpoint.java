@@ -1,12 +1,6 @@
 package com.oneandone.typedrest;
 
-import org.apache.http.client.fluent.Request;
-import org.apache.http.entity.ContentType;
-import java.io.*;
 import java.net.URI;
-import java.util.*;
-import org.apache.http.HttpEntity;
-import org.apache.http.entity.StringEntity;
 
 /**
  * Base class for building REST endpoints that represents a collection of
@@ -16,7 +10,10 @@ import org.apache.http.entity.StringEntity;
  * @param <TEntity> The type of entity the endpoint represents.
  * @param <TElementEndpoint> The specific type of {@link ElementEndpoint} to
  * provide for individual <code>TEntity</code>s.
+ *
+ * @deprecated Use {@link AbstractCollectionEndpoint} instead.
  */
+@Deprecated
 public abstract class AbstractBulkCollectionEndpoint<TEntity, TElementEndpoint extends Endpoint>
         extends AbstractCollectionEndpoint<TEntity, TElementEndpoint> implements GenericBulkCollectionEndpoint<TEntity, TElementEndpoint> {
 
@@ -45,33 +42,5 @@ public abstract class AbstractBulkCollectionEndpoint<TEntity, TElementEndpoint e
      */
     protected AbstractBulkCollectionEndpoint(Endpoint referrer, String relativeUri, Class<TEntity> entityType) {
         super(referrer, relativeUri, entityType);
-    }
-
-    @Override
-    public Optional<Boolean> isSetAllAllowed() {
-        return isMethodAllowed("PUT");
-    }
-
-    @Override
-    public void setAll(Collection<TEntity> entities)
-            throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException {
-        if (entities == null) {
-            throw new IllegalArgumentException("entities must not be null.");
-        }
-
-        HttpEntity content = new StringEntity(serializer.writeValueAsString(entities), ContentType.APPLICATION_JSON);
-        putContent(content);
-    }
-
-    @Override
-    public void create(Iterable<TEntity> entities)
-            throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException {
-        if (entities == null) {
-            throw new IllegalArgumentException("entities must not be null.");
-        }
-
-        String jsonSend = serializer.writeValueAsString(entities);
-        Request request = Request.Patch(uri).bodyString(jsonSend, ContentType.APPLICATION_JSON);
-        executeAndHandle(request);
     }
 }

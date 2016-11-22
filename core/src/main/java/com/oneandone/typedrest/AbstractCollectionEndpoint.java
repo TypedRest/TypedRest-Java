@@ -15,6 +15,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.net.URI;
 import java.util.*;
 import lombok.*;
+import org.apache.http.entity.StringEntity;
 
 /**
  * Base class for building REST endpoints that represents a collection of
@@ -126,5 +127,38 @@ public abstract class AbstractCollectionEndpoint<TEntity, TElementEndpoint exten
         return (response.getStatusLine().getStatusCode() == SC_CREATED || response.getStatusLine().getStatusCode() == SC_ACCEPTED) && (locationHeader != null)
                 ? buildElementEndpoint(URI.create(locationHeader.getValue()))
                 : null;
+    }
+
+    @Override
+    public Optional<Boolean> isCreateAllAllowed() {
+        return isMethodAllowed("PATCH");
+    }
+
+    @Override
+    public void createAll(Iterable<TEntity> entities)
+            throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException {
+        if (entities == null) {
+            throw new IllegalArgumentException("entities must not be null.");
+        }
+
+        String jsonSend = serializer.writeValueAsString(entities);
+        Request request = Request.Patch(uri).bodyString(jsonSend, ContentType.APPLICATION_JSON);
+        executeAndHandle(request);
+    }
+
+    @Override
+    public Optional<Boolean> isSetAllAllowed() {
+        return isMethodAllowed("PUT");
+    }
+
+    @Override
+    public void setAll(Collection<TEntity> entities)
+            throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException {
+        if (entities == null) {
+            throw new IllegalArgumentException("entities must not be null.");
+        }
+
+        HttpEntity content = new StringEntity(serializer.writeValueAsString(entities), ContentType.APPLICATION_JSON);
+        putContent(content);
     }
 }

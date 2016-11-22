@@ -7,7 +7,10 @@ import java.net.*;
  * {@link ElementEndpoint}s with bulk create and replace support.
  *
  * @param <TEntity> The type of entity the endpoint represents.
+ * 
+ * @deprecated Use {@link CollectionEndpointImpl} instead.
  */
+@Deprecated
 public class BulkCollectionEndpointImpl<TEntity>
         extends AbstractBulkCollectionEndpoint<TEntity, ElementEndpoint<TEntity>>
         implements BulkCollectionEndpoint<TEntity> {
