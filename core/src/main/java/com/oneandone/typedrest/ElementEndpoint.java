@@ -52,7 +52,7 @@ public interface ElementEndpoint<TEntity>
 
     /**
      * Shows whether the server has indicated that
-     * {@link #update(java.lang.Object)} is currently allowed.
+     * {@link #set(java.lang.Object)} is currently allowed.
      *
      * Uses cached data from last response.
      *
@@ -60,12 +60,12 @@ public interface ElementEndpoint<TEntity>
      * sent yet or the server did not specify allowed verbs
      * {@link Optional#empty()} is returned.
      */
-    Optional<Boolean> isUpdateAllowed();
+    Optional<Boolean> isSetAllowed();
 
     /**
-     * Updates the <code>TEntity</code>.
+     * Sets/replaces the <code>TEntity</code>.
      *
-     * @param entity The modified <code>TEntity</code>.
+     * @param entity The new <code>TEntity</code>.
      * @return The <code>TEntity</code> as returned by the server, possibly with
      * additional fields set. <code>null</code> if the server does not respond
      * with a result entity.
@@ -80,8 +80,34 @@ public interface ElementEndpoint<TEntity>
      * lost update.
      * @throws RuntimeException Other non-success status code.
      */
-    TEntity update(TEntity entity)
+    TEntity set(TEntity entity)
             throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, IllegalStateException;
+
+    /**
+     * Sets/replaces the <code>TEntity</code>.
+     *
+     * @param entity The new <code>TEntity</code>.
+     * @return The <code>TEntity</code> as returned by the server, possibly with
+     * additional fields set. <code>null</code> if the server does not respond
+     * with a result entity.
+     * @throws IOException Network communication failed.
+     * @throws IllegalArgumentException {@link HttpStatus#SC_BAD_REQUEST}
+     * @throws IllegalAccessException {@link HttpStatus#SC_UNAUTHORIZED} or
+     * {@link HttpStatus#SC_FORBIDDEN}
+     * @throws FileNotFoundException {@link HttpStatus#SC_NOT_FOUND} or
+     * {@link HttpStatus#SC_GONE}
+     * @throws IllegalStateException The entity has changed since it was last
+     * retrieved with {@link #read()}. Your changes were rejected to prevent a
+     * lost update.
+     * @throws RuntimeException Other non-success status code.
+     *
+     * @deprecated Use {@link #set(java.lang.Object) instead.
+     */
+    @Deprecated
+    default TEntity update(TEntity entity)
+            throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, IllegalStateException {
+        return set(entity);
+    }
 
     /**
      * Shows whether the server has indicated that {@link #delete()} is

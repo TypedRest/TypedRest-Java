@@ -57,7 +57,7 @@ public class ElementView<TEntity>
         setCaption(entity.toString());
         entityForm.setEntity(entity);
 
-        endpoint.isUpdateAllowed().ifPresent(this::setSaveEnabled);
+        endpoint.isSetAllowed().ifPresent(this::setSaveEnabled);
         endpoint.isDeleteAllowed().ifPresent(this::setDeleteEnabled);
     }
 
@@ -75,7 +75,7 @@ public class ElementView<TEntity>
     @Override
     protected void onSave()
             throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, IllegalStateException, Validator.InvalidValueException {
-        endpoint.update(entityForm.getEntity());
+        endpoint.set(entityForm.getEntity());
         eventBus.post(new ElementUpdatedEvent<>(endpoint));
     }
 

@@ -76,30 +76,30 @@ public class ElementEndpointTest extends AbstractEndpointTest {
 
     @Test
     @Ignore("Works in isolation but fails when executed as part of test suite")
-    public void testUpdateNoResult() throws Exception {
+    public void testSetNoResult() throws Exception {
         stubFor(put(urlEqualTo("/endpoint"))
                 .withRequestBody(equalToJson("{\"id\":5,\"name\":\"test\"}"))
                 .willReturn(aResponse()
                         .withStatus(SC_NO_CONTENT)));
 
-        endpoint.update(new MockEntity(5, "test"));
+        endpoint.set(new MockEntity(5, "test"));
     }
 
     @Test
     @Ignore("Works in isolation but fails when executed as part of test suite")
-    public void testUpdateResult() throws Exception {
+    public void testSetResult() throws Exception {
         stubFor(put(urlEqualTo("/endpoint"))
                 .withRequestBody(equalToJson("{\"id\":5,\"name\":\"test\"}"))
                 .willReturn(aResponse()
                         .withHeader(CONTENT_TYPE, JSON_MIME)
                         .withBody("{\"id\":5,\"name\":\"testXXX\"}")));
 
-        assertThat(endpoint.update(new MockEntity(5, "test")),
+        assertThat(endpoint.set(new MockEntity(5, "test")),
                 is(equalTo(new MockEntity(5, "testXXX"))));
     }
 
     @Test
-    public void testUpdateETag() throws Exception {
+    public void testSetETag() throws Exception {
         stubFor(get(urlEqualTo("/endpoint"))
                 .withHeader(ACCEPT, equalTo(JSON_MIME))
                 .willReturn(aResponse()
@@ -115,18 +115,18 @@ public class ElementEndpointTest extends AbstractEndpointTest {
                 .withRequestBody(equalToJson("{\"id\":5,\"name\":\"test\"}"))
                 .willReturn(aResponse()
                         .withStatus(SC_NO_CONTENT)));
-        endpoint.update(entity);
+        endpoint.set(entity);
     }
 
     @Test
     @Ignore("Works in isolation but fails when executed as part of test suite")
-    public void testUpdateWithNullValue() throws Exception {
+    public void testSetWithNullValue() throws Exception {
         stubFor(put(urlEqualTo("/endpoint"))
                 .withRequestBody(equalToJson("{\"id\":5}"))
                 .willReturn(aResponse()
                         .withStatus(SC_NO_CONTENT)));
 
-        endpoint.update(new MockEntity(5, null));
+        endpoint.set(new MockEntity(5, null));
     }
 
     @Test
