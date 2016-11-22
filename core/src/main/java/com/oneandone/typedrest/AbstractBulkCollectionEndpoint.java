@@ -49,7 +49,7 @@ public abstract class AbstractBulkCollectionEndpoint<TEntity, TElementEndpoint e
 
     @Override
     public Optional<Boolean> isSetAllAllowed() {
-        return isVerbAllowed("PUT");
+        return isMethodAllowed("PUT");
     }
 
     @Override

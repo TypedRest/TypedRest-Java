@@ -110,7 +110,7 @@ public abstract class AbstractCollectionEndpoint<TEntity, TElementEndpoint exten
 
     @Override
     public Optional<Boolean> isCreateAllowed() {
-        return isVerbAllowed("POST");
+        return isMethodAllowed("POST");
     }
 
     @Override

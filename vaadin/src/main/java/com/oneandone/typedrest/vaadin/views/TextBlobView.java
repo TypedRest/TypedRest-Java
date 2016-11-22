@@ -67,7 +67,7 @@ public class TextBlobView extends AbstractBlobView {
             Notification.show("Warning", ex.getLocalizedMessage(), Notification.Type.WARNING_MESSAGE);
         }
 
-        handleAllowedVerbs();
+        handleAllowedMethods();
     }
 
     @Override

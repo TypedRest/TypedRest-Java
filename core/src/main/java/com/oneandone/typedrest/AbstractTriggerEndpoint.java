@@ -28,6 +28,6 @@ public abstract class AbstractTriggerEndpoint
 
     @Override
     public Optional<Boolean> isTriggerAllowed() {
-        return isVerbAllowed("POST");
+        return isMethodAllowed("POST");
     }
 }

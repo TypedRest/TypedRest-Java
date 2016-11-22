@@ -2,7 +2,6 @@ package com.oneandone.typedrest;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import static java.lang.Thread.sleep;
 import java.net.URI;
 import java.util.function.Predicate;
 import lombok.*;
@@ -13,8 +12,9 @@ import org.apache.http.client.fluent.Request;
 import rx.Scheduler;
 import rx.Subscription;
 import rx.schedulers.Schedulers;
-import static rx.util.async.Async.runAsync;
 import rx.util.async.StoppableObservable;
+import static java.lang.Thread.sleep;
+import static rx.util.async.Async.runAsync;
 
 /**
  * REST endpoint that represents an entity that can be polled for state changes.

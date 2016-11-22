@@ -29,7 +29,7 @@ public class BlobEndpointImpl
 
     @Override
     public Optional<Boolean> isDownloadAllowed() {
-        return isVerbAllowed("GET");
+        return isMethodAllowed("GET");
     }
 
     @Override
@@ -40,7 +40,7 @@ public class BlobEndpointImpl
 
     @Override
     public Optional<Boolean> isUploadAllowed() {
-        return isVerbAllowed("PUT");
+        return isMethodAllowed("PUT");
     }
 
     @Override
@@ -60,7 +60,7 @@ public class BlobEndpointImpl
 
     @Override
     public Optional<Boolean> isDeleteAllowed() {
-        return isVerbAllowed("DELETE");
+        return isMethodAllowed("DELETE");
     }
 
     @Override

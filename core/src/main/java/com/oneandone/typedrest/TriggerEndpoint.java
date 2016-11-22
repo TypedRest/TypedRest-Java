@@ -15,8 +15,8 @@ public interface TriggerEndpoint extends Endpoint {
      *
      * Uses cached data from last response.
      *
-     * @return An indicator whether the verb is allowed. If no request has been
-     * sent yet or the server did not specify allowed verbs
+     * @return An indicator whether the method is allowed. If no request has
+     * been sent yet or the server did not specify allowed methods
      * {@link Optional#empty()} is returned.
      */
     Optional<Boolean> isTriggerAllowed();

@@ -67,7 +67,7 @@ public class ElementEndpointImpl<TEntity>
 
     @Override
     public Optional<Boolean> isSetAllowed() {
-        return isVerbAllowed("PUT");
+        return isMethodAllowed("PUT");
     }
 
     @Override
@@ -85,8 +85,28 @@ public class ElementEndpointImpl<TEntity>
     }
 
     @Override
+    public Optional<Boolean> isModifyAllowed() {
+        return isMethodAllowed("PATCH");
+    }
+
+    @Override
+    public TEntity modify(TEntity entity)
+            throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException {
+        if (entity == null) {
+            throw new IllegalArgumentException("entity must not be null.");
+        }
+
+        HttpEntity content = new StringEntity(serializer.writeValueAsString(entity), ContentType.APPLICATION_JSON);
+        Request request = Request.Patch(uri).body(content);
+        HttpResponse response = executeAndHandle(request);
+        return (response.getEntity() == null)
+                ? null
+                : serializer.readValue(EntityUtils.toString(response.getEntity()), entityType);
+    }
+
+    @Override
     public Optional<Boolean> isDeleteAllowed() {
-        return isVerbAllowed("DELETE");
+        return isMethodAllowed("DELETE");
     }
 
     @Override

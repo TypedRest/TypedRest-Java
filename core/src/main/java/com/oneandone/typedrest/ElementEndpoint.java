@@ -56,8 +56,8 @@ public interface ElementEndpoint<TEntity>
      *
      * Uses cached data from last response.
      *
-     * @return An indicator whether the verb is allowed. If no request has been
-     * sent yet or the server did not specify allowed verbs
+     * @return An indicator whether the method is allowed. If no request has
+     * been sent yet or the server did not specify allowed methods
      * {@link Optional#empty()} is returned.
      */
     Optional<Boolean> isSetAllowed();
@@ -81,6 +81,40 @@ public interface ElementEndpoint<TEntity>
      * @throws RuntimeException Other non-success status code.
      */
     TEntity set(TEntity entity)
+            throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, IllegalStateException;
+
+    /**
+     * Shows whether the server has indicated that
+     * {@link #modify(java.lang.Object)} is currently allowed.
+     *
+     * Uses cached data from last response.
+     *
+     * @return An indicator whether the method is allowed. If no request has
+     * been sent yet or the server did not specify allowed methods
+     * {@link Optional#empty()} is returned.
+     */
+    Optional<Boolean> isModifyAllowed();
+
+    /**
+     * Modifies an existing <code>TEntity</code> by merging changes.
+     *
+     * @param entity The <code>TEntity</code> data to merge with the existing
+     * one.
+     * @return The <code>TEntity</code> as returned by the server, possibly with
+     * additional fields set. <code>null</code> if the server does not respond
+     * with a result entity.
+     * @throws IOException Network communication failed.
+     * @throws IllegalArgumentException {@link HttpStatus#SC_BAD_REQUEST}
+     * @throws IllegalAccessException {@link HttpStatus#SC_UNAUTHORIZED} or
+     * {@link HttpStatus#SC_FORBIDDEN}
+     * @throws FileNotFoundException {@link HttpStatus#SC_NOT_FOUND} or
+     * {@link HttpStatus#SC_GONE}
+     * @throws IllegalStateException The entity has changed since it was last
+     * retrieved with {@link #read()}. Your changes were rejected to prevent a
+     * lost update.
+     * @throws RuntimeException Other non-success status code.
+     */
+    TEntity modify(TEntity entity)
             throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, IllegalStateException;
 
     /**
@@ -115,8 +149,8 @@ public interface ElementEndpoint<TEntity>
      *
      * Uses cached data from last response.
      *
-     * @return An indicator whether the verb is allowed. If no request has been
-     * sent yet or the server did not specify allowed verbs
+     * @return An indicator whether the method is allowed. If no request has
+     * been sent yet or the server did not specify allowed methods
      * {@link Optional#empty()} is returned.
      */
     Optional<Boolean> isDeleteAllowed();

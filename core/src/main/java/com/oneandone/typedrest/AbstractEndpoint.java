@@ -16,6 +16,9 @@ import org.apache.http.*;
 import org.apache.http.client.fluent.*;
 import org.apache.http.util.*;
 import static java.util.Arrays.stream;
+import static java.util.Arrays.stream;
+import static java.util.Arrays.stream;
+import static java.util.Arrays.stream;
 
 /**
  * Base class for building REST endpoints, i.e. remote HTTP resources.
@@ -203,7 +206,7 @@ public abstract class AbstractEndpoint
     protected void handleResponse(HttpResponse response, Request request)
             throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, IllegalStateException {
         handleLinks(response);
-        handleAllow(response);
+        handleCapabilities(response);
         handleErrors(response, request);
     }
 
@@ -272,7 +275,7 @@ public abstract class AbstractEndpoint
                 //throw new IndexOutOfBoundsException(message);
                 throw new IllegalStateException(message, inner);
             case HttpStatus.SC_REQUEST_TIMEOUT:
-                //throw new TimeoutException(message);
+            //throw new TimeoutException(message);
             default:
                 throw new RuntimeException(message, inner);
         }
@@ -501,36 +504,37 @@ public abstract class AbstractEndpoint
     }
 
     /**
-     * Handles allowed HTTP verbs reported by the server.
+     * Handles allowed HTTP methods and other capabilities reported by the
+     * server.
      *
      * @param response The response to check for the "Allow" header.
      */
-    private void handleAllow(HttpResponse response) {
-        allowedVerbs = unmodifiableSet(stream(response.getHeaders("Allow"))
+    protected void handleCapabilities(HttpResponse response) {
+        allowedMethods = unmodifiableSet(stream(response.getHeaders("Allow"))
                 .filter(x -> x.getName().equals("Allow"))
                 .flatMap(x -> stream(x.getElements())).map(x -> x.getName())
                 .collect(toSet()));
     }
 
     // NOTE: Always replace entire set rather than modifying it to ensure thread-safety.
-    private Set<String> allowedVerbs = unmodifiableSet(new HashSet<>());
+    private Set<String> allowedMethods = unmodifiableSet(new HashSet<>());
 
     /**
-     * Shows whether the server has indicated that a specific HTTP verb is
+     * Shows whether the server has indicated that a specific HTTP method is
      * currently allowed.
      *
      * Uses cached data from last response.
      *
-     * @param verb The HTTP verb (e.g. GET, POST, ...) to check.
-     * @return An indicator whether the verb is allowed. If no request has been
-     * sent yet or the server did not specify allowed verbs
+     * @param method The HTTP method (e.g. GET, POST, ...) to check.
+     * @return An indicator whether the method is allowed. If no request has been
+     * sent yet or the server did not specify allowed methods
      * {@link Optional#empty()} is returned.
      */
-    protected Optional<Boolean> isVerbAllowed(String verb) {
-        if (allowedVerbs.isEmpty()) {
+    protected Optional<Boolean> isMethodAllowed(String method) {
+        if (allowedMethods.isEmpty()) {
             return Optional.empty();
         }
-        return Optional.of(allowedVerbs.contains(verb));
+        return Optional.of(allowedMethods.contains(method));
     }
 
     @Override

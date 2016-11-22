@@ -48,9 +48,9 @@ public class CustomEndpointTest extends AbstractEndpointTest {
 
         endpoint.get();
 
-        assertThat(endpoint.isVerbAllowed("PUT").get(), is(true));
-        assertThat(endpoint.isVerbAllowed("POST").get(), is(true));
-        assertThat(endpoint.isVerbAllowed("DELETE").get(), is(false));
+        assertThat(endpoint.isMethodAllowed("PUT").get(), is(true));
+        assertThat(endpoint.isMethodAllowed("POST").get(), is(true));
+        assertThat(endpoint.isMethodAllowed("DELETE").get(), is(false));
     }
 
     @Test

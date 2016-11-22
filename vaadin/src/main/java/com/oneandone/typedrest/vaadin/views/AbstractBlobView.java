@@ -33,13 +33,13 @@ public abstract class AbstractBlobView extends AbstractEndpointView<BlobEndpoint
             // HTTP OPTIONS server-side implementation is optional
         }
 
-        handleAllowedVerbs();
+        handleAllowedMethods();
     }
 
     /**
      * Enables or disabled buttons based on the "Allow" HTTP header.
      */
-    protected void handleAllowedVerbs() {
+    protected void handleAllowedMethods() {
         endpoint.isDownloadAllowed().ifPresent(this::setDownloadEnabled);
         endpoint.isUploadAllowed().ifPresent(this::setUploadEnabled);
         endpoint.isDeleteAllowed().ifPresent(this::setDeleteEnabled);
