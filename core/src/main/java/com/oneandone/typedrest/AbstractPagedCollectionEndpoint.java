@@ -4,6 +4,8 @@ import com.fasterxml.jackson.databind.JavaType;
 import java.io.*;
 import java.net.*;
 import java.util.*;
+import static java.util.Arrays.stream;
+import lombok.*;
 import org.apache.http.*;
 import org.apache.http.client.fluent.*;
 import org.apache.http.util.*;
@@ -51,12 +53,29 @@ public abstract class AbstractPagedCollectionEndpoint<TEntity, TElementEndpoint 
     /**
      * The value used for the Range header unit.
      */
-    public static final String RANGE_UNIT = "elements";
+    @Getter
+    @Setter
+    private String rangeUnit = "elements";
+
+    @Override
+    protected void handleCapabilities(HttpResponse response) {
+        super.handleCapabilities(response);
+        readRangeAllowed = Optional.of(
+                stream(response.getHeaders(ACCEPT_RANGES))
+                .anyMatch(x -> x.getValue().equals(rangeUnit)));
+    }
+
+    private Optional<Boolean> readRangeAllowed;
+
+    @Override
+    public Optional<Boolean> isReadRangeAllowed() {
+        return readRangeAllowed;
+    }
 
     @Override
     public PartialResponse<TEntity> readRange(Long from, Long to)
             throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, IllegalStateException {
-        String range = RANGE_UNIT + "="
+        String range = rangeUnit + "="
                 + (from == null ? "" : from.toString()) + "-"
                 + (to == null ? "" : to.toString());
 

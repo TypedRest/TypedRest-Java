@@ -1,6 +1,7 @@
 package com.oneandone.typedrest;
 
 import java.net.*;
+import java.util.Optional;
 
 /**
  * REST endpoint that represents a collection of <code>TEntity</code>s as

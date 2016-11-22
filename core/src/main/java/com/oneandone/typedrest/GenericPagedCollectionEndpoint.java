@@ -1,6 +1,7 @@
 package com.oneandone.typedrest;
 
 import java.io.*;
+import java.util.Optional;
 import org.apache.http.*;
 
 /**
@@ -15,6 +16,17 @@ import org.apache.http.*;
  */
 public interface GenericPagedCollectionEndpoint<TEntity, TElementEndpoint extends Endpoint>
         extends GenericCollectionEndpoint<TEntity, TElementEndpoint> {
+
+    /**
+     * Shows whether the server has indicated that {@link #readRange()} is
+     * allowed.
+     *
+     * Uses cached data from last response.
+     *
+     * @return An indicator whether the method is allowed. If no request has
+     * been sent yet {@link Optional#empty()} is returned.
+     */
+    Optional<Boolean> isReadRangeAllowed();
 
     /**
      * Returns all <code>TElementEndpoint</code>s within a specific range of the
