@@ -1,6 +1,7 @@
 package com.oneandone.typedrest;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
+import static com.github.tomakehurst.wiremock.stubbing.Scenario.STARTED;
 import static org.apache.http.HttpHeaders.*;
 import static org.apache.http.HttpStatus.*;
 import static org.hamcrest.CoreMatchers.*;
@@ -127,6 +128,60 @@ public class ElementEndpointTest extends AbstractEndpointTest {
                         .withStatus(SC_NO_CONTENT)));
 
         endpoint.set(new MockEntity(5, null));
+    }
+
+    @Test
+    public void testUpdateRetry() throws Exception {
+        stubFor(get(urlEqualTo("/endpoint")).inScenario("testUpdateRetry")
+                .whenScenarioStateIs(STARTED)
+                .withHeader(ACCEPT, equalTo(JSON_MIME))
+                .willReturn(aResponse()
+                        .withStatus(SC_OK)
+                        .withHeader(CONTENT_TYPE, JSON_MIME)
+                        .withHeader(ETAG, "\"1\"")
+                        .withBody("{\"id\":5,\"name\":\"test1\"}"))
+                .willSetStateTo("Second attempt"));
+        stubFor(put(urlEqualTo("/endpoint"))
+                .withHeader(ACCEPT, equalTo(JSON_MIME))
+                .withHeader(IF_MATCH, matching("\"1\""))
+                .withRequestBody(equalToJson("{\"id\":5,\"name\":\"testX\"}"))
+                .willReturn(aResponse()
+                        .withStatus(SC_PRECONDITION_FAILED)));
+        stubFor(get(urlEqualTo("/endpoint")).inScenario("testUpdateRetry")
+                .whenScenarioStateIs("Second attempt")
+                .withHeader(ACCEPT, equalTo(JSON_MIME))
+                .willReturn(aResponse()
+                        .withStatus(SC_OK)
+                        .withHeader(CONTENT_TYPE, JSON_MIME)
+                        .withHeader(ETAG, "\"2\"")
+                        .withBody("{\"id\":5,\"name\":\"test2\"}")));
+        stubFor(put(urlEqualTo("/endpoint"))
+                .withHeader(ACCEPT, equalTo(JSON_MIME))
+                .withHeader(IF_MATCH, matching("\"2\""))
+                .withRequestBody(equalToJson("{\"id\":5,\"name\":\"testX\"}"))
+                .willReturn(aResponse()
+                        .withStatus(SC_NO_CONTENT)));
+
+        endpoint.update(x -> x.setName("testX"));
+    }
+
+    @Test(expected = IllegalStateException.class)
+    public void testUpdateFail() throws Exception {
+        stubFor(get(urlEqualTo("/endpoint"))
+                .withHeader(ACCEPT, equalTo(JSON_MIME))
+                .willReturn(aResponse()
+                        .withStatus(SC_OK)
+                        .withHeader(CONTENT_TYPE, JSON_MIME)
+                        .withHeader(ETAG, "\"1\"")
+                        .withBody("{\"id\":5,\"name\":\"test1\"}")));
+        stubFor(put(urlEqualTo("/endpoint"))
+                .withHeader(ACCEPT, equalTo(JSON_MIME))
+                .withHeader(IF_MATCH, matching("\"1\""))
+                .withRequestBody(equalToJson("{\"id\":5,\"name\":\"testX\"}"))
+                .willReturn(aResponse()
+                        .withStatus(SC_PRECONDITION_FAILED)));
+
+        endpoint.update(x -> x.setName("testX"), 0);
     }
 
     @Test

@@ -2,6 +2,7 @@ package com.oneandone.typedrest;
 
 import java.io.*;
 import java.util.Optional;
+import java.util.function.Consumer;
 import org.apache.http.*;
 
 /**
@@ -84,6 +85,91 @@ public interface ElementEndpoint<TEntity>
             throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, IllegalStateException;
 
     /**
+     * Sets/replaces the <code>TEntity</code>.
+     *
+     * @param entity The new <code>TEntity</code>.
+     * @return The <code>TEntity</code> as returned by the server, possibly with
+     * additional fields set. <code>null</code> if the server does not respond
+     * with a result entity.
+     * @throws IOException Network communication failed.
+     * @throws IllegalArgumentException {@link HttpStatus#SC_BAD_REQUEST}
+     * @throws IllegalAccessException {@link HttpStatus#SC_UNAUTHORIZED} or
+     * {@link HttpStatus#SC_FORBIDDEN}
+     * @throws FileNotFoundException {@link HttpStatus#SC_NOT_FOUND} or
+     * {@link HttpStatus#SC_GONE}
+     * @throws IllegalStateException The entity has changed since it was last
+     * retrieved with {@link #read()}. Your changes were rejected to prevent a
+     * lost update.
+     * @throws RuntimeException Other non-success status code.
+     *
+     * @deprecated Use {@link #set(java.lang.Object) instead.
+     */
+    @Deprecated
+    default TEntity update(TEntity entity)
+            throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, IllegalStateException {
+        return set(entity);
+    }
+
+    /**
+     * Reads the current state of the entity, applies a change to it and stores
+     * the result. Applies optimistic concurrency using automatic retries.
+     *
+     * @param updateAction A callback that takes the current state of the entity
+     * and applies the desired modifications.
+     * @return The <code>TEntity</code> as returned by the server, possibly with
+     * additional fields set. <code>null</code> if the server does not respond
+     * with a result entity.
+     * @throws IOException
+     * @throws IllegalArgumentException
+     * @throws IllegalAccessException
+     * @throws FileNotFoundException
+     * @throws IllegalStateException
+     */
+    default TEntity update(Consumer<TEntity> updateAction)
+            throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, IllegalStateException {
+        return update(updateAction, 3);
+    }
+
+    /**
+     * Reads the current state of the entity, applies a change to it and stores
+     * the result. Applies optimistic concurrency using automatic retries.
+     *
+     * @param updateAction A callback that takes the current state of the entity
+     * and applies the desired modifications.
+     * @param maxRetries The maximum number of retries to perform for optimistic
+     * concurrency before giving up.
+     * @return The <code>TEntity</code> as returned by the server, possibly with
+     * additional fields set. <code>null</code> if the server does not respond
+     * with a result entity.
+     * @throws IOException Network communication failed.
+     * @throws IllegalArgumentException {@link HttpStatus#SC_BAD_REQUEST}
+     * @throws IllegalAccessException {@link HttpStatus#SC_UNAUTHORIZED} or
+     * {@link HttpStatus#SC_FORBIDDEN}
+     * @throws FileNotFoundException {@link HttpStatus#SC_NOT_FOUND} or
+     * {@link HttpStatus#SC_GONE}
+     * @throws IllegalStateException The entity has changed since it was last
+     * retrieved with {@link #read()}. Your changes were rejected to prevent a
+     * lost update.
+     * @throws RuntimeException Other non-success status code.
+     */
+    default TEntity update(Consumer<TEntity> updateAction, int maxRetries)
+            throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, IllegalStateException {
+        int retryCounter = 0;
+        while (true) {
+            TEntity entity = read();
+            updateAction.accept(entity);
+
+            try {
+                return set(entity);
+            } catch (IllegalStateException ex) {
+                if (retryCounter++ >= maxRetries) {
+                    throw ex;
+                }
+            }
+        }
+    }
+
+    /**
      * Shows whether the server has indicated that
      * {@link #merge(java.lang.Object)} is currently allowed.
      *
@@ -116,32 +202,6 @@ public interface ElementEndpoint<TEntity>
      */
     TEntity merge(TEntity entity)
             throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, IllegalStateException;
-
-    /**
-     * Sets/replaces the <code>TEntity</code>.
-     *
-     * @param entity The new <code>TEntity</code>.
-     * @return The <code>TEntity</code> as returned by the server, possibly with
-     * additional fields set. <code>null</code> if the server does not respond
-     * with a result entity.
-     * @throws IOException Network communication failed.
-     * @throws IllegalArgumentException {@link HttpStatus#SC_BAD_REQUEST}
-     * @throws IllegalAccessException {@link HttpStatus#SC_UNAUTHORIZED} or
-     * {@link HttpStatus#SC_FORBIDDEN}
-     * @throws FileNotFoundException {@link HttpStatus#SC_NOT_FOUND} or
-     * {@link HttpStatus#SC_GONE}
-     * @throws IllegalStateException The entity has changed since it was last
-     * retrieved with {@link #read()}. Your changes were rejected to prevent a
-     * lost update.
-     * @throws RuntimeException Other non-success status code.
-     *
-     * @deprecated Use {@link #set(java.lang.Object) instead.
-     */
-    @Deprecated
-    default TEntity update(TEntity entity)
-            throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, IllegalStateException {
-        return set(entity);
-    }
 
     /**
      * Shows whether the server has indicated that {@link #delete()} is
