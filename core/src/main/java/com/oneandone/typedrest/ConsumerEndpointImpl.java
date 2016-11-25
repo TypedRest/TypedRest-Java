@@ -54,6 +54,6 @@ public class ConsumerEndpointImpl<TEntity>
         }
 
         String jsonSend = serializer.writeValueAsString(entity);
-        executeAndHandle(Request.Put(uri).bodyString(jsonSend, ContentType.APPLICATION_JSON));
+        executeAndHandle(Request.Post(uri).bodyString(jsonSend, ContentType.APPLICATION_JSON));
     }
 }
