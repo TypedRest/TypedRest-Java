@@ -85,12 +85,12 @@ public class ElementEndpointImpl<TEntity>
     }
 
     @Override
-    public Optional<Boolean> isModifyAllowed() {
+    public Optional<Boolean> isMergeAllowed() {
         return isMethodAllowed("PATCH");
     }
 
     @Override
-    public TEntity modify(TEntity entity)
+    public TEntity merge(TEntity entity)
             throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException {
         if (entity == null) {
             throw new IllegalArgumentException("entity must not be null.");

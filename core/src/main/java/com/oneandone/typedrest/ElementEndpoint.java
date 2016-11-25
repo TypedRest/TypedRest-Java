@@ -85,7 +85,7 @@ public interface ElementEndpoint<TEntity>
 
     /**
      * Shows whether the server has indicated that
-     * {@link #modify(java.lang.Object)} is currently allowed.
+     * {@link #merge(java.lang.Object)} is currently allowed.
      *
      * Uses cached data from last response.
      *
@@ -93,7 +93,7 @@ public interface ElementEndpoint<TEntity>
      * been sent yet or the server did not specify allowed methods
      * {@link Optional#empty()} is returned.
      */
-    Optional<Boolean> isModifyAllowed();
+    Optional<Boolean> isMergeAllowed();
 
     /**
      * Modifies an existing <code>TEntity</code> by merging changes.
@@ -114,7 +114,7 @@ public interface ElementEndpoint<TEntity>
      * lost update.
      * @throws RuntimeException Other non-success status code.
      */
-    TEntity modify(TEntity entity)
+    TEntity merge(TEntity entity)
             throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, IllegalStateException;
 
     /**

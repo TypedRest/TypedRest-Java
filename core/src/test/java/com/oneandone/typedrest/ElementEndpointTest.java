@@ -131,25 +131,25 @@ public class ElementEndpointTest extends AbstractEndpointTest {
 
     @Test
     @Ignore("Works in isolation but fails when executed as part of test suite")
-    public void testModifyNoResult() throws Exception {
+    public void testMergeNoResult() throws Exception {
         stubFor(put(urlEqualTo("/endpoint"))
                 .withRequestBody(equalToJson("{\"id\":5,\"name\":\"test\"}"))
                 .willReturn(aResponse()
                         .withStatus(SC_NO_CONTENT)));
 
-        endpoint.modify(new MockEntity(5, "test"));
+        endpoint.merge(new MockEntity(5, "test"));
     }
 
     @Test
     @Ignore("Works in isolation but fails when executed as part of test suite")
-    public void testModifyResult() throws Exception {
+    public void testMergeResult() throws Exception {
         stubFor(put(urlEqualTo("/endpoint"))
                 .withRequestBody(equalToJson("{\"id\":5,\"name\":\"test\"}"))
                 .willReturn(aResponse()
                         .withHeader(CONTENT_TYPE, JSON_MIME)
                         .withBody("{\"id\":5,\"name\":\"testXXX\"}")));
 
-        assertThat(endpoint.modify(new MockEntity(5, "test")),
+        assertThat(endpoint.merge(new MockEntity(5, "test")),
                 is(equalTo(new MockEntity(5, "testXXX"))));
     }
 
