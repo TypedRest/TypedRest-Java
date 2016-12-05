@@ -58,14 +58,14 @@ public abstract class ViewComponent
         getUI().addWindow(component.asWindow());
     }
 
-    protected Window containingWindow;
+    private Window containingWindow;
 
     /**
      * Wraps the control in a {@link Window}.
      *
      * @return The newly created window.
      */
-    private Window asWindow() {
+    protected Window asWindow() {
         if (containingWindow == null) {
             containingWindow = new Window(getCaption(), this);
             containingWindow.setWidth(80, Unit.PERCENTAGE);
