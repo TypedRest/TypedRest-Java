@@ -47,6 +47,18 @@ public interface GenericCollectionEndpoint<TEntity, TElementEndpoint extends End
     TElementEndpoint get(TEntity entity);
 
     /**
+     * Shows whether the server has indicated that
+     * {@link #readAll() is currently allowed.
+     *
+     * Uses cached data from last response.
+     *
+     * @return An indicator whether the method is allowed. If no request has
+     * been sent yet or the server did not specify allowed methods
+     * {@link Optional#empty()} is returned.
+     */
+    Optional<Boolean> isReadAllAllowed();
+
+    /**
      * Returns all <code>TEntity</code>s.
      *
      * @return All <code>TEntity</code>s.

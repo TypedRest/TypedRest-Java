@@ -86,6 +86,8 @@ public abstract class AbstractCollectionEndpoint<TEntity, TElementEndpoint exten
         return buildElementEndpoint(linkTemplate("child", "id", id));
     }
 
+    private final Optional<PropertyDescriptor> idProperty;
+
     @Override
     public TElementEndpoint get(TEntity entity) {
         try {
@@ -98,7 +100,10 @@ public abstract class AbstractCollectionEndpoint<TEntity, TElementEndpoint exten
         }
     }
 
-    private final Optional<PropertyDescriptor> idProperty;
+    @Override
+    public Optional<Boolean> isReadAllAllowed() {
+        return isMethodAllowed("GET");
+    }
 
     @Override
     public List<TEntity> readAll()
