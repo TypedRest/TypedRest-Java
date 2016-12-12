@@ -1,15 +1,6 @@
 package com.oneandone.typedrest;
 
-import com.fasterxml.jackson.databind.JavaType;
-import java.io.*;
-import java.net.*;
-import java.util.*;
-import static java.util.Arrays.stream;
-import lombok.*;
-import org.apache.http.*;
-import org.apache.http.client.fluent.*;
-import org.apache.http.util.*;
-import static org.apache.http.HttpHeaders.*;
+import java.net.URI;
 
 /**
  * Base class for building REST endpoints that represents a collection of
@@ -19,7 +10,10 @@ import static org.apache.http.HttpHeaders.*;
  * @param <TEntity> The type of entity the endpoint represents.
  * @param <TElementEndpoint> The specific type of {@link ElementEndpoint} to
  * provide for individual <code>TEntity</code>s.
+ *
+ * @deprecated Use {@link CollectionEndpoint} instead.
  */
+@Deprecated
 public abstract class AbstractPagedCollectionEndpoint<TEntity, TElementEndpoint extends Endpoint>
         extends AbstractCollectionEndpoint<TEntity, TElementEndpoint> implements GenericPagedCollectionEndpoint<TEntity, TElementEndpoint> {
 
@@ -48,55 +42,5 @@ public abstract class AbstractPagedCollectionEndpoint<TEntity, TElementEndpoint 
      */
     protected AbstractPagedCollectionEndpoint(Endpoint referrer, String relativeUri, Class<TEntity> entityType) {
         super(referrer, relativeUri, entityType);
-    }
-
-    /**
-     * The value used for the Range header unit.
-     */
-    @Getter
-    @Setter
-    private String rangeUnit = "elements";
-
-    @Override
-    protected void handleCapabilities(HttpResponse response) {
-        super.handleCapabilities(response);
-        readRangeAllowed = Optional.of(
-                stream(response.getHeaders(ACCEPT_RANGES))
-                .anyMatch(x -> x.getValue().equals(rangeUnit)));
-    }
-
-    private Optional<Boolean> readRangeAllowed;
-
-    @Override
-    public Optional<Boolean> isReadRangeAllowed() {
-        return readRangeAllowed;
-    }
-
-    @Override
-    public PartialResponse<TEntity> readRange(Long from, Long to)
-            throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, IllegalStateException {
-        String range = rangeUnit + "="
-                + (from == null ? "" : from.toString()) + "-"
-                + (to == null ? "" : to.toString());
-
-        HttpResponse response = executeAndHandle(Request.Get(uri).addHeader(RANGE, range));
-
-        JavaType collectionType = serializer.getTypeFactory().constructCollectionType(List.class, entityType);
-        List<TEntity> elements = serializer.readValue(EntityUtils.toString(response.getEntity()), collectionType);
-
-        Header contentRange = response.getFirstHeader(CONTENT_RANGE);
-        if (contentRange == null) {
-            // Server provided full instead of partial response
-            return new PartialResponse<>(elements, 0L, null, null);
-        }
-
-        String[] split = contentRange.getValue().split(" ");
-        split = split[1].split("/");
-        Long contentLength = (split[1].equals("*")) ? null : Long.parseLong(split[1]);
-        split = split[0].split("-");
-        Long contentFrom = (split[0].isEmpty() ? null : Long.parseLong(split[0]));
-        Long contentTo = (split[1].isEmpty() ? null : Long.parseLong(split[1]));
-
-        return new PartialResponse<>(elements, contentFrom, contentTo, contentLength);
     }
 }

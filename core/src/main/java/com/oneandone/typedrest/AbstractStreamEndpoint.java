@@ -16,7 +16,7 @@ import static rx.util.async.Async.runAsync;
  * provide for individual <code>TEntity</code>s.
  */
 public abstract class AbstractStreamEndpoint<TEntity, TElementEndpoint extends Endpoint>
-        extends AbstractPagedCollectionEndpoint<TEntity, TElementEndpoint> implements GenericStreamEndpoint<TEntity, TElementEndpoint> {
+        extends AbstractCollectionEndpoint<TEntity, TElementEndpoint> implements GenericStreamEndpoint<TEntity, TElementEndpoint> {
 
     /**
      * Creates a new element stream endpoint.

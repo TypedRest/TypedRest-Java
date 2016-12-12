@@ -5,7 +5,10 @@ package com.oneandone.typedrest;
  * {@link ElementEndpoint}s with pagination support.
  *
  * @param <TEntity> The type of entity the endpoint represents.
+ *
+ * @deprecated Use {@link CollectionEndpoint} instead.
  */
+@Deprecated
 public interface PagedCollectionEndpoint<TEntity>
         extends GenericPagedCollectionEndpoint<TEntity, ElementEndpoint<TEntity>>, CollectionEndpoint<TEntity> {
 }

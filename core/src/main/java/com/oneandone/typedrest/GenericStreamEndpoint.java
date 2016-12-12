@@ -13,7 +13,7 @@ import rx.util.async.StoppableObservable;
  * provide for individual <code>TEntity</code>s.
  */
 public interface GenericStreamEndpoint<TEntity, TElementEndpoint extends Endpoint>
-        extends GenericPagedCollectionEndpoint<TEntity, TElementEndpoint> {
+        extends GenericCollectionEndpoint<TEntity, TElementEndpoint> {
 
     /**
      * Provides an observable stream of elements.

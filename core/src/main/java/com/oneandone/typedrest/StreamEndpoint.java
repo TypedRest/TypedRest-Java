@@ -7,5 +7,5 @@ package com.oneandone.typedrest;
  * @param <TEntity> The type of entity the endpoint represents.
  */
 public interface StreamEndpoint<TEntity>
-        extends GenericStreamEndpoint<TEntity, ElementEndpoint<TEntity>>, CollectionEndpoint<TEntity>, PagedCollectionEndpoint<TEntity> {
+        extends GenericStreamEndpoint<TEntity, ElementEndpoint<TEntity>>, CollectionEndpoint<TEntity> {
 }

@@ -1,14 +1,16 @@
 package com.oneandone.typedrest;
 
 import java.net.*;
-import java.util.Optional;
 
 /**
  * REST endpoint that represents a collection of <code>TEntity</code>s as
  * {@link ElementEndpoint}s with pagination support using the HTTP Range header.
  *
  * @param <TEntity> The type of entity the endpoint represents.
+ *
+ * @deprecated Use {@link CollectionEndpoint} instead.
  */
+@Deprecated
 public class PagedCollectionEndpointImpl<TEntity>
         extends AbstractPagedCollectionEndpoint<TEntity, ElementEndpoint<TEntity>>
         implements PagedCollectionEndpoint<TEntity> {
