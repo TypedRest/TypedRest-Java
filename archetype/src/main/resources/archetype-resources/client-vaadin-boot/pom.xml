@@ -38,6 +38,9 @@
     </dependencies>
 
     <build>
+        <!-- Short name for standalone JAR -->
+        <finalName>${artifactId}-webapp</finalName>
+
         <plugins>
             <!-- This project is not a library, exclude from deploy to repository -->
             <plugin>
