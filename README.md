@@ -43,7 +43,7 @@ Include this in your Maven ```pom.xml``` to use the library:
 <dependency>
   <groupId>com.oneandone</groupId>
   <artifactId>typedrest-core</artifactId>
-  <version>0.29.1</version>
+  <version>0.30</version>
 </dependency>
 ```
 
