@@ -16,7 +16,7 @@
 
     <name>TypedRest Parent</name>
     <description>Parent POM for configuration shared across TypedRest libraries</description>
-    <url>https://github.com/1and1/TypedRest-Java</url>
+    <url>https://github.com/TypedRest/TypedRest-Java</url>
     <licenses>
         <license>
             <name>The MIT License (MIT)</name>
@@ -25,14 +25,14 @@
     </licenses>
 
     <scm>
-        <connection>scm:git:https://github.com/1and1/TypedRest-Java.git</connection>
-        <url>https://github.com/1and1/TypedRest-Java</url>
+        <connection>scm:git:https://github.com/TypedRest/TypedRest-Java.git</connection>
+        <url>https://github.com/TypedRest/TypedRest-Java</url>
         <tag>HEAD</tag>
     </scm>
     <developers>
         <developer>
             <name>Bastian Eicher</name>
-            <email>bastian.eicher@1und1.de</email>
+            <email>bastian@eicher.net</email>
         </developer>
     </developers>
 
