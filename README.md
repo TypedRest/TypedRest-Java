@@ -1,18 +1,18 @@
 # TypedRest
 
-TypedRest helps you build type-safe fluent-style JSON REST API clients.
+TypedRest helps you build type-safe fluent-style REST API clients.
 
-Maven artifacts:
-* `com.oneandone:typedrest-annotations`
-* `com.oneandone:typedrest-core`
-* `com.oneandone:typedrest-vaadin`
-* `com.oneandone:typedrest-archetype`
+Maven artifacts (group `com.oneandone`):  
+[![typedrest-annotations](https://img.shields.io/maven-central/v/com.oneandone/typedrest-annotations.svg?label=typedrest-annotations)](https://mvnrepository.com/artifact/com.oneandone/typedrest-)
+[![typedrest-core](https://img.shields.io/maven-central/v/com.oneandone/typedrest-core.svg?label=typedrest-core)](https://mvnrepository.com/artifact/com.oneandone/typedrest-core)
+[![typedrest-vaadin](https://img.shields.io/maven-central/v/com.oneandone/typedrest-vaadin.svg?label=typedrest-vaadin)](https://mvnrepository.com/artifact/com.oneandone/typedrest-vaadin)
+[![typedrest-archetype](https://img.shields.io/maven-central/v/com.oneandone/typedrest-archetype.svg?label=typedrest-archetype)](https://mvnrepository.com/artifact/com.oneandone/typedrest-archetype)
 
 
 ## Nomenclature
 
 We use the following terms in the library and documentation:
-* An __entity__ is a data transfer object that can be serialized as JSON.
+* An __entity__ is a data transfer object that can be serialized (usually as JSON).
 * An __endpoint__ is a REST resource at a specific URI.
 * An __entry endpoint__ is an _endpoint_ that is the top-level URI of a REST interface.
 * An __element endpoint__ is an _endpoint_ that represents a single _entity_.
@@ -22,7 +22,7 @@ We use the following terms in the library and documentation:
 
 ## Usecase sample
 
-We'll use this simple POJO (Plain old Java object) class modelling software packages as a sample _entity_ type:
+We'll use this simple POJO (Plain old Java object) class modeling software packages as a sample _entity_ type:
 ```java
 class PackageEntity {
   private int id;
