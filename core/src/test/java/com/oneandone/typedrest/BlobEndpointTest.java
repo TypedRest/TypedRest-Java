@@ -1,6 +1,7 @@
 package com.oneandone.typedrest;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
+import com.google.common.base.Charsets;
 import static com.google.common.io.ByteStreams.toByteArray;
 import java.io.File;
 import java.io.InputStream;
@@ -39,16 +40,14 @@ public class BlobEndpointTest extends AbstractEndpointTest {
 
     @Test
     public void testDownload() throws Exception {
-        byte[] data = {1, 2, 3};
-
         stubFor(get(urlEqualTo("/endpoint"))
                 .willReturn(aResponse()
                         .withStatus(SC_OK)
-                        .withBody(data)));
+                        .withBody("unit-test")));
 
-        InputStream stream = endpoint.download();
+        byte[] downloaded = toByteArray(endpoint.download());
 
-        assertArrayEquals(data, toByteArray(stream));
+        assertArrayEquals(Charsets.UTF_8.encode("unit-test").array(), downloaded);
     }
 
     @Test
