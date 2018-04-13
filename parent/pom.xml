@@ -12,8 +12,7 @@
         <typedrest.version>0.31-SNAPSHOT</typedrest.version>
 
         <!-- Used to keep version in sync between 'core' and 'annotations' projects -->
-        <!-- Warning: 2.8.x causes problems with missing methods for jsr310 -->
-        <jackson.version>2.7.7</jackson.version>
+        <jackson.version>2.9.5</jackson.version>
 
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
