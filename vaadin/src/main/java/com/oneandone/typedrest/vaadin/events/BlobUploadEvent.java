@@ -3,8 +3,7 @@ package com.oneandone.typedrest.vaadin.events;
 import com.oneandone.typedrest.BlobEndpoint;
 
 /**
- * Indicates that {@link BlobEndpoint#upload(java.io.File, java.lang.String)}
- * was called.
+ * Indicates that an upload method on {@link BlobEndpoint} was called.
  */
 public class BlobUploadEvent extends EndpointEvent<BlobEndpoint> {
 

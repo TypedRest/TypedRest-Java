@@ -1,5 +1,7 @@
 package com.oneandone.typedrest;
 
+import org.apache.http.*;
+
 /**
  * REST endpoint that represents a collection of <code>TEntity</code>s as
  * {@link ElementEndpoint}s with bulk create and replace support.

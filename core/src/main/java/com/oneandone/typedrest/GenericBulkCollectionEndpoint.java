@@ -2,6 +2,7 @@ package com.oneandone.typedrest;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import org.apache.http.*;
 
 /**
  * REST endpoint that represents a collection of <code>TEntity</code>s as

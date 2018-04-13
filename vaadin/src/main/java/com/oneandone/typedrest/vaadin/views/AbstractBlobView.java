@@ -1,13 +1,14 @@
 package com.oneandone.typedrest.vaadin.views;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import org.apache.http.*;
 import com.google.common.eventbus.EventBus;
 import com.oneandone.typedrest.BlobEndpoint;
 import com.oneandone.typedrest.vaadin.events.BlobUploadEvent;
 import com.vaadin.data.Validator;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import org.vaadin.dialogs.ConfirmDialog;
 
 /**

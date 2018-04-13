@@ -2,6 +2,7 @@ package com.oneandone.typedrest;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import org.apache.http.*;
 
 /**
  * REST endpoint that represents a collection of <code>TEntity</code>s as
@@ -60,8 +61,7 @@ public interface CollectionEndpoint<TEntity>
      * @throws FileNotFoundException {@link HttpStatus#SC_NOT_FOUND} or
      * {@link HttpStatus#SC_GONE}
      * @throws IllegalStateException The entity has changed since it was last
-     * retrieved with {@link #read()}. Your changes were rejected to prevent a
-     * lost update.
+     * retrieved. Your delete call was rejected to prevent a lost update.
      * @throws RuntimeException Other non-success status code.
      */
     default TEntity set(TEntity element)
@@ -84,8 +84,7 @@ public interface CollectionEndpoint<TEntity>
      * @throws FileNotFoundException {@link HttpStatus#SC_NOT_FOUND} or
      * {@link HttpStatus#SC_GONE}
      * @throws IllegalStateException The entity has changed since it was last
-     * retrieved with {@link #read()}. Your changes were rejected to prevent a
-     * lost update.
+     * retrieved. Your delete call was rejected to prevent a lost update.
      * @throws RuntimeException Other non-success status code.
      */
     default TEntity merge(TEntity element)
@@ -104,8 +103,7 @@ public interface CollectionEndpoint<TEntity>
      * @throws FileNotFoundException {@link HttpStatus#SC_NOT_FOUND} or
      * {@link HttpStatus#SC_GONE}
      * @throws IllegalStateException The entity has changed since it was last
-     * retrieved with {@link #read()}. Your delete call was rejected to prevent
-     * a lost update.
+     * retrieved. Your delete call was rejected to prevent a lost update.
      * @throws RuntimeException Other non-success status code.
      */
     default void delete(String id)
@@ -124,8 +122,7 @@ public interface CollectionEndpoint<TEntity>
      * @throws FileNotFoundException {@link HttpStatus#SC_NOT_FOUND} or
      * {@link HttpStatus#SC_GONE}
      * @throws IllegalStateException The entity has changed since it was last
-     * retrieved with {@link #read()}. Your delete call was rejected to prevent
-     * a lost update.
+     * retrieved. Your delete call was rejected to prevent a lost update.
      * @throws RuntimeException Other non-success status code.
      */
     default void delete(TEntity element)

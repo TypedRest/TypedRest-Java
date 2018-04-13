@@ -102,7 +102,7 @@ public interface ElementEndpoint<TEntity>
      * lost update.
      * @throws RuntimeException Other non-success status code.
      *
-     * @deprecated Use {@link #set(java.lang.Object) instead.
+     * @deprecated Use {@link #set(java.lang.Object)} instead.
      */
     @Deprecated
     default TEntity update(TEntity entity)

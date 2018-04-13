@@ -48,7 +48,7 @@ public interface GenericCollectionEndpoint<TEntity, TElementEndpoint extends End
 
     /**
      * Shows whether the server has indicated that
-     * {@link #readAll() is currently allowed.
+     * {@link #readAll()} is currently allowed.
      *
      * Uses cached data from last response.
      *
@@ -75,7 +75,7 @@ public interface GenericCollectionEndpoint<TEntity, TElementEndpoint extends End
             throws IOException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, IllegalStateException;
 
     /**
-     * Shows whether the server has indicated that {@link #readRange()} is
+     * Shows whether the server has indicated that {@link #readRange(Long,Long)} is
      * allowed.
      *
      * Uses cached data from last response.
@@ -186,7 +186,7 @@ public interface GenericCollectionEndpoint<TEntity, TElementEndpoint extends End
      * Replaces the entire content of the collection with new
      * <code>TEntity</code>s.
      *
-     * @param entities >The new set of <code>TEntity</code>s the collection
+     * @param entities The new set of <code>TEntity</code>s the collection
      * shall contain.
      * @throws IOException Network communication failed.
      * @throws IllegalArgumentException {@link HttpStatus#SC_BAD_REQUEST}
