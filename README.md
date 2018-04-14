@@ -8,6 +8,10 @@ Maven artifacts (group `com.oneandone`):
 [![typedrest-vaadin](https://img.shields.io/maven-central/v/com.oneandone/typedrest-vaadin.svg?label=typedrest-vaadin)](https://mvnrepository.com/artifact/com.oneandone/typedrest-vaadin)
 [![typedrest-archetype](https://img.shields.io/maven-central/v/com.oneandone/typedrest-archetype.svg?label=typedrest-archetype)](https://mvnrepository.com/artifact/com.oneandone/typedrest-archetype)
 
+CI Builds:  
+[![Windows](https://img.shields.io/appveyor/ci/TypedRest/typedrest-java.svg?label=Windows)](https://ci.appveyor.com/project/TypedRest/typedrest-java)
+[![Linux](https://img.shields.io/travis/TypedRest/TypedRest-Java.svg?label=Linux)](https://travis-ci.org/TypedRest/TypedRest-Java)
+
 
 ## Nomenclature
 
