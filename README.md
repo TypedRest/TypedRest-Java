@@ -1,5 +1,6 @@
 # TypedRest for Java
 
+[![API documentation](https://img.shields.io/badge/api-docs-orange.svg)](https://typedrest.github.io/TypedRest-Java/)
 [![Build status](https://img.shields.io/appveyor/ci/TypedRest/typedrest-java.svg)](https://ci.appveyor.com/project/TypedRest/typedrest-java)
 
 TypedRest helps you build type-safe fluent-style REST API clients.

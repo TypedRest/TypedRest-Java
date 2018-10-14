@@ -1,0 +1,20 @@
+PROJECT_NAME = "TypedRest for Java"
+
+INPUT = . ../annotations ../core ../vaadin
+USE_MDFILE_AS_MAINPAGE = main.md
+STRIP_FROM_PATH = ../src
+RECURSIVE = YES
+
+OUTPUT_DIRECTORY = ../target/Documentation
+GENERATE_TAGFILE = ../target/Documentation/typedrest-java.tag
+HTML_OUTPUT = .
+
+GENERATE_LATEX = NO
+CASE_SENSE_NAMES = NO
+
+OPTIMIZE_OUTPUT_JAVA = YES
+EXTRACT_PACKAGE = YES
+EXTRACT_STATIC = YES
+AUTOLINK_SUPPORT = NO
+WARN_IF_UNDOCUMENTED = NO
+QUIET = YES
