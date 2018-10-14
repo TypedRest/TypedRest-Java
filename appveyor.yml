@@ -1,3 +1,10 @@
+image:
+- Visual Studio 2017
+- Ubuntu
+
+# Java 10+ not supported by Lombok
+stack: jdk 9
+
 build_script:
   - mvn package
 

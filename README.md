@@ -1,16 +1,16 @@
-# TypedRest
+# TypedRest for Java
+
+[![Build status](https://img.shields.io/appveyor/ci/TypedRest/typedrest-java.svg)](https://ci.appveyor.com/project/TypedRest/typedrest-java)
 
 TypedRest helps you build type-safe fluent-style REST API clients.
 
 Maven artifacts (group `com.oneandone`):  
-[![typedrest-annotations](https://img.shields.io/maven-central/v/com.oneandone/typedrest-annotations.svg?label=typedrest-annotations)](https://mvnrepository.com/artifact/com.oneandone/typedrest-)
+[![typedrest-annotations](https://img.shields.io/maven-central/v/com.oneandone/typedrest-annotations.svg?label=typedrest-annotations)](https://mvnrepository.com/artifact/com.oneandone/typedrest-annotations)
 [![typedrest-core](https://img.shields.io/maven-central/v/com.oneandone/typedrest-core.svg?label=typedrest-core)](https://mvnrepository.com/artifact/com.oneandone/typedrest-core)
 [![typedrest-vaadin](https://img.shields.io/maven-central/v/com.oneandone/typedrest-vaadin.svg?label=typedrest-vaadin)](https://mvnrepository.com/artifact/com.oneandone/typedrest-vaadin)
 [![typedrest-archetype](https://img.shields.io/maven-central/v/com.oneandone/typedrest-archetype.svg?label=typedrest-archetype)](https://mvnrepository.com/artifact/com.oneandone/typedrest-archetype)
 
-CI Builds:  
-[![Windows](https://img.shields.io/appveyor/ci/TypedRest/typedrest-java.svg?label=Windows)](https://ci.appveyor.com/project/TypedRest/typedrest-java)
-[![Linux](https://img.shields.io/travis/TypedRest/TypedRest-Java.svg?label=Linux)](https://travis-ci.org/TypedRest/TypedRest-Java)
+**Important:** [Lombok](https://projectlombok.org/), a build-time dependency, does not support Java 10 yet. However, the resulting artifact will work on Java 10.
 
 
 ## Nomenclature
