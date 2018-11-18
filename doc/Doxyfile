@@ -1,12 +1,12 @@
 PROJECT_NAME = "TypedRest for Java"
 
-INPUT = . ../annotations ../core ../vaadin
+INPUT = . ../annotations/src/main/java ../core/src/main/java ../vaadin/src/main/java
 USE_MDFILE_AS_MAINPAGE = main.md
 STRIP_FROM_PATH = ../src
 RECURSIVE = YES
 
-OUTPUT_DIRECTORY = ../target/Documentation
-GENERATE_TAGFILE = ../target/Documentation/typedrest-java.tag
+OUTPUT_DIRECTORY = ../target/doc
+GENERATE_TAGFILE = ../target/doc/typedrest-java.tag
 HTML_OUTPUT = .
 
 GENERATE_LATEX = NO

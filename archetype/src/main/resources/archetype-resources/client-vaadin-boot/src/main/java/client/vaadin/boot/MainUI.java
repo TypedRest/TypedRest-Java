@@ -2,7 +2,7 @@ package ${package}.client.vaadin.boot;
 
 import ${package}.client.*;
 import ${package}.client.vaadin.*;
-import com.oneandone.typedrest.vaadin.NotificationErrorHandler;
+import net.typedrest.vaadin.NotificationErrorHandler;
 import com.vaadin.annotations.*;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.spring.annotation.SpringUI;

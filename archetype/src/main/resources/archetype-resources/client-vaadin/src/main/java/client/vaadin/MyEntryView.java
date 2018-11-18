@@ -1,7 +1,7 @@
 package ${package}.client.vaadin;
 
 import ${package}.client.*;
-import com.oneandone.typedrest.vaadin.views.*;
+import net.typedrest.vaadin.views.*;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.TabSheet;
 

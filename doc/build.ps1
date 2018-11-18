@@ -8,9 +8,11 @@ if (!(Get-Command 0install -ErrorAction SilentlyContinue)) {
     $env:PATH = "$env:TEMP\zero-install;$env:PATH"
 }
 
-if (Test-Path ..\target\Documentation) {rm -Recurse -Force ..\artifacts\Documentation}
-mkdir ..\target\Documentation | Out-Null
+if (Test-Path ..\target\doc) {rm -Recurse -Force ..\target\doc}
+mkdir ..\target\doc | Out-Null
 
 0install run --batch http://repo.roscidus.com/devel/doxygen
+
+cp CNAME ..\target\doc\
 
 popd

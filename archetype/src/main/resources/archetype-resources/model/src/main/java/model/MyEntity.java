@@ -1,6 +1,6 @@
 package ${package}.model;
 
-import com.oneandone.typedrest.*;
+import net.typedrest.*;
 import lombok.*;
 
 @Data

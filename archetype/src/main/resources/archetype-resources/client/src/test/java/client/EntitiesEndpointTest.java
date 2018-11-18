@@ -2,7 +2,7 @@ package ${package}.client;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
 import java.net.URI;
-import com.oneandone.typedrest.CollectionEndpointImpl;
+import net.typedrest.CollectionEndpointImpl;
 import ${package}.model.*;
 import org.junit.Before;
 

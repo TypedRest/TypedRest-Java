@@ -2,7 +2,7 @@ package ${package}.client;
 
 import org.junit.*;
 import com.github.tomakehurst.wiremock.junit.*;
-import com.oneandone.typedrest.EntryEndpoint;
+import net.typedrest.EntryEndpoint;
 import java.net.URI;
 import org.apache.http.entity.ContentType;
 

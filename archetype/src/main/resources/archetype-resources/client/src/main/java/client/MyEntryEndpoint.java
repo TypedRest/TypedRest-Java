@@ -1,6 +1,6 @@
 package ${package}.client;
 
-import com.oneandone.typedrest.*;
+import net.typedrest.*;
 import java.net.URI;
 import ${package}.model.*;
 
