@@ -8,7 +8,7 @@ script:
 deploy:
   provider: pages
   skip-cleanup: true
-  local-dir: target/Documentation
+  local-dir: target/doc
   github-token: $GITHUB_TOKEN
   on:
     tags: true
