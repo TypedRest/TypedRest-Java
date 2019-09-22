@@ -13,6 +13,7 @@ if (Test-Path ..\target\doc) {rm -Recurse -Force ..\target\doc}
 mkdir ..\target\doc | Out-Null
 
 0install run --batch http://repo.roscidus.com/devel/doxygen
+if ($LASTEXITCODE -ne 0) {throw "Exit Code: $LASTEXITCODE"}
 
 cp .nojekyll,CNAME ..\target\doc\
 
