@@ -12,7 +12,7 @@ if (!(Get-Command 0install -ErrorAction SilentlyContinue)) {
 if (Test-Path ..\target\doc) {rm -Recurse -Force ..\target\doc}
 mkdir ..\target\doc | Out-Null
 
-0install run --batch http://repo.roscidus.com/devel/doxygen
+0install run --batch https://apps.0install.net/devel/doxygen.xml
 if ($LASTEXITCODE -ne 0) {throw "Exit Code: $LASTEXITCODE"}
 
 cp .nojekyll,CNAME ..\target\doc\
