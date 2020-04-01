@@ -1,6 +1,6 @@
 # TypedRest for Java
 
-[![Build status](https://img.shields.io/appveyor/ci/TypedRest/typedrest-java.svg)](https://ci.appveyor.com/project/TypedRest/typedrest-java)  
+[![Build status](https://img.shields.io/appveyor/ci/TypedRest/TypedRest-Java.svg)](https://ci.appveyor.com/project/TypedRest/TypedRest-Java)  
 TypedRest helps you build type-safe, fluent-style REST API clients.
 
 Common REST patterns such as collections are represented as classes, allowing you to write more idiomatic code. For example, TypedRest lets you turn this:
