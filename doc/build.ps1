@@ -15,6 +15,4 @@ mkdir ..\target\doc | Out-Null
 0install run --batch https://apps.0install.net/devel/doxygen.xml
 if ($LASTEXITCODE -ne 0) {throw "Exit Code: $LASTEXITCODE"}
 
-cp .nojekyll,CNAME ..\target\doc\
-
 popd
