@@ -1,22 +1,33 @@
 # ![TypedRest](logo.svg) for Java
 
 [![Build status](https://img.shields.io/appveyor/ci/TypedRest/TypedRest-Java.svg)](https://ci.appveyor.com/project/TypedRest/TypedRest-Java)  
-TypedRest for Java helps you build type-safe, fluent-style REST API clients.
-
-Common REST patterns such as collections are represented as classes, allowing you to write more idiomatic code. For example, TypedRest lets you turn this:
+TypedRest for Java helps you build type-safe, fluent-style REST API clients. Common REST patterns such as collections are represented as classes, allowing you to write more idiomatic code.
 
 ```java
-HttpRequest request = HttpRequest.newBuilder().uri(URI.create("http://example.com/contacts/123")).build();
-HttpResponse<> response = HttpClient.newHttpClient().send(request, BodyHandlers.ofString());
-Contact contact = objectMapper.readValue(response.body(), Contact.class);
+MyClient client = new MyClient(URI.create("http://example.com/"));
+
+// GET /contacts
+List<Contact> contactList = client.getContacts().readAll();
+
+// POST /contacts
+client.getContacts().create(new Contact("smith"));
+
+// GET /contacts/smith
+Contact contact = client.getContacts().get("smith").read();
+
+// DELETE /contacts/smith
+client.getContacts().get("smith").delete();
+
+// PUT /contacts/smith/note
+client.getContacts().get("smith").getNote().set(new Note("some note"));
+
+// GET /contacts/smith/note
+Note note = client.getContacts().get("smith").getNote().read();
 ```
 
-into this:
+Read an **[Introduction](https://typedrest.net/introduction/)** to TypedRest or jump right in with the **[Getting started](https://typedrest.net/getting-started/java/)** guide.
 
-```java
-MyServiceClient myService = new MyServiceClient(URI.create("http://example.com/"));
-Contact contact = myService.getContacts().get("123").read();
-```
+For information about specific Java classes or interfaces you can read the **[API Documentation](https://java.typedrest.net/)**.
 
 ## Maven artifacts
 
@@ -33,10 +44,3 @@ Build [Vaadin](https://vaadin.com/) GUIs for TypedRest clients.
 
 [![typedrest-archetype](https://img.shields.io/maven-central/v/com.oneandone/typedrest-archetype.svg?label=typedrest-archetype)](https://mvnrepository.com/artifact/com.oneandone/typedrest-archetype)  
 [Maven archetype](https://maven.apache.org/guides/introduction/introduction-to-archetypes.html) (template) for creating TypedRest projects.
-
-
-## Documentation
-
-Read an **[Introduction](https://typedrest.net/introduction/)** to TypedRest or jump right in with the **[Getting started](https://typedrest.net/getting-started/java/)** guide.
-
-For information about specific classes or interfaces you can read the **[API Documentation](https://java.typedrest.net/)**.
