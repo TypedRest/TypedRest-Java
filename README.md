@@ -9,20 +9,21 @@ MyClient client = new MyClient(URI.create("http://example.com/"));
 // GET /contacts
 List<Contact> contactList = client.getContacts().readAll();
 
-// POST /contacts
-client.getContacts().create(new Contact("smith"));
+// POST /contacts -> /contacts/1337
+ContactEndpoint smith = client.getContacts().create(new Contact("Smith"));
+//ContactEndpoint smith = client.getContacts().get("1337");
 
-// GET /contacts/smith
-Contact contact = client.getContacts().get("smith").read();
+// GET /contacts/1337
+Contact contact = smith.read();
 
-// DELETE /contacts/smith
-client.getContacts().get("smith").delete();
+// PUT /contacts/1337/note
+smith.getNote().set(new Note("some note"));
 
-// PUT /contacts/smith/note
-client.getContacts().get("smith").getNote().set(new Note("some note"));
+// GET /contacts/1337/note
+Note note = smith.getNote().read();
 
-// GET /contacts/smith/note
-Note note = client.getContacts().get("smith").getNote().read();
+// DELETE /contacts/1337
+smith.delete();
 ```
 
 Read an **[Introduction](https://typedrest.net/introduction/)** to TypedRest or jump right in with the **[Getting started](https://typedrest.net/getting-started/java/)** guide.
