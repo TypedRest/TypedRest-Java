@@ -9,7 +9,7 @@ MyClient client = new MyClient(URI.create("http://example.com/"));
 // GET /contacts
 List<Contact> contactList = client.getContacts().readAll();
 
-// POST /contacts -> /contacts/1337
+// POST /contacts -> Location: /contacts/1337
 ContactEndpoint smith = client.getContacts().create(new Contact("Smith"));
 //ContactEndpoint smith = client.getContacts().get("1337");
 
