@@ -1,0 +1,65 @@
+name: Build
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      # Prepare
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - uses: gittools/actions/gitversion/setup@v0.9.9
+        with:
+          versionSpec: '5.6.x'
+      - uses: gittools/actions/gitversion/execute@v0.9.9
+        id: gitversion
+      - name: Set version (release)
+        if: steps.gitversion.outputs.preReleaseLabel == ''
+        run: echo "VERSION=${{steps.gitversion.outputs.semVer}}" >> $GITHUB_ENV
+      - name: Set version (pre-release)
+        if: steps.gitversion.outputs.preReleaseLabel != ''
+        run: echo "VERSION=${{steps.gitversion.outputs.semVer}}-${{steps.gitversion.outputs.shortSha}}" >> $GITHUB_ENV
+
+      # Build
+      - name: Build
+        run: gradle build
+      - name: Report test results
+        if: always()
+        uses: scacap/action-surefire-report@v1
+        with:
+          github_token: ${{github.token}}
+          report_paths: build/test-results/test/TEST-*.xml
+
+      # Release
+      - name: Create GitHub Release
+        if: steps.gitversion.outputs.preReleaseLabel == ''
+        uses: actions/create-release@v1
+        with:
+          tag_name: ${{github.ref}}
+          release_name: ${{github.ref}}
+        env:
+          GITHUB_TOKEN: ${{github.token}}
+
+      # Publish
+      - name: Publish packages (GitHub)
+        if: github.event_name == 'push' && !startsWith(github.ref, 'refs/heads/renovate/')
+        run: gradle publishMavenPublicationToGitHubRepository
+        env:
+          GITHUB_TOKEN: ${{github.token}}
+      - name: Publish packages (Maven Central)
+        if: steps.gitversion.outputs.preReleaseLabel == ''
+        run: gradle publishToSonatype closeAndReleaseSonatypeStagingRepository
+        env:
+          SIGNING_KEY: ${{secrets.SIGNING_KEY}}
+          SIGNING_PASSWORD: ${{secrets.SIGNING_PASSWORD}}
+          SONATYPE_USERNAME: ${{secrets.SONATYPE_USERNAME}}
+          SONATYPE_PASSWORD: ${{secrets.SONATYPE_PASSWORD}}
+      - name: Publish documentation
+        if: steps.gitversion.outputs.preReleaseLabel == ''
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{github.token}}
+          force_orphan: true
+          publish_dir: build/dokka/html
+          cname: java.typedrest.net

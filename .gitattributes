@@ -1,2 +1,2 @@
-# Normalize linebreaks
-*        text=auto
+# Disable linebreak normalization
+* -text

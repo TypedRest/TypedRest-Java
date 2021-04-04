@@ -1,6 +1,8 @@
-# ![TypedRest](logo.svg) for Java
+# ![TypedRest](logo.svg) for Java/Kotlin
 
-TypedRest for Java helps you build type-safe, fluent-style REST API clients. Common REST patterns such as collections are represented as classes, allowing you to write more idiomatic code.
+TypedRest for Java/Kotlin helps you build type-safe, fluent-style REST API clients. Common REST patterns such as collections are represented as classes, allowing you to write more idiomatic code.
+
+**Java**
 
 ```java
 MyClient client = new MyClient(URI.create("http://example.com/"));
@@ -25,22 +27,41 @@ Note note = smith.getNote().read();
 smith.delete();
 ```
 
+**Kotlin**
+
+```kotlin
+val client = MyClient(URI.create("http://example.com/"))
+
+// GET /contacts
+val contactList: List<Contact> = client.contacts.readAll()
+
+// POST /contacts -> Location: /contacts/1337
+val smith: ContactEndpoint = client.contacts.create(Contact("Smith"))
+//val smith: ContactEndpoint = client.contacts["1337"]
+
+// GET /contacts/1337
+val contact: Contact = smith.read()
+
+// PUT /contacts/1337/note
+smith.note.set(Note("some note"))
+
+// GET /contacts/1337/note
+val note: Note = smith.note.read()
+
+// DELETE /contacts/1337
+smith.delete()
+```
+
 Read an **[Introduction](https://typedrest.net/introduction/)** to TypedRest or jump right in with the **[Getting started](https://typedrest.net/getting-started/java/)** guide.
 
 For information about specific Java classes or interfaces you can read the **[API Documentation](https://java.typedrest.net/)**.
 
 ## Maven artifacts
 
-Artifact group: `com.oneandone`
+Artifact group: `io.typedrest`
 
-[![typedrest-core](https://img.shields.io/maven-central/v/com.oneandone/typedrest-core.svg?label=typedrest-core)](https://mvnrepository.com/artifact/com.oneandone/typedrest-core)  
+[![typedrest-core](https://img.shields.io/maven-central/v/io.typedrest/typedrest.svg?label=typedrest)](https://mvnrepository.com/artifact/io.typedrest/typedrest)  
 The main TypedRest library.
 
-[![typedrest-annotations](https://img.shields.io/maven-central/v/com.oneandone/typedrest-annotations.svg?label=typedrest-annotations)](https://mvnrepository.com/artifact/com.oneandone/typedrest-annotations)  
+[![typedrest-annotations](https://img.shields.io/maven-central/v/io.typedrest/typedrest-annotations.svg?label=typedrest-annotations)](https://mvnrepository.com/artifact/io.typedrest/typedrest-annotations)  
 Annotations for data models to be used with TypedRest.
-
-[![typedrest-vaadin](https://img.shields.io/maven-central/v/com.oneandone/typedrest-vaadin.svg?label=typedrest-vaadin)](https://mvnrepository.com/artifact/com.oneandone/typedrest-vaadin)  
-Build [Vaadin](https://vaadin.com/) GUIs for TypedRest clients.
-
-[![typedrest-archetype](https://img.shields.io/maven-central/v/com.oneandone/typedrest-archetype.svg?label=typedrest-archetype)](https://mvnrepository.com/artifact/com.oneandone/typedrest-archetype)  
-[Maven archetype](https://maven.apache.org/guides/introduction/introduction-to-archetypes.html) (template) for creating TypedRest projects.

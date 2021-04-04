@@ -1,0 +1,98 @@
+plugins {
+    id 'java-library'
+    id 'signing'
+    id 'maven-publish'
+    id 'io.github.gradle-nexus.publish-plugin' version '1.0.0'
+    id 'org.jetbrains.kotlin.jvm' version '1.4.31'
+    id 'org.jetbrains.dokka' version '1.4.30'
+}
+
+repositories {
+    jcenter()
+}
+
+dependencies {
+    implementation platform('org.jetbrains.kotlin:kotlin-bom')
+    implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk8'
+    testImplementation 'org.jetbrains.kotlin:kotlin-test'
+    testImplementation 'org.jetbrains.kotlin:kotlin-test-junit'
+    testImplementation 'com.squareup.okhttp3:mockwebserver:4.9.1'
+    api 'com.squareup.okhttp3:okhttp:4.9.1'
+    api 'com.squareup.moshi:moshi:1.11.0'
+}
+
+java {
+    withSourcesJar()
+}
+
+task javadocJar(type: Jar, dependsOn: dokkaJavadoc) {
+    classifier = 'javadoc'
+    from "$buildDir/dokka/javadoc"
+}
+
+tasks.named('assemble') {
+    dependsOn('javadocJar', 'dokkaHtml')
+}
+
+group = 'net.typedrest'
+version = System.env['VERSION'] ?: '0.1.0'
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            from components.java
+            artifact javadocJar
+            pom {
+                name = 'TypedRest'
+                description = 'TypedRest helps you build type-safe fluent-style REST API clients.'
+                url = 'https://typedrest.net/'
+                scm {
+                    url = 'https://github.com/TypedRest/TypedRest-Java'
+                    connection = 'scm:git:git://github.com/TypedRest/TypedRest-Java.git'
+                    developerConnection = 'scm:git:ssh://github.com:TypedRest/TypedRest-Java.git'
+                }
+                licenses {
+                    license {
+                        name = 'MIT License'
+                        url = 'https://opensource.org/licenses/MIT'
+                    }
+                }
+                developers {
+                    developer {
+                        name = 'Bastian Eicher'
+                        email = 'bastian@eicher.net'
+                    }
+                }
+            }
+        }
+    }
+    repositories {
+        maven {
+            name = 'GitHub'
+            url = 'https://maven.pkg.github.com/TypedRest/TypedRest-Java'
+            credentials {
+                username = System.env['GITHUB_ACTOR']
+                password = System.env['GITHUB_TOKEN']
+            }
+        }
+    }
+}
+
+nexusPublishing {
+    repositories {
+        sonatype {
+            nexusUrl.set(uri('https://s01.oss.sonatype.org/service/local/'))
+            snapshotRepositoryUrl.set(uri('https://s01.oss.sonatype.org/content/repositories/snapshots/'))
+            username = System.env['SONATYPE_USERNAME']
+            password = System.env['SONATYPE_PASSWORD']
+        }
+    }
+}
+
+signing {
+    useInMemoryPgpKeys(System.env['SIGNING_KEY'], System.env['SIGNING_PASSWORD'])
+    sign publishing.publications.maven
+}
+tasks.withType(Sign) {
+    onlyIf { System.env['SIGNING_KEY'] != null }
+}
