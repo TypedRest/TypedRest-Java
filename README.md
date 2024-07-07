@@ -63,6 +63,10 @@ Artifact group: [`net.typedrest`](https://mvnrepository.com/artifact/net.typedre
 [![typedrest](https://img.shields.io/maven-central/v/net.typedrest/typedrest.svg?label=typedrest)](https://mvnrepository.com/artifact/net.typedrest/typedrest)  
 The main TypedRest library.
 
+[![typedrest-reactive](https://img.shields.io/maven-central/v/net.typedrest/typedrest-reactive.svg?label=typedrest-reactive)](https://mvnrepository.com/artifact/net.typedrest/typedrest-reactive)  
+Adds support for streaming with [ReactiveX (Rx)](http://reactivex.io/).  
+Create endpoints using the types in the `net.typedrest.endpoints.reactive` package.
+
 [![typedrest-serializers-jackson](https://img.shields.io/maven-central/v/net.typedrest/typedrest-serializers-jackson.svg?label=typedrest-serializers-jackson)](https://mvnrepository.com/artifact/net.typedrest/typedrest-serializers-jackson)  
 Adds support for serializing using [Jackson](https://github.com/FasterXML/jackson) instead of [kotlinx.serialization](https://kotlinlang.org/docs/serialization.html).  
 Pass `new JacksonJsonSerializer()` to the `EntryEndpoint` constructor.

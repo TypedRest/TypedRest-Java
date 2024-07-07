@@ -1,6 +1,7 @@
 [versions]
 okhttp3 = "5.3.2"
 uri-templates = "2.1.8"
+rxkotlin = "3.0.1"
 kotlinx-serialization = "1.10.0"
 jackson = "3.0.4"
 moshi = "1.15.2"
@@ -9,6 +10,7 @@ moshi = "1.15.2"
 okhttp3 = { module = "com.squareup.okhttp3:okhttp", version.ref = "okhttp3" }
 okhttp3-mockwebserver = { module = "com.squareup.okhttp3:mockwebserver", version.ref = "okhttp3" }
 uri-templates = { module = "com.damnhandy:handy-uri-templates", version.ref = "uri-templates" }
+rxkotlin = { module = "io.reactivex.rxjava3:rxkotlin", version.ref = "rxkotlin" }
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinx-serialization" }
 jackson-databind = { module = "tools.jackson.core:jackson-databind", version.ref = "jackson" }
 jackson-kotlin = { module = "tools.jackson.module:jackson-module-kotlin", version.ref = "jackson" }
