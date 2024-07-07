@@ -4,7 +4,7 @@ import okhttp3.*
 import java.net.URI
 
 /**
- * Returns a new client that sends an `Accept` header listing [mediaTypes] on every request.
+ * Returns a new client that sends an `Accept` header listing [mediaTypes] on every request that does not set one itself.
  *
  * @param mediaTypes The media types to advertise as acceptable response formats.
  */
@@ -15,10 +15,11 @@ fun OkHttpClient.withAccept(mediaTypes: List<MediaType>): OkHttpClient =
         val mediaTypeHeader = mediaTypes.joinToString(separator = ", ")
         this.newBuilder()
             .addInterceptor { chain ->
+                val request = chain.request()
                 chain.proceed(
-                    chain.request().newBuilder()
-                        .header("Accept", mediaTypeHeader)
-                        .build()
+                    if (request.header("Accept") == null)
+                        request.newBuilder().header("Accept", mediaTypeHeader).build()
+                    else request
                 )
             }.build()
     }

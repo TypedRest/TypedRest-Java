@@ -17,7 +17,7 @@ import java.net.URI
 open class ElementEndpointImpl<TEntity>(
     referrer: Endpoint,
     relativeUri: URI,
-    private val entityType: Class<TEntity>
+    protected val entityType: Class<TEntity>
 ) : AbstractCachingEndpoint(referrer, relativeUri), ElementEndpoint<TEntity> {
     /**
      * Creates a new element endpoint.
