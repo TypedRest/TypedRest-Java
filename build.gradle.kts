@@ -1,9 +1,11 @@
-﻿repositories.mavenCentral()
+﻿import org.jetbrains.dokka.gradle.*
+
+repositories.mavenCentral()
 
 plugins {
     kotlin("jvm") version "2.0.0"
     kotlin("plugin.serialization") version "2.0.0" apply false
-    id("org.jetbrains.dokka") version "1.9.20" apply false
+    id("org.jetbrains.dokka") version "1.9.20"
 }
 
 subprojects {
@@ -20,4 +22,10 @@ subprojects {
     kotlin {
         compilerOptions.allWarningsAsErrors = true
     }
+
+    fun NamedDomainObjectContainer<GradleDokkaSourceSetBuilder>.addMarkdown() = configureEach {
+        includes.from(project.files(), fileTree("src/main/kotlin").include("**/_doc.md"))
+    }
+    tasks.withType<DokkaTask>().configureEach { dokkaSourceSets.addMarkdown() }
+    tasks.withType<DokkaTaskPartial>().configureEach { dokkaSourceSets.addMarkdown() }
 }
