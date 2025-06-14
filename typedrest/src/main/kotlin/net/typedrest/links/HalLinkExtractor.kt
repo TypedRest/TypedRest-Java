@@ -19,7 +19,7 @@ class HalLinkExtractor : LinkExtractor {
                 .links.map { (rel, halLink) ->
                     Link(rel, halLink.href, halLink.title, halLink.templated)
                 }
-        } catch (e: SerializationException) {
+        } catch (_: SerializationException) {
             emptyList()
         }
 

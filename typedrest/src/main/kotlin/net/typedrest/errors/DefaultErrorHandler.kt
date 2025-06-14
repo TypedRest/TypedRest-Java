@@ -34,7 +34,7 @@ open class DefaultErrorHandler : ErrorHandler {
         return try {
             val decoded = Json.decodeFromString<JsonErrorResponse>(body.string())
             return decoded.message ?: decoded.details
-        } catch (e: SerializationException) {
+        } catch (_: SerializationException) {
             null
         }
     }
