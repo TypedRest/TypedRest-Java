@@ -9,7 +9,7 @@ import java.net.URI
  * RPC endpoint that takes [TEntity] as input when invoked.
  *
  * @param referrer The endpoint used to navigate to this one.
- * @param relativeUri The URI of this endpoint relative to the referrer's. Add a "./" prefix here to imply a trailing slash on referrer's URI.
+ * @param relativeUri The URI of this endpoint relative to the [referrer]'s. Add a `./` prefix here to imply a trailing slash on referrer's URI.
  * @param entityType The type of entity the endpoint takes as input.
  * @param TEntity The type of entity the endpoint takes as input.
  */
@@ -22,7 +22,7 @@ open class ConsumerEndpointImpl<TEntity>(
      * Creates a new consumer endpoint.
      *
      * @param referrer The endpoint used to navigate to this one.
-     * @param relativeUri The URI of this endpoint relative to the referrer's. Add a "./" prefix here to imply a trailing slash on referrer's URI.
+     * @param relativeUri The URI of this endpoint relative to the [referrer]'s. Add a `./` prefix here to imply a trailing slash on referrer's URI.
      * @param entityType The type of entity the endpoint takes as input.
      */
     constructor(referrer: Endpoint, relativeUri: String, entityType: Class<TEntity>) :

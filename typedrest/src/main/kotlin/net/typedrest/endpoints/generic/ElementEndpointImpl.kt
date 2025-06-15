@@ -10,7 +10,7 @@ import java.net.URI
  * Endpoint for an individual resource.
  *
  * @param referrer The endpoint used to navigate to this one.
- * @param relativeUri The URI of this endpoint relative to the referrer's.
+ * @param relativeUri The URI of this endpoint relative to the [referrer]'s.
  * @param entityType The type of entity the endpoint represents.
  * @param TEntity The type of entity the endpoint represents.
  */
@@ -23,7 +23,7 @@ open class ElementEndpointImpl<TEntity>(
      * Creates a new element endpoint.
      *
      * @param referrer The endpoint used to navigate to this one.
-     * @param relativeUri The URI of this endpoint relative to the referrer's. Add a "./" prefix here to imply a trailing slash on referrer's URI.
+     * @param relativeUri The URI of this endpoint relative to the [referrer]'s. Add a `./` prefix here to imply a trailing slash on referrer's URI.
      * @param entityType The type of entity the endpoint represents.
      */
     constructor(referrer: Endpoint, relativeUri: String, entityType: Class<TEntity>) :

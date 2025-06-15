@@ -10,7 +10,7 @@ import java.net.URI
  * RPC endpoint that is invoked with no input or output.
  *
  * @param referrer The endpoint used to navigate to this one.
- * @param relativeUri The URI of this endpoint relative to the referrer's. Add a "./" prefix here to imply a trailing slash on referrer's URI.
+ * @param relativeUri The URI of this endpoint relative to the [referrer]'s. Add a `./` prefix here to imply a trailing slash on referrer's URI.
  */
 open class ActionEndpointImpl(referrer: Endpoint, relativeUri: URI)
     : AbstractRpcEndpoint(referrer, relativeUri), ActionEndpoint {
@@ -18,7 +18,7 @@ open class ActionEndpointImpl(referrer: Endpoint, relativeUri: URI)
      * Creates a new action endpoint.
      *
      * @param referrer The endpoint used to navigate to this one.
-     * @param relativeUri The URI of this endpoint relative to the referrer's. Add a "./" prefix here to imply a trailing slash on referrer's URI.
+     * @param relativeUri The URI of this endpoint relative to the [referrer]'s. Add a `./` prefix here to imply a trailing slash on referrer's URI.
      */
     constructor(referrer: Endpoint, relativeUri: String) :
         this(referrer, URI(relativeUri))

@@ -11,7 +11,7 @@ import java.net.URI
  * RPC endpoint that takes no input and returns [TResult] as output when invoked.
  *
  * @param referrer The endpoint used to navigate to this one.
- * @param relativeUri The URI of this endpoint relative to the referrer's. Add a "./" prefix here to imply a trailing slash on referrer's URI.
+ * @param relativeUri The URI of this endpoint relative to the [referrer]'s. Add a `./` prefix here to imply a trailing slash on referrer's URI.
  * @param resultType The type of entity the endpoint returns as output.
  * @param TResult The type of entity the endpoint returns as output.
  */
@@ -24,7 +24,7 @@ open class ProducerEndpointImpl<TResult>(
      * Creates a new producer endpoint.
      *
      * @param referrer The endpoint used to navigate to this one.
-     * @param relativeUri The URI of this endpoint relative to the referrer's. Add a "./" prefix here to imply a trailing slash on referrer's URI.
+     * @param relativeUri The URI of this endpoint relative to the [referrer]'s. Add a `./` prefix here to imply a trailing slash on referrer's URI.
      * @param resultType The type of entity the endpoint returns as output.
      */
     constructor(referrer: Endpoint, relativeUri: String, resultType: Class<TResult>) :

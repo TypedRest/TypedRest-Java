@@ -11,7 +11,7 @@ import java.net.URI
  *
  *
  * @param referrer The endpoint used to navigate to this one.
- * @param relativeUri The URI of this endpoint relative to the referrer's. Add a "./" prefix here to imply a trailing slash on referrer's URI.
+ * @param relativeUri The URI of this endpoint relative to the [referrer]'s. Add a `./` prefix here to imply a trailing slash on referrer's URI.
  * @param entityType The type of entity the endpoint takes as input.
  * @param resultType The type of entity the endpoint returns as output.
  * @param TEntity The type of entity the endpoint takes as input.
@@ -27,7 +27,7 @@ open class FunctionEndpointImpl<TEntity, TResult>(
      * Creates a new function endpoint.
      *
      * @param referrer The endpoint used to navigate to this one.
-     * @param relativeUri The URI of this endpoint relative to the referrer's. Add a "./" prefix here to imply a trailing slash on referrer's URI.
+     * @param relativeUri The URI of this endpoint relative to the [referrer]'s. Add a `./` prefix here to imply a trailing slash on referrer's URI.
      * @param entityType The type of entity the endpoint takes as input.
      * @param resultType The type of entity the endpoint returns as output.
      */

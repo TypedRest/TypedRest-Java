@@ -16,7 +16,7 @@ fun URI.ensureTrailingSlash(): URI =
 /**
  * Resolves a relative URI using this URI as the base.
  *
- * @param relativeUri The relative URI to resolve. Prepend "./" to imply a trailing slash in the base URI even if it is missing there.
+ * @param relativeUri The relative URI to resolve. Add a `./` prefix here to imply a trailing slash in the base URI even if it is missing there.
  */
 fun URI.join(relativeUri: String): URI =
     if (relativeUri.startsWith("./")) {
@@ -28,7 +28,7 @@ fun URI.join(relativeUri: String): URI =
 /**
  * Resolves a relative URI using this URI as the base.
  *
- * @param relativeUri The relative URI to resolve. Prepend "./" to imply a trailing slash in the base URI even if it is missing there.
+ * @param relativeUri The relative URI to resolve. Add a `./` prefix here to imply a trailing slash in the base URI even if it is missing there.
  */
 fun URI.join(relativeUri: URI): URI =
     if (relativeUri.toString().startsWith("./")) {

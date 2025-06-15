@@ -15,7 +15,7 @@ open class CollectionEndpointImpl<TEntity> : GenericCollectionEndpointImpl<TEnti
      * Creates a new element collection endpoint.
      *
      * @param referrer The endpoint used to navigate to this one.
-     * @param relativeUri The URI of this endpoint relative to the referrer's.
+     * @param relativeUri The URI of this endpoint relative to the [referrer]'s.
      * @param entityType The type of individual elements in the collection.
      */
     constructor(referrer: Endpoint, relativeUri: URI, entityType: Class<TEntity>)
@@ -25,7 +25,7 @@ open class CollectionEndpointImpl<TEntity> : GenericCollectionEndpointImpl<TEnti
      * Creates a new element collection endpoint.
      *
      * @param referrer The endpoint used to navigate to this one.
-     * @param relativeUri The URI of this endpoint relative to the referrer's. Add a "./" prefix here to imply a trailing slash on referrer's URI.
+     * @param relativeUri The URI of this endpoint relative to the [referrer]'s. Add a `./` prefix here to imply a trailing slash on referrer's URI.
      * @param entityType The type of individual elements in the collection.
      */
     constructor(referrer: Endpoint, relativeUri: String, entityType: Class<TEntity>)

@@ -11,9 +11,9 @@ import java.net.URI
 /**
  * Implementation of an [UploadEndpoint] that accepts binary uploads using multi-part form encoding or raw bodies.
  *
- * @property referrer The endpoint used to navigate to this one.
- * @property relativeUri The URI of this endpoint relative to the [referrer]'s.
- * @property formField The name of the form field to place the uploaded data into; null to use raw bodies instead of multi-part forms.
+ * @param referrer The endpoint used to navigate to this one.
+ * @param relativeUri The URI of this endpoint relative to the [referrer]'s.
+ * @param formField The name of the form field to place the uploaded data into; null to use raw bodies instead of multi-part forms.
  */
 class UploadEndpointImpl(
     private val referrer: Endpoint,
@@ -24,8 +24,8 @@ class UploadEndpointImpl(
      * Creates a new upload endpoint.
      *
      * @param referrer The endpoint used to navigate to this one.
-     * @param relativeUri The URI of this endpoint relative to the referrer's. Add a "./" prefix here to imply a trailing slash on referrer's URI.
-     * @property formField The name of the form field to place the uploaded data into; null to use raw bodies instead of multi-part forms.
+     * @param relativeUri The URI of this endpoint relative to the [referrer]'s. Add a `./` prefix here to imply a trailing slash on referrer's URI.
+     * @param formField The name of the form field to place the uploaded data into; null to use raw bodies instead of multi-part forms.
      */
     constructor(referrer: Endpoint, relativeUri: String, formField: String? = null) :
         this(referrer, URI(relativeUri), formField)

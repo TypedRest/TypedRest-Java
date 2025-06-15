@@ -10,7 +10,7 @@ import java.net.URI
  * Base class for building endpoints that use ETags and Last-Modified timestamps for caching and to avoid lost updates.
  *
  * @param referrer The endpoint used to navigate to this one.
- * @param relativeUri The URI of this endpoint relative to the referrer's.
+ * @param relativeUri The URI of this endpoint relative to the [referrer]'s.
  */
 abstract class AbstractCachingEndpoint(referrer: Endpoint, relativeUri: URI) :
     AbstractEndpoint(referrer, relativeUri), CachingEndpoint {

@@ -9,7 +9,7 @@ import java.net.URLEncoder
  * Endpoint that addresses child [TElementEndpoint]s by ID.
  *
  * @param referrer The endpoint used to navigate to this one.
- * @param relativeUri The URI of this endpoint relative to the referrer's. Add a "./" prefix here to imply a trailing slash on referrer's URI.
+ * @param relativeUri The URI of this endpoint relative to the [referrer]'s. Add a `./` prefix here to imply a trailing slash on referrer's URI.
  * @param elementEndpointFactory The factory for constructing [TElementEndpoint]s to provide for individual elements.
  * @param TElementEndpoint The type of [Endpoint] to provide for individual elements.
  */
@@ -22,7 +22,7 @@ open class IndexerEndpointImpl<TElementEndpoint : Endpoint>(
      * Creates a new indexer endpoint.
      *
      * @param referrer The endpoint used to navigate to this one.
-     * @param relativeUri The URI of this endpoint relative to the referrer's. Add a "./" prefix here to imply a trailing slash on referrer's URI.
+     * @param relativeUri The URI of this endpoint relative to the [referrer]'s. Add a `./` prefix here to imply a trailing slash on referrer's URI.
      * @param elementEndpointFactory The factory for constructing [TElementEndpoint]s to provide for individual elements.
      */
     constructor(referrer: Endpoint, relativeUri: String, elementEndpointFactory: (referrer: Endpoint, relativeUri: URI) -> TElementEndpoint) :

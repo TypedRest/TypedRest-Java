@@ -30,7 +30,7 @@ abstract class AbstractEndpoint(
      * Creates a new endpoint with a relative URI.
      *
      * @param referrer The endpoint used to navigate to this one.
-     * @param relativeUri The URI of this endpoint relative to the referrer's.
+     * @param relativeUri The URI of this endpoint relative to the [referrer]'s.
      */
     constructor(referrer: Endpoint, relativeUri: URI) : this(
         referrer.uri.join(relativeUri),

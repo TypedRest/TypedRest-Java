@@ -13,7 +13,7 @@ import java.net.URLEncoder
  * Use the more constrained [CollectionEndpointImpl] when possible.
  *
  * @param referrer The endpoint used to navigate to this one.
- * @param relativeUri The URI of this endpoint relative to the referrer's.
+ * @param relativeUri The URI of this endpoint relative to the [referrer]'s.
  * @param entityType The type of individual elements in the collection.
  * @param elementEndpointFactory The factory for constructing [TElementEndpoint]s to provide for individual elements.
  * @param TEntity The type of individual elements in the collection.
@@ -29,7 +29,7 @@ open class GenericCollectionEndpointImpl<TEntity, TElementEndpoint : ElementEndp
      * Creates a new element collection endpoint.
      *
      * @param referrer The endpoint used to navigate to this one.
-     * @param relativeUri The URI of this endpoint relative to the referrer's. Add a "./" prefix here to imply a trailing slash on referrer's URI.
+     * @param relativeUri The URI of this endpoint relative to the [referrer]'s. Add a `./` prefix here to imply a trailing slash on referrer's URI.
      * @param entityType The type of individual elements in the collection.
      * @param elementEndpointFactory The factory for constructing [TElementEndpoint]s to provide for individual elements.
      */

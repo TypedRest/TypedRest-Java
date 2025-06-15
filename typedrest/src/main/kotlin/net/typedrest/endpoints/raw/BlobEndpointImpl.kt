@@ -12,14 +12,14 @@ import java.net.URI
  * Endpoint for a binary blob that can be downloaded or uploaded.
  *
  * @param referrer The endpoint used to navigate to this one.
- * @param relativeUri The URI of this endpoint relative to the referrer's. Add a "./" prefix here to imply a trailing slash on referrer's URI.
+ * @param relativeUri The URI of this endpoint relative to the [referrer]'s. Add a `./` prefix here to imply a trailing slash on referrer's URI.
  */
 open class BlobEndpointImpl(referrer: Endpoint, relativeUri: URI) : AbstractEndpoint(referrer, relativeUri), BlobEndpoint {
     /**
      * Creates a new blob endpoint.
      *
      * @param referrer The endpoint used to navigate to this one.
-     * @param relativeUri The URI of this endpoint relative to the referrer's. Add a "./" prefix here to imply a trailing slash on referrer's URI.
+     * @param relativeUri The URI of this endpoint relative to the [referrer]'s. Add a `./` prefix here to imply a trailing slash on referrer's URI.
      */
     constructor(referrer: Endpoint, relativeUri: String) :
         this(referrer, URI(relativeUri))
