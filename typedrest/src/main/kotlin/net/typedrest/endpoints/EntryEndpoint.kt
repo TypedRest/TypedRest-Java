@@ -66,7 +66,7 @@ open class EntryEndpoint : AbstractEndpoint {
         linkExtractor: LinkExtractor = AggregateLinkExtractor(HeaderLinkExtractor(), HalLinkExtractor())
     ) : super(
         uri,
-        OkHttpClient().withBasicAuth(credentials ?: uri.extractCredentials()),
+        OkHttpClient().withAccept(serializer.supportedMediaTypes).withBasicAuth(credentials ?: uri.extractCredentials()),
         listOf(serializer),
         errorHandler,
         linkExtractor
