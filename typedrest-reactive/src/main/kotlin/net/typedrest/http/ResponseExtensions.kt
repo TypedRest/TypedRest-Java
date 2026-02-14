@@ -46,27 +46,27 @@ fun <TEntity : Any> Response.entitySequence(
     val source = body!!.source()
     val buffer = Buffer()
 
+    while(!finishedReading) {
+
+    }
+
     while (source.read(buffer, bufferSize.toLong()) != -1L || !buffer.exhausted()) {
         var separatorIndex = buffer.indexOf(separatorBytes)
         do {
             val bytes = if (separatorIndex == -1L) buffer.readByteArray() else buffer.readByteArray(separatorIndex)
             buffer.skip(separatorBytes.size.toLong())
 
-            deserialize(serializer, bytes, entityType)?.let { yield(it) }
+            parseEntity(serializer, bytes, entityType)?.let { yield(it) }
             separatorIndex = buffer.indexOf(separatorBytes)
         } while (separatorIndex != -1L)
     }
 
     if (!buffer.exhausted()) {
-        deserialize(serializer, buffer.readByteArray(), entityType)?.let { yield(it) }
+        parseEntity(serializer, buffer.readByteArray(), entityType)?.let { yield(it) }
     }
 }
 
-private fun <T : Any> deserialize(
-    serializer: Serializer,
-    bytes: ByteArray,
-    type: Class<T>
-): T? {
+private fun <T : Any> parseEntity(bytes: ByteArray, serializer: Serializer, type: Class<T>): T? {
     if (bytes.isEmpty()) return null
     val mediaType: MediaType? = serializer.supportedMediaTypes.firstOrNull()
     return serializer.deserialize(bytes.toResponseBody(mediaType), type)
