@@ -52,7 +52,7 @@ val note: Note = smith.note.read()
 smith.delete()
 ```
 
-Read an **[Introduction](https://typedrest.net/introduction/)** to TypedRest or jump right in with the **[Getting started](https://typedrest.net/getting-started/java/)** guide.
+Read an **[Introduction](https://typedrest.net/introduction/)** to TypedRest or jump right in with the **[setup guide](https://typedrest.net/setup/java/)**.
 
 For information about specific classes or interfaces you can read the **[API Documentation](https://java.typedrest.net/)**.
 
