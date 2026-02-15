@@ -5,7 +5,8 @@ repositories.mavenCentral()
 plugins {
     kotlin("jvm") version "2.3.10"
     kotlin("plugin.serialization") version "2.3.10" apply false
-    id("org.jetbrains.dokka") version "1.9.20"
+    id("org.jetbrains.dokka") version "2.1.0"
+    id("org.jetbrains.dokka-javadoc") version "2.1.0"
 }
 
 subprojects {
@@ -18,14 +19,32 @@ subprojects {
     apply(plugin = kotlin("jvm"))
     apply(plugin = kotlin("plugin.serialization"))
     apply(plugin = "org.jetbrains.dokka")
+    apply(plugin = "org.jetbrains.dokka-javadoc")
 
     kotlin {
         compilerOptions.allWarningsAsErrors = true
     }
 
-    fun NamedDomainObjectContainer<GradleDokkaSourceSetBuilder>.addMarkdown() = configureEach {
-        includes.from(project.files(), fileTree("src/main/kotlin").include("**/_doc.md"))
+    dokka {
+        dokkaSourceSets.configureEach {
+            // Package-level documentation
+            val mdFiles = fileTree("src/main/kotlin") {
+                include("**/_doc.md")
+            }
+            mdFiles.files.forEach { mdFile ->
+                // Avoid duplicate file name conflicts
+                val relativePath = mdFile.relativeTo(project.file("src/main/kotlin")).path.replace("/", "-").replace("\\", "-")
+                val uniqueFile = project.layout.buildDirectory.file("tmp/dokka-includes/$relativePath").get().asFile
+                uniqueFile.parentFile.mkdirs()
+                mdFile.copyTo(uniqueFile, overwrite = true)
+                includes.from(uniqueFile)
+            }
+        }
     }
-    tasks.withType<DokkaTask>().configureEach { dokkaSourceSets.addMarkdown() }
-    tasks.withType<DokkaTaskPartial>().configureEach { dokkaSourceSets.addMarkdown() }
+}
+
+dependencies {
+    dokka(project(":typedrest:"))
+    dokka(project(":typedrest-serializers-jackson:"))
+    dokka(project(":typedrest-serializers-moshi:"))
 }
