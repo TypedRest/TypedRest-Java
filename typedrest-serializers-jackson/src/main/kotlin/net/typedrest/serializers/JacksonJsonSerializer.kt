@@ -1,7 +1,7 @@
 package net.typedrest.serializers
 
-import com.fasterxml.jackson.databind.ObjectMapper
-import com.fasterxml.jackson.module.kotlin.registerKotlinModule
+import tools.jackson.databind.json.JsonMapper
+import tools.jackson.module.kotlin.kotlinModule
 import okhttp3.*
 import okhttp3.RequestBody.Companion.toRequestBody
 
@@ -11,7 +11,7 @@ import okhttp3.RequestBody.Companion.toRequestBody
  * @param mapper The Jackson object mapper to use for serializing and deserializing.
  */
 open class JacksonJsonSerializer @JvmOverloads constructor(
-    private val mapper: ObjectMapper = ObjectMapper().registerKotlinModule()
+    private val mapper: JsonMapper = JsonMapper.builder().addModule(kotlinModule()).build()
 ) : AbstractJsonSerializer() {
     override fun <T> serialize(entity: T, type: Class<T>): RequestBody =
         mapper.writeValueAsString(entity).toRequestBody(mediaTypeJson)
