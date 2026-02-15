@@ -40,19 +40,18 @@ jobs:
 
       # Publish
       - name: Publish packages (GitHub)
-        if: github.event_name == 'push' && !startsWith(github.ref_name, 'renovate/')
+        if: github.event_name == 'push' && github.ref_type != 'tag' && !startsWith(github.ref_name, 'renovate/')
         run: gradle publishAllPublicationsToGitHubRepository
         env:
           GITHUB_ACTOR: ${{github.actor}}
           GITHUB_TOKEN: ${{github.token}}
-#      - name: Publish packages (Maven Central)
-#        if: github.ref_type == 'tag'
-#        run: gradle publishToSonatype closeAndReleaseSonatypeStagingRepository
-#        env:
-#          SIGNING_KEY: ${{secrets.SIGNING_KEY}}
-#          SIGNING_PASSWORD: ${{secrets.SIGNING_PASSWORD}}
-#          SONATYPE_USERNAME: ${{secrets.SONATYPE_USERNAME}}
-#          SONATYPE_PASSWORD: ${{secrets.SONATYPE_PASSWORD}}
+      - name: Publish packages (Maven Central)
+        if: github.ref_type == 'tag'
+        run: gradle publishToSonatype closeAndReleaseSonatypeStagingRepository
+        env:
+          GPG_KEY: ${{secrets.GPG_KEY}}
+          ORG_GRADLE_PROJECT_sonatypeUsername: ${{secrets.SONATYPE_USERNAME}}
+          ORG_GRADLE_PROJECT_sonatypePassword: ${{secrets.SONATYPE_PASSWORD}}
       - name: Publish documentation
         if: github.ref_type == 'tag'
         uses: peaceiris/actions-gh-pages@v3

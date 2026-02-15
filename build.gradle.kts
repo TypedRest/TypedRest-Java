@@ -8,6 +8,8 @@ plugins {
     id("org.jetbrains.dokka") version "2.1.0"
     id("org.jetbrains.dokka-javadoc") version "2.1.0"
     id("maven-publish")
+    id("signing")
+    id("io.github.gradle-nexus.publish-plugin") version "2.0.0"
 }
 
 subprojects {
@@ -22,6 +24,7 @@ subprojects {
     apply(plugin = "org.jetbrains.dokka")
     apply(plugin = "org.jetbrains.dokka-javadoc")
     apply(plugin = "maven-publish")
+    apply(plugin = "signing")
 
     kotlin {
         compilerOptions.allWarningsAsErrors = true
@@ -86,6 +89,14 @@ subprojects {
             }
         }
 
+        configure<SigningExtension> {
+            val gpgKey = System.getenv("GPG_KEY")
+            if (gpgKey != null) {
+                useInMemoryPgpKeys(gpgKey, "")
+                sign(the<PublishingExtension>().publications["maven"])
+            }
+        }
+
         repositories {
             maven {
                 name = "GitHub"
@@ -101,4 +112,13 @@ subprojects {
 
 dependencies {
     subprojects.forEach { dokka(it) }
+}
+
+nexusPublishing {
+    repositories {
+        sonatype {
+            nexusUrl.set(uri("https://ossrh-staging-api.central.sonatype.com/service/local/"))
+            snapshotRepositoryUrl.set(uri("https://central.sonatype.com/repository/maven-snapshots/"))
+        }
+    }
 }
