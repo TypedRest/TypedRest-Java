@@ -30,10 +30,8 @@ open class BlobEndpointImpl(referrer: Endpoint, relativeUri: URI) : AbstractEndp
     override val isDownloadAllowed: Boolean?
         get() = isMethodAllowed(HttpMethod.GET)
 
-    override fun download(): InputStream {
-        val response = execute(Request.Builder().get().uri(uri).build())
-        return response.body?.byteStream() ?: throw IllegalStateException("Response body is null")
-    }
+    override fun download(): InputStream =
+        execute(Request.Builder().get().uri(uri).build()).body.byteStream()
 
     override val isUploadAllowed: Boolean?
         get() = isMethodAllowed(HttpMethod.PUT)

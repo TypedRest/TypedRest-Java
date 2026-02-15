@@ -36,7 +36,7 @@ open class FunctionEndpointImpl<TEntity, TResult>(
 
     override fun invoke(entity: TEntity): TResult =
         execute(Request.Builder().post(serialize(entity, entityType)).uri(uri).build()).use { response ->
-            response.body?.let { deserialize(it, resultType) }
+            deserialize(response.body, resultType)
                 ?: throw NotFoundException("Result not deserializable as ${resultType.simpleName}")
         }
 }

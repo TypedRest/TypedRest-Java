@@ -82,13 +82,12 @@ open class ElementEndpointImpl<TEntity>(
     }
 
     private fun tryReadAs(response: Response): TEntity? {
-        val body = response.body
-        if (body == null || response.code == HttpStatusCode.NoContent.code) {
+        if (response.code == HttpStatusCode.NoContent.code) {
             return null
         }
 
         return try {
-            deserialize(body, entityType)
+            deserialize(response.body, entityType)
         } catch (ex: Exception) {
             null
         }

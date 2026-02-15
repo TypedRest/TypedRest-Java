@@ -72,7 +72,7 @@ open class GenericCollectionEndpointImpl<TEntity, TElementEndpoint : ElementEndp
         execute(Request.Builder().get().uri(uri).header("Range", "${rangeUnit}=${from ?: ""}-${to ?: ""}").build())
             .use { response ->
                 PartialResponse(
-                    response.body?.let { deserializeList(it, entityType) } ?: throw NotFoundException("Result not deserializable as List<${entityType.simpleName}>"),
+                    deserializeList(response.body, entityType) ?: throw NotFoundException("Result not deserializable as List<${entityType.simpleName}>"),
                     HttpContentRangeHeader.parse(response.headers)
                 )
             }

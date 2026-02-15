@@ -32,7 +32,7 @@ open class ProducerEndpointImpl<TResult>(
 
     override fun invoke(): TResult =
         execute(Request.Builder().post("".toRequestBody()).uri(uri).build()).use { response ->
-            response.body?.let { deserialize(it, resultType) }
+            deserialize(response.body, resultType)
                 ?: throw NotFoundException("Result not deserializable as ${resultType.simpleName}")
         }
 }

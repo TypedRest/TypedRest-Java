@@ -10,7 +10,7 @@ import okhttp3.Response
 class HalLinkExtractor : LinkExtractor {
     override fun getLinks(response: Response): List<Link> =
         if (response.header("Content-Type") == "application/hal+json") {
-            parseJsonBody(response.body?.string().orEmpty())
+            parseJsonBody(response.body.string())
         } else emptyList()
 
     private fun parseJsonBody(body: String): List<Link> =

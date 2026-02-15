@@ -14,7 +14,7 @@ open class DefaultErrorHandler : ErrorHandler {
     override fun handle(response: Response) {
         if (response.isSuccessful) return
 
-        val message = response.body?.let(::extractJsonMessage)
+        val message = extractJsonMessage(response.body)
             ?: "${response.request.url} responded with ${response.code} ${response.message}"
 
         throw mapException(HttpStatusCode.parse(response.code) ?: HttpStatusCode.InternalServerError, message, response)

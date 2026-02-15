@@ -17,7 +17,7 @@ class ResponseCache private constructor(response: Response) {
          */
         @JvmStatic
         fun from(response: Response): ResponseCache? =
-            if (response.isSuccessful && response.code != HttpStatusCode.NoContent.code && !response.cacheControl.noStore && response.body != null) {
+            if (response.isSuccessful && response.code != HttpStatusCode.NoContent.code && !response.cacheControl.noStore) {
                 ResponseCache(response)
             } else null
 
@@ -25,13 +25,13 @@ class ResponseCache private constructor(response: Response) {
             .apply { timeZone = TimeZone.getTimeZone("GMT") }
     }
 
-    private val bodyByteString = response.body?.byteString()
-    private val contentType = response.body?.contentType()
+    private val bodyByteString = response.body.byteString()
+    private val contentType = response.body.contentType()
 
     /**
      * Returns a copy of the cached [RequestBody].
      */
-    fun getBody() = bodyByteString?.toResponseBody(contentType) ?: throw IllegalArgumentException("Missing content.")
+    fun getBody() = bodyByteString.toResponseBody(contentType)
 
     private var expires =
         if (response.cacheControl.noCache) {
