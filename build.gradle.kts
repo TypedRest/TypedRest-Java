@@ -41,6 +41,15 @@ subprojects {
             }
         }
     }
+
+    java {
+        withSourcesJar()
+        withJavadocJar()
+    }
+
+    tasks.named<Jar>("javadocJar") {
+        from(tasks.dokkaGeneratePublicationJavadoc.flatMap { it.outputDirectory })
+    }
 }
 
 dependencies {
