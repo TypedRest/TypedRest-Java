@@ -39,11 +39,12 @@ jobs:
         uses: softprops/action-gh-release@v1
 
       # Publish
-#      - name: Publish packages (GitHub)
-#        if: github.event_name == 'push' && !startsWith(github.ref_name, 'renovate/')
-#        run: gradle publishMavenPublicationToGitHubRepository
-#        env:
-#          GITHUB_TOKEN: ${{github.token}}
+      - name: Publish packages (GitHub)
+        if: github.event_name == 'push' && !startsWith(github.ref_name, 'renovate/')
+        run: gradle publishAllPublicationsToGitHubRepository
+        env:
+          GITHUB_ACTOR: ${{github.actor}}
+          GITHUB_TOKEN: ${{github.token}}
 #      - name: Publish packages (Maven Central)
 #        if: github.ref_type == 'tag'
 #        run: gradle publishToSonatype closeAndReleaseSonatypeStagingRepository
