@@ -28,12 +28,12 @@ subprojects {
     dokka {
         dokkaSourceSets.configureEach {
             // Package-level documentation
-            val mdFiles = fileTree("src/main/kotlin") {
+            val mdFiles = fileTree("src/main") {
                 include("**/_doc.md")
             }
             mdFiles.files.forEach { mdFile ->
                 // Avoid duplicate file name conflicts
-                val relativePath = mdFile.relativeTo(project.file("src/main/kotlin")).path.replace("/", "-").replace("\\", "-")
+                val relativePath = mdFile.relativeTo(project.file("src/main")).path.replace("/", "-").replace("\\", "-")
                 val uniqueFile = project.layout.buildDirectory.file("tmp/dokka-includes/$relativePath").get().asFile
                 uniqueFile.parentFile.mkdirs()
                 mdFile.copyTo(uniqueFile, overwrite = true)

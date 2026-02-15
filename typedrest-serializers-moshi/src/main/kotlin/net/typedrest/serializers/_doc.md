@@ -1,5 +1,3 @@
-# Module typedrest-serializers-moshi
+# Package net.typedrest.serializers
 
-Adds support for serializing using [Moshi](https://github.com/square/moshi) instead of [kotlinx.serialization](https://kotlinlang.org/docs/serialization.html).
-
-Pass [MoshiJsonSerializer](net.typedrest.serializers.MoshiJsonSerializer) to the [EntryEndpoint](net.typedrest.endpoints.EntryEndpoint) constructor.
+Serialization of entities sent to and received from the server.
