@@ -3,8 +3,8 @@
 repositories.mavenCentral()
 
 plugins {
-    kotlin("jvm") version "2.1.21"
-    kotlin("plugin.serialization") version "2.1.21" apply false
+    kotlin("jvm") version "2.3.10"
+    kotlin("plugin.serialization") version "2.3.10" apply false
     id("org.jetbrains.dokka") version "1.9.20"
 }
 

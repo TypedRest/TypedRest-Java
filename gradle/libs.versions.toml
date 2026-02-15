@@ -1,7 +1,7 @@
 [versions]
 okhttp3 = "5.3.2"
 uri-templates = "2.1.8"
-kotlinx-serialization = "1.8.0"
+kotlinx-serialization = "1.10.0"
 jackson = "2.19.0"
 moshi = "1.15.2"
 
