@@ -1,5 +1,7 @@
 ﻿import org.jetbrains.dokka.gradle.*
 
+group = "net.typedrest"
+
 repositories.mavenCentral()
 
 plugins {
