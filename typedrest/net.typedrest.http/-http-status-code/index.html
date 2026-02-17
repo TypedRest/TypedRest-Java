@@ -1,0 +1,1174 @@
+<!doctype html>
+<html class="no-js" lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
+    <title>HttpStatusCode</title>
+<link href="../../../images/logo-icon.svg" rel="icon" type="image/svg"><script>var pathToRoot = "../../../";</script>
+    <script>document.documentElement.classList.replace("no-js", "js");</script>
+    <script>const storage = localStorage.getItem("dokka-dark-mode")
+      if (storage == null) {
+        const osDarkSchemePreferred = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+        if (osDarkSchemePreferred === true) {
+          document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+      } else {
+        const savedDarkMode = JSON.parse(storage)
+        if (savedDarkMode === true) {
+          document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+      }
+    </script>
+<script type="text/javascript" src="https://unpkg.com/kotlin-playground@1/dist/playground.min.js" async></script>
+<script type="text/javascript" src="../../../scripts/sourceset_dependencies.js" async></script>
+<link href="../../../styles/style.css" rel="Stylesheet">
+<link href="../../../styles/main.css" rel="Stylesheet">
+<link href="../../../styles/prism.css" rel="Stylesheet">
+<link href="../../../styles/logo-styles.css" rel="Stylesheet">
+<link href="../../../ui-kit/ui-kit.min.css" rel="Stylesheet">
+<script type="text/javascript" src="../../../scripts/safe-local-storage_blocking.js"></script>
+<script type="text/javascript" src="../../../scripts/navigation-loader.js" async></script>
+<script type="text/javascript" src="../../../scripts/platform-content-handler.js" async></script>
+<script type="text/javascript" src="../../../scripts/main.js" defer></script>
+<script type="text/javascript" src="../../../scripts/prism.js" async></script>
+<script type="text/javascript" src="../../../ui-kit/ui-kit.min.js" defer></script></head>
+<body>
+<div class="root">
+    <header class="navigation theme-dark" id="navigation-wrapper" role="banner">
+<a class="library-name--link" href="../../../index.html" tabindex="1">
+                    typedrest
+            </a>        <button class="navigation-controls--btn navigation-controls--btn_toc ui-kit_mobile-only" id="toc-toggle" type="button">Toggle table of contents
+        </button>
+        <div class="navigation-controls--break ui-kit_mobile-only"></div>
+        <div class="library-version" id="library-version">
+        </div>
+        <div class="navigation-controls">
+        <ul class="filter-section filter-section_loading" id="filter-section" aria-label="Target filter">
+                <button class="platform-tag platform-selector jvm-like" data-active="" aria-pressed="true" data-filter=":typedrest/main">jvm</button>
+            <div class="dropdown filter-section--dropdown" data-role="dropdown" id="filter-section-dropdown">
+                <button class="button button_dropdown filter-section--dropdown-toggle" role="combobox" data-role="dropdown-toggle" aria-controls="platform-tags-listbox" aria-haspopup="listbox" aria-expanded="false" aria-label="Toggle source sets"></button>
+                <ul role="listbox" id="platform-tags-listbox" class="dropdown--list" data-role="dropdown-listbox" aria-label="Target filter">
+                    <div class="dropdown--header"><span>Target filter</span>
+                        <button class="button" data-role="dropdown-toggle" aria-label="Close target filter">
+                            <i class="ui-kit-icon ui-kit-icon_cross"></i>
+                        </button>
+                    </div>
+                        <li role="option" class="dropdown--option platform-selector-option jvm-like" tabindex="0">
+                            <label class="checkbox">
+                                <input type="checkbox" class="checkbox--input" id=":typedrest/main" data-filter=":typedrest/main">
+                                <span class="checkbox--icon"></span>
+                                jvm
+                            </label>
+                        </li>
+                </ul>
+                <div class="dropdown--overlay"></div>
+            </div>
+        </ul>
+            <button class="navigation-controls--btn navigation-controls--btn_theme" id="theme-toggle-button" type="button">Switch theme
+            </button>
+            <div class="navigation-controls--btn navigation-controls--btn_search" id="searchBar" role="button">Search in
+                API
+            </div>
+        </div>
+    </header>
+    <div id="container">
+        <nav id="leftColumn" class="sidebar" data-item-type="SECTION" data-item-config="{&quot;defaultSize&quot;: 280, &quot;minSize&quot;: 200, &quot;maxSize&quot;: 400}">
+            <a class="toc--skip-link" href="#main">Skip to content</a>
+            <div class="dropdown theme-dark_mobile" data-role="dropdown" id="toc-dropdown">
+                <ul role="listbox" id="toc-listbox" class="dropdown--list dropdown--list_toc-list" data-role="dropdown-listbox" aria-label="Table of contents">
+                    <div class="dropdown--header">
+                            <span>
+                                    typedrest
+                            </span>
+                        <button class="button" data-role="dropdown-toggle" aria-label="Close table of contents">
+                            <i class="ui-kit-icon ui-kit-icon_cross"></i>
+                        </button>
+                    </div>
+                    <div class="sidebar--inner" id="sideMenu"></div>
+                </ul>
+                <div class="dropdown--overlay"></div>
+            </div>
+        </nav>
+        <div id="resizer" class="resizer" data-item-type="BAR"></div>
+        <div id="main" data-item-type="SECTION" role="main">
+<div class="main-content" data-page-type="classlike" id="content" pageids="typedrest::net.typedrest.http/HttpStatusCode///PointingToDeclaration//-1472451156">
+  <div class="breadcrumbs"><a href="../../index.html">typedrest</a><span class="delimiter">/</span><a href="../index.html">net.typedrest.http</a><span class="delimiter">/</span><span class="current">HttpStatusCode</span></div>
+  <div class="cover ">
+    <h1 class="cover"><span>Http</span><wbr><span>Status</span><wbr><span><span>Code</span></span></h1>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":typedrest/main"><div class="symbol monospace"><span class="token keyword">enum </span><a href="index.html">HttpStatusCode</a> : <a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-enum/index.html">Enum</a><span class="token operator">&lt;</span><a href="index.html">HttpStatusCode</a><span class="token operator">&gt; </span></div></div></div>
+  </div>
+  <div class="tabbedcontent">
+    <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="CONSTRUCTOR,TYPE,PROPERTY,FUNCTION">Members</button><button class="section-tab" data-togglable="ENTRY">Entries</button></div>
+    <div class="tabs-section-body">
+      <div data-togglable="ENTRY">
+        <h2 class="tableheader">Entries</h2>
+        <div class="table"><a data-name="445900348%2FClasslikes%2F-1472451156" anchor-label="Continue" id="445900348%2FClasslikes%2F-1472451156" data-filterable-set=":typedrest/main"></a>
+          <div class="table-row table-row_content" data-togglable="ENTRY" data-filterable-current=":typedrest/main" data-filterable-set=":typedrest/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-continue/index.html">Continue</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="445900348%2FClasslikes%2F-1472451156"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":typedrest/main"><div class="symbol monospace"><div class="block"><a href="-continue/index.html">Continue</a></div></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-370376158%2FClasslikes%2F-1472451156" anchor-label="SwitchingProtocols" id="-370376158%2FClasslikes%2F-1472451156" data-filterable-set=":typedrest/main"></a>
+          <div class="table-row table-row_content" data-togglable="ENTRY" data-filterable-current=":typedrest/main" data-filterable-set=":typedrest/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-switching-protocols/index.html">SwitchingProtocols</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-370376158%2FClasslikes%2F-1472451156"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":typedrest/main"><div class="symbol monospace"><div class="block"><a href="-switching-protocols/index.html">SwitchingProtocols</a></div></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="2117453672%2FClasslikes%2F-1472451156" anchor-label="Processing" id="2117453672%2FClasslikes%2F-1472451156" data-filterable-set=":typedrest/main"></a>
+          <div class="table-row table-row_content" data-togglable="ENTRY" data-filterable-current=":typedrest/main" data-filterable-set=":typedrest/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-processing/index.html">Processing</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="2117453672%2FClasslikes%2F-1472451156"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":typedrest/main"><div class="symbol monospace"><div class="block"><a href="-processing/index.html">Processing</a></div></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1924475138%2FClasslikes%2F-1472451156" anchor-label="EarlyHints" id="-1924475138%2FClasslikes%2F-1472451156" data-filterable-set=":typedrest/main"></a>
+          <div class="table-row table-row_content" data-togglable="ENTRY" data-filterable-current=":typedrest/main" data-filterable-set=":typedrest/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-early-hints/index.html">EarlyHints</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1924475138%2FClasslikes%2F-1472451156"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":typedrest/main"><div class="symbol monospace"><div class="block"><a href="-early-hints/index.html">EarlyHints</a></div></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="945438033%2FClasslikes%2F-1472451156" anchor-label="OK" id="945438033%2FClasslikes%2F-1472451156" data-filterable-set=":typedrest/main"></a>
+          <div class="table-row table-row_content" data-togglable="ENTRY" data-filterable-current=":typedrest/main" data-filterable-set=":typedrest/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-o-k/index.html">OK</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="945438033%2FClasslikes%2F-1472451156"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":typedrest/main"><div class="symbol monospace"><div class="block"><a href="-o-k/index.html">OK</a></div></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1329274853%2FClasslikes%2F-1472451156" anchor-label="Created" id="-1329274853%2FClasslikes%2F-1472451156" data-filterable-set=":typedrest/main"></a>
+          <div class="table-row table-row_content" data-togglable="ENTRY" data-filterable-current=":typedrest/main" data-filterable-set=":typedrest/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-created/index.html">Created</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1329274853%2FClasslikes%2F-1472451156"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":typedrest/main"><div class="symbol monospace"><div class="block"><a href="-created/index.html">Created</a></div></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1795024580%2FClasslikes%2F-1472451156" anchor-label="Accepted" id="-1795024580%2FClasslikes%2F-1472451156" data-filterable-set=":typedrest/main"></a>
+          <div class="table-row table-row_content" data-togglable="ENTRY" data-filterable-current=":typedrest/main" data-filterable-set=":typedrest/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-accepted/index.html">Accepted</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1795024580%2FClasslikes%2F-1472451156"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":typedrest/main"><div class="symbol monospace"><div class="block"><a href="-accepted/index.html">Accepted</a></div></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1048650813%2FClasslikes%2F-1472451156" anchor-label="NonAuthoritativeInformation" id="1048650813%2FClasslikes%2F-1472451156" data-filterable-set=":typedrest/main"></a>
+          <div class="table-row table-row_content" data-togglable="ENTRY" data-filterable-current=":typedrest/main" data-filterable-set=":typedrest/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-non-authoritative-information/index.html">NonAuthoritativeInformation</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1048650813%2FClasslikes%2F-1472451156"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":typedrest/main"><div class="symbol monospace"><div class="block"><a href="-non-authoritative-information/index.html">NonAuthoritativeInformation</a></div></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-798503701%2FClasslikes%2F-1472451156" anchor-label="NoContent" id="-798503701%2FClasslikes%2F-1472451156" data-filterable-set=":typedrest/main"></a>
+          <div class="table-row table-row_content" data-togglable="ENTRY" data-filterable-current=":typedrest/main" data-filterable-set=":typedrest/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-no-content/index.html">NoContent</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-798503701%2FClasslikes%2F-1472451156"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":typedrest/main"><div class="symbol monospace"><div class="block"><a href="-no-content/index.html">NoContent</a></div></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="2085907967%2FClasslikes%2F-1472451156" anchor-label="ResetContent" id="2085907967%2FClasslikes%2F-1472451156" data-filterable-set=":typedrest/main"></a>
+          <div class="table-row table-row_content" data-togglable="ENTRY" data-filterable-current=":typedrest/main" data-filterable-set=":typedrest/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-reset-content/index.html">ResetContent</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="2085907967%2FClasslikes%2F-1472451156"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":typedrest/main"><div class="symbol monospace"><div class="block"><a href="-reset-content/index.html">ResetContent</a></div></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1220361011%2FClasslikes%2F-1472451156" anchor-label="PartialContent" id="-1220361011%2FClasslikes%2F-1472451156" data-filterable-set=":typedrest/main"></a>
+          <div class="table-row table-row_content" data-togglable="ENTRY" data-filterable-current=":typedrest/main" data-filterable-set=":typedrest/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-partial-content/index.html">PartialContent</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1220361011%2FClasslikes%2F-1472451156"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":typedrest/main"><div class="symbol monospace"><div class="block"><a href="-partial-content/index.html">PartialContent</a></div></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1993484034%2FClasslikes%2F-1472451156" anchor-label="MultiStatus" id="-1993484034%2FClasslikes%2F-1472451156" data-filterable-set=":typedrest/main"></a>
+          <div class="table-row table-row_content" data-togglable="ENTRY" data-filterable-current=":typedrest/main" data-filterable-set=":typedrest/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-multi-status/index.html">MultiStatus</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1993484034%2FClasslikes%2F-1472451156"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":typedrest/main"><div class="symbol monospace"><div class="block"><a href="-multi-status/index.html">MultiStatus</a></div></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="983597118%2FClasslikes%2F-1472451156" anchor-label="AlreadyReported" id="983597118%2FClasslikes%2F-1472451156" data-filterable-set=":typedrest/main"></a>
+          <div class="table-row table-row_content" data-togglable="ENTRY" data-filterable-current=":typedrest/main" data-filterable-set=":typedrest/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-already-reported/index.html">AlreadyReported</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="983597118%2FClasslikes%2F-1472451156"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":typedrest/main"><div class="symbol monospace"><div class="block"><a href="-already-reported/index.html">AlreadyReported</a></div></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1532348214%2FClasslikes%2F-1472451156" anchor-label="IMUsed" id="1532348214%2FClasslikes%2F-1472451156" data-filterable-set=":typedrest/main"></a>
+          <div class="table-row table-row_content" data-togglable="ENTRY" data-filterable-current=":typedrest/main" data-filterable-set=":typedrest/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-i-m-used/index.html">IMUsed</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1532348214%2FClasslikes%2F-1472451156"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":typedrest/main"><div class="symbol monospace"><div class="block"><a href="-i-m-used/index.html">IMUsed</a></div></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1646053515%2FClasslikes%2F-1472451156" anchor-label="MultipleChoices" id="-1646053515%2FClasslikes%2F-1472451156" data-filterable-set=":typedrest/main"></a>
+          <div class="table-row table-row_content" data-togglable="ENTRY" data-filterable-current=":typedrest/main" data-filterable-set=":typedrest/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-multiple-choices/index.html">MultipleChoices</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1646053515%2FClasslikes%2F-1472451156"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":typedrest/main"><div class="symbol monospace"><div class="block"><a href="-multiple-choices/index.html">MultipleChoices</a></div></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-2057242915%2FClasslikes%2F-1472451156" anchor-label="MovedPermanently" id="-2057242915%2FClasslikes%2F-1472451156" data-filterable-set=":typedrest/main"></a>
+          <div class="table-row table-row_content" data-togglable="ENTRY" data-filterable-current=":typedrest/main" data-filterable-set=":typedrest/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-moved-permanently/index.html">MovedPermanently</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-2057242915%2FClasslikes%2F-1472451156"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":typedrest/main"><div class="symbol monospace"><div class="block"><a href="-moved-permanently/index.html">MovedPermanently</a></div></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1740041483%2FClasslikes%2F-1472451156" anchor-label="Found" id="-1740041483%2FClasslikes%2F-1472451156" data-filterable-set=":typedrest/main"></a>
+          <div class="table-row table-row_content" data-togglable="ENTRY" data-filterable-current=":typedrest/main" data-filterable-set=":typedrest/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-found/index.html">Found</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1740041483%2FClasslikes%2F-1472451156"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":typedrest/main"><div class="symbol monospace"><div class="block"><a href="-found/index.html">Found</a></div></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1414044270%2FClasslikes%2F-1472451156" anchor-label="SeeOther" id="-1414044270%2FClasslikes%2F-1472451156" data-filterable-set=":typedrest/main"></a>
+          <div class="table-row table-row_content" data-togglable="ENTRY" data-filterable-current=":typedrest/main" data-filterable-set=":typedrest/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-see-other/index.html">SeeOther</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1414044270%2FClasslikes%2F-1472451156"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":typedrest/main"><div class="symbol monospace"><div class="block"><a href="-see-other/index.html">SeeOther</a></div></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1617800559%2FClasslikes%2F-1472451156" anchor-label="NotModified" id="1617800559%2FClasslikes%2F-1472451156" data-filterable-set=":typedrest/main"></a>
+          <div class="table-row table-row_content" data-togglable="ENTRY" data-filterable-current=":typedrest/main" data-filterable-set=":typedrest/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-not-modified/index.html">NotModified</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1617800559%2FClasslikes%2F-1472451156"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":typedrest/main"><div class="symbol monospace"><div class="block"><a href="-not-modified/index.html">NotModified</a></div></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1091679556%2FClasslikes%2F-1472451156" anchor-label="UseProxy" id="-1091679556%2FClasslikes%2F-1472451156" data-filterable-set=":typedrest/main"></a>
+          <div class="table-row table-row_content" data-togglable="ENTRY" data-filterable-current=":typedrest/main" data-filterable-set=":typedrest/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-use-proxy/index.html">UseProxy</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1091679556%2FClasslikes%2F-1472451156"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":typedrest/main"><div class="symbol monospace"><div class="block"><a href="-use-proxy/index.html">UseProxy</a></div></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1374397696%2FClasslikes%2F-1472451156" anchor-label="TemporaryRedirect" id="1374397696%2FClasslikes%2F-1472451156" data-filterable-set=":typedrest/main"></a>
+          <div class="table-row table-row_content" data-togglable="ENTRY" data-filterable-current=":typedrest/main" data-filterable-set=":typedrest/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-temporary-redirect/index.html">TemporaryRedirect</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1374397696%2FClasslikes%2F-1472451156"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":typedrest/main"><div class="symbol monospace"><div class="block"><a href="-temporary-redirect/index.html">TemporaryRedirect</a></div></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-776490595%2FClasslikes%2F-1472451156" anchor-label="PermanentRedirect" id="-776490595%2FClasslikes%2F-1472451156" data-filterable-set=":typedrest/main"></a>
+          <div class="table-row table-row_content" data-togglable="ENTRY" data-filterable-current=":typedrest/main" data-filterable-set=":typedrest/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-permanent-redirect/index.html">PermanentRedirect</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-776490595%2FClasslikes%2F-1472451156"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":typedrest/main"><div class="symbol monospace"><div class="block"><a href="-permanent-redirect/index.html">PermanentRedirect</a></div></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1620043553%2FClasslikes%2F-1472451156" anchor-label="BadRequest" id="-1620043553%2FClasslikes%2F-1472451156" data-filterable-set=":typedrest/main"></a>
+          <div class="table-row table-row_content" data-togglable="ENTRY" data-filterable-current=":typedrest/main" data-filterable-set=":typedrest/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-bad-request/index.html">BadRequest</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1620043553%2FClasslikes%2F-1472451156"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":typedrest/main"><div class="symbol monospace"><div class="block"><a href="-bad-request/index.html">BadRequest</a></div></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="405137737%2FClasslikes%2F-1472451156" anchor-label="Unauthorized" id="405137737%2FClasslikes%2F-1472451156" data-filterable-set=":typedrest/main"></a>
+          <div class="table-row table-row_content" data-togglable="ENTRY" data-filterable-current=":typedrest/main" data-filterable-set=":typedrest/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-unauthorized/index.html">Unauthorized</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="405137737%2FClasslikes%2F-1472451156"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":typedrest/main"><div class="symbol monospace"><div class="block"><a href="-unauthorized/index.html">Unauthorized</a></div></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1527607608%2FClasslikes%2F-1472451156" anchor-label="PaymentRequired" id="1527607608%2FClasslikes%2F-1472451156" data-filterable-set=":typedrest/main"></a>
+          <div class="table-row table-row_content" data-togglable="ENTRY" data-filterable-current=":typedrest/main" data-filterable-set=":typedrest/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-payment-required/index.html">PaymentRequired</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1527607608%2FClasslikes%2F-1472451156"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":typedrest/main"><div class="symbol monospace"><div class="block"><a href="-payment-required/index.html">PaymentRequired</a></div></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="639734188%2FClasslikes%2F-1472451156" anchor-label="Forbidden" id="639734188%2FClasslikes%2F-1472451156" data-filterable-set=":typedrest/main"></a>
+          <div class="table-row table-row_content" data-togglable="ENTRY" data-filterable-current=":typedrest/main" data-filterable-set=":typedrest/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-forbidden/index.html">Forbidden</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="639734188%2FClasslikes%2F-1472451156"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":typedrest/main"><div class="symbol monospace"><div class="block"><a href="-forbidden/index.html">Forbidden</a></div></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1624790020%2FClasslikes%2F-1472451156" anchor-label="NotFound" id="1624790020%2FClasslikes%2F-1472451156" data-filterable-set=":typedrest/main"></a>
+          <div class="table-row table-row_content" data-togglable="ENTRY" data-filterable-current=":typedrest/main" data-filterable-set=":typedrest/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-not-found/index.html">NotFound</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1624790020%2FClasslikes%2F-1472451156"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":typedrest/main"><div class="symbol monospace"><div class="block"><a href="-not-found/index.html">NotFound</a></div></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-407880853%2FClasslikes%2F-1472451156" anchor-label="MethodNotAllowed" id="-407880853%2FClasslikes%2F-1472451156" data-filterable-set=":typedrest/main"></a>
+          <div class="table-row table-row_content" data-togglable="ENTRY" data-filterable-current=":typedrest/main" data-filterable-set=":typedrest/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-method-not-allowed/index.html">MethodNotAllowed</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-407880853%2FClasslikes%2F-1472451156"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":typedrest/main"><div class="symbol monospace"><div class="block"><a href="-method-not-allowed/index.html">MethodNotAllowed</a></div></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-833304888%2FClasslikes%2F-1472451156" anchor-label="NotAcceptable" id="-833304888%2FClasslikes%2F-1472451156" data-filterable-set=":typedrest/main"></a>
+          <div class="table-row table-row_content" data-togglable="ENTRY" data-filterable-current=":typedrest/main" data-filterable-set=":typedrest/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-not-acceptable/index.html">NotAcceptable</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-833304888%2FClasslikes%2F-1472451156"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":typedrest/main"><div class="symbol monospace"><div class="block"><a href="-not-acceptable/index.html">NotAcceptable</a></div></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="645269816%2FClasslikes%2F-1472451156" anchor-label="ProxyAuthenticationRequired" id="645269816%2FClasslikes%2F-1472451156" data-filterable-set=":typedrest/main"></a>
+          <div class="table-row table-row_content" data-togglable="ENTRY" data-filterable-current=":typedrest/main" data-filterable-set=":typedrest/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-proxy-authentication-required/index.html">ProxyAuthenticationRequired</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="645269816%2FClasslikes%2F-1472451156"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":typedrest/main"><div class="symbol monospace"><div class="block"><a href="-proxy-authentication-required/index.html">ProxyAuthenticationRequired</a></div></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1237034855%2FClasslikes%2F-1472451156" anchor-label="RequestTimeout" id="1237034855%2FClasslikes%2F-1472451156" data-filterable-set=":typedrest/main"></a>
+          <div class="table-row table-row_content" data-togglable="ENTRY" data-filterable-current=":typedrest/main" data-filterable-set=":typedrest/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-request-timeout/index.html">RequestTimeout</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1237034855%2FClasslikes%2F-1472451156"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":typedrest/main"><div class="symbol monospace"><div class="block"><a href="-request-timeout/index.html">RequestTimeout</a></div></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1057096743%2FClasslikes%2F-1472451156" anchor-label="Conflict" id="1057096743%2FClasslikes%2F-1472451156" data-filterable-set=":typedrest/main"></a>
+          <div class="table-row table-row_content" data-togglable="ENTRY" data-filterable-current=":typedrest/main" data-filterable-set=":typedrest/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-conflict/index.html">Conflict</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1057096743%2FClasslikes%2F-1472451156"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":typedrest/main"><div class="symbol monospace"><div class="block"><a href="-conflict/index.html">Conflict</a></div></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="432709812%2FClasslikes%2F-1472451156" anchor-label="Gone" id="432709812%2FClasslikes%2F-1472451156" data-filterable-set=":typedrest/main"></a>
+          <div class="table-row table-row_content" data-togglable="ENTRY" data-filterable-current=":typedrest/main" data-filterable-set=":typedrest/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-gone/index.html">Gone</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="432709812%2FClasslikes%2F-1472451156"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":typedrest/main"><div class="symbol monospace"><div class="block"><a href="-gone/index.html">Gone</a></div></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-701607686%2FClasslikes%2F-1472451156" anchor-label="LengthRequired" id="-701607686%2FClasslikes%2F-1472451156" data-filterable-set=":typedrest/main"></a>
+          <div class="table-row table-row_content" data-togglable="ENTRY" data-filterable-current=":typedrest/main" data-filterable-set=":typedrest/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-length-required/index.html">LengthRequired</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-701607686%2FClasslikes%2F-1472451156"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":typedrest/main"><div class="symbol monospace"><div class="block"><a href="-length-required/index.html">LengthRequired</a></div></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1035307018%2FClasslikes%2F-1472451156" anchor-label="PreconditionFailed" id="1035307018%2FClasslikes%2F-1472451156" data-filterable-set=":typedrest/main"></a>
+          <div class="table-row table-row_content" data-togglable="ENTRY" data-filterable-current=":typedrest/main" data-filterable-set=":typedrest/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-precondition-failed/index.html">PreconditionFailed</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1035307018%2FClasslikes%2F-1472451156"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":typedrest/main"><div class="symbol monospace"><div class="block"><a href="-precondition-failed/index.html">PreconditionFailed</a></div></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1238337688%2FClasslikes%2F-1472451156" anchor-label="PayloadTooLarge" id="-1238337688%2FClasslikes%2F-1472451156" data-filterable-set=":typedrest/main"></a>
+          <div class="table-row table-row_content" data-togglable="ENTRY" data-filterable-current=":typedrest/main" data-filterable-set=":typedrest/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-payload-too-large/index.html">PayloadTooLarge</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1238337688%2FClasslikes%2F-1472451156"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":typedrest/main"><div class="symbol monospace"><div class="block"><a href="-payload-too-large/index.html">PayloadTooLarge</a></div></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-396681351%2FClasslikes%2F-1472451156" anchor-label="URITooLong" id="-396681351%2FClasslikes%2F-1472451156" data-filterable-set=":typedrest/main"></a>
+          <div class="table-row table-row_content" data-togglable="ENTRY" data-filterable-current=":typedrest/main" data-filterable-set=":typedrest/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-u-r-i-too-long/index.html">URITooLong</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-396681351%2FClasslikes%2F-1472451156"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":typedrest/main"><div class="symbol monospace"><div class="block"><a href="-u-r-i-too-long/index.html">URITooLong</a></div></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1767562014%2FClasslikes%2F-1472451156" anchor-label="UnsupportedMediaType" id="1767562014%2FClasslikes%2F-1472451156" data-filterable-set=":typedrest/main"></a>
+          <div class="table-row table-row_content" data-togglable="ENTRY" data-filterable-current=":typedrest/main" data-filterable-set=":typedrest/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-unsupported-media-type/index.html">UnsupportedMediaType</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1767562014%2FClasslikes%2F-1472451156"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":typedrest/main"><div class="symbol monospace"><div class="block"><a href="-unsupported-media-type/index.html">UnsupportedMediaType</a></div></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-414967702%2FClasslikes%2F-1472451156" anchor-label="RangeNotSatisfiable" id="-414967702%2FClasslikes%2F-1472451156" data-filterable-set=":typedrest/main"></a>
+          <div class="table-row table-row_content" data-togglable="ENTRY" data-filterable-current=":typedrest/main" data-filterable-set=":typedrest/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-range-not-satisfiable/index.html">RangeNotSatisfiable</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-414967702%2FClasslikes%2F-1472451156"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":typedrest/main"><div class="symbol monospace"><div class="block"><a href="-range-not-satisfiable/index.html">RangeNotSatisfiable</a></div></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1733398604%2FClasslikes%2F-1472451156" anchor-label="ExpectationFailed" id="1733398604%2FClasslikes%2F-1472451156" data-filterable-set=":typedrest/main"></a>
+          <div class="table-row table-row_content" data-togglable="ENTRY" data-filterable-current=":typedrest/main" data-filterable-set=":typedrest/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-expectation-failed/index.html">ExpectationFailed</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1733398604%2FClasslikes%2F-1472451156"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":typedrest/main"><div class="symbol monospace"><div class="block"><a href="-expectation-failed/index.html">ExpectationFailed</a></div></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="770127413%2FClasslikes%2F-1472451156" anchor-label="ImATeapot" id="770127413%2FClasslikes%2F-1472451156" data-filterable-set=":typedrest/main"></a>
+          <div class="table-row table-row_content" data-togglable="ENTRY" data-filterable-current=":typedrest/main" data-filterable-set=":typedrest/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-im-a-teapot/index.html">ImATeapot</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="770127413%2FClasslikes%2F-1472451156"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":typedrest/main"><div class="symbol monospace"><div class="block"><a href="-im-a-teapot/index.html">ImATeapot</a></div></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="327246469%2FClasslikes%2F-1472451156" anchor-label="MisdirectedRequest" id="327246469%2FClasslikes%2F-1472451156" data-filterable-set=":typedrest/main"></a>
+          <div class="table-row table-row_content" data-togglable="ENTRY" data-filterable-current=":typedrest/main" data-filterable-set=":typedrest/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-misdirected-request/index.html">MisdirectedRequest</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="327246469%2FClasslikes%2F-1472451156"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":typedrest/main"><div class="symbol monospace"><div class="block"><a href="-misdirected-request/index.html">MisdirectedRequest</a></div></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="197130630%2FClasslikes%2F-1472451156" anchor-label="UnprocessableEntity" id="197130630%2FClasslikes%2F-1472451156" data-filterable-set=":typedrest/main"></a>
+          <div class="table-row table-row_content" data-togglable="ENTRY" data-filterable-current=":typedrest/main" data-filterable-set=":typedrest/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-unprocessable-entity/index.html">UnprocessableEntity</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="197130630%2FClasslikes%2F-1472451156"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":typedrest/main"><div class="symbol monospace"><div class="block"><a href="-unprocessable-entity/index.html">UnprocessableEntity</a></div></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1221072287%2FClasslikes%2F-1472451156" anchor-label="Locked" id="1221072287%2FClasslikes%2F-1472451156" data-filterable-set=":typedrest/main"></a>
+          <div class="table-row table-row_content" data-togglable="ENTRY" data-filterable-current=":typedrest/main" data-filterable-set=":typedrest/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-locked/index.html">Locked</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1221072287%2FClasslikes%2F-1472451156"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":typedrest/main"><div class="symbol monospace"><div class="block"><a href="-locked/index.html">Locked</a></div></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="272724029%2FClasslikes%2F-1472451156" anchor-label="FailedDependency" id="272724029%2FClasslikes%2F-1472451156" data-filterable-set=":typedrest/main"></a>
+          <div class="table-row table-row_content" data-togglable="ENTRY" data-filterable-current=":typedrest/main" data-filterable-set=":typedrest/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-failed-dependency/index.html">FailedDependency</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="272724029%2FClasslikes%2F-1472451156"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":typedrest/main"><div class="symbol monospace"><div class="block"><a href="-failed-dependency/index.html">FailedDependency</a></div></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-221305340%2FClasslikes%2F-1472451156" anchor-label="TooEarly" id="-221305340%2FClasslikes%2F-1472451156" data-filterable-set=":typedrest/main"></a>
+          <div class="table-row table-row_content" data-togglable="ENTRY" data-filterable-current=":typedrest/main" data-filterable-set=":typedrest/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-too-early/index.html">TooEarly</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-221305340%2FClasslikes%2F-1472451156"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":typedrest/main"><div class="symbol monospace"><div class="block"><a href="-too-early/index.html">TooEarly</a></div></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="99979470%2FClasslikes%2F-1472451156" anchor-label="UpgradeRequired" id="99979470%2FClasslikes%2F-1472451156" data-filterable-set=":typedrest/main"></a>
+          <div class="table-row table-row_content" data-togglable="ENTRY" data-filterable-current=":typedrest/main" data-filterable-set=":typedrest/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-upgrade-required/index.html">UpgradeRequired</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="99979470%2FClasslikes%2F-1472451156"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":typedrest/main"><div class="symbol monospace"><div class="block"><a href="-upgrade-required/index.html">UpgradeRequired</a></div></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1508906412%2FClasslikes%2F-1472451156" anchor-label="PreconditionRequired" id="1508906412%2FClasslikes%2F-1472451156" data-filterable-set=":typedrest/main"></a>
+          <div class="table-row table-row_content" data-togglable="ENTRY" data-filterable-current=":typedrest/main" data-filterable-set=":typedrest/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-precondition-required/index.html">PreconditionRequired</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1508906412%2FClasslikes%2F-1472451156"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":typedrest/main"><div class="symbol monospace"><div class="block"><a href="-precondition-required/index.html">PreconditionRequired</a></div></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1857110870%2FClasslikes%2F-1472451156" anchor-label="TooManyRequests" id="-1857110870%2FClasslikes%2F-1472451156" data-filterable-set=":typedrest/main"></a>
+          <div class="table-row table-row_content" data-togglable="ENTRY" data-filterable-current=":typedrest/main" data-filterable-set=":typedrest/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-too-many-requests/index.html">TooManyRequests</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1857110870%2FClasslikes%2F-1472451156"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":typedrest/main"><div class="symbol monospace"><div class="block"><a href="-too-many-requests/index.html">TooManyRequests</a></div></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1887466991%2FClasslikes%2F-1472451156" anchor-label="RequestHeaderFieldsTooLarge" id="1887466991%2FClasslikes%2F-1472451156" data-filterable-set=":typedrest/main"></a>
+          <div class="table-row table-row_content" data-togglable="ENTRY" data-filterable-current=":typedrest/main" data-filterable-set=":typedrest/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-request-header-fields-too-large/index.html">RequestHeaderFieldsTooLarge</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1887466991%2FClasslikes%2F-1472451156"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":typedrest/main"><div class="symbol monospace"><div class="block"><a href="-request-header-fields-too-large/index.html">RequestHeaderFieldsTooLarge</a></div></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1213777916%2FClasslikes%2F-1472451156" anchor-label="UnavailableForLegalReasons" id="-1213777916%2FClasslikes%2F-1472451156" data-filterable-set=":typedrest/main"></a>
+          <div class="table-row table-row_content" data-togglable="ENTRY" data-filterable-current=":typedrest/main" data-filterable-set=":typedrest/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-unavailable-for-legal-reasons/index.html">UnavailableForLegalReasons</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1213777916%2FClasslikes%2F-1472451156"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":typedrest/main"><div class="symbol monospace"><div class="block"><a href="-unavailable-for-legal-reasons/index.html">UnavailableForLegalReasons</a></div></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-977465285%2FClasslikes%2F-1472451156" anchor-label="InternalServerError" id="-977465285%2FClasslikes%2F-1472451156" data-filterable-set=":typedrest/main"></a>
+          <div class="table-row table-row_content" data-togglable="ENTRY" data-filterable-current=":typedrest/main" data-filterable-set=":typedrest/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-internal-server-error/index.html">InternalServerError</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-977465285%2FClasslikes%2F-1472451156"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":typedrest/main"><div class="symbol monospace"><div class="block"><a href="-internal-server-error/index.html">InternalServerError</a></div></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1009725188%2FClasslikes%2F-1472451156" anchor-label="NotImplemented" id="1009725188%2FClasslikes%2F-1472451156" data-filterable-set=":typedrest/main"></a>
+          <div class="table-row table-row_content" data-togglable="ENTRY" data-filterable-current=":typedrest/main" data-filterable-set=":typedrest/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-not-implemented/index.html">NotImplemented</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1009725188%2FClasslikes%2F-1472451156"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":typedrest/main"><div class="symbol monospace"><div class="block"><a href="-not-implemented/index.html">NotImplemented</a></div></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="261260756%2FClasslikes%2F-1472451156" anchor-label="BadGateway" id="261260756%2FClasslikes%2F-1472451156" data-filterable-set=":typedrest/main"></a>
+          <div class="table-row table-row_content" data-togglable="ENTRY" data-filterable-current=":typedrest/main" data-filterable-set=":typedrest/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-bad-gateway/index.html">BadGateway</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="261260756%2FClasslikes%2F-1472451156"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":typedrest/main"><div class="symbol monospace"><div class="block"><a href="-bad-gateway/index.html">BadGateway</a></div></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1689870416%2FClasslikes%2F-1472451156" anchor-label="ServiceUnavailable" id="-1689870416%2FClasslikes%2F-1472451156" data-filterable-set=":typedrest/main"></a>
+          <div class="table-row table-row_content" data-togglable="ENTRY" data-filterable-current=":typedrest/main" data-filterable-set=":typedrest/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-service-unavailable/index.html">ServiceUnavailable</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1689870416%2FClasslikes%2F-1472451156"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":typedrest/main"><div class="symbol monospace"><div class="block"><a href="-service-unavailable/index.html">ServiceUnavailable</a></div></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="952610002%2FClasslikes%2F-1472451156" anchor-label="GatewayTimeout" id="952610002%2FClasslikes%2F-1472451156" data-filterable-set=":typedrest/main"></a>
+          <div class="table-row table-row_content" data-togglable="ENTRY" data-filterable-current=":typedrest/main" data-filterable-set=":typedrest/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-gateway-timeout/index.html">GatewayTimeout</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="952610002%2FClasslikes%2F-1472451156"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":typedrest/main"><div class="symbol monospace"><div class="block"><a href="-gateway-timeout/index.html">GatewayTimeout</a></div></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="281028222%2FClasslikes%2F-1472451156" anchor-label="HTTPVersionNotSupported" id="281028222%2FClasslikes%2F-1472451156" data-filterable-set=":typedrest/main"></a>
+          <div class="table-row table-row_content" data-togglable="ENTRY" data-filterable-current=":typedrest/main" data-filterable-set=":typedrest/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-h-t-t-p-version-not-supported/index.html">HTTPVersionNotSupported</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="281028222%2FClasslikes%2F-1472451156"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":typedrest/main"><div class="symbol monospace"><div class="block"><a href="-h-t-t-p-version-not-supported/index.html">HTTPVersionNotSupported</a></div></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1013066252%2FClasslikes%2F-1472451156" anchor-label="VariantAlsoNegotiates" id="-1013066252%2FClasslikes%2F-1472451156" data-filterable-set=":typedrest/main"></a>
+          <div class="table-row table-row_content" data-togglable="ENTRY" data-filterable-current=":typedrest/main" data-filterable-set=":typedrest/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-variant-also-negotiates/index.html">VariantAlsoNegotiates</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1013066252%2FClasslikes%2F-1472451156"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":typedrest/main"><div class="symbol monospace"><div class="block"><a href="-variant-also-negotiates/index.html">VariantAlsoNegotiates</a></div></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1064480683%2FClasslikes%2F-1472451156" anchor-label="InsufficientStorage" id="1064480683%2FClasslikes%2F-1472451156" data-filterable-set=":typedrest/main"></a>
+          <div class="table-row table-row_content" data-togglable="ENTRY" data-filterable-current=":typedrest/main" data-filterable-set=":typedrest/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-insufficient-storage/index.html">InsufficientStorage</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1064480683%2FClasslikes%2F-1472451156"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":typedrest/main"><div class="symbol monospace"><div class="block"><a href="-insufficient-storage/index.html">InsufficientStorage</a></div></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1295432219%2FClasslikes%2F-1472451156" anchor-label="LoopDetected" id="1295432219%2FClasslikes%2F-1472451156" data-filterable-set=":typedrest/main"></a>
+          <div class="table-row table-row_content" data-togglable="ENTRY" data-filterable-current=":typedrest/main" data-filterable-set=":typedrest/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-loop-detected/index.html">LoopDetected</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1295432219%2FClasslikes%2F-1472451156"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":typedrest/main"><div class="symbol monospace"><div class="block"><a href="-loop-detected/index.html">LoopDetected</a></div></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1014363103%2FClasslikes%2F-1472451156" anchor-label="NotExtended" id="1014363103%2FClasslikes%2F-1472451156" data-filterable-set=":typedrest/main"></a>
+          <div class="table-row table-row_content" data-togglable="ENTRY" data-filterable-current=":typedrest/main" data-filterable-set=":typedrest/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-not-extended/index.html">NotExtended</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1014363103%2FClasslikes%2F-1472451156"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":typedrest/main"><div class="symbol monospace"><div class="block"><a href="-not-extended/index.html">NotExtended</a></div></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1532898616%2FClasslikes%2F-1472451156" anchor-label="NetworkAuthenticationRequired" id="1532898616%2FClasslikes%2F-1472451156" data-filterable-set=":typedrest/main"></a>
+          <div class="table-row table-row_content" data-togglable="ENTRY" data-filterable-current=":typedrest/main" data-filterable-set=":typedrest/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-network-authentication-required/index.html">NetworkAuthenticationRequired</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1532898616%2FClasslikes%2F-1472451156"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":typedrest/main"><div class="symbol monospace"><div class="block"><a href="-network-authentication-required/index.html">NetworkAuthenticationRequired</a></div></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div data-togglable="TYPE">
+        <h2 class="tableheader">Types</h2>
+        <div class="table"><a data-name="10795366%2FClasslikes%2F-1472451156" anchor-label="Companion" id="10795366%2FClasslikes%2F-1472451156" data-filterable-set=":typedrest/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":typedrest/main" data-filterable-set=":typedrest/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-companion/index.html"><span><span>Companion</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="10795366%2FClasslikes%2F-1472451156"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":typedrest/main"><div class="symbol monospace"><span class="token keyword">object </span><a href="-companion/index.html">Companion</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div data-togglable="PROPERTY">
+        <h2 class="tableheader">Properties</h2>
+        <div class="table"><a data-name="-1160605490%2FProperties%2F-1472451156" anchor-label="code" id="-1160605490%2FProperties%2F-1472451156" data-filterable-set=":typedrest/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":typedrest/main" data-filterable-set=":typedrest/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="code.html"><span><span>code</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1160605490%2FProperties%2F-1472451156"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":typedrest/main"><div class="symbol monospace"><span class="token keyword">val </span><a href="code.html">code</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1896502799%2FProperties%2F-1472451156" anchor-label="entries" id="1896502799%2FProperties%2F-1472451156" data-filterable-set=":typedrest/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":typedrest/main" data-filterable-set=":typedrest/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="entries.html"><span><span>entries</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1896502799%2FProperties%2F-1472451156"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":typedrest/main"><div class="symbol monospace"><span class="token keyword">val </span><a href="entries.html">entries</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.enums/-enum-entries/index.html">EnumEntries</a><span class="token operator">&lt;</span><a href="index.html">HttpStatusCode</a><span class="token operator">&gt;</span></div><div class="brief "><p class="paragraph">Returns a representation of an immutable list of all enum entries, in the order they're declared.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-372974862%2FProperties%2F-1472451156" anchor-label="name" id="-372974862%2FProperties%2F-1472451156" data-filterable-set=":typedrest/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":typedrest/main" data-filterable-set=":typedrest/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-network-authentication-required/index.html#-372974862%2FProperties%2F-1472451156"><span><span>name</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-372974862%2FProperties%2F-1472451156"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":typedrest/main"><div class="symbol monospace"><span class="token keyword">val </span><a href="-network-authentication-required/index.html#-372974862%2FProperties%2F-1472451156">name</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-739389684%2FProperties%2F-1472451156" anchor-label="ordinal" id="-739389684%2FProperties%2F-1472451156" data-filterable-set=":typedrest/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":typedrest/main" data-filterable-set=":typedrest/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-network-authentication-required/index.html#-739389684%2FProperties%2F-1472451156"><span><span>ordinal</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-739389684%2FProperties%2F-1472451156"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":typedrest/main"><div class="symbol monospace"><span class="token keyword">val </span><a href="-network-authentication-required/index.html#-739389684%2FProperties%2F-1472451156">ordinal</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div data-togglable="FUNCTION">
+        <h2 class="tableheader">Functions</h2>
+        <div class="table"><a data-name="-893642771%2FFunctions%2F-1472451156" anchor-label="valueOf" id="-893642771%2FFunctions%2F-1472451156" data-filterable-set=":typedrest/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":typedrest/main" data-filterable-set=":typedrest/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="value-of.html"><span>value</span><wbr><span><span>Of</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-893642771%2FFunctions%2F-1472451156"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":typedrest/main"><div class="symbol monospace"><span class="token keyword">fun </span><a href="value-of.html"><span class="token function">valueOf</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">value<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="index.html">HttpStatusCode</a></div><div class="brief "><p class="paragraph">Returns the enum constant of this type with the specified name. The string must match exactly an identifier used to declare an enum constant in this type. (Extraneous whitespace characters are not permitted.)</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1261660231%2FFunctions%2F-1472451156" anchor-label="values" id="-1261660231%2FFunctions%2F-1472451156" data-filterable-set=":typedrest/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":typedrest/main" data-filterable-set=":typedrest/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="values.html"><span><span>values</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1261660231%2FFunctions%2F-1472451156"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":typedrest/main"><div class="symbol monospace"><span class="token keyword">fun </span><a href="values.html"><span class="token function">values</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-array/index.html">Array</a><span class="token operator">&lt;</span><a href="index.html">HttpStatusCode</a><span class="token operator">&gt;</span></div><div class="brief "><p class="paragraph">Returns an array containing the constants of this enum type, in the order they're declared.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    <div class="footer">
+        <div class="footer--container">
+            <a href="#content" id="go-to-top-link" class="footer--button footer--button_go-to-top"></a>
+            <div class="footer--content">
+                <div>
+                    <span>Generated by </span>
+                    <a class="footer--link footer--link_external" href="https://github.com/Kotlin/dokka">
+                        Dokka
+                    </a>
+                    <div>© 2026 Copyright</div>
+                </div>
+            </div>
+        </div>
+    </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
