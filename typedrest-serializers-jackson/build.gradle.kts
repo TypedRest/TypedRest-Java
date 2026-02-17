@@ -1,3 +1,5 @@
+description = "Adds support for serializing using Jackson (https://github.com/FasterXML/jackson) instead of kotlinx.serialization."
+
 kotlin.jvmToolchain(21)
 tasks.test { useJUnitPlatform() }
 

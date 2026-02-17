@@ -65,7 +65,7 @@ subprojects {
 
                 pom {
                     name.set(project.name)
-                    description.set("TypedRest helps you build type-safe, fluent-style REST API clients.")
+                    description.set(provider { project.description })
                     url.set("https://typedrest.net/")
 
                     licenses {

@@ -1,3 +1,5 @@
+description = "TypedRest helps you build type-safe, fluent-style REST API clients."
+
 kotlin.jvmToolchain(21)
 tasks.test { useJUnitPlatform() }
 

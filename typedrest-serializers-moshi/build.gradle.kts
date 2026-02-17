@@ -1,3 +1,5 @@
+description = "Adds support for serializing using Moshi (https://github.com/square/moshi) instead of kotlinx.serialization."
+
 kotlin.jvmToolchain(21)
 tasks.test { useJUnitPlatform() }
 
