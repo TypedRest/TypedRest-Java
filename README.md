@@ -58,15 +58,15 @@ For information about specific classes or interfaces you can read the **[API Doc
 
 ## Maven artifacts
 
-Artifact group: [`net.typedrest`](https://mvnrepository.com/artifact/net.typedrest)
+Artifact group: [`net.typedrest`](https://central.sonatype.com/artifact/net.typedrest)
 
-[![typedrest](https://img.shields.io/maven-central/v/net.typedrest/typedrest.svg?label=typedrest)](https://mvnrepository.com/artifact/net.typedrest/typedrest)  
+[![typedrest](https://img.shields.io/maven-central/v/net.typedrest/typedrest.svg?label=typedrest)](https://central.sonatype.com/artifact/net.typedrest/typedrest)  
 The main TypedRest library.
 
-[![typedrest-serializers-jackson](https://img.shields.io/maven-central/v/net.typedrest/typedrest-serializers-jackson.svg?label=typedrest-serializers-jackson)](https://mvnrepository.com/artifact/net.typedrest/typedrest-serializers-jackson)  
+[![typedrest-serializers-jackson](https://img.shields.io/maven-central/v/net.typedrest/typedrest-serializers-jackson.svg?label=typedrest-serializers-jackson)](https://central.sonatype.com/artifact/net.typedrest/typedrest-serializers-jackson)  
 Adds support for serializing using [Jackson](https://github.com/FasterXML/jackson) instead of [kotlinx.serialization](https://kotlinlang.org/docs/serialization.html).  
 Pass `new JacksonJsonSerializer()` to the `EntryEndpoint` constructor.
 
-[![typedrest-serializers-moshi](https://img.shields.io/maven-central/v/net.typedrest/typedrest-serializers-moshi.svg?label=typedrest-serializers-moshi)](https://mvnrepository.com/artifact/net.typedrest/typedrest-serializers-moshi)  
+[![typedrest-serializers-moshi](https://img.shields.io/maven-central/v/net.typedrest/typedrest-serializers-moshi.svg?label=typedrest-serializers-moshi)](https://central.sonatype.com/artifact/net.typedrest/typedrest-serializers-moshi)  
 Adds support for serializing using [Moshi](https://github.com/square/moshi) instead of [kotlinx.serialization](https://kotlinlang.org/docs/serialization.html).  
 Pass `new MoshiJsonSerializer()` to the `EntryEndpoint` constructor.

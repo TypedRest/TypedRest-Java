@@ -49,7 +49,7 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           body: |
-            **[Maven package](https://mvnrepository.com/artifact/typedrest.net/typedrest/${{steps.gitversion.outputs.semVer}})**
+            **[Maven package](https://central.sonatype.com/artifact/net.typedrest/typedrest/${{steps.gitversion.outputs.semVer}})**
             ## Changes
             ${{steps.tag_message.outputs.message}}
 
