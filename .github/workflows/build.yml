@@ -27,7 +27,7 @@ jobs:
       - run: gradle test
       - name: Report test results
         if: always()
-        uses: dorny/test-reporter@v1
+        uses: dorny/test-reporter@v2
         with:
           name: Test Report
           reporter: java-junit
