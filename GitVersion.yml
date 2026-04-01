@@ -5,7 +5,8 @@ branches:
   develop:
     label: alpha
     increment: Patch
-  master: 
+  main:
+    mode: ContinuousDelivery
     label: beta
 
   # Stabilization branches
