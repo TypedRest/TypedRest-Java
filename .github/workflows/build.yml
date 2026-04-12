@@ -46,7 +46,7 @@ jobs:
           } >> "$GITHUB_OUTPUT"
       - name: Create GitHub Release
         if: github.ref_type == 'tag'
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@v3
         with:
           body: |
             **[Maven package](https://central.sonatype.com/artifact/net.typedrest/typedrest/${{steps.gitversion.outputs.semVer}})**
