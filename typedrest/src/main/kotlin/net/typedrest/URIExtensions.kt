@@ -40,4 +40,6 @@ fun URI.join(relativeUri: URI): URI =
  * Extracts credentials from user info in URI if set.
  */
 fun URI.extractCredentials(): HttpCredentials? =
-    this.userInfo?.split(':')?.let { (username, password) -> HttpCredentials(username, password) }
+    this.userInfo?.split(':', limit = 2)?.let {
+        HttpCredentials(it[0], it.getOrElse(1) { "" })
+    }
