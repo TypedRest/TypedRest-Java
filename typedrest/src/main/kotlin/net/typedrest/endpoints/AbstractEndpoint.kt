@@ -120,11 +120,11 @@ abstract class AbstractEndpoint(
             try {
                 httpClient.newCall(Request.Builder().head().url(uri.toURL()).build()).execute()
             } catch (ex: Exception) {
-                throw IllegalStateException("No link with rel=$rel provided by endpoint $uri.")
+                throw NotFoundException("No link with rel=$rel provided by endpoint $uri.")
             }
 
             return getLinks(rel).firstOrNull()?.first
-                ?: throw IllegalStateException("No link with rel=$rel provided by endpoint $uri.")
+                ?: throw NotFoundException("No link with rel=$rel provided by endpoint $uri.")
         }
 
         return foundLinks.first().first
