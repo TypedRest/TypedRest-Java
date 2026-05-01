@@ -74,7 +74,7 @@ open class ElementEndpointImpl<TEntity>(
 
             try {
                 return set(entity)
-            } catch (ex: HttpException) {
+            } catch (ex: ConflictException) {
                 if (retryCounter++ >= maxRetries) throw ex
                 ex.retryAfter?.let(Thread::sleep)
             }
