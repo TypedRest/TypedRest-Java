@@ -1,5 +1,6 @@
 package net.typedrest.endpoints
 
+import net.typedrest.ensureTrailingSlash
 import net.typedrest.errors.*
 import net.typedrest.extractCredentials
 import net.typedrest.http.*
@@ -28,7 +29,7 @@ open class EntryEndpoint : AbstractEndpoint {
         serializers: List<Serializer>,
         errorHandler: ErrorHandler = DefaultErrorHandler(),
         linkExtractor: LinkExtractor = AggregateLinkExtractor(HeaderLinkExtractor(), HalLinkExtractor())
-    ) : super(uri, httpClient, serializers, errorHandler, linkExtractor)
+    ) : super(uri.ensureTrailingSlash(), httpClient, serializers, errorHandler, linkExtractor)
 
     /**
      * Creates a new entry endpoint.
@@ -46,7 +47,7 @@ open class EntryEndpoint : AbstractEndpoint {
         serializer: Serializer = KotlinxJsonSerializer(),
         errorHandler: ErrorHandler = DefaultErrorHandler(),
         linkExtractor: LinkExtractor = AggregateLinkExtractor(HeaderLinkExtractor(), HalLinkExtractor())
-    ) : super(uri, httpClient, listOf(serializer), errorHandler, linkExtractor)
+    ) : super(uri.ensureTrailingSlash(), httpClient, listOf(serializer), errorHandler, linkExtractor)
 
     /**
      * Creates a new entry endpoint.
@@ -65,7 +66,7 @@ open class EntryEndpoint : AbstractEndpoint {
         errorHandler: ErrorHandler = DefaultErrorHandler(),
         linkExtractor: LinkExtractor = AggregateLinkExtractor(HeaderLinkExtractor(), HalLinkExtractor())
     ) : super(
-        uri,
+        uri.ensureTrailingSlash(),
         OkHttpClient().withAccept(serializer.supportedMediaTypes).withBasicAuth(credentials ?: uri.extractCredentials()),
         listOf(serializer),
         errorHandler,
