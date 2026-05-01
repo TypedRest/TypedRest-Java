@@ -80,29 +80,29 @@ open class GenericCollectionEndpointImpl<TEntity, TElementEndpoint : ElementEndp
     override val createAllowed: Boolean?
         get() = isMethodAllowed(HttpMethod.POST)
 
-    override fun create(entity: TEntity): TElementEndpoint? {
-        val response = execute(Request.Builder().post(serialize(entity, entityType)).uri(uri).build())
-        val responseCache = ResponseCache.from(response)
+    override fun create(entity: TEntity): TElementEndpoint? =
+        execute(Request.Builder().post(serialize(entity, entityType)).uri(uri).build()).use { response ->
+            val responseCache = ResponseCache.from(response)
 
-        val location = response.header("Location")
-        val elementEndpoint = if (location != null) {
-            // Explicit element endpoint URL from "Location" header
-            elementEndpointFactory(this, URI(location))
-        } else {
-            // Infer URL from entity ID in response body
-            responseCache
-                ?.getBody()
-                ?.let { deserialize(it, entityType) }
-                ?.let(::tryGetId)
-                ?.let(::get)
+            val location = response.header("Location")
+            val elementEndpoint = if (location != null) {
+                // Explicit element endpoint URL from "Location" header
+                elementEndpointFactory(this, URI(location))
+            } else {
+                // Infer URL from entity ID in response body
+                responseCache
+                    ?.getBody()
+                    ?.let { deserialize(it, entityType) }
+                    ?.let(::tryGetId)
+                    ?.let(::get)
+            }
+
+            if (elementEndpoint is CachingEndpoint) {
+                elementEndpoint.responseCache = responseCache
+            }
+
+            elementEndpoint
         }
-
-        if (elementEndpoint is CachingEndpoint) {
-            elementEndpoint.responseCache = responseCache
-        }
-
-        return elementEndpoint
-    }
 
     private fun tryGetId(entity: TEntity) =
         entityType.methods.firstOrNull { it.name.lowercase() == "getid" }
@@ -118,6 +118,6 @@ open class GenericCollectionEndpointImpl<TEntity, TElementEndpoint : ElementEndp
         get() = isMethodAllowed(HttpMethod.PUT)
 
     override fun setAll(entities: Iterable<TEntity>) {
-        putContent(serializeList(entities, entityType))
+        putContent(serializeList(entities, entityType)).close()
     }
 }

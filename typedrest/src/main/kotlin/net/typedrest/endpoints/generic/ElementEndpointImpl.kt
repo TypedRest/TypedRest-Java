@@ -81,13 +81,11 @@ open class ElementEndpointImpl<TEntity>(
         }
     }
 
-    private fun tryReadAs(response: Response): TEntity? {
-        if (response.code == HttpStatusCode.NoContent.code) {
-            return null
-        }
+    private fun tryReadAs(response: Response): TEntity? = response.use {
+        if (it.code == HttpStatusCode.NoContent.code) return@use null
 
-        return try {
-            deserialize(response.body, entityType)
+        try {
+            deserialize(it.body, entityType)
         } catch (ex: Exception) {
             null
         }
