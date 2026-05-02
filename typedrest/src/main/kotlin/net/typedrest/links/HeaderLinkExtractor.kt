@@ -29,11 +29,8 @@ class HeaderLinkExtractor : LinkExtractor {
             val paramSplit = param.split('=', limit = 2)
             if (paramSplit.size != 2) return@forEach
             when (paramSplit[0]) {
-                "rel" -> rel = paramSplit[1]
-                "title" -> title =
-                    if (paramSplit[1].startsWith("\"") && paramSplit[1].endsWith("\"")) {
-                        paramSplit[1].substring(1, paramSplit[1].length - 2)
-                    } else paramSplit[1]
+                "rel" -> rel = paramSplit[1].unquote()
+                "title" -> title = paramSplit[1].unquote()
                 "templated" -> templated = paramSplit[1].toBoolean()
             }
         }
