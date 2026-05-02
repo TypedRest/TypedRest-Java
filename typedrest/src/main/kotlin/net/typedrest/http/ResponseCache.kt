@@ -39,7 +39,7 @@ class ResponseCache private constructor(response: Response) {
         } else {
             response.headers.getDate("Expires")
                 ?: response.cacheControl.maxAgeSeconds.let { maxAge ->
-                    if (maxAge == -1) null else Date(System.currentTimeMillis() + maxAge * 1000)
+                    if (maxAge == -1) null else Date(System.currentTimeMillis() + maxAge.toLong() * 1000L)
                 }
                 ?: if (response.cacheControl.noCache) Date() else null
         }
