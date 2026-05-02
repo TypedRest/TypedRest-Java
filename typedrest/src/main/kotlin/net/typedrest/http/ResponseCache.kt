@@ -3,7 +3,9 @@ package net.typedrest.http
 import okhttp3.*
 import okhttp3.ResponseBody.Companion.toResponseBody
 import okio.ByteString
-import java.text.SimpleDateFormat
+import java.time.ZoneOffset
+import java.time.ZonedDateTime
+import java.time.format.DateTimeFormatter
 import java.util.*
 
 /**
@@ -21,8 +23,11 @@ class ResponseCache private constructor(response: Response) {
                 ResponseCache(response)
             } else null
 
-        private val dateFormat = SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss 'GMT'", Locale.US)
-            .apply { timeZone = TimeZone.getTimeZone("GMT") }
+        private val dateFormat: DateTimeFormatter =
+            DateTimeFormatter.ofPattern("EEE, dd MMM yyyy HH:mm:ss 'GMT'", Locale.US)
+
+        private fun Date.formatHttp(): String =
+            ZonedDateTime.ofInstant(toInstant(), ZoneOffset.UTC).format(dateFormat)
     }
 
     private val bodyByteString = response.body.byteString()
@@ -59,7 +64,7 @@ class ResponseCache private constructor(response: Response) {
     fun ifModifiedHeaders(): Headers {
         val builder = Headers.Builder()
         eTag?.let { builder.add("If-None-Match", it) }
-            ?: lastModified?.let { builder.add("If-Modified-Since", dateFormat.format(it)) }
+            ?: lastModified?.let { builder.add("If-Modified-Since", it.formatHttp()) }
         return builder.build()
     }
 
@@ -69,7 +74,7 @@ class ResponseCache private constructor(response: Response) {
     fun ifUnmodifiedHeaders(): Headers {
         val builder = Headers.Builder()
         eTag?.let { builder.add("If-Match", it) }
-            ?: lastModified?.let { builder.add("If-Unmodified-Since", dateFormat.format(it)) }
+            ?: lastModified?.let { builder.add("If-Unmodified-Since", it.formatHttp()) }
         return builder.build()
     }
 }
