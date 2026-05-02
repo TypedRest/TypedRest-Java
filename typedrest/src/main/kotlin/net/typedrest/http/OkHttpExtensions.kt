@@ -53,3 +53,14 @@ fun Request.Builder.uri(uri: URI): Request.Builder = this.url(uri.toURL())
  * Sets the request method to `OPTIONS` with no body.
  */
 fun Request.Builder.options(): Request.Builder = this.method("OPTIONS", null)
+
+/**
+ * The media type without parameters, i.e., `type/subtype`.
+ */
+val MediaType.essence: String get() = "$type/$subtype"
+
+/**
+ * Whether this media type represents JSON, including structured-syntax suffixes such as `application/problem+json`.
+ */
+val MediaType.isJson: Boolean
+    get() = essence == "application/json" || subtype.endsWith("+json")
