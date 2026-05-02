@@ -1,7 +1,7 @@
 package net.typedrest.errors
 
 import kotlinx.serialization.*
-import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.*
 import net.typedrest.http.HttpStatusCode
 import net.typedrest.http.isJson
 import okhttp3.Response
@@ -30,15 +30,14 @@ open class DefaultErrorHandler : ErrorHandler {
         if (body.contentType()?.isJson != true) return null
 
         return try {
-            val decoded = Json.decodeFromString<JsonErrorResponse>(body.string())
-            return decoded.message ?: decoded.details
+            val root = Json.parseToJsonElement(body.string()) as? JsonObject ?: return null
+            (root["message"] ?: root["details"])?.jsonPrimitive?.contentOrNull
         } catch (_: SerializationException) {
+            null
+        } catch (_: IllegalArgumentException) {
             null
         }
     }
-
-    @Serializable
-    private class JsonErrorResponse(val message: String?, val details: String? = null)
 
     /**
      * Maps the HTTP status code to an exception.
