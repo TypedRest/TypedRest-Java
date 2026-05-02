@@ -6,12 +6,11 @@ import java.net.URI
 /**
  * Adds a trailing slash to the URI if it does not already have one.
  */
-fun URI.ensureTrailingSlash(): URI =
-    if (this.toString().endsWith("/")) {
-        this
-    } else {
-        URI("${this}/")
-    }
+fun URI.ensureTrailingSlash(): URI {
+    val path = this.path ?: ""
+    return if (path.endsWith("/")) this
+    else URI(scheme, authority, "$path/", query, fragment)
+}
 
 /**
  * Resolves a relative URI using this URI as the base.
