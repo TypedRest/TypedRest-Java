@@ -8,10 +8,11 @@ import okhttp3.Response
  * Extracts links from JSON bodies according to the Hypertext Application Language (HAL) specification.
  */
 class HalLinkExtractor : LinkExtractor {
-    override fun getLinks(response: Response): List<Link> =
-        if (response.header("Content-Type") == "application/hal+json") {
-            parseJsonBody(response.body.string())
-        } else emptyList()
+    override fun getLinks(response: Response): List<Link> {
+        val mediaType = response.body.contentType() ?: return emptyList()
+        if ("${mediaType.type}/${mediaType.subtype}" != "application/hal+json") return emptyList()
+        return parseJsonBody(response.peekBody(Long.MAX_VALUE).string())
+    }
 
     private fun parseJsonBody(body: String): List<Link> =
         try {
