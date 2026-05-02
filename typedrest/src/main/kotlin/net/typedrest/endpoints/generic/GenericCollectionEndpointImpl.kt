@@ -61,7 +61,10 @@ open class GenericCollectionEndpointImpl<TEntity, TElementEndpoint : ElementEndp
 
     override fun handleCapabilities(response: Response) {
         super.handleCapabilities(response)
-        readRangeAllowed = response.headers("Accept-Ranges").contains(rangeUnit)
+        readRangeAllowed = response.headers("Accept-Ranges")
+            .flatMap { it.split(",") }
+            .map { it.trim() }
+            .contains(rangeUnit)
     }
 
     override var readRangeAllowed: Boolean? = null

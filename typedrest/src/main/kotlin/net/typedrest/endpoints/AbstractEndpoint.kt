@@ -165,7 +165,8 @@ abstract class AbstractEndpoint(
         val allowedMethodsHeader = response.headers("Allow")
         if (allowedMethodsHeader.isNotEmpty()) {
             allowedMethods = allowedMethodsHeader
-                .flatMap { it.split(", ") }
+                .flatMap { it.split(",") }
+                .map { it.trim() }
                 .mapNotNull { HttpMethod.parse(it) }
                 .toSet()
         }
