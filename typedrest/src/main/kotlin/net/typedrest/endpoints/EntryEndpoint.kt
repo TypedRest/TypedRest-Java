@@ -82,5 +82,5 @@ open class EntryEndpoint : AbstractEndpoint {
      * @throws HttpException for other non-success status codes.
      */
     fun readMeta() =
-        execute(Request.Builder().options().uri(uri).build()).close()
+        execute(Request.Builder().get().uri(uri).build()).close()
 }
