@@ -9,7 +9,10 @@ abstract class AbstractJsonSerializer : Serializer {
     companion object {
         @JvmStatic
         protected val mediaTypeJson = "application/json".toMediaType()
+
+        @JvmStatic
+        protected val mediaTypeTextJson = "text/json".toMediaType()
     }
 
-    override val supportedMediaTypes = listOf(mediaTypeJson)
+    override val supportedMediaTypes = listOf(mediaTypeJson, mediaTypeTextJson)
 }
