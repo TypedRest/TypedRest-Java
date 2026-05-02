@@ -3,6 +3,7 @@
 import net.typedrest.endpoints.*
 import net.typedrest.http.*
 import okhttp3.*
+import okhttp3.ResponseBody.Companion.toResponseBody
 import java.net.URI
 
 /**
@@ -83,7 +84,9 @@ open class GenericCollectionEndpointImpl<TEntity, TElementEndpoint : ElementEndp
 
     override fun create(entity: TEntity): TElementEndpoint? =
         execute(Request.Builder().post(serialize(entity, entityType)).uri(uri).build()).use { response ->
-            val responseCache = ResponseCache.from(response)
+            val bodyByteString = response.body.byteString()
+            val contentType = response.body.contentType()
+            val responseCache = ResponseCache.from(response, bodyByteString, contentType)
 
             val location = response.header("Location")
             val elementEndpoint = if (location != null) {
@@ -91,8 +94,8 @@ open class GenericCollectionEndpointImpl<TEntity, TElementEndpoint : ElementEndp
                 elementEndpointFactory(this, URI(location))
             } else {
                 // Infer URL from entity ID in response body
-                responseCache
-                    ?.getBody()
+                bodyByteString.takeIf { it.size > 0 }
+                    ?.toResponseBody(contentType)
                     ?.let { deserialize(it, entityType) }
                     ?.let(::tryGetId)
                     ?.let(::get)

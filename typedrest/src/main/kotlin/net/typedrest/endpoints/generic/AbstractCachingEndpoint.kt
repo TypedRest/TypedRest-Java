@@ -4,6 +4,7 @@ import net.typedrest.endpoints.*
 import net.typedrest.errors.*
 import net.typedrest.http.*
 import okhttp3.*
+import okhttp3.ResponseBody.Companion.toResponseBody
 import java.net.URI
 
 /**
@@ -34,8 +35,11 @@ abstract class AbstractCachingEndpoint(referrer: Endpoint, relativeUri: URI) :
             if (response.code == HttpStatusCode.NotModified.code && cache != null && !cache.isExpired) {
                 cache.getBody()
             } else {
-                responseCache = ResponseCache.from(handle(response))
-                responseCache?.getBody()
+                handle(response)
+                val bodyByteString = response.body.byteString()
+                val contentType = response.body.contentType()
+                responseCache = ResponseCache.from(response, bodyByteString, contentType)
+                bodyByteString.toResponseBody(contentType)
             }
         }
     }

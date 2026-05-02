@@ -11,17 +11,44 @@ import java.util.*
 /**
  * Captures the content of a [Response] for caching.
  */
-class ResponseCache private constructor(response: Response) {
+class ResponseCache private constructor(
+    response: Response,
+    private val bodyByteString: ByteString,
+    private val contentType: MediaType?
+) {
     companion object {
         /**
-         * Creates a [ResponseCache] from a [response] if it is eligible for caching.
+         * Creates a [ResponseCache] from [response] if it is eligible for caching.
+         *
+         * The response body is consumed (buffered) by this call. If you also need the body for other purposes, buffer it first and use the [from] overload that accepts a pre-buffered [ByteString].
+         *
+         * @param response The HTTP response whose body will be consumed and cached.
          * @return The [ResponseCache]; `null` if the response is not eligible for caching.
          */
         @JvmStatic
         fun from(response: Response): ResponseCache? =
-            if (response.isSuccessful && response.code != HttpStatusCode.NoContent.code && !response.cacheControl.noStore) {
-                ResponseCache(response)
+            if (isEligible(response)) {
+                ResponseCache(response, response.body.byteString(), response.body.contentType())
             } else null
+
+        /**
+         * Creates a [ResponseCache] from [response] using a pre-buffered body if the response is eligible for caching.
+         *
+         * Use this overload when the body has already been read and must remain available for other consumers after this call returns.
+         *
+         * @param response The HTTP response whose headers and status code determine eligibility.
+         * @param bodyByteString The already-buffered response body bytes.
+         * @param contentType The media type of the body, used when reconstructing the [ResponseBody].
+         * @return The [ResponseCache]; `null` if the response is not eligible for caching.
+         */
+        @JvmStatic
+        fun from(response: Response, bodyByteString: ByteString, contentType: MediaType?): ResponseCache? =
+            if (isEligible(response)) {
+                ResponseCache(response, bodyByteString, contentType)
+            } else null
+
+        private fun isEligible(response: Response): Boolean =
+            response.isSuccessful && response.code != HttpStatusCode.NoContent.code && !response.cacheControl.noStore
 
         private val dateFormat: DateTimeFormatter =
             DateTimeFormatter.ofPattern("EEE, dd MMM yyyy HH:mm:ss 'GMT'", Locale.US)
@@ -30,11 +57,10 @@ class ResponseCache private constructor(response: Response) {
             ZonedDateTime.ofInstant(toInstant(), ZoneOffset.UTC).format(dateFormat)
     }
 
-    private val bodyByteString = response.body.byteString()
-    private val contentType = response.body.contentType()
-
     /**
-     * Returns a copy of the cached [RequestBody].
+     * Returns a new [ResponseBody] backed by the cached bytes.
+     *
+     * Each call produces an independent copy so the body can be consumed multiple times.
      */
     fun getBody() = bodyByteString.toResponseBody(contentType)
 
@@ -59,7 +85,9 @@ class ResponseCache private constructor(response: Response) {
     private val lastModified: Date? = response.headers.getDate("Last-Modified")
 
     /**
-     * Returns request headers that require that the resource has been modified since it was cached.
+     * Builds conditional request headers asserting that the resource *has* been modified since it was cached
+     *
+     * Suitable for GET/HEAD requests that should bypass the cache.
      */
     fun ifModifiedHeaders(): Headers {
         val builder = Headers.Builder()
@@ -69,7 +97,9 @@ class ResponseCache private constructor(response: Response) {
     }
 
     /**
-     * Returns request headers that require that the resource has not been modified since it was cached.
+     * Builds conditional request headers asserting that the resource has *not* been modified since it was cached.
+     *
+     * Suitable for PUT/DELETE requests to prevent lost updates.
      */
     fun ifUnmodifiedHeaders(): Headers {
         val builder = Headers.Builder()
