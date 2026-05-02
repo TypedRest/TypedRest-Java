@@ -5,7 +5,6 @@ import kotlinx.serialization.json.*
 import net.typedrest.http.HttpStatusCode
 import net.typedrest.http.isJson
 import okhttp3.Response
-import okhttp3.ResponseBody
 
 /**
  * Handles errors in HTTP responses by mapping status codes to common exception types.
@@ -15,7 +14,7 @@ open class DefaultErrorHandler : ErrorHandler {
     override fun handle(response: Response) {
         if (response.isSuccessful) return
 
-        val message = extractJsonMessage(response.body)
+        val message = extractJsonMessage(response)
             ?: "${response.request.url} responded with ${response.code} ${response.message}"
 
         throw mapException(HttpStatusCode.parse(response.code) ?: HttpStatusCode.InternalServerError, message, response)
@@ -24,13 +23,13 @@ open class DefaultErrorHandler : ErrorHandler {
     /**
      * Tries to extract an error message from the response body.
      *
-     * @param body The response body.
+     * @param response The HTTP response.
      */
-    protected open fun extractJsonMessage(body: ResponseBody): String? {
-        if (body.contentType()?.isJson != true) return null
+    protected open fun extractJsonMessage(response: Response): String? {
+        if (response.body.contentType()?.isJson != true) return null
 
         return try {
-            val root = Json.parseToJsonElement(body.string()) as? JsonObject ?: return null
+            val root = Json.parseToJsonElement(response.peekBody(Long.MAX_VALUE).string()) as? JsonObject ?: return null
             (root["message"] ?: root["details"])?.jsonPrimitive?.contentOrNull
         } catch (_: SerializationException) {
             null
