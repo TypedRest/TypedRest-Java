@@ -4,7 +4,6 @@ import net.typedrest.endpoints.*
 import net.typedrest.http.*
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.Request
-import okhttp3.RequestBody.Companion.toRequestBody
 import java.io.InputStream
 import java.net.URI
 
@@ -37,7 +36,7 @@ open class BlobEndpointImpl(referrer: Endpoint, relativeUri: URI) : AbstractEndp
         get() = isMethodAllowed(HttpMethod.PUT)
 
     override fun uploadFrom(stream: InputStream, mimeType: String?) {
-        val body = stream.readBytes().toRequestBody(mimeType?.toMediaTypeOrNull())
+        val body = InputStreamRequestBody(mimeType?.toMediaTypeOrNull(), stream)
         execute(Request.Builder().put(body).uri(uri).build()).close()
     }
 

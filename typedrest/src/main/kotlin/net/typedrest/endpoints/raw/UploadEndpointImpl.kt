@@ -1,10 +1,11 @@
 ﻿package net.typedrest.endpoints.raw
 
 import net.typedrest.endpoints.*
+import net.typedrest.http.InputStreamRequestBody
 import net.typedrest.http.uri
 import okhttp3.*
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
-import okhttp3.RequestBody.Companion.toRequestBody
+import okio.BufferedSink
 import java.io.InputStream
 import java.net.URI
 
@@ -16,8 +17,8 @@ import java.net.URI
  * @param formField The name of the form field to place the uploaded data into; null to use raw bodies instead of multi-part forms.
  */
 class UploadEndpointImpl(
-    private val referrer: Endpoint,
-    private val relativeUri: URI,
+    referrer: Endpoint,
+    relativeUri: URI,
     private val formField: String? = null
 ) : AbstractEndpoint(referrer, relativeUri), UploadEndpoint {
     /**
@@ -31,14 +32,20 @@ class UploadEndpointImpl(
         this(referrer, URI(relativeUri), formField)
 
     override fun uploadFrom(stream: InputStream, fileName: String?, mimeType: String?) {
-        var body = stream.readBytes().toRequestBody(mimeType?.toMediaTypeOrNull())
+        var body: RequestBody = InputStreamRequestBody(mimeType?.toMediaTypeOrNull(), stream)
 
         if (formField != null) {
-            val formDataBuilder = MultipartBody.Builder()
+            val multipart = MultipartBody.Builder()
                 .setType(MultipartBody.FORM)
                 .addFormDataPart(formField, fileName, body)
+                .build()
 
-            body = formDataBuilder.build()
+            body = object : RequestBody() {
+                override fun contentType() = multipart.contentType()
+                override fun contentLength() = multipart.contentLength()
+                override fun isOneShot() = true
+                override fun writeTo(sink: BufferedSink) = multipart.writeTo(sink)
+            }
         }
 
         execute(Request.Builder().post(body).uri(uri).build()).close()
