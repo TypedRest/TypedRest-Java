@@ -3,6 +3,7 @@ package net.typedrest.errors
 import kotlinx.serialization.*
 import kotlinx.serialization.json.Json
 import net.typedrest.http.HttpStatusCode
+import net.typedrest.http.isJson
 import okhttp3.Response
 import okhttp3.ResponseBody
 
@@ -26,10 +27,7 @@ open class DefaultErrorHandler : ErrorHandler {
      * @param body The response body.
      */
     protected open fun extractJsonMessage(body: ResponseBody): String? {
-        val mediaType = body.contentType()?.toString()
-        if (mediaType == null || (mediaType != "application/json" && !mediaType.endsWith("+json"))) {
-            return null
-        }
+        if (body.contentType()?.isJson != true) return null
 
         return try {
             val decoded = Json.decodeFromString<JsonErrorResponse>(body.string())

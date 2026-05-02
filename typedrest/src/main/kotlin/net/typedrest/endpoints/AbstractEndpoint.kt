@@ -3,6 +3,7 @@
 import com.damnhandy.uri.template.UriTemplate
 import net.typedrest.errors.*
 import net.typedrest.http.HttpMethod
+import net.typedrest.http.essence
 import net.typedrest.join
 import net.typedrest.links.*
 import net.typedrest.serializers.Serializer
@@ -227,7 +228,8 @@ abstract class AbstractEndpoint(
 
     private fun getSerializer(body: ResponseBody): Serializer {
         val mediaType = body.contentType() ?: throw IllegalArgumentException("Response body has no media type")
-        return serializers.find { it.supportedMediaTypes.contains(mediaType) }
-            ?: throw IllegalArgumentException("No serializer found for media type: $mediaType")
+        return serializers.find { serializer ->
+            serializer.supportedMediaTypes.any { it.essence == mediaType.essence }
+        } ?: throw IllegalArgumentException("No serializer found for media type: $mediaType")
     }
 }
