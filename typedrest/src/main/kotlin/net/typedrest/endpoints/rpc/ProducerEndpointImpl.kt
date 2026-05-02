@@ -1,7 +1,6 @@
 ﻿package net.typedrest.endpoints.rpc
 
 import net.typedrest.endpoints.*
-import net.typedrest.errors.NotFoundException
 import net.typedrest.http.uri
 import okhttp3.Request
 import okhttp3.RequestBody.Companion.toRequestBody
@@ -33,6 +32,6 @@ open class ProducerEndpointImpl<TResult>(
     override fun invoke(): TResult =
         execute(Request.Builder().post("".toRequestBody()).uri(uri).build()).use { response ->
             deserialize(response.body, resultType)
-                ?: throw NotFoundException("Result not deserializable as ${resultType.simpleName}")
+                ?: throw IllegalStateException("Result not deserializable as ${resultType.simpleName}")
         }
 }

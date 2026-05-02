@@ -1,7 +1,6 @@
 ﻿package net.typedrest.endpoints.rpc
 
 import net.typedrest.endpoints.*
-import net.typedrest.errors.NotFoundException
 import net.typedrest.http.uri
 import okhttp3.Request
 import java.net.URI
@@ -37,6 +36,6 @@ open class FunctionEndpointImpl<TEntity, TResult>(
     override fun invoke(entity: TEntity): TResult =
         execute(Request.Builder().post(serialize(entity, entityType)).uri(uri).build()).use { response ->
             deserialize(response.body, resultType)
-                ?: throw NotFoundException("Result not deserializable as ${resultType.simpleName}")
+                ?: throw IllegalStateException("Result not deserializable as ${resultType.simpleName}")
         }
 }

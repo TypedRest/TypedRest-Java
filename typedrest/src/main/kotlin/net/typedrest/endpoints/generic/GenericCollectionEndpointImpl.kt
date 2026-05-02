@@ -1,7 +1,6 @@
 ﻿package net.typedrest.endpoints.generic
 
 import net.typedrest.endpoints.*
-import net.typedrest.errors.NotFoundException
 import net.typedrest.http.*
 import okhttp3.*
 import java.net.URI
@@ -53,7 +52,7 @@ open class GenericCollectionEndpointImpl<TEntity, TElementEndpoint : ElementEndp
 
     override fun readAll(): List<TEntity> =
         getContent()?.let { deserializeList(it, entityType) }
-            ?: throw NotFoundException("Result not deserializable as List<${entityType.simpleName}>")
+            ?: throw IllegalStateException("Result not deserializable as List<${entityType.simpleName}>")
 
     /**
      * The value used for [HttpContentRangeHeader.unit].
@@ -71,7 +70,7 @@ open class GenericCollectionEndpointImpl<TEntity, TElementEndpoint : ElementEndp
         execute(Request.Builder().get().uri(uri).header("Range", "${rangeUnit}=${from ?: ""}-${to ?: ""}").build())
             .use { response ->
                 PartialResponse(
-                    deserializeList(response.body, entityType) ?: throw NotFoundException("Result not deserializable as List<${entityType.simpleName}>"),
+                    deserializeList(response.body, entityType) ?: throw IllegalStateException("Result not deserializable as List<${entityType.simpleName}>"),
                     HttpContentRangeHeader.parse(response.headers)
                 )
             }

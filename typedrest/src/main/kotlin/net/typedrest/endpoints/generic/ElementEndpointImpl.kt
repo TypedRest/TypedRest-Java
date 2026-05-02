@@ -34,7 +34,7 @@ open class ElementEndpointImpl<TEntity>(
 
     override fun read(): TEntity =
         getContent()?.let { deserialize(it, entityType) }
-            ?: throw NotFoundException("Result not deserializable as ${entityType.simpleName}")
+            ?: throw IllegalStateException("Result not deserializable as ${entityType.simpleName}")
 
     override fun exists(): Boolean =
         httpClient.newCall(Request.Builder().head().uri(uri).build()).execute().use { response ->
