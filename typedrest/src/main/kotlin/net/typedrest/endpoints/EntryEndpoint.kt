@@ -29,7 +29,7 @@ open class EntryEndpoint : AbstractEndpoint {
         serializers: List<Serializer>,
         errorHandler: ErrorHandler = DefaultErrorHandler(),
         linkExtractor: LinkExtractor = AggregateLinkExtractor(HeaderLinkExtractor(), HalLinkExtractor())
-    ) : super(uri.ensureTrailingSlash(), httpClient, serializers, errorHandler, linkExtractor)
+    ) : super(uri.ensureTrailingSlash(), httpClient.withAccept(serializers.flatMap { it.supportedMediaTypes }.distinct()), serializers, errorHandler, linkExtractor)
 
     /**
      * Creates a new entry endpoint.
@@ -47,7 +47,7 @@ open class EntryEndpoint : AbstractEndpoint {
         serializer: Serializer = KotlinxJsonSerializer(),
         errorHandler: ErrorHandler = DefaultErrorHandler(),
         linkExtractor: LinkExtractor = AggregateLinkExtractor(HeaderLinkExtractor(), HalLinkExtractor())
-    ) : super(uri.ensureTrailingSlash(), httpClient, listOf(serializer), errorHandler, linkExtractor)
+    ) : super(uri.ensureTrailingSlash(), httpClient.withAccept(serializer.supportedMediaTypes), listOf(serializer), errorHandler, linkExtractor)
 
     /**
      * Creates a new entry endpoint.
