@@ -3,7 +3,6 @@
 import net.typedrest.endpoints.Endpoint
 import net.typedrest.endpoints.AbstractEndpoint
 import java.net.URI
-import java.net.URLEncoder
 
 /**
  * Endpoint that addresses child [TElementEndpoint]s by ID.
@@ -33,6 +32,6 @@ open class IndexerEndpointImpl<TElementEndpoint : Endpoint>(
     }
 
     override operator fun get(id: String): TElementEndpoint =
-        if (id.isNotEmpty()) elementEndpointFactory(this, linkTemplate("child", mapOf("id" to URLEncoder.encode(id, "UTF-8"))))
+        if (id.isNotEmpty()) elementEndpointFactory(this, linkTemplate("child", mapOf("id" to id)))
         else throw IllegalArgumentException("ID must not be null or empty")
 }

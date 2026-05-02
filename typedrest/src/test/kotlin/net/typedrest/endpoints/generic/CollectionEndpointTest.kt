@@ -13,7 +13,7 @@ class CollectionEndpointTest : AbstractEndpointTest() {
 
     @Test
     fun testGetById() {
-        assertEquals("/endpoint/x%2Fy", endpoint["x/y"].uri.path)
+        assertEquals("/endpoint/x%2Fy", endpoint["x/y"].uri.rawPath)
     }
 
     @Test

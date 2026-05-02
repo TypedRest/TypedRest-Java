@@ -5,7 +5,6 @@ import net.typedrest.errors.NotFoundException
 import net.typedrest.http.*
 import okhttp3.*
 import java.net.URI
-import java.net.URLEncoder
 
 /**
  * Endpoint for a collection of [TEntity]s addressable as [TElementEndpoint]s.
@@ -41,7 +40,7 @@ open class GenericCollectionEndpointImpl<TEntity, TElementEndpoint : ElementEndp
     }
 
     operator fun get(id: String): TElementEndpoint {
-        return elementEndpointFactory(this, linkTemplate("child", mapOf("id" to URLEncoder.encode(id, "UTF-8"))))
+        return elementEndpointFactory(this, linkTemplate("child", mapOf("id" to id)))
     }
 
     override operator fun get(entity: TEntity): TElementEndpoint =
