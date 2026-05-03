@@ -49,11 +49,14 @@ abstract class AbstractEndpoint(
      */
     protected open fun execute(request: Request): Response {
         val response = httpClient.newCall(request).execute()
-
-        links = linkExtractor.getLinks(response)
-        handleCapabilities(response)
-        errorHandler.handle(response)
-
+        try {
+            links = linkExtractor.getLinks(response)
+            handleCapabilities(response)
+            errorHandler.handle(response)
+        } catch (ex: Throwable) {
+            response.close()
+            throw ex
+        }
         return response
     }
 
@@ -64,10 +67,14 @@ abstract class AbstractEndpoint(
      * @return The HTTP response.
      */
     protected open fun handle(response: Response): Response {
-        links = linkExtractor.getLinks(response)
-        handleCapabilities(response)
-        errorHandler.handle(response)
-
+        try {
+            links = linkExtractor.getLinks(response)
+            handleCapabilities(response)
+            errorHandler.handle(response)
+        } catch (ex: Throwable) {
+            response.close()
+            throw ex
+        }
         return response
     }
 
