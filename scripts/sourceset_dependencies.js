@@ -1,0 +1,1 @@
+sourceset_dependencies = '{":typedrest-serializers-jackson/main":[],":typedrest/main":[],":typedrest-serializers-moshi/main":[]}'

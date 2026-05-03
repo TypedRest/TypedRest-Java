@@ -1,0 +1,17 @@
+$dokka.format:html-v1
+$dokka.linkExtension:html
+
+module:typedrest
+net.typedrest
+net.typedrest.endpoints
+net.typedrest.endpoints.generic
+net.typedrest.endpoints.raw
+net.typedrest.endpoints.rpc
+net.typedrest.errors
+net.typedrest.http
+net.typedrest.links
+net.typedrest.serializers
+module:typedrest-serializers-jackson
+net.typedrest.serializers
+module:typedrest-serializers-moshi
+net.typedrest.serializers
