@@ -9,23 +9,36 @@ import java.lang.reflect.Type
 
 /**
  * Serializes and deserializes entities as JSON using Kotlinx.Serialization.
+ *
+ * @param json The Kotlinx [Json] instance to use. Defaults to omitting `null` properties when writing and tolerating unknown properties when reading.
  */
-open class KotlinxJsonSerializer : AbstractJsonSerializer() {
+open class KotlinxJsonSerializer @JvmOverloads constructor(
+    private val json: Json = defaultJson
+) : AbstractJsonSerializer() {
+    companion object {
+        @JvmStatic
+        val defaultJson: Json = Json {
+            explicitNulls = false
+            ignoreUnknownKeys = true
+            isLenient = true
+        }
+    }
+
     override fun <T> serialize(entity: T, type: Class<T>): RequestBody =
-        Json.encodeToString(getSerializer(type), entity).toRequestBody(mediaTypeJson)
+        json.encodeToString(getSerializer(type), entity).toRequestBody(mediaTypeJson)
 
     override fun <T> serializeList(entities: Iterable<T>, type: Class<T>): RequestBody =
-        Json.encodeToString(getListSerializer(type), entities.toList()).toRequestBody(mediaTypeJson)
+        json.encodeToString(getListSerializer(type), entities.toList()).toRequestBody(mediaTypeJson)
 
     override fun <T> deserialize(body: ResponseBody, type: Class<T>): T? =
-        Json.decodeFromString(getSerializer(type), body.string())
+        json.decodeFromString(getSerializer(type), body.string())
 
     override fun <T> deserializeList(body: ResponseBody, type: Class<T>): List<T>? =
-        Json.decodeFromString(getListSerializer(type), body.string())
+        json.decodeFromString(getListSerializer(type), body.string())
 
     @Suppress("UNCHECKED_CAST")
     private fun <T> getSerializer(type: Type) =
-        Json.serializersModule.serializer(type) as KSerializer<T>
+        json.serializersModule.serializer(type) as KSerializer<T>
 
     private fun <T> getListSerializer(type: Type) =
         getSerializer<List<T>>(object : ParameterizedType {
