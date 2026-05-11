@@ -1,5 +1,7 @@
 # ![TypedRest](logo.svg) for Java/Kotlin
 
+[![Build](https://github.com/TypedRest/TypedRest-Java/actions/workflows/build.yml/badge.svg)](https://github.com/TypedRest/TypedRest-Java/actions/workflows/build.yml)
+[![API documentation](https://img.shields.io/badge/api-docs-orange.svg)](https://java.typedrest.net/)  
 TypedRest for Java/Kotlin helps you build type-safe, fluent-style REST API clients. Common REST patterns such as collections are represented as classes, allowing you to write more idiomatic code.
 
 **Java**
@@ -54,7 +56,7 @@ smith.delete()
 
 Read an **[Introduction](https://typedrest.net/introduction/)** to TypedRest or jump right in with the **[setup guide](https://typedrest.net/setup/java/)**.
 
-For information about specific classes or interfaces you can read the **[API Documentation](https://java.typedrest.net/)**.
+You can also take a look at our [Sample project](https://github.com/TypedRest/Sample-Kotlin).
 
 ## Maven artifacts
 
