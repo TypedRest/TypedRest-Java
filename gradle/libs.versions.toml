@@ -2,7 +2,7 @@
 okhttp3 = "5.4.0"
 uri-templates = "2.1.8"
 kotlinx-serialization = "1.11.0"
-jackson = "3.2.0"
+jackson = "3.2.1"
 moshi = "1.15.2"
 
 [libraries]
