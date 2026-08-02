@@ -44,21 +44,11 @@ abstract class AbstractEndpoint(
     /**
      * Executes a request and handles various cross-cutting concerns regarding a response message such as discovering links and handling errors.
      *
-     * @param request A callback that performs the actual HTTP request.
+     * @param request The HTTP request to send.
      * @return The HTTP response.
      */
-    protected open fun execute(request: Request): Response {
-        val response = httpClient.newCall(request).execute()
-        try {
-            links = linkExtractor.getLinks(response)
-            handleCapabilities(response)
-            errorHandler.handle(response)
-        } catch (ex: Throwable) {
-            response.close()
-            throw ex
-        }
-        return response
-    }
+    protected open fun execute(request: Request): Response =
+        handle(httpClient.newCall(request).execute())
 
     /**
      * Handles various cross-cutting concerns regarding a response message such as discovering links and handling errors.
