@@ -12,7 +12,7 @@ import net.typedrest.errors.*
  * @param TEntity The type of individual elements in the collection.
  * @param TElementEndpoint The type of [ElementEndpoint] to provide for individual [TEntity]s.
  */
-interface GenericCollectionEndpoint<TEntity, out TElementEndpoint : ElementEndpoint<TEntity>> {
+interface GenericCollectionEndpoint<TEntity, out TElementEndpoint : ElementEndpoint<TEntity>> : IndexerEndpoint<TElementEndpoint> {
     /**
      * Returns an [ElementEndpoint] for a specific child element.
      *

@@ -39,7 +39,7 @@ open class GenericCollectionEndpointImpl<TEntity, TElementEndpoint : ElementEndp
         setDefaultLinkTemplate("child", "./{id}")
     }
 
-    operator fun get(id: String): TElementEndpoint {
+    override operator fun get(id: String): TElementEndpoint {
         return elementEndpointFactory(this, linkTemplate("child", mapOf("id" to id)))
     }
 
