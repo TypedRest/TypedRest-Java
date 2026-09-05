@@ -69,10 +69,14 @@ The main TypedRest library.
 Adds support for streaming with [ReactiveX (Rx)](http://reactivex.io/).  
 Create endpoints using the types in the `net.typedrest.endpoints.reactive` package.
 
+[![typedrest-serializers-moshi](https://img.shields.io/maven-central/v/net.typedrest/typedrest-serializers-moshi.svg?label=typedrest-serializers-moshi)](https://central.sonatype.com/artifact/net.typedrest/typedrest-serializers-moshi)  
+Adds support for serializing to JSON using [Moshi](https://github.com/square/moshi) instead of [kotlinx.serialization](https://kotlinlang.org/docs/serialization.html).  
+Pass `new MoshiJsonSerializer()` to the `EntryEndpoint` constructor.
+
 [![typedrest-serializers-jackson](https://img.shields.io/maven-central/v/net.typedrest/typedrest-serializers-jackson.svg?label=typedrest-serializers-jackson)](https://central.sonatype.com/artifact/net.typedrest/typedrest-serializers-jackson)  
-Adds support for serializing using [Jackson](https://github.com/FasterXML/jackson) instead of [kotlinx.serialization](https://kotlinlang.org/docs/serialization.html).  
+Adds support for serializing to JSON using [Jackson](https://github.com/FasterXML/jackson) instead of [kotlinx.serialization](https://kotlinlang.org/docs/serialization.html).  
 Pass `new JacksonJsonSerializer()` to the `EntryEndpoint` constructor.
 
-[![typedrest-serializers-moshi](https://img.shields.io/maven-central/v/net.typedrest/typedrest-serializers-moshi.svg?label=typedrest-serializers-moshi)](https://central.sonatype.com/artifact/net.typedrest/typedrest-serializers-moshi)  
-Adds support for serializing using [Moshi](https://github.com/square/moshi) instead of [kotlinx.serialization](https://kotlinlang.org/docs/serialization.html).  
-Pass `new MoshiJsonSerializer()` to the `EntryEndpoint` constructor.
+[![typedrest-serializers-jackson-xml](https://img.shields.io/maven-central/v/net.typedrest/typedrest-serializers-jackson-xml.svg?label=typedrest-serializers-jackson-xml)](https://central.sonatype.com/artifact/net.typedrest/typedrest-serializers-jackson-xml)  
+Adds support for serializing to XML using [Jackson XML](https://github.com/FasterXML/jackson-dataformat-xml).  
+Pass `new JacksonXmlSerializer()` to the `EntryEndpoint` constructor.
