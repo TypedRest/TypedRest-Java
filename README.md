@@ -84,3 +84,7 @@ Pass `new JacksonXmlSerializer()` to the `EntryEndpoint` constructor.
 [![typedrest-serializers-xmlutil](https://img.shields.io/maven-central/v/net.typedrest/typedrest-serializers-xmlutil.svg?label=typedrest-serializers-xmlutil)](https://central.sonatype.com/artifact/net.typedrest/typedrest-serializers-xmlutil)  
 Adds support for serializing to XML using [XmlUtil](https://github.com/pdvrieze/xmlutil).  
 Pass `new XmlUtilSerializer()` to the `EntryEndpoint` constructor.
+
+[![typedrest-serializers-jaxb](https://img.shields.io/maven-central/v/net.typedrest/typedrest-serializers-jaxb.svg?label=typedrest-serializers-jaxb)](https://central.sonatype.com/artifact/net.typedrest/typedrest-serializers-jaxb)  
+Adds support for serializing to XML using [JAXB](https://github.com/eclipse-ee4j/jaxb-ri).  
+Pass `new JaxbSerializer()` to the `EntryEndpoint` constructor.

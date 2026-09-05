@@ -6,6 +6,8 @@ kotlinx-serialization = "1.11.0"
 jackson = "3.2.2"
 moshi = "1.15.2"
 xmlutil = "1.0.2.1"
+jaxb-api = "4.0.5"
+jaxb-runtime = "4.0.9"
 
 [libraries]
 okhttp3 = { module = "com.squareup.okhttp3:okhttp", version.ref = "okhttp3" }
@@ -19,3 +21,5 @@ jackson-dataformat-xml = { module = "tools.jackson.dataformat:jackson-dataformat
 moshi = { module = "com.squareup.moshi:moshi", version.ref = "moshi" }
 moshi-kotlin = { module = "com.squareup.moshi:moshi-kotlin", version.ref = "moshi" }
 xmlutil-serialization = { module = "io.github.pdvrieze.xmlutil:serialization", version.ref = "xmlutil" }
+jaxb-api = { module = "jakarta.xml.bind:jakarta.xml.bind-api", version.ref = "jaxb-api" }
+jaxb-runtime = { module = "org.glassfish.jaxb:jaxb-runtime", version.ref = "jaxb-runtime" }
