@@ -80,3 +80,7 @@ Pass `new JacksonJsonSerializer()` to the `EntryEndpoint` constructor.
 [![typedrest-serializers-jackson-xml](https://img.shields.io/maven-central/v/net.typedrest/typedrest-serializers-jackson-xml.svg?label=typedrest-serializers-jackson-xml)](https://central.sonatype.com/artifact/net.typedrest/typedrest-serializers-jackson-xml)  
 Adds support for serializing to XML using [Jackson XML](https://github.com/FasterXML/jackson-dataformat-xml).  
 Pass `new JacksonXmlSerializer()` to the `EntryEndpoint` constructor.
+
+[![typedrest-serializers-xmlutil](https://img.shields.io/maven-central/v/net.typedrest/typedrest-serializers-xmlutil.svg?label=typedrest-serializers-xmlutil)](https://central.sonatype.com/artifact/net.typedrest/typedrest-serializers-xmlutil)  
+Adds support for serializing to XML using [XmlUtil](https://github.com/pdvrieze/xmlutil).  
+Pass `new XmlUtilSerializer()` to the `EntryEndpoint` constructor.
