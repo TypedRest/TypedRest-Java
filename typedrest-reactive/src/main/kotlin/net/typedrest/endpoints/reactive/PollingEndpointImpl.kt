@@ -19,7 +19,7 @@ import java.time.Duration.ofSeconds
  * @param endCondition A check to determine whether the entity has reached its final state and no further polling is required.
  * @param TEntity The type of entity the endpoint represents.
  */
-open class PollingEndpointImpl<TEntity : Any>(
+open class PollingEndpointImpl<TEntity : Any> @JvmOverloads constructor(
     referrer: Endpoint,
     relativeUri: URI,
     entityType: Class<TEntity>,
@@ -33,6 +33,7 @@ open class PollingEndpointImpl<TEntity : Any>(
      * @param entityType The type of entity the endpoint represents.
      * @param endCondition A check to determine whether the entity has reached its final state and no further polling is required.
      */
+    @JvmOverloads
     constructor(
         referrer: Endpoint,
         relativeUri: String,

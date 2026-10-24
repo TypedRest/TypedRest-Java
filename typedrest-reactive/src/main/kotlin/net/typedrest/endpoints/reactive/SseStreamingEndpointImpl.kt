@@ -28,7 +28,7 @@ import java.time.Duration.ofSeconds
  * @param eventType If set, only events with this `event:` type are emitted; others are ignored. null emits all events.
  * @param TEntity The type of individual elements in the stream.
  */
-open class SseStreamingEndpointImpl<TEntity : Any>(
+open class SseStreamingEndpointImpl<TEntity : Any> @JvmOverloads constructor(
     referrer: Endpoint,
     relativeUri: URI,
     private val entityType: Class<TEntity>,
@@ -42,6 +42,7 @@ open class SseStreamingEndpointImpl<TEntity : Any>(
      * @param entityType The type of individual elements in the stream.
      * @param eventType If set, only events with this `event:` type are emitted; others are ignored. null emits all events.
      */
+    @JvmOverloads
     constructor(
         referrer: Endpoint,
         relativeUri: String,

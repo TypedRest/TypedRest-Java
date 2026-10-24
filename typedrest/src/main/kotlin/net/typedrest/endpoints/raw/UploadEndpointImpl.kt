@@ -16,7 +16,7 @@ import java.net.URI
  * @param relativeUri The URI of this endpoint relative to the [referrer]'s.
  * @param formField The name of the form field to place the uploaded data into; null to use raw bodies instead of multi-part forms.
  */
-class UploadEndpointImpl(
+class UploadEndpointImpl @JvmOverloads constructor(
     referrer: Endpoint,
     relativeUri: URI,
     private val formField: String? = null
@@ -28,6 +28,7 @@ class UploadEndpointImpl(
      * @param relativeUri The URI of this endpoint relative to the [referrer]'s. Add a `./` prefix here to imply a trailing slash on referrer's URI.
      * @param formField The name of the form field to place the uploaded data into; null to use raw bodies instead of multi-part forms.
      */
+    @JvmOverloads
     constructor(referrer: Endpoint, relativeUri: String, formField: String? = null) :
         this(referrer, URI(relativeUri), formField)
 

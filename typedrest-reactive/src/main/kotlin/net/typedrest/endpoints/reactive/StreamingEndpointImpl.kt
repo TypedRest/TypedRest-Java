@@ -19,7 +19,7 @@ import java.net.URI
  * @param separator The character sequence used to detect that a new element starts in an HTTP stream.
  * @param TEntity The type of individual elements in the stream.
  */
-open class StreamingEndpointImpl<TEntity : Any>(
+open class StreamingEndpointImpl<TEntity : Any> @JvmOverloads constructor(
     referrer: Endpoint,
     relativeUri: URI,
     private val entityType: Class<TEntity>,
@@ -33,6 +33,7 @@ open class StreamingEndpointImpl<TEntity : Any>(
      * @param entityType The type of individual elements in the stream.
      * @param separator The character sequence used to detect that a new element starts in an HTTP stream.
      */
+    @JvmOverloads
     constructor(
         referrer: Endpoint,
         relativeUri: String,
