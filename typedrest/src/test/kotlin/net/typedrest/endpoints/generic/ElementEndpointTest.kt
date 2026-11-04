@@ -2,6 +2,7 @@
 
 import net.typedrest.MockEntity
 import net.typedrest.endpoints.AbstractEndpointTest
+import net.typedrest.errors.ConcurrencyException
 import net.typedrest.errors.ConflictException
 import net.typedrest.http.*
 import net.typedrest.tests.*
@@ -161,6 +162,23 @@ class ElementEndpointTest : AbstractEndpointTest() {
         server.assertRequest(HttpMethod.PUT)
             .withHeader("If-Unmodified-Since", "Wed, 21 Oct 2015 00:00:00 GMT")
             .withJsonBody("""{"id":5,"name":"test"}""")
+    }
+
+    @Test
+    fun testSetPreconditionFailed() {
+        server.enqueue(MockResponse().setResponseCode(HttpStatusCode.PreconditionFailed))
+
+        val ex = assertFailsWith<ConcurrencyException> { endpoint.set(MockEntity(5, "test")) }
+        assertIs<ConflictException>(ex, "Must stay catchable as ConflictException")
+        assertEquals(HttpStatusCode.PreconditionFailed, ex.status)
+    }
+
+    @Test
+    fun testSetConflict() {
+        server.enqueue(MockResponse().setResponseCode(HttpStatusCode.Conflict))
+
+        val ex = assertFailsWith<ConflictException> { endpoint.set(MockEntity(5, "test")) }
+        assertEquals(ConflictException::class, ex::class)
     }
 
     @Test

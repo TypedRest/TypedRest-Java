@@ -51,7 +51,8 @@ open class DefaultErrorHandler : ErrorHandler {
             HttpStatusCode.Unauthorized -> AuthenticationException(message, status, response)
             HttpStatusCode.Forbidden -> AuthorizationException(message, status, response)
             HttpStatusCode.NotFound, HttpStatusCode.Gone -> NotFoundException(message, status, response)
-            HttpStatusCode.Conflict, HttpStatusCode.PreconditionFailed, HttpStatusCode.RangeNotSatisfiable -> ConflictException(message, status, response)
+            HttpStatusCode.PreconditionFailed -> ConcurrencyException(message, status, response)
+            HttpStatusCode.Conflict, HttpStatusCode.RangeNotSatisfiable -> ConflictException(message, status, response)
             HttpStatusCode.RequestTimeout -> TimeoutException(message, status, response)
             else -> HttpException(message, status, response)
         }

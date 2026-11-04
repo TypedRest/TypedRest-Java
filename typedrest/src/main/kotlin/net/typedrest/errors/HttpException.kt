@@ -53,4 +53,4 @@ open class ConflictException(message: String = "Conflict", status: HttpStatusCod
 /**
  * Thrown on HTTP response for a failed precondition or mid-air collision (usually [HttpStatusCode.PreconditionFailed]).
  */
-open class ConcurrencyException(message: String = "Precondition failed", status: HttpStatusCode = HttpStatusCode.PreconditionFailed, response: Response? = null) : HttpException(message, status, response)
+open class ConcurrencyException(message: String = "Precondition failed", status: HttpStatusCode = HttpStatusCode.PreconditionFailed, response: Response? = null) : ConflictException(message, status, response)
