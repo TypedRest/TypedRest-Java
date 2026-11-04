@@ -114,18 +114,26 @@ abstract class AbstractEndpoint(
     override fun link(rel: String): URI {
         val foundLinks = getLinks(rel)
         if (foundLinks.isEmpty()) {
-            // Lazy lookup
-            try {
-                httpClient.newCall(Request.Builder().head().url(uri.toURL()).build()).execute()
-            } catch (ex: Exception) {
-                throw NotFoundException("No link with rel=$rel provided by endpoint $uri.")
-            }
-
-            return getLinks(rel).firstOrNull()?.first
-                ?: throw NotFoundException("No link with rel=$rel provided by endpoint $uri.")
+            val message = "No link with rel=$rel provided by endpoint $uri."
+            lazyLookup(message)
+            return getLinks(rel).firstOrNull()?.first ?: throw NotFoundException(message)
         }
 
         return foundLinks.first().first
+    }
+
+    /**
+     * Sends an HTTP HEAD request to update the cached links.
+     *
+     * @param message The error message to use if the request fails.
+     * @throws NotFoundException if the request fails. The original error is available as the cause.
+     */
+    private fun lazyLookup(message: String) {
+        try {
+            execute(Request.Builder().head().url(uri.toURL()).build()).close()
+        } catch (ex: Exception) {
+            throw NotFoundException(message).apply { initCause(ex) }
+        }
     }
 
     override fun linkTemplate(rel: String, variables: Map<String, Any>): URI =
@@ -138,22 +146,19 @@ abstract class AbstractEndpoint(
      * @return The unresolved link template.
      * @throws NotFoundException if no link template with the specified rel could be found.
      */
-    fun getLinkTemplate(rel: String): UriTemplate = links
+    fun getLinkTemplate(rel: String): UriTemplate {
+        findLinkTemplate(rel)?.let { return it }
+        defaultLinkTemplates[rel]?.let { return it }
+
+        val message = "No link template with rel=$rel provided by endpoint $uri."
+        lazyLookup(message)
+        return findLinkTemplate(rel) ?: throw NotFoundException(message)
+    }
+
+    private fun findLinkTemplate(rel: String): UriTemplate? = links
         .filter { it.templated && it.rel == rel }
         .map { UriTemplate.fromTemplate(it.href) }
         .firstOrNull()
-        ?: defaultLinkTemplates[rel]
-        // Lazy lookup
-        ?: try {
-            httpClient.newCall(Request.Builder().head().url(uri.toURL()).build()).execute()
-            links
-                .filter { it.templated && it.rel == rel }
-                .map { UriTemplate.fromTemplate(it.href) }
-                .firstOrNull()
-                ?: throw NotFoundException("No link template with rel=$rel provided by endpoint $uri.")
-        } catch (ex: Exception) {
-            throw NotFoundException("No link template with rel=$rel provided by endpoint $uri.")
-        }
 
     /**
      * Handles allowed HTTP methods and other capabilities reported by the server.
