@@ -68,6 +68,38 @@ class ElementEndpointTest : AbstractEndpointTest() {
     }
 
     @Test
+    fun testReadCacheNoCache() {
+        server.enqueue(
+            MockResponse()
+                .setHeader("ETag", "\"123abc\"")
+                .setHeader("Cache-Control", "no-cache")
+                .setJsonBody("""{"id":5,"name":"test"}""")
+        )
+        endpoint.read()
+        server.assertRequest(HttpMethod.GET)
+
+        server.enqueue(MockResponse().setResponseCode(HttpStatusCode.NotModified))
+        assertEquals(MockEntity(5, "test"), endpoint.read())
+        server.assertRequest(HttpMethod.GET).withHeader("If-None-Match", "\"123abc\"")
+    }
+
+    @Test
+    fun testReadCacheExpired() {
+        server.enqueue(
+            MockResponse()
+                .setHeader("ETag", "\"123abc\"")
+                .setHeader("Expires", "Wed, 21 Oct 2015 00:00:00 GMT")
+                .setJsonBody("""{"id":5,"name":"test"}""")
+        )
+        endpoint.read()
+        server.assertRequest(HttpMethod.GET)
+
+        server.enqueue(MockResponse().setResponseCode(HttpStatusCode.NotModified))
+        assertEquals(MockEntity(5, "test"), endpoint.read())
+        server.assertRequest(HttpMethod.GET).withHeader("If-None-Match", "\"123abc\"")
+    }
+
+    @Test
     fun testExistsTrue() {
         server.enqueue(MockResponse().setResponseCode(HttpStatusCode.OK))
         assertTrue(endpoint.exists())

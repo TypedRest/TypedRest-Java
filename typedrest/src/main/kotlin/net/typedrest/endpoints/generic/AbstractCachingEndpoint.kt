@@ -32,7 +32,7 @@ abstract class AbstractCachingEndpoint(referrer: Endpoint, relativeUri: URI) :
         val cache = responseCache // Copy reference for thread-safety
         val headers = responseCache?.ifModifiedHeaders() ?: Headers.Builder().build()
         return httpClient.newCall(Request.Builder().get().uri(uri).headers(headers).build()).execute().use { response ->
-            if (response.code == HttpStatusCode.NotModified.code && cache != null && !cache.isExpired) {
+            if (response.code == HttpStatusCode.NotModified.code && cache != null) {
                 cache.getBody()
             } else {
                 handle(response)

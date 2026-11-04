@@ -64,23 +64,6 @@ class ResponseCache private constructor(
      */
     fun getBody() = bodyByteString.toResponseBody(contentType)
 
-    private var expires =
-        if (response.cacheControl.noCache) {
-            Date() // Treat no-cache as expired immediately
-        } else {
-            response.headers.getDate("Expires")
-                ?: response.cacheControl.maxAgeSeconds.let { maxAge ->
-                    if (maxAge == -1) null else Date(System.currentTimeMillis() + maxAge.toLong() * 1000L)
-                }
-                ?: if (response.cacheControl.noCache) Date() else null
-        }
-
-    /**
-     * Indicates whether this cached response has expired.
-     */
-    val isExpired: Boolean
-        get() = expires?.before(Date()) ?: false
-
     private val eTag: String? = response.header("ETag")
     private val lastModified: Date? = response.headers.getDate("Last-Modified")
 
