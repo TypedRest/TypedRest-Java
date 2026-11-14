@@ -14,12 +14,8 @@ jobs:
           versionSpec: '6.7.x'
       - uses: gittools/actions/gitversion/execute@v4.7.0
         id: gitversion
-      - name: Set version (release)
-        if: github.ref_type == 'tag'
-        run: echo "VERSION=${{steps.gitversion.outputs.semVer}}" >> $GITHUB_ENV
-      - name: Set version (pre-release)
-        if: github.ref_type != 'tag'
-        run: echo "VERSION=${{steps.gitversion.outputs.semVer}}-${{steps.gitversion.outputs.shortSha}}" >> $GITHUB_ENV
+      - name: Set version
+        run: echo "VERSION=${{steps.gitversion.outputs.semVer}}${{github.ref_type != 'tag' && format('-{0}', steps.gitversion.outputs.shortSha) || ''}}" >> $GITHUB_ENV
 
       # Build
       - run: gradle build
