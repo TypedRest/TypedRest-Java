@@ -4,7 +4,9 @@ import net.typedrest.endpoints.*
 import net.typedrest.errors.*
 import net.typedrest.http.*
 import okhttp3.*
+import okhttp3.RequestBody.Companion.toRequestBody
 import okhttp3.ResponseBody.Companion.toResponseBody
+import okio.Buffer
 import java.net.URI
 
 /**
@@ -48,6 +50,7 @@ abstract class AbstractCachingEndpoint(referrer: Endpoint, relativeUri: URI) :
      * Performs an [HttpMethod.PUT] request on the [Endpoint.uri].
      *
      * Sends If-Match header if there is a cached ETag to detect lost updates.
+     * Caches the response if the server sends an ETag, so later requests can be conditional without reading the resource again.
      *
      * @param content The content to send to the server.
      * @return The response message.
@@ -61,7 +64,18 @@ abstract class AbstractCachingEndpoint(referrer: Endpoint, relativeUri: URI) :
     protected fun putContent(content: RequestBody): Response {
         val headers = responseCache?.ifUnmodifiedHeaders() ?: Headers.Builder().build()
         responseCache = null
-        return execute(Request.Builder().put(content).uri(uri).headers(headers).build())
+
+        // Buffer the request body before sending, so it is still available for caching afterwards
+        val requestBody = Buffer().also { content.writeTo(it) }.readByteString()
+        val requestContentType = content.contentType()
+
+        val response = execute(Request.Builder().put(requestBody.toRequestBody(requestContentType)).uri(uri).headers(headers).build())
+        if (response.header("ETag") == null) return response
+
+        val responseContentType = response.body.contentType()
+        val responseBody = response.use { it.body.byteString() }
+        responseCache = ResponseCache.fromPut(response, responseBody, responseContentType, requestBody, requestContentType)
+        return response.newBuilder().body(responseBody.toResponseBody(responseContentType)).build()
     }
 
     /**

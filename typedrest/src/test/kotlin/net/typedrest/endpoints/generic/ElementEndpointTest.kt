@@ -148,6 +148,49 @@ class ElementEndpointTest : AbstractEndpointTest() {
     }
 
     @Test
+    fun testSetCacheETag() {
+        server.enqueue(MockResponse().setResponseCode(HttpStatusCode.NoContent).setHeader("ETag", "\"456def\""))
+        endpoint.set(MockEntity(5, "test"))
+        server.assertRequest(HttpMethod.PUT).withJsonBody("""{"id":5,"name":"test"}""")
+
+        assertEquals(MockEntity(5, "test"), endpoint.response)
+
+        server.enqueue(MockResponse().setResponseCode(HttpStatusCode.NotModified))
+        val result = endpoint.read()
+        server.assertRequest(HttpMethod.GET).withHeader("If-None-Match", "\"456def\"")
+        assertEquals(MockEntity(5, "test"), result)
+
+        server.enqueue(MockResponse().setResponseCode(HttpStatusCode.NoContent))
+        endpoint.set(result)
+        server.assertRequest(HttpMethod.PUT)
+            .withHeader("If-Match", "\"456def\"")
+            .withJsonBody("""{"id":5,"name":"test"}""")
+    }
+
+    @Test
+    fun testSetCacheETagWithResult() {
+        server.enqueue(MockResponse().setJsonBody("""{"id":5,"name":"testXXX"}""").setHeader("ETag", "\"456def\""))
+        val result = endpoint.set(MockEntity(5, "test"))
+        server.assertRequest(HttpMethod.PUT).withJsonBody("""{"id":5,"name":"test"}""")
+        assertEquals(MockEntity(5, "testXXX"), result)
+
+        assertEquals(MockEntity(5, "testXXX"), endpoint.response)
+
+        server.enqueue(MockResponse().setResponseCode(HttpStatusCode.NoContent))
+        endpoint.delete()
+        server.assertRequest(HttpMethod.DELETE).withHeader("If-Match", "\"456def\"")
+    }
+
+    @Test
+    fun testSetNoETag() {
+        server.enqueue(MockResponse().setResponseCode(HttpStatusCode.NoContent))
+        endpoint.set(MockEntity(5, "test"))
+        server.assertRequest(HttpMethod.PUT)
+
+        assertNull(endpoint.response)
+    }
+
+    @Test
     fun testSetLastModified() {
         server.enqueue(
             MockResponse()

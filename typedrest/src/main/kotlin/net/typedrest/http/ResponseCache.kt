@@ -14,7 +14,8 @@ import java.util.*
 class ResponseCache private constructor(
     response: Response,
     private val bodyByteString: ByteString,
-    private val contentType: MediaType?
+    private val contentType: MediaType?,
+    private val lastModified: Date? = response.headers.getDate("Last-Modified")
 ) {
     companion object {
         /**
@@ -47,6 +48,29 @@ class ResponseCache private constructor(
                 ResponseCache(response, bodyByteString, contentType)
             } else null
 
+        /**
+         * Creates a [ResponseCache] from the [response] to a PUT request if the server sent an ETag. Caches the response body if there is one.
+         *
+         * @param response The response to the PUT request, whose headers and status code determine eligibility.
+         * @param responseBody The already-buffered response body bytes.
+         * @param responseContentType The media type of [responseBody].
+         * @param requestBody The body of the PUT request.
+         * @param requestContentType The media type of [requestBody].
+         * @return The [ResponseCache]; `null` if the response is not eligible for caching.
+         */
+        @JvmStatic
+        fun fromPut(
+            response: Response,
+            responseBody: ByteString,
+            responseContentType: MediaType?,
+            requestBody: ByteString,
+            requestContentType: MediaType?
+        ): ResponseCache? = when {
+            !response.isSuccessful || response.cacheControl.noStore || response.header("ETag") == null -> null
+            responseBody.size == 0 -> ResponseCache(response, requestBody, requestContentType, lastModified = null)
+            else -> ResponseCache(response, responseBody, responseContentType)
+        }
+
         private fun isEligible(response: Response): Boolean =
             response.isSuccessful && response.code != HttpStatusCode.NoContent.code && !response.cacheControl.noStore
 
@@ -65,7 +89,6 @@ class ResponseCache private constructor(
     fun getBody() = bodyByteString.toResponseBody(contentType)
 
     private val eTag: String? = response.header("ETag")
-    private val lastModified: Date? = response.headers.getDate("Last-Modified")
 
     /**
      * Builds conditional request headers asserting that the resource *has* been modified since it was cached
