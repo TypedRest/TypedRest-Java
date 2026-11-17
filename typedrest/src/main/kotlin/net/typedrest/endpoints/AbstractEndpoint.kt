@@ -8,6 +8,7 @@ import net.typedrest.join
 import net.typedrest.links.*
 import net.typedrest.serializers.Serializer
 import okhttp3.*
+import java.lang.reflect.Type
 import java.net.URI
 import kotlin.collections.List
 
@@ -191,43 +192,45 @@ abstract class AbstractEndpoint(
      * Serializes an entity using the first serializer.
      *
      * @param entity The entity to serialize.
+     * @param type The type of entity to serialize.
      * @param T The type of entity to serialize.
      * @return The serialized entity as a request body.
      */
-    fun <T> serialize(entity: T, type: Class<T>): RequestBody =
+    fun <T> serialize(entity: T, type: Type): RequestBody =
         serializers.first().serialize(entity, type)
 
     /**
      * Serializes a list of entities using the first serializer.
      *
      * @param entities The entities to serialize.
-     * @param T The type of entity to serialize.
-     * @return The serialized entity as a request body.
+     * @param elementType The type of the individual entities.
+     * @param T The type of the individual entities.
+     * @return The serialized entities as a request body.
      */
-    fun <T> serializeList(entities: Iterable<T>, type: Class<T>): RequestBody =
-        serializers.first().serializeList(entities, type)
+    fun <T> serializeList(entities: Iterable<T>, elementType: Type): RequestBody =
+        serializers.first().serializeList(entities, elementType)
 
     /**
      * Deserializes an entity using the first serializer that supports the body's content type.
      *
-     * @param body The request body to deserialize into an entity.
+     * @param body The response body to deserialize into an entity.
      * @param type The type of entity to deserialize.
      * @param T The type of entity to deserialize.
      * @return The deserialized response body as an entity. null if the body could not be deserialized.
      */
-    fun <T> deserialize(body: ResponseBody, type: Class<T>): T? =
+    fun <T> deserialize(body: ResponseBody, type: Type): T? =
         getSerializer(body).deserialize(body, type)
 
     /**
      * Deserializes a list of entities using the first serializer that supports the body's content type.
      *
-     * @param body The request body to deserialize into an entity.
-     * @param type The type of entity to deserialize.
-     * @param T The type of entity to deserialize.
+     * @param body The response body to deserialize into a list of entities.
+     * @param elementType The type of the individual entities.
+     * @param T The type of the individual entities.
      * @return The deserialized response body as a list of entities. null if the body could not be deserialized.
      */
-    fun <T> deserializeList(body: ResponseBody, type: Class<T>): List<T>? =
-        getSerializer(body).deserializeList(body, type)
+    fun <T> deserializeList(body: ResponseBody, elementType: Type): List<T>? =
+        getSerializer(body).deserializeList(body, elementType)
 
     private fun getSerializer(body: ResponseBody): Serializer {
         val mediaType = body.contentType() ?: throw IllegalArgumentException("Response body has no media type")

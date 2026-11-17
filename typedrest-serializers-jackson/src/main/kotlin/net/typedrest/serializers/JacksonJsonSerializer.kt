@@ -6,6 +6,7 @@ import tools.jackson.databind.json.JsonMapper
 import tools.jackson.module.kotlin.kotlinModule
 import okhttp3.*
 import okhttp3.RequestBody.Companion.toRequestBody
+import java.lang.reflect.Type
 
 /**
  * Serializes and deserializes entities as JSON using Jackson.
@@ -25,15 +26,9 @@ open class JacksonJsonSerializer @JvmOverloads constructor(
                 .build()
     }
 
-    override fun <T> serialize(entity: T, type: Class<T>): RequestBody =
+    override fun <T> serialize(entity: T, type: Type): RequestBody =
         mapper.writeValueAsString(entity).toRequestBody(mediaTypeJson)
 
-    override fun <T> serializeList(entities: Iterable<T>, type: Class<T>): RequestBody =
-        mapper.writeValueAsString(entities).toRequestBody(mediaTypeJson)
-
-    override fun <T> deserialize(body: ResponseBody, type: Class<T>): T? =
-        body.byteStream().use { mapper.readerFor(type).readValue(it) }
-
-    override fun <T> deserializeList(body: ResponseBody, type: Class<T>): List<T>? =
-        body.byteStream().use { mapper.readerForListOf(type).readValue(it) }
+    override fun <T> deserialize(body: ResponseBody, type: Type): T? =
+        body.byteStream().use { mapper.readerFor(mapper.typeFactory.constructType(type)).readValue(it) }
 }

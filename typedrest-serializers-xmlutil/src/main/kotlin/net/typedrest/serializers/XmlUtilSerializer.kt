@@ -4,7 +4,6 @@ import kotlinx.serialization.*
 import nl.adaptivity.xmlutil.serialization.XML
 import okhttp3.*
 import okhttp3.RequestBody.Companion.toRequestBody
-import java.lang.reflect.ParameterizedType
 import java.lang.reflect.Type
 
 /**
@@ -15,26 +14,13 @@ import java.lang.reflect.Type
 open class XmlUtilSerializer @JvmOverloads constructor(
     private val xml: XML = XML.recommended_1_0()
 ) : AbstractXmlSerializer() {
-    override fun <T> serialize(entity: T, type: Class<T>): RequestBody =
+    override fun <T> serialize(entity: T, type: Type): RequestBody =
         xml.encodeToString(getSerializer(type), entity).toRequestBody(mediaTypeXml)
 
-    override fun <T> serializeList(entities: Iterable<T>, type: Class<T>): RequestBody =
-        xml.encodeToString(getListSerializer(type), entities.toList()).toRequestBody(mediaTypeXml)
-
-    override fun <T> deserialize(body: ResponseBody, type: Class<T>): T? =
-        xml.decodeFromString(getSerializer(type), body.string())
-
-    override fun <T> deserializeList(body: ResponseBody, type: Class<T>): List<T>? =
-        xml.decodeFromString(getListSerializer(type), body.string())
+    override fun <T> deserialize(body: ResponseBody, type: Type): T? =
+        xml.decodeFromString(getSerializer<T>(type), body.string())
 
     @Suppress("UNCHECKED_CAST")
     private fun <T> getSerializer(type: Type) =
         xml.serializersModule.serializer(type) as KSerializer<T>
-
-    private fun <T> getListSerializer(type: Type) =
-        getSerializer<List<T>>(object : ParameterizedType {
-            override fun getOwnerType(): Type? = null
-            override fun getRawType(): Type = List::class.java
-            override fun getActualTypeArguments(): Array<Type> = arrayOf(type)
-        })
 }

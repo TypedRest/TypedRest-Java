@@ -10,8 +10,10 @@ import net.typedrest.http.SseReader
 import net.typedrest.http.parseEntity
 import net.typedrest.http.sseReader
 import net.typedrest.http.uri
+import net.typedrest.javaTypeOf
 import okhttp3.Request
 import java.io.IOException
+import java.lang.reflect.Type
 import java.net.URI
 import java.time.Duration
 import java.time.Duration.ofSeconds
@@ -31,7 +33,7 @@ import java.time.Duration.ofSeconds
 open class SseStreamingEndpointImpl<TEntity : Any> @JvmOverloads constructor(
     referrer: Endpoint,
     relativeUri: URI,
-    private val entityType: Class<TEntity>,
+    private val entityType: Type,
     private val eventType: String? = null
 ) : AbstractEndpoint(referrer, relativeUri), StreamingEndpoint<TEntity> {
     /**
@@ -46,9 +48,43 @@ open class SseStreamingEndpointImpl<TEntity : Any> @JvmOverloads constructor(
     constructor(
         referrer: Endpoint,
         relativeUri: String,
-        entityType: Class<TEntity>,
+        entityType: Type,
         eventType: String? = null
     ) : this(referrer, URI(relativeUri), entityType, eventType)
+
+    /**
+     * Creates a new SSE streaming endpoint.
+     *
+     * @param referrer The endpoint used to navigate to this one.
+     * @param relativeUri The URI of this endpoint relative to the [referrer]'s.
+     * @param entityType The type of individual elements in the stream.
+     * @param eventType If set, only events with this `event:` type are emitted; others are ignored. null emits all events.
+     */
+    @JvmOverloads
+    @Suppress("USELESS_CAST") // Cast selects the Type overload
+    constructor(
+        referrer: Endpoint,
+        relativeUri: URI,
+        entityType: Class<TEntity>,
+        eventType: String? = null
+    ) : this(referrer, relativeUri, entityType as Type, eventType)
+
+    /**
+     * Creates a new SSE streaming endpoint.
+     *
+     * @param referrer The endpoint used to navigate to this one.
+     * @param relativeUri The URI of this endpoint relative to the [referrer]'s. Add a `./` prefix here to imply a trailing slash on referrer's URI.
+     * @param entityType The type of individual elements in the stream.
+     * @param eventType If set, only events with this `event:` type are emitted; others are ignored. null emits all events.
+     */
+    @JvmOverloads
+    @Suppress("USELESS_CAST") // Cast selects the Type overload
+    constructor(
+        referrer: Endpoint,
+        relativeUri: String,
+        entityType: Class<TEntity>,
+        eventType: String? = null
+    ) : this(referrer, URI(relativeUri), entityType as Type, eventType)
 
     /**
      * Whether to transparently reconnect on connection drops, transient transport errors and 5xx responses.
@@ -123,7 +159,7 @@ open class SseStreamingEndpointImpl<TEntity : Any> @JvmOverloads constructor(
                 for (event in reader.events()) {
                     if (emitter.isDisposed) return false
                     if (eventType != null && event.type != eventType) continue
-                    parseEntity(serializer, event.data.toByteArray(), entityType)?.let(emitter::onNext)
+                    parseEntity<TEntity>(serializer, event.data.toByteArray(), entityType)?.let(emitter::onNext)
                 }
             } finally {
                 updateState(reader)
@@ -137,3 +173,25 @@ open class SseStreamingEndpointImpl<TEntity : Any> @JvmOverloads constructor(
         const val EVENT_STREAM_MEDIA_TYPE = "text/event-stream"
     }
 }
+
+/**
+ * Creates a new SSE streaming endpoint, taking the entity type from the reified type argument.
+ *
+ * @param referrer The endpoint used to navigate to this one.
+ * @param relativeUri The URI of this endpoint relative to the [referrer]'s.
+ * @param eventType If set, only events with this `event:` type are emitted; others are ignored. null emits all events.
+ * @param TEntity The type of individual elements in the stream. Can be a generic type such as `Event<Contact>`.
+ */
+inline fun <reified TEntity : Any> SseStreamingEndpointImpl(referrer: Endpoint, relativeUri: URI, eventType: String? = null): SseStreamingEndpointImpl<TEntity> =
+    SseStreamingEndpointImpl(referrer, relativeUri, javaTypeOf<TEntity>(), eventType)
+
+/**
+ * Creates a new SSE streaming endpoint, taking the entity type from the reified type argument.
+ *
+ * @param referrer The endpoint used to navigate to this one.
+ * @param relativeUri The URI of this endpoint relative to the [referrer]'s. Add a `./` prefix here to imply a trailing slash on referrer's URI.
+ * @param eventType If set, only events with this `event:` type are emitted; others are ignored. null emits all events.
+ * @param TEntity The type of individual elements in the stream. Can be a generic type such as `Event<Contact>`.
+ */
+inline fun <reified TEntity : Any> SseStreamingEndpointImpl(referrer: Endpoint, relativeUri: String, eventType: String? = null): SseStreamingEndpointImpl<TEntity> =
+    SseStreamingEndpointImpl(referrer, relativeUri, javaTypeOf<TEntity>(), eventType)

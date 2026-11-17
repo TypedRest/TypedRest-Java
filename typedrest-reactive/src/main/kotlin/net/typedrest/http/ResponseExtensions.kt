@@ -6,6 +6,7 @@ import okhttp3.Response
 import okhttp3.ResponseBody.Companion.toResponseBody
 import okio.Buffer
 import okio.ByteString
+import java.lang.reflect.Type
 import java.time.*
 import java.time.Duration.ofSeconds
 import java.time.format.DateTimeFormatter
@@ -41,7 +42,7 @@ fun <TEntity : Any> Response.entitySequence(
     serializer: Serializer,
     separatorBytes: ByteString,
     bufferSize: Int,
-    entityType: Class<TEntity>
+    entityType: Type
 ): Sequence<TEntity> = sequence {
     val source = body.source()
     val buffer = Buffer()
@@ -54,17 +55,17 @@ fun <TEntity : Any> Response.entitySequence(
 
             val bytes = buffer.readByteArray(separatorIndex)
             buffer.skip(separatorBytes.size.toLong())
-            parseEntity(serializer, bytes, entityType)?.let { yield(it) }
+            parseEntity<TEntity>(serializer, bytes, entityType)?.let { yield(it) }
         }
     }
 
     // The server may end the stream without a trailing separator
     if (!buffer.exhausted()) {
-        parseEntity(serializer, buffer.readByteArray(), entityType)?.let { yield(it) }
+        parseEntity<TEntity>(serializer, buffer.readByteArray(), entityType)?.let { yield(it) }
     }
 }
 
-internal fun <T : Any> parseEntity(serializer: Serializer, bytes: ByteArray, type: Class<T>): T? {
+internal fun <T : Any> parseEntity(serializer: Serializer, bytes: ByteArray, type: Type): T? {
     if (bytes.isEmpty()) return null
     val mediaType: MediaType? = serializer.supportedMediaTypes.firstOrNull()
     return serializer.deserialize(bytes.toResponseBody(mediaType), type)

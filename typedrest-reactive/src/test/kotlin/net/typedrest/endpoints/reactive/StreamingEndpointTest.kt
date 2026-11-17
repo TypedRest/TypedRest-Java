@@ -35,6 +35,27 @@ class StreamingEndpointTest : AbstractEndpointTest() {
     }
 
     @Test
+    fun testGetObservableGenericType() {
+        server.enqueue(MockResponse().setJsonBody("""
+            [{"id":5,"name":"test1"}]
+            [{"id":6,"name":"test2"},{"id":7,"name":"test3"}]
+        """.trimIndent()))
+
+        val entities = StreamingEndpointImpl<List<MockEntity>>(entryEndpoint, "endpoint")
+            .getObservable()
+            .toList()
+            .blockingGet()
+
+        assertEquals(
+            listOf(
+                listOf(MockEntity(5, "test1")),
+                listOf(MockEntity(6, "test2"), MockEntity(7, "test3"))
+            ),
+            entities
+        )
+    }
+
+    @Test
     fun testErrorHandling() {
         server.enqueue(MockResponse()
             .setResponseCode(HttpStatusCode.Conflict)

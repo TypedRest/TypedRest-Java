@@ -1,9 +1,13 @@
 ﻿package net.typedrest.endpoints.generic
 
+import net.typedrest.displayName
 import net.typedrest.endpoints.*
 import net.typedrest.http.*
+import net.typedrest.javaTypeOf
+import net.typedrest.rawClass
 import okhttp3.*
 import okhttp3.ResponseBody.Companion.toResponseBody
+import java.lang.reflect.Type
 import java.net.URI
 
 /**
@@ -21,7 +25,7 @@ import java.net.URI
 open class GenericCollectionEndpointImpl<TEntity, TElementEndpoint : ElementEndpoint<TEntity>>(
     referrer: Endpoint,
     relativeUri: URI,
-    private val entityType: Class<TEntity>,
+    private val entityType: Type,
     private val elementEndpointFactory: (referrer: Endpoint, relativeUri: URI) -> TElementEndpoint
 ) : AbstractCachingEndpoint(referrer, relativeUri), GenericCollectionEndpoint<TEntity, TElementEndpoint> {
     /**
@@ -32,8 +36,32 @@ open class GenericCollectionEndpointImpl<TEntity, TElementEndpoint : ElementEndp
      * @param entityType The type of individual elements in the collection.
      * @param elementEndpointFactory The factory for constructing [TElementEndpoint]s to provide for individual elements.
      */
-    constructor(referrer: Endpoint, relativeUri: String, entityType: Class<TEntity>, elementEndpointFactory: (referrer: Endpoint, relativeUri: URI) -> TElementEndpoint) :
+    constructor(referrer: Endpoint, relativeUri: String, entityType: Type, elementEndpointFactory: (referrer: Endpoint, relativeUri: URI) -> TElementEndpoint) :
         this(referrer, URI(relativeUri), entityType, elementEndpointFactory)
+
+    /**
+     * Creates a new element collection endpoint.
+     *
+     * @param referrer The endpoint used to navigate to this one.
+     * @param relativeUri The URI of this endpoint relative to the [referrer]'s.
+     * @param entityType The type of individual elements in the collection.
+     * @param elementEndpointFactory The factory for constructing [TElementEndpoint]s to provide for individual elements.
+     */
+    @Suppress("USELESS_CAST") // Cast selects the Type overload
+    constructor(referrer: Endpoint, relativeUri: URI, entityType: Class<TEntity>, elementEndpointFactory: (referrer: Endpoint, relativeUri: URI) -> TElementEndpoint) :
+        this(referrer, relativeUri, entityType as Type, elementEndpointFactory)
+
+    /**
+     * Creates a new element collection endpoint.
+     *
+     * @param referrer The endpoint used to navigate to this one.
+     * @param relativeUri The URI of this endpoint relative to the [referrer]'s. Add a `./` prefix here to imply a trailing slash on referrer's URI.
+     * @param entityType The type of individual elements in the collection.
+     * @param elementEndpointFactory The factory for constructing [TElementEndpoint]s to provide for individual elements.
+     */
+    @Suppress("USELESS_CAST") // Cast selects the Type overload
+    constructor(referrer: Endpoint, relativeUri: String, entityType: Class<TEntity>, elementEndpointFactory: (referrer: Endpoint, relativeUri: URI) -> TElementEndpoint) :
+        this(referrer, URI(relativeUri), entityType as Type, elementEndpointFactory)
 
     init {
         setDefaultLinkTemplate("child", "./{id}")
@@ -45,15 +73,15 @@ open class GenericCollectionEndpointImpl<TEntity, TElementEndpoint : ElementEndp
 
     override operator fun get(entity: TEntity): TElementEndpoint =
         get(
-            tryGetId(entity) ?: throw IllegalStateException("${entityType.simpleName} has no property named id.")
+            tryGetId(entity) ?: throw IllegalStateException("${entityType.displayName} has no property named id.")
         )
 
     override val readAllAllowed: Boolean?
         get() = isMethodAllowed(HttpMethod.GET)
 
     override fun readAll(): List<TEntity> =
-        getContent()?.let { deserializeList(it, entityType) }
-            ?: throw IllegalStateException("Result not deserializable as List<${entityType.simpleName}>")
+        getContent()?.let { deserializeList<TEntity>(it, entityType) }
+            ?: throw IllegalStateException("Result not deserializable as List<${entityType.displayName}>")
 
     /**
      * The value used for [HttpContentRangeHeader.unit].
@@ -74,7 +102,7 @@ open class GenericCollectionEndpointImpl<TEntity, TElementEndpoint : ElementEndp
         execute(Request.Builder().get().uri(uri).header("Range", "${rangeUnit}=${from ?: ""}-${to ?: ""}").build())
             .use { response ->
                 PartialResponse(
-                    deserializeList(response.body, entityType) ?: throw IllegalStateException("Result not deserializable as List<${entityType.simpleName}>"),
+                    deserializeList(response.body, entityType) ?: throw IllegalStateException("Result not deserializable as List<${entityType.displayName}>"),
                     HttpContentRangeHeader.parse(response.headers)
                 )
             }
@@ -96,7 +124,7 @@ open class GenericCollectionEndpointImpl<TEntity, TElementEndpoint : ElementEndp
                 // Infer URL from entity ID in response body
                 bodyByteString.takeIf { it.size > 0 }
                     ?.toResponseBody(contentType)
-                    ?.let { deserialize(it, entityType) }
+                    ?.let { deserialize<TEntity>(it, entityType) }
                     ?.let(::tryGetId)
                     ?.let(::get)
             }
@@ -109,7 +137,7 @@ open class GenericCollectionEndpointImpl<TEntity, TElementEndpoint : ElementEndp
         }
 
     private fun tryGetId(entity: TEntity) =
-        entityType.methods.firstOrNull { it.name.lowercase() == "getid" }
+        entityType.rawClass()?.methods?.firstOrNull { it.name.lowercase() == "getid" }
             ?.invoke(entity)?.toString()
 
     override val createAllAllowed: Boolean?
@@ -125,3 +153,35 @@ open class GenericCollectionEndpointImpl<TEntity, TElementEndpoint : ElementEndp
         putContent(serializeList(entities, entityType)).close()
     }
 }
+
+/**
+ * Creates a new element collection endpoint, taking the entity type from the reified type argument.
+ *
+ * @param referrer The endpoint used to navigate to this one.
+ * @param relativeUri The URI of this endpoint relative to the [referrer]'s.
+ * @param elementEndpointFactory The factory for constructing [TElementEndpoint]s to provide for individual elements.
+ * @param TEntity The type of individual elements in the collection. Can be a generic type such as `Versioned<Contact>`.
+ * @param TElementEndpoint The type of [ElementEndpoint] to provide for individual [TEntity]s.
+ */
+inline fun <reified TEntity, TElementEndpoint : ElementEndpoint<TEntity>> GenericCollectionEndpointImpl(
+    referrer: Endpoint,
+    relativeUri: URI,
+    noinline elementEndpointFactory: (referrer: Endpoint, relativeUri: URI) -> TElementEndpoint
+): GenericCollectionEndpointImpl<TEntity, TElementEndpoint> =
+    GenericCollectionEndpointImpl(referrer, relativeUri, javaTypeOf<TEntity>(), elementEndpointFactory)
+
+/**
+ * Creates a new element collection endpoint, taking the entity type from the reified type argument.
+ *
+ * @param referrer The endpoint used to navigate to this one.
+ * @param relativeUri The URI of this endpoint relative to the [referrer]'s. Add a `./` prefix here to imply a trailing slash on referrer's URI.
+ * @param elementEndpointFactory The factory for constructing [TElementEndpoint]s to provide for individual elements.
+ * @param TEntity The type of individual elements in the collection. Can be a generic type such as `Versioned<Contact>`.
+ * @param TElementEndpoint The type of [ElementEndpoint] to provide for individual [TEntity]s.
+ */
+inline fun <reified TEntity, TElementEndpoint : ElementEndpoint<TEntity>> GenericCollectionEndpointImpl(
+    referrer: Endpoint,
+    relativeUri: String,
+    noinline elementEndpointFactory: (referrer: Endpoint, relativeUri: URI) -> TElementEndpoint
+): GenericCollectionEndpointImpl<TEntity, TElementEndpoint> =
+    GenericCollectionEndpointImpl(referrer, relativeUri, javaTypeOf<TEntity>(), elementEndpointFactory)

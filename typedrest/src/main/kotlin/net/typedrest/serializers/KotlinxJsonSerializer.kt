@@ -4,7 +4,6 @@ import kotlinx.serialization.*
 import kotlinx.serialization.json.Json
 import okhttp3.*
 import okhttp3.RequestBody.Companion.toRequestBody
-import java.lang.reflect.ParameterizedType
 import java.lang.reflect.Type
 
 /**
@@ -24,26 +23,13 @@ open class KotlinxJsonSerializer @JvmOverloads constructor(
         }
     }
 
-    override fun <T> serialize(entity: T, type: Class<T>): RequestBody =
+    override fun <T> serialize(entity: T, type: Type): RequestBody =
         json.encodeToString(getSerializer(type), entity).toRequestBody(mediaTypeJson)
 
-    override fun <T> serializeList(entities: Iterable<T>, type: Class<T>): RequestBody =
-        json.encodeToString(getListSerializer(type), entities.toList()).toRequestBody(mediaTypeJson)
-
-    override fun <T> deserialize(body: ResponseBody, type: Class<T>): T? =
-        json.decodeFromString(getSerializer(type), body.string())
-
-    override fun <T> deserializeList(body: ResponseBody, type: Class<T>): List<T>? =
-        json.decodeFromString(getListSerializer(type), body.string())
+    override fun <T> deserialize(body: ResponseBody, type: Type): T? =
+        json.decodeFromString(getSerializer<T>(type), body.string())
 
     @Suppress("UNCHECKED_CAST")
     private fun <T> getSerializer(type: Type) =
         json.serializersModule.serializer(type) as KSerializer<T>
-
-    private fun <T> getListSerializer(type: Type) =
-        getSerializer<List<T>>(object : ParameterizedType {
-            override fun getOwnerType(): Type? = null
-            override fun getRawType(): Type = List::class.java
-            override fun getActualTypeArguments(): Array<Type> = arrayOf(type)
-        })
 }

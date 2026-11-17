@@ -7,7 +7,9 @@ import net.typedrest.endpoints.generic.ElementEndpoint
 import net.typedrest.endpoints.generic.GenericCollectionEndpointImpl
 import net.typedrest.errors.ConflictException
 import net.typedrest.http.retryAfterDuration
+import net.typedrest.javaTypeOf
 import okhttp3.Response
+import java.lang.reflect.Type
 import java.net.URI
 import java.time.Duration
 import java.time.Duration.ofSeconds
@@ -27,7 +29,7 @@ import java.time.Duration.ofSeconds
 open class GenericStreamingCollectionEndpointImpl<TEntity : Any, TElementEndpoint : ElementEndpoint<TEntity>>(
     referrer: Endpoint,
     relativeUri: URI,
-    entityType: Class<TEntity>,
+    entityType: Type,
     elementEndpointFactory: (referrer: Endpoint, relativeUri: URI) -> TElementEndpoint
 ) : GenericCollectionEndpointImpl<TEntity, TElementEndpoint>(referrer, relativeUri, entityType, elementEndpointFactory),
     GenericStreamingCollectionEndpoint<TEntity, TElementEndpoint> {
@@ -39,8 +41,32 @@ open class GenericStreamingCollectionEndpointImpl<TEntity : Any, TElementEndpoin
      * @param entityType The type of individual elements in the collection.
      * @param elementEndpointFactory The factory for constructing [TElementEndpoint]s to provide for individual elements.
      */
-    constructor(referrer: Endpoint, relativeUri: String, entityType: Class<TEntity>, elementEndpointFactory: (referrer: Endpoint, relativeUri: URI) -> TElementEndpoint) :
+    constructor(referrer: Endpoint, relativeUri: String, entityType: Type, elementEndpointFactory: (referrer: Endpoint, relativeUri: URI) -> TElementEndpoint) :
         this(referrer, URI(relativeUri), entityType, elementEndpointFactory)
+
+    /**
+     * Creates a new streaming collection endpoint.
+     *
+     * @param referrer The endpoint used to navigate to this one.
+     * @param relativeUri The URI of this endpoint relative to the [referrer]'s.
+     * @param entityType The type of individual elements in the collection.
+     * @param elementEndpointFactory The factory for constructing [TElementEndpoint]s to provide for individual elements.
+     */
+    @Suppress("USELESS_CAST") // Cast selects the Type overload
+    constructor(referrer: Endpoint, relativeUri: URI, entityType: Class<TEntity>, elementEndpointFactory: (referrer: Endpoint, relativeUri: URI) -> TElementEndpoint) :
+        this(referrer, relativeUri, entityType as Type, elementEndpointFactory)
+
+    /**
+     * Creates a new streaming collection endpoint.
+     *
+     * @param referrer The endpoint used to navigate to this one.
+     * @param relativeUri The URI of this endpoint relative to the [referrer]'s. Add a `./` prefix here to imply a trailing slash on referrer's URI.
+     * @param entityType The type of individual elements in the collection.
+     * @param elementEndpointFactory The factory for constructing [TElementEndpoint]s to provide for individual elements.
+     */
+    @Suppress("USELESS_CAST") // Cast selects the Type overload
+    constructor(referrer: Endpoint, relativeUri: String, entityType: Class<TEntity>, elementEndpointFactory: (referrer: Endpoint, relativeUri: URI) -> TElementEndpoint) :
+        this(referrer, URI(relativeUri), entityType as Type, elementEndpointFactory)
 
     override fun handle(response: Response): Response {
         val response = super.handle(response)
@@ -80,3 +106,35 @@ open class GenericStreamingCollectionEndpointImpl<TEntity : Any, TElementEndpoin
         }
             .subscribeOn(Schedulers.io())
 }
+
+/**
+ * Creates a new streaming collection endpoint, taking the entity type from the reified type argument.
+ *
+ * @param referrer The endpoint used to navigate to this one.
+ * @param relativeUri The URI of this endpoint relative to the [referrer]'s.
+ * @param elementEndpointFactory The factory for constructing [TElementEndpoint]s to provide for individual elements.
+ * @param TEntity The type of individual elements in the collection. Can be a generic type such as `Event<Contact>`.
+ * @param TElementEndpoint The type of [ElementEndpoint] to provide for individual [TEntity]s.
+ */
+inline fun <reified TEntity : Any, TElementEndpoint : ElementEndpoint<TEntity>> GenericStreamingCollectionEndpointImpl(
+    referrer: Endpoint,
+    relativeUri: URI,
+    noinline elementEndpointFactory: (referrer: Endpoint, relativeUri: URI) -> TElementEndpoint
+): GenericStreamingCollectionEndpointImpl<TEntity, TElementEndpoint> =
+    GenericStreamingCollectionEndpointImpl(referrer, relativeUri, javaTypeOf<TEntity>(), elementEndpointFactory)
+
+/**
+ * Creates a new streaming collection endpoint, taking the entity type from the reified type argument.
+ *
+ * @param referrer The endpoint used to navigate to this one.
+ * @param relativeUri The URI of this endpoint relative to the [referrer]'s. Add a `./` prefix here to imply a trailing slash on referrer's URI.
+ * @param elementEndpointFactory The factory for constructing [TElementEndpoint]s to provide for individual elements.
+ * @param TEntity The type of individual elements in the collection. Can be a generic type such as `Event<Contact>`.
+ * @param TElementEndpoint The type of [ElementEndpoint] to provide for individual [TEntity]s.
+ */
+inline fun <reified TEntity : Any, TElementEndpoint : ElementEndpoint<TEntity>> GenericStreamingCollectionEndpointImpl(
+    referrer: Endpoint,
+    relativeUri: String,
+    noinline elementEndpointFactory: (referrer: Endpoint, relativeUri: URI) -> TElementEndpoint
+): GenericStreamingCollectionEndpointImpl<TEntity, TElementEndpoint> =
+    GenericStreamingCollectionEndpointImpl(referrer, relativeUri, javaTypeOf<TEntity>(), elementEndpointFactory)

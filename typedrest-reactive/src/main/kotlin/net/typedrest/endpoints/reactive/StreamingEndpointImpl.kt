@@ -6,8 +6,10 @@ import net.typedrest.endpoints.Endpoint
 import net.typedrest.endpoints.AbstractEndpoint
 import net.typedrest.http.entitySequence
 import net.typedrest.http.uri
+import net.typedrest.javaTypeOf
 import okhttp3.Request
 import okio.ByteString.Companion.toByteString
+import java.lang.reflect.Type
 import java.net.URI
 
 /**
@@ -22,7 +24,7 @@ import java.net.URI
 open class StreamingEndpointImpl<TEntity : Any> @JvmOverloads constructor(
     referrer: Endpoint,
     relativeUri: URI,
-    private val entityType: Class<TEntity>,
+    private val entityType: Type,
     private val separator: String = "\n"
 ) : AbstractEndpoint(referrer, relativeUri), StreamingEndpoint<TEntity> {
     /**
@@ -37,9 +39,43 @@ open class StreamingEndpointImpl<TEntity : Any> @JvmOverloads constructor(
     constructor(
         referrer: Endpoint,
         relativeUri: String,
-        entityType: Class<TEntity>,
+        entityType: Type,
         separator: String = "\n"
     ) : this(referrer, URI(relativeUri), entityType, separator)
+
+    /**
+     * Creates a new streaming endpoint.
+     *
+     * @param referrer The endpoint used to navigate to this one.
+     * @param relativeUri The URI of this endpoint relative to the [referrer]'s.
+     * @param entityType The type of individual elements in the stream.
+     * @param separator The character sequence used to detect that a new element starts in an HTTP stream.
+     */
+    @JvmOverloads
+    @Suppress("USELESS_CAST") // Cast selects the Type overload
+    constructor(
+        referrer: Endpoint,
+        relativeUri: URI,
+        entityType: Class<TEntity>,
+        separator: String = "\n"
+    ) : this(referrer, relativeUri, entityType as Type, separator)
+
+    /**
+     * Creates a new streaming endpoint.
+     *
+     * @param referrer The endpoint used to navigate to this one.
+     * @param relativeUri The URI of this endpoint relative to the [referrer]'s. Add a `./` prefix here to imply a trailing slash on referrer's URI.
+     * @param entityType The type of individual elements in the stream.
+     * @param separator The character sequence used to detect that a new element starts in an HTTP stream.
+     */
+    @JvmOverloads
+    @Suppress("USELESS_CAST") // Cast selects the Type overload
+    constructor(
+        referrer: Endpoint,
+        relativeUri: String,
+        entityType: Class<TEntity>,
+        separator: String = "\n"
+    ) : this(referrer, URI(relativeUri), entityType as Type, separator)
 
     /**
      * The size of the buffer used to collect data for deserialization in bytes.
@@ -54,7 +90,7 @@ open class StreamingEndpointImpl<TEntity : Any> @JvmOverloads constructor(
             .use { response ->
                 val charset = response.body.contentType()?.charset() ?: Charsets.UTF_8
                 response
-                    .entitySequence(serializers.first(), separator.toByteArray(charset).toByteString(), bufferSize, entityType)
+                    .entitySequence<TEntity>(serializers.first(), separator.toByteArray(charset).toByteString(), bufferSize, entityType)
                     .takeWhile { !emitter.isDisposed }
                     .forEach(emitter::onNext)
             }
@@ -62,3 +98,25 @@ open class StreamingEndpointImpl<TEntity : Any> @JvmOverloads constructor(
         emitter.onComplete()
     }.subscribeOn(Schedulers.io())
 }
+
+/**
+ * Creates a new streaming endpoint, taking the entity type from the reified type argument.
+ *
+ * @param referrer The endpoint used to navigate to this one.
+ * @param relativeUri The URI of this endpoint relative to the [referrer]'s.
+ * @param separator The character sequence used to detect that a new element starts in an HTTP stream.
+ * @param TEntity The type of individual elements in the stream. Can be a generic type such as `Event<Contact>`.
+ */
+inline fun <reified TEntity : Any> StreamingEndpointImpl(referrer: Endpoint, relativeUri: URI, separator: String = "\n"): StreamingEndpointImpl<TEntity> =
+    StreamingEndpointImpl(referrer, relativeUri, javaTypeOf<TEntity>(), separator)
+
+/**
+ * Creates a new streaming endpoint, taking the entity type from the reified type argument.
+ *
+ * @param referrer The endpoint used to navigate to this one.
+ * @param relativeUri The URI of this endpoint relative to the [referrer]'s. Add a `./` prefix here to imply a trailing slash on referrer's URI.
+ * @param separator The character sequence used to detect that a new element starts in an HTTP stream.
+ * @param TEntity The type of individual elements in the stream. Can be a generic type such as `Event<Contact>`.
+ */
+inline fun <reified TEntity : Any> StreamingEndpointImpl(referrer: Endpoint, relativeUri: String, separator: String = "\n"): StreamingEndpointImpl<TEntity> =
+    StreamingEndpointImpl(referrer, relativeUri, javaTypeOf<TEntity>(), separator)

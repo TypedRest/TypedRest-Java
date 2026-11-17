@@ -6,6 +6,7 @@ import tools.jackson.dataformat.xml.XmlMapper
 import tools.jackson.module.kotlin.kotlinModule
 import okhttp3.*
 import okhttp3.RequestBody.Companion.toRequestBody
+import java.lang.reflect.Type
 
 /**
  * Serializes and deserializes entities as XML using Jackson.
@@ -25,18 +26,11 @@ open class JacksonXmlSerializer @JvmOverloads constructor(
                 .build()
     }
 
-    override fun <T> serialize(entity: T, type: Class<T>): RequestBody =
-        mapper.writeValueAsString(entity).toRequestBody(mediaTypeXml)
+    override fun <T> serialize(entity: T, type: Type): RequestBody =
+        // Plain classes are written by their runtime type; generic types need the declared type, e.g., for the root element of lists
+        (if (type is Class<*>) mapper.writeValueAsString(entity) else mapper.writerFor(mapper.typeFactory.constructType(type)).writeValueAsString(entity))
+            .toRequestBody(mediaTypeXml)
 
-    override fun <T> serializeList(entities: Iterable<T>, type: Class<T>): RequestBody =
-        mapper.writerFor(listType(type)).writeValueAsString(entities.toList()).toRequestBody(mediaTypeXml)
-
-    override fun <T> deserialize(body: ResponseBody, type: Class<T>): T? =
-        body.byteStream().use { mapper.readerFor(type).readValue(it) }
-
-    override fun <T> deserializeList(body: ResponseBody, type: Class<T>): List<T>? =
-        body.byteStream().use { mapper.readerFor(listType(type)).readValue(it) }
-
-    private fun <T> listType(type: Class<T>) =
-        mapper.typeFactory.constructCollectionType(List::class.java, type)
+    override fun <T> deserialize(body: ResponseBody, type: Type): T? =
+        body.byteStream().use { mapper.readerFor(mapper.typeFactory.constructType(type)).readValue(it) }
 }

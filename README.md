@@ -27,9 +27,11 @@ class ContactCollectionEndpoint(referrer: Endpoint) :
 class ContactEndpoint(referrer: Endpoint, relativeUri: URI) :
   ElementEndpointImpl<Contact>(referrer, relativeUri, Contact::class.java) {
   val note: ElementEndpoint<Note>
-    get() = ElementEndpointImpl(this, "./note", Note::class.java)
+    get() = ElementEndpointImpl(this, "./note")
 }
 ```
+
+In Kotlin, endpoints can take the entity type from a reified type argument, as in `note` above. This also works for generic entity types such as `ElementEndpointImpl<Page<Contact>>(this, "./page")`. In super-constructor calls, pass `javaTypeOf<Page<Contact>>()` instead of a `Class`.
 
 <details>
 <summary><b>Java</b></summary>
@@ -61,6 +63,8 @@ class ContactEndpoint extends ElementEndpointImpl<Contact> {
   }
 }
 ```
+
+For generic entity types, pass a `java.lang.reflect.Type` (e.g., from a type token library) instead of a `Class`.
 
 </details>
 
