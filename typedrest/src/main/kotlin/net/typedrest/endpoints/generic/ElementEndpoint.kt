@@ -71,7 +71,6 @@ interface ElementEndpoint<TEntity> : Endpoint {
      *
      * @param entity The entity data to merge with the existing one.
      * @return The modified entity as returned by the server, possibly with additional fields set. null if the server does not respond with a result entity.
-     * @throws ConflictException when the entity has changed since it was last retrieved with [read]. Your changes were rejected to prevent a lost update.
      * @throws BadRequestException when the server responds with [HttpStatusCode.BadRequest].
      * @throws AuthenticationException when the server responds with [HttpStatusCode.Unauthorized].
      * @throws AuthorizationException when the server responds with [HttpStatusCode.Forbidden].
