@@ -1,16 +1,16 @@
-mode: ContinuousDeployment
+calculation:
+  mode: ContinuousDeployment
+  branches:
+    # Mainline branches
+    develop:
+      increment: Patch
+      label: alpha
+    main:
+      label: beta
+      mode: ContinuousDelivery
 
-branches:
-  # Mainline branches
-  develop:
-    label: alpha
-    increment: Patch
-  main:
-    mode: ContinuousDelivery
-    label: beta
-
-  # Stabilization branches
-  release:
-    label: rc
-  hotfix:
-    label: rc
+    # Stabilization branches
+    release:
+      label: rc
+    hotfix:
+      label: rc
