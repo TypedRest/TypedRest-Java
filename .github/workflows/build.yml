@@ -11,7 +11,7 @@ jobs:
           fetch-depth: 0
       - uses: gittools/actions/gitversion/setup@v5.0.0
         with:
-          versionSpec: '6.7.x'
+          versionSpec: '7.0.x'
       - uses: gittools/actions/gitversion/execute@v5.0.0
         id: gitversion
       - name: Set version
