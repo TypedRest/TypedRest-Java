@@ -6,7 +6,10 @@ import net.typedrest.errors.ConcurrencyException
 import net.typedrest.errors.ConflictException
 import net.typedrest.http.*
 import net.typedrest.tests.*
-import okhttp3.mockwebserver.MockResponse
+import net.typedrest.endpoints.EntryEndpoint
+import okhttp3.*
+import okhttp3.mockwebserver.*
+import java.util.concurrent.*
 import kotlin.test.*
 
 class ElementEndpointTest : AbstractEndpointTest() {
@@ -145,6 +148,79 @@ class ElementEndpointTest : AbstractEndpointTest() {
         server.assertRequest(HttpMethod.PUT)
             .withHeader("If-Match", "\"123abc\"")
             .withJsonBody("""{"id":5,"name":"test"}""")
+    }
+
+    /**
+     * Holds back the next GET request on the client side until [release] is called, so other requests can overtake it.
+     */
+    private class DelayedReadInterceptor : Interceptor {
+        private val received = CountDownLatch(1)
+        private val released = CountDownLatch(1)
+
+        @Volatile
+        var armed = false
+
+        override fun intercept(chain: Interceptor.Chain): Response {
+            if (armed && chain.request().method == "GET") {
+                armed = false
+                received.countDown()
+                assertTrue(released.await(10, TimeUnit.SECONDS), "Delayed request was not released")
+            }
+            return chain.proceed(chain.request())
+        }
+
+        fun awaitReceived() = assertTrue(received.await(10, TimeUnit.SECONDS), "Delayed request was not received")
+        fun release() = released.countDown()
+    }
+
+    private class DelayedRead(
+        val endpoint: ElementEndpointImpl<MockEntity>,
+        private val interceptor: DelayedReadInterceptor,
+        private val server: MockWebServer,
+        private val delayedResponse: MockResponse,
+        private val read: Future<MockEntity>
+    ) {
+        /**
+         * Lets the delayed read continue and answers it with the delayed response.
+         *
+         * @return The result of the read.
+         */
+        fun release(): MockEntity {
+            server.enqueue(delayedResponse)
+            interceptor.release()
+            return read.get(10, TimeUnit.SECONDS)
+        }
+
+        val cachedETag get() = endpoint.responseCache?.ifModifiedHeaders()?.get("If-None-Match")
+    }
+
+    /**
+     * Reads the entity with ETag `"v1"`, then starts another read that is held back until [DelayedRead.release] is called.
+     */
+    private fun startDelayedRead(response: MockResponse): DelayedRead {
+        val interceptor = DelayedReadInterceptor()
+        val client = OkHttpClient.Builder().addInterceptor(interceptor).build()
+        val endpoint = ElementEndpointImpl(EntryEndpoint(server.url("/").toUri(), client), "endpoint", MockEntity::class.java)
+
+        server.enqueue(MockResponse().setHeader("ETag", "\"v1\"").setJsonBody("""{"id":5,"name":"test"}"""))
+        endpoint.read()
+
+        interceptor.armed = true
+        val read = CompletableFuture.supplyAsync { endpoint.read() }
+        interceptor.awaitReceived()
+        return DelayedRead(endpoint, interceptor, server, response, read)
+    }
+
+    @Test
+    fun testReadNotModifiedDuringSet() {
+        val delayed = startDelayedRead(MockResponse().setResponseCode(HttpStatusCode.NotModified))
+
+        server.enqueue(MockResponse().setResponseCode(HttpStatusCode.NoContent).setHeader("ETag", "\"v2\""))
+        delayed.endpoint.set(MockEntity(5, "changed"))
+
+        // The server confirmed the version the read was based on, even though the cache has moved on since
+        assertEquals(MockEntity(5, "test"), delayed.release())
+        assertEquals("\"v2\"", delayed.cachedETag)
     }
 
     @Test
