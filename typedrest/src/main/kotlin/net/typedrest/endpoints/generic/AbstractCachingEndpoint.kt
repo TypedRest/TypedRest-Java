@@ -49,7 +49,7 @@ abstract class AbstractCachingEndpoint(referrer: Endpoint, relativeUri: URI) :
     /**
      * Performs an [HttpMethod.PUT] request on the [Endpoint.uri].
      *
-     * Sends If-Match header if there is a cached ETag to detect lost updates.
+     * Sends If-Match header if there is a cached strong ETag to detect lost updates.
      * Caches the response if the server sends an ETag, so later requests can be conditional without reading the resource again.
      *
      * @param content The content to send to the server.
@@ -81,7 +81,7 @@ abstract class AbstractCachingEndpoint(referrer: Endpoint, relativeUri: URI) :
     /**
      * Performs an [HttpMethod.DELETE] request on the [Endpoint.uri].
      *
-     * Sends If-Match header if there is a cached ETag to detect lost updates.
+     * Sends If-Match header if there is a cached strong ETag to detect lost updates.
      *
      * @throws ConflictException The content has changed since it was last retrieved with [getContent]. Your changes were rejected to prevent a lost update.
      * @throws BadRequestException when the server responds with [HttpStatusCode.BadRequest].

@@ -109,8 +109,11 @@ class ResponseCache private constructor(
      */
     fun ifUnmodifiedHeaders(): Headers {
         val builder = Headers.Builder()
-        eTag?.let { builder.add("If-Match", it) }
-            ?: lastModified?.let { builder.add("If-Unmodified-Since", it.formatHttp()) }
+        if (eTag != null) {
+            if (!eTag.startsWith("W/")) builder.add("If-Match", eTag)
+        } else {
+            lastModified?.let { builder.add("If-Unmodified-Since", it.formatHttp()) }
+        }
         return builder.build()
     }
 }

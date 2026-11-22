@@ -148,6 +148,30 @@ class ElementEndpointTest : AbstractEndpointTest() {
     }
 
     @Test
+    fun testSetWeakETag() {
+        server.enqueue(MockResponse().setHeader("ETag", "W/\"v1\"").setJsonBody("""{"id":5,"name":"test"}"""))
+        endpoint.read()
+        server.assertRequest(HttpMethod.GET)
+
+        server.enqueue(MockResponse().setResponseCode(HttpStatusCode.NoContent))
+        endpoint.set(MockEntity(5, "changed"))
+        // If-Match uses strong comparison, so a weak ETag would never match
+        assertNull(server.assertRequest(HttpMethod.PUT).getHeader("If-Match"))
+    }
+
+    @Test
+    fun testReadWeakETag() {
+        server.enqueue(MockResponse().setHeader("ETag", "W/\"v1\"").setJsonBody("""{"id":5,"name":"test"}"""))
+        endpoint.read()
+        server.assertRequest(HttpMethod.GET)
+
+        // If-None-Match uses weak comparison, so weak ETags are still useful there
+        server.enqueue(MockResponse().setResponseCode(HttpStatusCode.NotModified))
+        assertEquals(MockEntity(5, "test"), endpoint.read())
+        server.assertRequest(HttpMethod.GET).withHeader("If-None-Match", "W/\"v1\"")
+    }
+
+    @Test
     fun testSetCacheETag() {
         server.enqueue(MockResponse().setResponseCode(HttpStatusCode.NoContent).setHeader("ETag", "\"456def\""))
         endpoint.set(MockEntity(5, "test"))
