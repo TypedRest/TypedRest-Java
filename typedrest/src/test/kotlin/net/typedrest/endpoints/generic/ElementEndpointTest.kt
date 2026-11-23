@@ -191,7 +191,14 @@ class ElementEndpointTest : AbstractEndpointTest() {
             return read.get(10, TimeUnit.SECONDS)
         }
 
-        val cachedETag get() = endpoint.responseCache?.ifModifiedHeaders()?.get("If-None-Match")
+        /**
+         * Returns the ETag the next write sends to detect lost updates.
+         */
+        fun nextSetIfMatch(): String? {
+            server.enqueue(MockResponse().setResponseCode(HttpStatusCode.NoContent))
+            endpoint.set(MockEntity(5, "next"))
+            return generateSequence { server.takeRequest(0, TimeUnit.SECONDS) }.last().getHeader("If-Match")
+        }
     }
 
     /**
@@ -220,7 +227,21 @@ class ElementEndpointTest : AbstractEndpointTest() {
 
         // The server confirmed the version the read was based on, even though the cache has moved on since
         assertEquals(MockEntity(5, "test"), delayed.release())
-        assertEquals("\"v2\"", delayed.cachedETag)
+        assertEquals("\"v2\"", delayed.nextSetIfMatch())
+    }
+
+    @Test
+    fun testReadOutdatedDuringSet() {
+        val delayed = startDelayedRead(
+            MockResponse().setHeader("ETag", "\"v1b\"").setJsonBody("""{"id":5,"name":"outdated"}""")
+        )
+
+        server.enqueue(MockResponse().setResponseCode(HttpStatusCode.NoContent).setHeader("ETag", "\"v2\""))
+        delayed.endpoint.set(MockEntity(5, "changed"))
+
+        // The response is returned, but does not replace the version from the newer write
+        assertEquals(MockEntity(5, "outdated"), delayed.release())
+        assertEquals("\"v2\"", delayed.nextSetIfMatch())
     }
 
     @Test

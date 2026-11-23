@@ -17,7 +17,48 @@ import java.net.URI
  */
 abstract class AbstractCachingEndpoint(referrer: Endpoint, relativeUri: URI) :
     AbstractEndpoint(referrer, relativeUri), CachingEndpoint {
+    @Volatile
     override var responseCache: ResponseCache? = null
+
+    // Track writes, so responses to requests that overlap a write do not cache outdated content.
+    private var writesInProgress = 0
+    private var finishedWrites = 0
+    private val cacheLock = Any()
+
+    private fun startWrite(): Int = synchronized(cacheLock) {
+        responseCache = null
+        writesInProgress++
+        finishedWrites
+    }
+
+    private fun endWrite(finishedWrites: Int, cache: ResponseCache? = null) {
+        synchronized(cacheLock) {
+            writesInProgress--
+            if (cache != null && writesInProgress == 0 && this.finishedWrites == finishedWrites)
+                responseCache = cache
+            this.finishedWrites++
+        }
+    }
+
+    private fun storeResponseCache(cache: ResponseCache?, finishedWrites: Int) = synchronized(cacheLock) {
+        if (writesInProgress == 0 && this.finishedWrites == finishedWrites)
+            responseCache = cache
+    }
+
+    /**
+     * Sends a request that modifies the resource and discards [responseCache].
+     *
+     * @param request Sends the request.
+     * @return The result of [request].
+     */
+    protected fun <T> trackWrite(request: () -> T): T {
+        val finishedWrites = startWrite()
+        try {
+            return request()
+        } finally {
+            endWrite(finishedWrites)
+        }
+    }
 
     /**
      * Performs an HTTP GET request on the [Endpoint.uri] and caches the response if the server sends an ETag.
@@ -32,7 +73,8 @@ abstract class AbstractCachingEndpoint(referrer: Endpoint, relativeUri: URI) :
      */
     protected fun getContent(): ResponseBody? {
         // Keep the cache entry the request was based on, since a concurrent write may replace or discard it
-        val cache = responseCache
+        val (cache, finishedWrites) = synchronized(cacheLock) { responseCache to finishedWrites }
+
         val headers = cache?.ifModifiedHeaders() ?: Headers.Builder().build()
         return httpClient.newCall(Request.Builder().get().uri(uri).headers(headers).build()).execute().use { response ->
             if (response.code == HttpStatusCode.NotModified.code && cache != null) {
@@ -41,7 +83,7 @@ abstract class AbstractCachingEndpoint(referrer: Endpoint, relativeUri: URI) :
                 handle(response)
                 val bodyByteString = response.body.byteString()
                 val contentType = response.body.contentType()
-                responseCache = ResponseCache.from(response, bodyByteString, contentType)
+                storeResponseCache(ResponseCache.from(response, bodyByteString, contentType), finishedWrites)
                 bodyByteString.toResponseBody(contentType)
             }
         }
@@ -64,19 +106,23 @@ abstract class AbstractCachingEndpoint(referrer: Endpoint, relativeUri: URI) :
      */
     protected fun putContent(content: RequestBody): Response {
         val headers = responseCache?.ifUnmodifiedHeaders() ?: Headers.Builder().build()
-        responseCache = null
+        val finishedWrites = startWrite()
+        var cache: ResponseCache? = null
+        try {
+            // Buffer the request body before sending, so it is still available for caching afterwards
+            val requestBody = Buffer().also { content.writeTo(it) }.readByteString()
+            val requestContentType = content.contentType()
 
-        // Buffer the request body before sending, so it is still available for caching afterwards
-        val requestBody = Buffer().also { content.writeTo(it) }.readByteString()
-        val requestContentType = content.contentType()
+            val response = execute(Request.Builder().put(requestBody.toRequestBody(requestContentType)).uri(uri).headers(headers).build())
+            if (response.header("ETag") == null) return response
 
-        val response = execute(Request.Builder().put(requestBody.toRequestBody(requestContentType)).uri(uri).headers(headers).build())
-        if (response.header("ETag") == null) return response
-
-        val responseContentType = response.body.contentType()
-        val responseBody = response.use { it.body.byteString() }
-        responseCache = ResponseCache.fromPut(response, responseBody, responseContentType, requestBody, requestContentType)
-        return response.newBuilder().body(responseBody.toResponseBody(responseContentType)).build()
+            val responseContentType = response.body.contentType()
+            val responseBody = response.use { it.body.byteString() }
+            cache = ResponseCache.fromPut(response, responseBody, responseContentType, requestBody, requestContentType)
+            return response.newBuilder().body(responseBody.toResponseBody(responseContentType)).build()
+        } finally {
+            endWrite(finishedWrites, cache)
+        }
     }
 
     /**
@@ -93,7 +139,6 @@ abstract class AbstractCachingEndpoint(referrer: Endpoint, relativeUri: URI) :
      */
     protected fun deleteContent() {
         val headers = responseCache?.ifUnmodifiedHeaders() ?: Headers.Builder().build()
-        responseCache = null
-        execute(Request.Builder().delete().uri(uri).headers(headers).build()).close()
+        trackWrite { execute(Request.Builder().delete().uri(uri).headers(headers).build()) }.close()
     }
 }

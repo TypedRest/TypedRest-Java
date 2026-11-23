@@ -82,10 +82,8 @@ open class ElementEndpointImpl<TEntity>(
     override val isMergeAllowed: Boolean?
         get() = isMethodAllowed(HttpMethod.PATCH)
 
-    override fun merge(entity: TEntity): TEntity? {
-        responseCache = null
-        return tryReadAs(execute(Request.Builder().patch(serialize(entity, entityType)).uri(uri).build()))
-    }
+    override fun merge(entity: TEntity): TEntity? =
+        tryReadAs(trackWrite { execute(Request.Builder().patch(serialize(entity, entityType)).uri(uri).build()) })
 
     override val isDeleteAllowed: Boolean?
         get() = isMethodAllowed(HttpMethod.DELETE)
